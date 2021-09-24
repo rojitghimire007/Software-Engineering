@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react';
 
-const Dashboard = React.lazy(() => import('./components/Poc'));
+const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 const Login = React.lazy(() => import('views/Login'));
 // const Organizations = React.lazy(() =>
 //   import("./views/organizations/Organizations")
