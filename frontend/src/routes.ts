@@ -1,5 +1,6 @@
 import React, { ComponentType } from 'react';
 
+const AddPipe = React.lazy(() => import('views/pipes/AddPipe'));
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 const Login = React.lazy(() => import('views/Login'));
 // const Organizations = React.lazy(() =>
@@ -20,6 +21,7 @@ const routes: {
 }[] = [
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
   { path: '/login', exact: true, name: 'Login', component: Login },
+  { path: '/pipes/add', exact: true, name: 'AddPipe', component: AddPipe },
   //   {
   //     path: "/organizations/",
   //     exact: true,

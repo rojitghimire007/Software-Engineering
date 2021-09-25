@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import 'style/Dashboard.css';
 
 const Dashboard = () => {
@@ -28,12 +29,15 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <div id="menu">{generateMenus()}</div>
       <div id="options">
-        <div className="header">Options</div>
+        <div className="header">
+          <b>Options</b>
+        </div>
         <div>
           <ul>
-            <a href="#">
-              <li>Option 1</li>
-            </a>
+            <Link to="/pipes/add">
+              <li>Material Inventory</li>
+            </Link>
+
             <a href="#">
               <li>Option 2</li>
             </a>
