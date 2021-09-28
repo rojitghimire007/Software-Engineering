@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { setLocalStorage } from 'utils/utils';
 
+import '../style/Login.css';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,29 +36,30 @@ const Login = () => {
   };
 
   return (
-    <div style={{ padding: '5vh' }}>
-      <form action="" method="post" onSubmit={loginUser}>
-        Email:{' '}
+    <div className="login-splash" style={{ padding: '5vh' }}>
+      <h1>Log-in to HGI System</h1>
+      <form action="" method="post" onSubmit={loginUser} className="login-form">
         <input
           onChange={updateFields}
           value={email}
           type="email"
           name=""
-          id=""
-        />
+          id="login-field"
+          placeholder="Email"
+        />{' '}
         <br />
         <br />
-        Pasword:{' '}
         <input
           onChange={updateFields}
           value={password}
           type="password"
           name=""
-          id=""
-        />
+          id="login-field"
+          placeholder="Username"
+        />{' '}
         <br />
         <br />
-        <input type="submit" value="Login" />
+        <input type="submit" value="Login" id="login-button" />
       </form>
     </div>
   );
