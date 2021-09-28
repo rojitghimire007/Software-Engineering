@@ -11,33 +11,15 @@ app.use(cors());
 
 SetRoutes(app);
 
-app.get('/', function (req, res) {
-  res.send('Hello World');
+// Default error handler
+app.use((err, req, res, next) => {
+  // logError(err.error || err);
+  res
+    .status(err.status || 400)
+    .send({ success: false, message: err.message || err });
 });
 
-app.get('/poc', async (req, res) => {
-  try {
-    let ans = await client.query('SELECT * FROM person');
-    res.json(ans.rows);
-  } catch (error) {
-    res.send(error);
-  }
-});
-
-app.post('/poc', async (req, res) => {
-  try {
-    let newRow = await client.query({
-      text: 'INSERT INTO person VALUES($1, $2)',
-      values: [req.body.name, req.body.phone],
-    });
-
-    res.send(newRow);
-  } catch (error) {
-    res.send(error);
-  }
-});
-
-var server = app.listen(8000, function () {
+var server = app.listen(8081, function () {
   var host = server.address().address;
   var port = server.address().port;
 

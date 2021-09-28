@@ -2,6 +2,7 @@ const { client } = require('../utils/databaseConnection');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SaltRounds, JWTConfig, JWTExpiresIn: expiresIn } = require('../config');
+const validateToken = require('../utils/TokenValidator');
 
 const login = async (req, res, next) => {
   try {
@@ -103,4 +104,40 @@ const signup = async (req, res, next) => {
   }
 };
 
-module.exports = { login, signup };
+/**
+ * Authenticate user session (if logged in) after closing tab/browser
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {function} next - Pass control to next middleware
+ * @returns {Object} Modified response object with user info
+ */
+const auth = async (req, res, next) => {
+  try {
+    let tokenAnalysis = await validateToken(req.headers);
+
+    // Throw error if invalid token
+    if (!tokenAnalysis.success)
+      throw { message: tokenAnalysis.message, status: 401 };
+
+    let { email } = tokenAnalysis.decoded;
+    let existingUsers = null;
+
+    // Retrive corresponding user from db
+    try {
+      existingUsers = await client.query({
+        text: 'SELECT * FROM users WHERE email = $1',
+        values: [email],
+      });
+
+      if (existingUsers.rows.length == 0)
+        throw { status: 401, message: 'User not authorized!' };
+    } catch (error) {}
+
+    return res
+      .status(200)
+      .send({ success: true, user: existingUsers.rows[0].email });
+  } catch (err) {
+    next(err);
+  }
+};
+module.exports = { login, signup, auth };
