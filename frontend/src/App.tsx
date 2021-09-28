@@ -2,17 +2,37 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Poc from './components/Poc';
+import { useHistory } from 'react-router-dom';
+import api from 'api';
+import { setLocalStorage } from 'utils/utils';
 
 const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
 function App() {
   const [ready, setReady] = useState(false); // set to false
 
-  /**
-   * Auth Call
-   */
+  const history = useHistory();
+
   useEffect(() => {
-    setReady(true);
+    // Auth Call
+    // Send to login page if token exppired. If a valiud token exists, avoid login page
+    api
+      .auth()
+      .then((res) => {
+        if (window.location.pathname === '/login' && res.success) {
+          history.push('/');
+        } else if (!res.success) {
+          // logoutAndRedirect();
+          setLocalStorage('pipeline_token', '');
+          history.push('/login');
+        }
+        setReady(true);
+      })
+      .catch((err) => {
+        // logoutAndRedirect();
+        history.push('/login');
+        setReady(true);
+      });
   }, []);
 
   const loading = (

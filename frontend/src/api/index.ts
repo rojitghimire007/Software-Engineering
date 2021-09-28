@@ -9,4 +9,12 @@ export default {
   postPOC: (data: { name: string; phone: string }) => {
     return post(API.poc, data);
   },
+
+  auth: () => {
+    return authPost(API.auth, {});
+  },
+
+  login: (email: string, password: string) => {
+    return post(API.login, { email, password });
+  },
 };

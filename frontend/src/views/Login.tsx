@@ -1,8 +1,13 @@
+import api from 'api';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import { setLocalStorage } from 'utils/utils';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   const updateFields = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.type) {
@@ -18,6 +23,14 @@ const Login = () => {
   const loginUser = (e: React.FormEvent) => {
     e.preventDefault();
     //api call
+
+    api
+      .login(email, password)
+      .then((res) => {
+        setLocalStorage('pipeline_token', res.token);
+        history.push('/');
+      })
+      .catch((err) => alert(err.message));
   };
 
   return (

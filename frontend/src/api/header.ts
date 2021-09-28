@@ -5,7 +5,7 @@ function header() {
 }
 
 function authHeader() {
-  let authtoken = getLocalStorage('finapp-token');
+  let authtoken = getLocalStorage('pipeline_token');
   return { 'Content-Type': 'application/json', token: authtoken };
 }
 

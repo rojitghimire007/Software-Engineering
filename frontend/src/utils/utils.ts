@@ -15,7 +15,7 @@ function getLocalStorage(key: string) {
 }
 
 const logoutAndRedirect = () => {
-  setLocalStorage('finapp-token', '');
+  setLocalStorage('pipeline_token', '');
   window.location.href = window.location.origin + '/login';
 };
 
