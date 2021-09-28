@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const AddPipe = () => {
   const [answers, setAnswers] = useState({});
   const [isvoid, setIsVoid] = useState(false);
+  const [next, setNext] = useState(0);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -112,13 +113,18 @@ const AddPipe = () => {
         </datalist>
         <br />
         <br />
-        <label htmlFor="schedule">Schedule and Class: </label>
-        <input onChange={handleChange} name="schedule" type="text" />{' '}
-        {/**Convert to select input */}
-        <br />
-        <label htmlFor="wall_thickness">Wall Thickness: </label>
-        <input onChange={handleChange} name="wall_thickness" type="text" />{' '}
-        {/**Convert to select input */}
+        {next === 0 && <button onClick={() => setNext(1)}>Next</button>}
+        {next >= 1 && (
+          <>
+            <label htmlFor="schedule">Schedule and Class: </label>
+            <input onChange={handleChange} name="schedule" type="text" />
+            {/**Convert to select input */}
+            <br />
+            <label htmlFor="wall_thickness">Wall Thickness: </label>
+            <input onChange={handleChange} name="wall_thickness" type="text" />
+            {/**Convert to select input */}
+          </>
+        )}
         <br />
         <br />
         <label htmlFor="grade">Grade: </label>
