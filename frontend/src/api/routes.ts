@@ -7,6 +7,10 @@ const API = {
   auth: `${URL}/auth`,
   login: `${URL}/login`,
   signup: `${URL}/signup`,
+
+  // pipes
+  getPipes: `${URL}/pipes`,
+  addPipe: `${URL}/pipes`,
 };
 
 export { URL, API };

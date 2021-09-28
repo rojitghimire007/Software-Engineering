@@ -17,4 +17,12 @@ export default {
   login: (email: string, password: string) => {
     return post(API.login, { email, password });
   },
+
+  getPipes: () => {
+    return authGet(API.getPipes, '');
+  },
+
+  addPipe: (data: any) => {
+    return authPost(API.addPipe, data);
+  },
 };

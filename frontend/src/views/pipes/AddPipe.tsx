@@ -1,13 +1,14 @@
+import api from 'api';
 import React, { useState } from 'react';
 
 const AddPipe = () => {
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState({ material_type: 'steel' });
   const [isvoid, setIsVoid] = useState(false);
   const [next, setNext] = useState(0);
 
   const handleChange = (
     e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | any
     >
   ) => {
     setAnswers({ ...answers, [e.target.name]: e.target.value });
@@ -62,6 +63,11 @@ const AddPipe = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    api
+      .addPipe({ ...answers, isVoid: isvoid })
+      .then((res) => alert('Success'))
+      .catch((err) => alert(err.message));
+
     console.log(answers);
     console.log(isvoid);
   };
@@ -93,19 +99,19 @@ const AddPipe = () => {
         <input onChange={handleChange} name="coil_no" type="text" />
         <br />
         <label htmlFor="heat_no">Pipe Heat No: </label>
-        <select name="heat_no">
+        <select name="heat_no" onChange={handleChange}>
           <option hidden disabled selected>
             -- select an option --
           </option>
-          <option value="volvo">Volvo</option>
+          <option value="633797">633797</option>
           <option value="saab">Saab</option>
           <option value="mercedes">Mercedes</option>
           <option value="audi">Audi</option>
         </select>
         <br />
         <label htmlFor="diameter">Diameter: </label>
-        <input list="heat_no" />
-        <datalist id="heat_no">
+        <input list="diameter" name="diameter" onChange={handleChange} />
+        <datalist id="diameter">
           <option hidden disabled selected>
             -- select an option --
           </option>
@@ -128,7 +134,7 @@ const AddPipe = () => {
         <br />
         <br />
         <label htmlFor="grade">Grade: </label>
-        <select name="grade" id="">
+        <select name="grade" id="" onChange={handleChange}>
           <option value="Gr. A">Gr. A</option>
           <option value="Gr. B">Gr. B</option>
           <option value="X42">X42</option>
@@ -151,29 +157,29 @@ const AddPipe = () => {
         <input onChange={handleChange} name="coating" type="text" />
         <br />
         <label htmlFor="coating_color">Coating Color: </label>
-        <select name="coating_color" id="">
+        <select name="coating_color" id="" onChange={handleChange}>
           <option hidden disabled selected>
             -- select an option --
           </option>
-          <option value="" style={{ backgroundColor: 'red' }}>
+          <option value="Red" style={{ backgroundColor: 'red' }}>
             Red
           </option>
-          <option value="" style={{ backgroundColor: 'white' }}>
+          <option value="White" style={{ backgroundColor: 'white' }}>
             White
           </option>
-          <option value="" style={{ backgroundColor: 'lightgray' }}>
+          <option value="Lite Gray" style={{ backgroundColor: 'lightgray' }}>
             Lite Gray
           </option>
-          <option value="" style={{ backgroundColor: 'lightgreen' }}>
+          <option value="Lite Green" style={{ backgroundColor: 'lightgreen' }}>
             Lite Green
           </option>
-          <option value="" style={{ backgroundColor: 'yellow' }}>
+          <option value="Yellow" style={{ backgroundColor: 'yellow' }}>
             Yellow
           </option>
         </select>
         <br />
         <label htmlFor="material_type">Material Type: </label>
-        <select name="material_type" id="">
+        <select name="material_type" id="" onChange={handleChange}>
           <option value="steel">Steel</option>
         </select>
         <br />
