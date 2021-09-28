@@ -10,6 +10,10 @@ const Dashboard = () => {
     'Menu 2',
     'Menu 3',
     'Menu 4',
+<<<<<<< HEAD
+=======
+    
+>>>>>>> e6b3801 (UI pushed to alpha-ui)
   ];
 
   const generateMenus = () => {
