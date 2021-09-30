@@ -12,16 +12,16 @@ const columns: GridColDef[] = [
   { field: 'heat_number', headerName: 'Heat Number', width: 170 },
   { field: 'diameter', headerName: 'Diameter', width: 170 },
   { field: 'schedule_class', headerName: 'Schedule & Class', width: 200 },
-  // { field: 'wall_thickenss', headerName: 'Wall Thickness', width: 200 },
   { field: 'grade_type', headerName: 'Grade', width: 150 },
   { field: 'pipe_length', headerName: 'Length', width: 150 },
   { field: 'coating_type', headerName: 'Coating', width: 150 },
   { field: 'coating_color', headerName: 'Coating Color', width: 200 },
-  // { field: 'manufacturer', headerName: 'Manufacturer', width: 170 },
   { field: 'type_name', headerName: 'Material', width: 170 },
   { field: 'porder_id', headerName: 'P.O. Number', width: 170 },
   { field: 'smart_label', headerName: 'Smart Label', width: 170 },
   { field: 'comments', headerName: 'Comments', width: 150 },
+  // { field: 'wall_thickenss', headerName: 'Wall Thickness', width: 200 },
+  // { field: 'manufacturer', headerName: 'Manufacturer', width: 170 },
   //   { field: 'firstName', headerName: 'First name', width: 150 },
   //   { field: 'lastName', headerName: 'Last name', width: 150 },
   //   {
@@ -86,12 +86,12 @@ const ViewPipes = () => {
       .catch((err) => alert(err.message));
   }, []);
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: '95vh', width: '95%', margin: '2%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
         // checkboxSelection
       />
     </div>
