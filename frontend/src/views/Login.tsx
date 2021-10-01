@@ -180,6 +180,7 @@ const Login = () => {
                   required 
                   id="filled-required" 
                   label="E-mail"
+                  type="email"
                   value={email}
                   onChange={updateFields} // Not working
                                           // Probably need to fuck with adding props to updateFields
