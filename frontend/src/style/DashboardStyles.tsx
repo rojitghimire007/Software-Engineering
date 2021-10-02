@@ -37,7 +37,7 @@ const useStyles = makeStyles ((theme) => ({
 
     },
     cardContent: {
-        
+        flexGrow: 1,
     },
     headerText: {
         color: "white",
@@ -46,11 +46,31 @@ const useStyles = makeStyles ((theme) => ({
     title: {
         backgroundColor: "#40bcd8",
     },
-    accordionPrimary: {
 
+
+
+    menuItem: {
+        backgroundColor: "#40bcd8",
+        padding: '1rem 1.5rem 1.5rem',
+    },
+    cardGrid: {
+        padding: '20px 0'
+    },
+    cardMedia: {
+        paddingTop: '56.25%' // 16:9
+    },
+    cardAction: {
+        borderRadius: 16,
+        transition: '0.3s',
+        '&:hover': {
+            transform: 'scale(1.02)'
+        },
+    },
+    accordionPrimary: {
+        width: '33%', flexShrink: 0
     },
     accordionSecondary: {
-        
+        color: 'grey',
     }
     
 }));
