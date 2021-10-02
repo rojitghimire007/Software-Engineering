@@ -1,5 +1,5 @@
 import React, { createRef, forwardRef, useEffect, useState } from 'react';
-import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MaterialTable from 'material-table';
 import { tableIcons } from 'utils/tableIcons';
@@ -279,7 +279,7 @@ const ShowPipes = () => {
       }}
       actions={[
         {
-          icon: LibraryAddIcon,
+          icon: () => <LibraryAddIcon />,
           tooltip: 'Duplicate Pipe',
           onClick: (event, rowData) => {
             const materialTable = materialTableRef.current;
