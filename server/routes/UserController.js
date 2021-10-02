@@ -57,6 +57,10 @@ const signup = async (req, res, next) => {
   try {
     let { password, email } = req.body;
 
+    first_name = 'Ashish';
+    last_name = 'Dev';
+    role = 'Admin';
+
     email = email.trim();
 
     // Check if the user already exists
@@ -84,8 +88,8 @@ const signup = async (req, res, next) => {
 
         // Save new user
         let user = await client.query({
-          text: 'INSERT INTO users(email, password) VALUES($1, $2)',
-          values: [email, password],
+          text: 'INSERT INTO users(email, password, first_name, last_name, role) VALUES($1, $2, $3, $4, $5)',
+          values: [email, password, first_name, last_name, role],
         });
 
         let token = await jwt.sign({ email }, JWTConfig, { expiresIn });
