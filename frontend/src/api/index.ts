@@ -25,4 +25,12 @@ export default {
   addPipe: (data: any) => {
     return authPost(API.addPipe, data);
   },
+
+  getOptions: () => {
+    return authGet(API.getOptions, '');
+  },
+
+  getSchedules: (diameter: string) => {
+    return authGet(API.getSchedules, diameter.replaceAll(' ', '%20'));
+  },
 };
