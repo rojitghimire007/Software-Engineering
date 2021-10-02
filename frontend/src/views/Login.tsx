@@ -145,7 +145,7 @@ const Login = () => {
             </Typography>
           </Toolbar>
         </AppBar>
-        
+
       {/* centers all elements */}
       <Grid
         container
@@ -164,91 +164,91 @@ const Login = () => {
             </Typography>
           </Toolbar>
         </AppBar> */}
-        <main className={classes.wrapper}>
-          <div>
-            <Container maxWidth="md">
-              <Card raised>
-                <CardContent className={classes.header}>
-                  <Typography variant="h3" align="center" className={classes.headerText} >
-                    Login to HGI
-                  </Typography>
-                </CardContent>
+          <main className={classes.main}>
+            <div>
+              <Container maxWidth="md" >
+                <Card raised>
+                  <CardContent className={classes.header}>
+                    <Typography variant="h3" align="center" className={classes.headerText} >
+                      Login to HGI
+                    </Typography>
+                  </CardContent>
 
-                {/* E-mail */}
-                <CardContent className={classes.cardContent}>
-                  <TextField 
-                    fullWidth 
-                    required 
-                    id="filled-required" 
-                    label="E-mail"
-                    type="email"
-                    value={email}
-                    onChange={updateFields} // Not working
-                                            // Probably need to fuck with adding props to updateFields
-                  />
-                </CardContent>
-                
-                {/* Password */}
-                <CardContent className={classes.cardContent}>
-                  <FormControl fullWidth  required variant="standard">
-                    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-                    <Input
-                      id="standard-adornment-password"
-                      
-                      //placeholders
-                      // type={values.showPassword ? 'text' : 'password'}
-                      // value={values.password}
-                      // onChange={handleChange({pass: 'password'})}
-                      
-                      type={values.showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={updateFields}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            // the following kept busting the menu for some reason
-                            // edge="end" 
-                          >
-                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      // label="Password"
+                  {/* E-mail */}
+                  <CardContent className={classes.cardContent}>
+                    <TextField 
+                      fullWidth 
+                      required 
+                      id="filled-required" 
+                      label="E-mail"
+                      type="email"
+                      value={email}
+                      onChange={updateFields} // Not working
+                                              // Probably need to fuck with adding props to updateFields
                     />
-                  </FormControl>
+                  </CardContent>
+                  
+                  {/* Password */}
+                  <CardContent className={classes.cardContent}>
+                    <FormControl fullWidth  required variant="standard">
+                      <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                      <Input
+                        id="standard-adornment-password"
+                        
+                        //placeholders
+                        // type={values.showPassword ? 'text' : 'password'}
+                        // value={values.password}
+                        // onChange={handleChange({pass: 'password'})}
+                        
+                        type={values.showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={updateFields}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              // the following kept busting the menu for some reason
+                              // edge="end" 
+                            >
+                              {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                        // label="Password"
+                      />
+                    </FormControl>
 
-                  {/* Old Password */}
-                  {/* <TextField fullWidth required id="outlined-required" label="Password"/> */}
+                    {/* Old Password */}
+                    {/* <TextField fullWidth required id="outlined-required" label="Password"/> */}
 
-                </CardContent>
-                <Grid container spacing={2} justify="center">
+                  </CardContent>
+                  <Grid container spacing={2} justify="center">
 
-                  {/* "Log In" */}
-                  <div>
-                    <Button 
-                      variant="contained" 
-                      color="primary" 
-                      className={classes.buttonPrimary}
-                      onClick={loginUser}
-                    >
-                          Log In
-                    </Button>
-                  </div>
+                    {/* "Log In" */}
+                    <div>
+                      <Button 
+                        variant="contained" 
+                        color="primary" 
+                        className={classes.buttonPrimary}
+                        onClick={loginUser}
+                      >
+                            Log In
+                      </Button>
+                    </div>
 
-                  {/* "Forgot Password?" */}
-                  <div>
-                    <Button variant="outlined" color="primary" className={classes.buttonSecondary}>
-                          Forgot Password?
-                    </Button>
-                  </div>
-                </Grid>
-              </Card>
-            </Container>
-          </div>
-        </main>
+                    {/* "Forgot Password?" */}
+                    <div>
+                      <Button variant="outlined" color="primary" className={classes.buttonSecondary}>
+                            Forgot Password?
+                      </Button>
+                    </div>
+                  </Grid>
+                </Card>
+              </Container>
+            </div>
+          </main>
       {/* </html> */}
       </Grid>
     </>

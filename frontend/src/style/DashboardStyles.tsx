@@ -24,7 +24,7 @@ const useStyles = makeStyles ((theme) => ({
 
     },
     wrapper: {
-        backgroundColor: "#39a9db"
+        // backgroundColor: "#39a9db"
     },
     page: {
         minHeight: "100vh",
