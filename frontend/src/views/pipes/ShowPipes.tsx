@@ -8,6 +8,7 @@ import { unstable_batchedUpdates } from 'react-dom';
 import { MenuItem } from '@mui/material';
 
 interface dataType {
+  color?: string;
   void: boolean;
   date: string;
   inspector: string;
@@ -76,6 +77,28 @@ const ShowPipes = () => {
   const [data, setData] = useState<dataType[]>([
     {
       void: false,
+      color: 'red',
+      date: '01/18/17',
+      inspector: 'Todd DeVille',
+      location: 'Yard',
+      id: 1,
+      coil_no: 414603,
+      heat_no: 643317,
+      diameter: '20"',
+      schedule: 'HX',
+      wall_thickness: 0.5,
+      grade: 'X60',
+      length: '22\' 6-5/8"',
+      coating: 'Bare',
+      coating_color: 'Green',
+      manufacturer: 'Ameriacan Steel Pipe',
+      material_type: 'Steel',
+      po_number: 43526725,
+      comments: 'Hello World',
+    },
+    {
+      void: false,
+      // color: 'green',
       date: '01/18/17',
       inspector: 'Todd DeVille',
       location: 'Yard',
@@ -160,6 +183,10 @@ const ShowPipes = () => {
       options={{
         filtering: true,
         search: false,
+        rowStyle: (rowData) => ({
+          backgroundColor: rowData.color ? rowData.color : null,
+          color: rowData.color ? 'white' : 'black',
+        }),
         // tableLayout: 'fixed',
       }}
       columns={[
