@@ -188,6 +188,7 @@ const ShowPipes = () => {
           color: rowData.color ? 'white' : 'black',
         }),
         // tableLayout: 'fixed',
+        columnsButton: true,
       }}
       columns={[
         { title: 'Void', field: 'void', type: 'boolean' },

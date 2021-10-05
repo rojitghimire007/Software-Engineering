@@ -1,5 +1,6 @@
 import React, { ComponentType } from 'react';
 import ShowPipes from 'views/pipes/ShowPipes';
+import ShowFittings from 'views/fittings/ShowFittings';
 
 const ViewPipes = React.lazy(() => import('views/pipes/ViewPipes'));
 const AddPipe = React.lazy(() => import('views/pipes/AddPipe'));
@@ -26,6 +27,7 @@ const routes: {
   { path: '/pipes', exact: true, name: 'ViewPipes', component: ViewPipes },
   { path: '/pipes/add', exact: true, name: 'AddPipe', component: AddPipe },
   { path: '/pipes/new', exact: true, name: 'Show', component: ShowPipes },
+  { path: '/fittings', exact: true, name: 'Fittings', component: ShowFittings},
   //   {
   //     path: "/organizations/",
   //     exact: true,

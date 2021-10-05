@@ -13,6 +13,7 @@ const API = {
   addPipe: `${URL}/pipes`,
   getOptions: `${URL}/getOptions`,
   getSchedules: `${URL}/getSchedules`,
+  getFittings: `${URL}/fittings`,
 };
 
 export { URL, API };

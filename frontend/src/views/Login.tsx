@@ -18,6 +18,8 @@ import {
   Button,
   TextField,
   Container,
+  ThemeProvider, 
+  createMuiTheme
 } from '@material-ui/core';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -28,6 +30,8 @@ import {
   Input,
   InputAdornment,
   IconButton,
+  createTheme,
+  Paper,
 } from '@mui/material';
 //import { Stack } from '@mui/material'; // not working , be real cool if it did
 import Stack from '@mui/material/Stack'; // works?? NO: people are complaining since there was a new update
@@ -35,6 +39,7 @@ import Stack from '@mui/material/Stack'; // works?? NO: people are complaining s
 
 import useStyles from '../style/LoginStyles'; // new styling
 //import '../style/Login.css';
+import '../style/fonts.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -108,9 +113,15 @@ const Login = () => {
   ) => {
     event.preventDefault();
   };
-  //
+  // End Visibility Icon
   //
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  const theme = createMuiTheme ({
+    typography: {
+      fontFamily: ['Fenix', 'serif'].join(','),
+    }
+  })
 
   return (
     // <div className="login-splash" style={{ padding: '5vh' }}>
@@ -140,10 +151,12 @@ const Login = () => {
     //   </form>
     // </div>
     <>
+
       <CssBaseline />
+
       <AppBar position="relative">
         <Toolbar className={classes.title}>
-          <Typography variant="h3" align="center">
+          <Typography variant="h3"  className={classes.titleContent}>
             Honor Guard Inspections
           </Typography>
         </Toolbar>
@@ -169,15 +182,15 @@ const Login = () => {
         </AppBar> */}
         <main className={classes.main}>
           <div>
-            <Container maxWidth="md">
-              <Card raised>
+            <Container maxWidth="md" >
+              <Card raised className={classes.roundedContainer}>
                 <CardContent className={classes.header}>
                   <Typography
                     variant="h3"
                     align="center"
                     className={classes.headerText}
                   >
-                    Login to HGI
+                    Log In
                   </Typography>
                 </CardContent>
 
@@ -235,7 +248,7 @@ const Login = () => {
                   {/* Old Password */}
                   {/* <TextField fullWidth required id="outlined-required" label="Password"/> */}
                 </CardContent>
-                <Grid container spacing={2} justify="center">
+                <Grid container spacing={2} justify="center" className={classes.temp01}>
                   {/* "Log In" */}
                   <div>
                     <Button
@@ -265,6 +278,7 @@ const Login = () => {
         </main>
         {/* </html> */}
       </Grid>
+    
     </>
   );
 };

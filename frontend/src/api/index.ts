@@ -33,4 +33,8 @@ export default {
   getSchedules: (diameter: string) => {
     return authGet(API.getSchedules, diameter.replaceAll(' ', '%20'));
   },
+
+  getFittings: () => {
+    return authGet(API.getFittings, '')
+  },
 };
