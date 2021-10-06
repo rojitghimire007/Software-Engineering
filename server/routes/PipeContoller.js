@@ -80,6 +80,44 @@ const allPipes = (req, res, next) => {
     });
 };
 
-module.exports = { addPipe, allPipes };
+const getOptions = async (req, res, next) => {
+  try {
+    let grades = await client.query('SELECT grade FROM PIPE_GRADE;');
+    grades = grades.rows.map((data) => data.grade);
 
-// .query("SELECT pipe_id as id, * FROM pipes")
+    let materials = await client.query('SELECT material_name FROM material;');
+    materials = materials.rows.map((data) => data.material_name);
+
+    let po_numbers = await client.query('SELECT id FROM purchase_orders;');
+    po_numbers = po_numbers.rows.map((data) => data.id);
+
+    let heat_numbers = await client.query(
+      'SELECT heat_number FROM pipe_heat_numbers;'
+    );
+
+    heat_numbers = heat_numbers.rows.map((data) => data.heat_number);
+
+    let coatings = await client.query(
+      'SELECT coating_type, color FROM pipe_coating;'
+    );
+    // let coating_color = await client.query('SELECT color FROM pipe_coating;');
+
+    let coating_return = {};
+    coatings.rows.forEach((data) => {
+      coating_return[data.coating_type] = data.color;
+    });
+
+    res.status(200).send({
+      success: true,
+      grades,
+      coatings: coating_return,
+      materials,
+      po_numbers,
+      heat_numbers,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+module.exports = { addPipe, allPipes, getOptions };
