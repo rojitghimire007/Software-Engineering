@@ -35,8 +35,7 @@ const addPipe = (req, res, next) => {
   );
   client
     .query({
-      text:
-        'INSERT INTO pipes(location, coil_number, heat_number, grade_type, pipe_length,coating_type, coating_color, type_name, porder_id, smart_label, comments, void, schedule_class, diameter) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)',
+      text: 'INSERT INTO pipes(location, coil_number, heat_number, grade_type, pipe_length,coating_type, coating_color, type_name, porder_id, smart_label, comments, void, schedule_class, diameter) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)',
       values: [
         location,
         coil_no,
@@ -120,4 +119,5 @@ const getOptions = async (req, res, next) => {
     next(err);
   }
 };
+
 module.exports = { addPipe, allPipes, getOptions };
