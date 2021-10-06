@@ -13,7 +13,7 @@ const getScheduleAndThickness = (req, res, next) => {
       }
       mainArr[count] = resArr;
       count++;
-      console.log(mainArr);
+      //console.log(mainArr);
     }
   } catch (err) {
     console.log(err);
