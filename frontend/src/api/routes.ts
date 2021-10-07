@@ -13,6 +13,8 @@ const API = {
   addPipe: `${URL}/pipes`,
   getOptions: `${URL}/getOptions`,
   getSchedules: `${URL}/getSchedules`,
+  getStringingInfo: `${URL}/stringing`,
+  updateStringing: `${URL}/updateStrung`,
   getFittings: `${URL}/fittings`,
 };
 
