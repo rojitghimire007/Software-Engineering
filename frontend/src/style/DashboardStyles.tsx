@@ -28,7 +28,7 @@ const useStyles = makeStyles ((theme) => ({
     },
     page: {
         minHeight: "100vh",
-        backgroundColor: "#39a9db"
+        backgroundColor: "#39afdb",
     },
     header: {
         backgroundColor: "#f39237",
@@ -38,13 +38,22 @@ const useStyles = makeStyles ((theme) => ({
     },
     cardContent: {
         flexGrow: 1,
+        fontSize: '1.4em',
     },
     headerText: {
         color: "white",
         padding: '0 50px'
     },
     title: {
-        backgroundColor: "#40bcd8",
+        backgroundColor: "linear-gradient(to bottom right, black, #40bcd8)",
+        alignItems: 'center',
+        width: '100%',
+        borderRadius: '0 0 10px 10px',
+        borderBottom: '3px solid black',
+    },
+    titleContent: {
+        margin: '0 auto',
+        textAlign: 'center',
     },
 
 
@@ -60,18 +69,30 @@ const useStyles = makeStyles ((theme) => ({
         paddingTop: '56.25%' // 16:9
     },
     cardAction: {
-        borderRadius: 16,
+        borderRadius: 7,
         transition: '0.3s',
         '&:hover': {
             transform: 'scale(1.02)'
         },
+        border: '3px solid blue',
     },
     accordionPrimary: {
         width: '33%', flexShrink: 0
     },
     accordionSecondary: {
-        color: 'grey',
-    }
+        
+    },
+
+
+
+    link: {
+        textAlign: 'center',
+        fontSize: '1.2em',
+        margin: '0 auto'
+    },
+    listButton: {
+        backgroundColor: 'grey',
+    },
     
 }));
 

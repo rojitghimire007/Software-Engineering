@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import {
   Typography,
@@ -23,7 +24,15 @@ import {
   AccordionSummary,
   Collapse,
   IconButton,
+  // Link,
   AccordionDetails,
+  List,
+  ListItemText,
+  ListItemButton,
+  Chip,
+  Divider,
+  CircularProgress,
+  LinearProgress
 } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -38,8 +47,16 @@ const Dashboard = () => {
     'Stringing',
     'Bending',
     'Coating',
-    'Menu 4',
+    'Extra',
   ];
+
+  // Used for menu links
+  const [selectedIndex, setSelectedIndex] = useState(1);
+
+  // Used for loading bar
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const timer = React.useRef<number>();
 
   const classes = useStyles();
 
@@ -84,6 +101,26 @@ const Dashboard = () => {
     // });
   };
 
+  // Used for menu links
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number,
+  ) => {
+    setSelectedIndex(index);
+
+    // for loading bar
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = window.setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 2000);
+    }
+    
+    return(<LinearProgress color="secondary" variant="determinate" value={75}/>);
+  };
+
   return (
     // <div className="dashboard-container">
     //   <div id="menu">{generateMenus()}</div>
@@ -112,7 +149,7 @@ const Dashboard = () => {
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar className={classes.title}>
-          <Typography variant="h3" align="center">
+          <Typography variant="h3" className={classes.titleContent}>
             Honor Guard Inspections
           </Typography>
         </Toolbar>
@@ -144,8 +181,8 @@ const Dashboard = () => {
                     Been working within a function that never gets used. */}
             {menus.map((menuName, card) => (
               <Grid item key={card} xs={12} sm={5} md={4}>
-                <CardActionArea className={classes.cardAction}>
-                  <Card>
+                {/* <CardActionArea className={classes.cardAction}> */}
+                  <Card className={classes.cardAction}>
                     <CardMedia
                       className={classes.cardMedia}
                       image="https://source.unsplash.com/random"
@@ -153,30 +190,82 @@ const Dashboard = () => {
                     />
                     <CardContent className={classes.cardContent}>
                       <Typography gutterBottom variant="h5">
-                        {menuName}
+                        {/* {menuName} */}
                       </Typography>
 
                       {/* Card submenus */}
                       {/* Works, but I'll probably switch to the Collapse component. */}
                       {/* Transitions for sidebar may also work. Less responsive out of the gate, though. */}
-                      <Accordion>
+                      <Accordion
+                        variant='outlined'
+                      >
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          <Typography className={classes.accordionPrimary}>
-                            Menu
-                          </Typography>
-                          <Typography className={classes.accordionSecondary}>
-                            Requires Access Priveledges
+                          <Typography className={classes.cardContent} style={{fontWeight: 'bold'}}>
+                            {menuName}
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <h3>Gonna put links here later</h3>
-                          <Typography>
-                            Lorem ipsum dolor sit amet consectetur, adipisicing
-                            elit. Quia explicabo, veritatis debitis rem est
-                            nostrum possimus ullam adipisci deserunt eligendi,
-                            laboriosam illum cupiditate rerum quam, sunt odio
-                            eius! Error, eius.
-                          </Typography>
+
+                          <Divider >
+                            <Chip 
+                              label="Choose:" 
+                              variant="filled"
+                              color="secondary"
+                            />
+                          </Divider>
+
+                          {/* Need to map submenus!!!! */}
+                          {/* <Link
+                            component="button"
+                            variant="body2"
+                            underline="hover"
+                            
+                            onClick={() => {
+                              console.info("I'm a link.");
+                            }}
+                          > */}
+                            {/* <a href="http://localhost:3000/pipes">Pipe Inventory</a> */}
+                            {/* <a href="http://localhost:3000/fittings">Fittings Inventory</a> */}
+
+
+                            <List component="nav">
+                              <ListItemButton
+                                selected={selectedIndex === 0}
+                                onClick={(event) => handleListItemClick(event, 0)}
+                              >
+                                {/* <ListItemText primary="Pipes" /> */}
+                                <Link to="/pipes" className={classes.link}>Pipes</Link>
+                              </ListItemButton>
+                              <ListItemButton
+                                selected={selectedIndex === 0}
+                                onClick={(event) => handleListItemClick(event, 0)}
+                              >
+                                {/* <ListItemText primary="Fittings" /> */}
+                                <Link to="/fittings" className={classes.link}>Fittings</Link>
+                              </ListItemButton>
+                              <ListItemButton
+                                selected={selectedIndex === 0}
+                                onClick={(event) => handleListItemClick(event, 0)}
+                              >
+                                {/* <ListItemText primary="Valves" /> */}
+                                <Link to="/valves" className={classes.link}>Valves</Link>
+                              </ListItemButton>
+                            </List>
+
+
+
+
+
+
+
+                            {/* <div className={classes.link}>
+                              <a href="http://localhost:3000/pipes">Pipe Inventory</a>
+                            </div>
+                            <div className={classes.link}>
+                              <a href="http://localhost:3000/fittings">Fittings Inventory</a>
+                            </div>                           */}
+                          {/* </Link> */}
+
                         </AccordionDetails>
                       </Accordion>
 
@@ -202,7 +291,7 @@ const Dashboard = () => {
                           </Collapse> */}
                     </CardContent>
                   </Card>
-                </CardActionArea>
+                {/* </CardActionArea> */}
               </Grid>
             ))}
 
