@@ -1,7 +1,7 @@
 const { login, signup, auth } = require('./UserController');
 const { getScheduleAndThickness } = require('./OtherDataContoller');
 const { addPipe, allPipes, getOptions } = require('./PipeContoller');
-const { getFittings } = require('./FittingContoller');
+const { addFittings, getFittings } = require('./FittingContoller');
 
 const SetRoutes = (app) => {
   //user routes
@@ -15,7 +15,8 @@ const SetRoutes = (app) => {
   app.get('/getOptions', getOptions);
 
   // fittings routes
-  app.get('/fittings', getFittings);
+  app.post('/fittings', addFittings);
+  app.get('/getFittings', getFittings);
 
   // otherdata
   app.get('/scheduleAndThickness', getScheduleAndThickness);
