@@ -4,6 +4,7 @@ import ShowPipes from 'views/pipes/ShowPipes';
 const ViewPipes = React.lazy(() => import('views/pipes/ViewPipes'));
 const AddPipe = React.lazy(() => import('views/pipes/AddPipe'));
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
+const StrungPipes = React.lazy(() => import('views/stringing/StrungPipes'));
 const Login = React.lazy(() => import('views/Login'));
 // const Organizations = React.lazy(() =>
 //   import("./views/organizations/Organizations")
@@ -26,6 +27,7 @@ const routes: {
   { path: '/pipes', exact: true, name: 'ViewPipes', component: ViewPipes },
   { path: '/pipes/add', exact: true, name: 'AddPipe', component: AddPipe },
   { path: '/pipes/new', exact: true, name: 'Show', component: ShowPipes },
+  { path: '/pipes/strung', exact: true, name: 'Show', component: StrungPipes },
   //   {
   //     path: "/organizations/",
   //     exact: true,
