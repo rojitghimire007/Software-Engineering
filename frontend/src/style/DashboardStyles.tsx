@@ -1,99 +1,118 @@
 import { makeStyles } from "@material-ui/core";
-
-//`````````````````````````````
-// ------COLOR SCHEME-----
-//  check Login.css for colors
-//=============================
-// --colorsC-01: #1c77c3;
-// --colorsC-02: #39a9db;
-// --colorsC-03: #40bcd8;
-// --colorsC-04: #f39237;
-// --colorsC-05: #d63230;
-//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-
+import { borderColor } from "@mui/system";
+import ColorScheme from "./ColorScheme";
 
 const useStyles = makeStyles ((theme) => ({
+    dropDown: {
+        // Dropdown background
+        '&.MuiAccordion-root': {
+            backgroundColor: ColorScheme.secondaryLight,
+        }
+    },
     buttonPrimary: {
         margin: "20px",
-        backgroundColor: "#f39237",
-    },
-    buttonSecondary: {
-        margin: "20px",
-    },
-    textField: {
-
-    },
-    wrapper: {
-        // backgroundColor: "#39a9db"
+        backgroundColor: ColorScheme.primary,
     },
     page: {
         minHeight: "100vh",
-        backgroundColor: "#39afdb",
-    },
-    header: {
-        backgroundColor: "#f39237",
-    },
-    card: {
-
+        backgroundColor: ColorScheme.background,
     },
     cardContent: {
         flexGrow: 1,
         fontSize: '1.4em',
+        backgroundColor: ColorScheme.secondaryDark,
+
+        // wrapper below image
+        '&.MuiCardContent-root' : {
+            padding: '0px',
+            
+            // Implement Once image has been extended far enough
+            //borderRadius: '8px 0',
+        },
     },
-    headerText: {
-        color: "white",
-        padding: '0 50px'
+    cardTitle: {
+        flexGrow: 1,
+        fontSize: '1.4em',
+        backgroundColor: ColorScheme.secondaryLight,
+        color: ColorScheme.onSecondary,
     },
     title: {
-        backgroundColor: "linear-gradient(to bottom right, black, #40bcd8)",
+        backgroundColor: ColorScheme.primary,
         alignItems: 'center',
         width: '100%',
-        borderRadius: '0 0 10px 10px',
-        borderBottom: '3px solid black',
+        borderRadius: '8px 8px 8px 8px',
+        borderWidth: '0 0 3px 0',
+        borderStyle: 'solid',
+        borderColor: ColorScheme.primaryDark,
     },
     titleContent: {
         margin: '0 auto',
         textAlign: 'center',
-    },
-
-
-
-    menuItem: {
-        backgroundColor: "#40bcd8",
-        padding: '1rem 1.5rem 1.5rem',
-    },
-    cardGrid: {
-        padding: '20px 0'
-    },
-    cardMedia: {
-        paddingTop: '56.25%' // 16:9
+        color: ColorScheme.onPrimary,
     },
     cardAction: {
         borderRadius: 7,
         transition: '0.3s',
+        
+        // card animation
         '&:hover': {
             transform: 'scale(1.02)'
         },
-        border: '3px solid blue',
+        
+        borderWidth: '3px', 
+        borderStyle: 'solid',
+        borderColor: ColorScheme.primary,
+    },
+    divider: {
+        color: ColorScheme.primary,
+
+        // the lines on the dropdown by the icon
+        '&.MuiDivider-root::before' : {
+            borderColor: ColorScheme.primaryDark,
+        },
+        '&.MuiDivider-root::after' : {
+            borderColor: ColorScheme.primaryDark,
+        },
+    },
+    dividerIcon: {
+        // icon in divider selector
+        '&.MuiChip-root' :{
+            backgroundColor: ColorScheme.primary,
+            color: ColorScheme.onPrimary,
+        },
     },
     accordionPrimary: {
-        width: '33%', flexShrink: 0
+        width: '33%', 
+        flexShrink: 0,
     },
-    accordionSecondary: {
-        
-    },
-
-
-
     link: {
         textAlign: 'center',
         fontSize: '1.2em',
         margin: '0 auto'
     },
-    listButton: {
-        backgroundColor: 'grey',
+    icon: {
+        // icon selector
+        '&.MuiSvgIcon-root' : {
+            color: ColorScheme.onSecondary,
+        },
     },
+
+    //single Liners (temporary)
+    buttonSecondary: { margin: "20px", },
+    header: { 
+        backgroundColor: ColorScheme.primary,
+    },
+    listButton: { backgroundColor: 'grey', },
+    menuItem: { padding: '1rem 1.5rem 1.5rem', },
+    cardGrid: { padding: '20px 0' },
+    cardMedia: { paddingTop: '56.25%' /* 16:9  aspect ratio*/ },
+    divPad: {padding: '5px',},
     
+    // Deprecated
+    textField: {},
+    wrapper: {},
+    card: {},
+    accordionSecondary: {},
 }));
 
 export default useStyles;

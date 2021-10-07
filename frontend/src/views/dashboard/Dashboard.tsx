@@ -122,31 +122,13 @@ const Dashboard = () => {
   };
 
   return (
-    // <div className="dashboard-container">
-    //   <div id="menu">{generateMenus()}</div>
-    //   <div id="options">
-    //     <div className="header">
-    //       <b>Options</b>
-    //     </div>
-    //     <div>
-    //       <ul>
-    //         <Link to="/pipes/add">
-    //           <li>Material Inventory</li>
-    //         </Link>
-    //         <a href="#">
-    //           <li>Option 2</li>
-    //         </a>
-    //         <a href="#">
-    //           <li>Option 3</li>
-    //         </a>
-    //       </ul>
-    //     </div>
-    //   </div>
-    // </div>
+    <div className={classes.page}>
 
-    <>
+      {/* Used to enhance title bar spacing */}
+      <div className={classes.divPad}></div>
+      
       <CssBaseline />
-      <AppBar position="relative">
+      <AppBar position="relative" className={classes.title}>
         <Toolbar className={classes.title}>
           <Typography variant="h3" className={classes.titleContent}>
             Honor Guard Inspections
@@ -188,28 +170,28 @@ const Dashboard = () => {
                       title="Image Title"
                     />
                     <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant="h5">
-                        {/* {menuName} */}
-                      </Typography>
 
                       {/* Card submenus */}
                       {/* Works, but I'll probably switch to the Collapse component. */}
                       {/* Transitions for sidebar may also work. Less responsive out of the gate, though. */}
                       <Accordion
                         variant='outlined'
+                        className={classes.dropDown}
                       >
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          <Typography className={classes.cardContent} style={{fontWeight: 'bold'}}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon color="inherit" className={ classes.icon } />}>
+                          <Typography className={classes.cardTitle} style={{fontWeight: 'bold'}}>
                             {menuName}
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
 
-                          <Divider >
+                          <Divider className={classes.divider}>
                             <Chip 
-                              label="Choose:" 
+                              label=":ICON_HERE:" 
                               variant="filled"
-                              color="secondary"
+                              size='medium'
+                              clickable={false}
+                              className={classes.dividerIcon}
                             />
                           </Divider>
 
@@ -311,7 +293,7 @@ const Dashboard = () => {
           {/* </Grid> */}
         </Container>
       </main>
-    </>
+    </div>
   );
 };
 
