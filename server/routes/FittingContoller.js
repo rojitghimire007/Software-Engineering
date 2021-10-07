@@ -20,6 +20,24 @@ const getFittings = (req, res, next) => {
       purchase_order: 6969420,
       smart_label: '',
     },
+    {
+      id: 5678,
+      inspector: 'Buster Mother',
+      location: 'Some',
+      dimension: '2"',
+      style: 'Eff',
+      wall_thickness: 0.375,
+      grade: 'YEP',
+
+      heat_number: 'TOO HOT',
+      mfg: 'Smiffen Wessing',
+
+      coating_type: 'Coated',
+      description: 'Hello',
+      material: 'Dangerous',
+      purchase_order: 6969420,
+      smart_label: 'F',
+    },
   ]);
 };
 

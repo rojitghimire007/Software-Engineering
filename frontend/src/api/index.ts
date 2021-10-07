@@ -51,4 +51,8 @@ export default {
       left_of_target,
     });
   },
+
+  getFittings: () => {
+    return authGet(API.getFittings, '');
+  },
 };

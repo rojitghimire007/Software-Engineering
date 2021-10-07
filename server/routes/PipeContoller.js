@@ -70,7 +70,9 @@ const addPipe = async (req, res, next) => {
 
 const allPipes = (req, res, next) => {
   client
-    .query('SELECT pipe_id as id, * FROM pipes')
+    .query(
+      "SELECT void, DATE(inventory_date), CONCAT(first_name, ' ', last_name) AS inspector, location, pipe_id as id,  coil_number as coil_no, heat_number as heat_no, diameter, designation as schedule, wall_thickness, grade, pipe_length as length, pipes.coating_type as coating, color as coating_color, mfg as manufacturer, material as material_type, purchase_order as po_number, comments FROM pipes INNER JOIN schedule_and_class ON pipes.schedule_class = schedule_and_class.id INNER JOIN users ON pipes.inspector_id = users.id INNER JOIN pipe_coating ON pipes.coating_type = pipe_coating.coating_type;"
+    )
     .then((response) => {
       return res.status(200).send({ success: true, pipes: response.rows });
     })
@@ -154,10 +156,52 @@ const deleteFromString = async (pipe_id, curr_id, curr_station) => {
   }
 };
 
+const getOptions = async (req, res, next) => {
+  try {
+    let grades = await client.query('SELECT grade FROM PIPE_GRADE;');
+    grades = grades.rows.map((data) => data.grade);
+
+    let materials = await client.query('SELECT material_name FROM material;');
+    materials = materials.rows.map((data) => data.material_name);
+
+    let po_numbers = await client.query('SELECT id FROM purchase_orders;');
+    po_numbers = po_numbers.rows.map((data) => data.id);
+
+    let heat_numbers = await client.query(
+      'SELECT heat_number FROM pipe_heat_numbers;'
+    );
+
+    heat_numbers = heat_numbers.rows.map((data) => data.heat_number);
+
+    let coatings = await client.query(
+      'SELECT coating_type, color FROM pipe_coating;'
+    );
+    // let coating_color = await client.query('SELECT color FROM pipe_coating;');
+
+    let coating_return = {};
+    coatings.rows.forEach((data) => {
+      coating_return[data.coating_type] = data.color;
+    });
+
+    res.status(200).send({
+      success: true,
+      grades,
+      coatings: coating_return,
+      materials,
+      po_numbers,
+      heat_numbers,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 module.exports = {
   addPipe,
   allPipes,
   updateStrung,
   deleteFromString,
   getStringingInfo,
+  getOptions,
 };

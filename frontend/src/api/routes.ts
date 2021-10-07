@@ -15,6 +15,7 @@ const API = {
   getSchedules: `${URL}/getSchedules`,
   getStringingInfo: `${URL}/stringing`,
   updateStringing: `${URL}/updateStrung`,
+  getFittings: `${URL}/fittings`,
 };
 
 export { URL, API };
