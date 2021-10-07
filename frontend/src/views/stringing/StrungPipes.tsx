@@ -1,21 +1,26 @@
 import React, { Component, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import api from 'api';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
-type dataType = Array<{
+type dataType = {
   station: string;
   id: string;
   pipe_id: string;
-}>;
+};
 
 // a little function to help us with reordering the result
-const reorder = (list: dataType, startIndex: number, endIndex: number) => {
+const reorder = (
+  list: dataType[],
+  startIndex: number,
+  endIndex: number
+): [dataType[], dataType, dataType] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
 
-  return result;
+  return [result, removed, result[endIndex - 1]];
 };
 
 const grid = 8;
@@ -41,17 +46,27 @@ const getListStyle = (isDraggingOver: boolean) => ({
 });
 
 const StrungPipes = () => {
-  const [data, setData] = useState<dataType>([]);
+  const [data, setData] = useState<dataType[]>([]);
 
   useEffect(() => {
-    setData([
-      { station: '237+10', id: '1', pipe_id: 'pipe 1' },
-      { station: '237+20', id: '10', pipe_id: 'pipe 2' },
-      { station: '237+30', id: '100', pipe_id: 'pipe 3' },
-      { station: '237+40', id: '1000', pipe_id: 'pipe 4' },
-      { station: '237+50', id: '10000', pipe_id: 'pipe 5' },
-    ]);
+    updateData();
   }, []);
+
+  const updateData = () => {
+    api
+      .getStringingInfo()
+      .then((res) => setData(res))
+      .catch((err) => {
+        alert(err);
+        // setData([
+        //   { station: '237+10', id: '1', pipe_id: 'pipe 1' },
+        //   { station: '237+20', id: '10', pipe_id: 'pipe 2' },
+        //   { station: '237+30', id: '100', pipe_id: 'pipe 3' },
+        //   { station: '237+40', id: '1000', pipe_id: 'pipe 4' },
+        //   { station: '237+50', id: '10000', pipe_id: 'pipe 5' },
+        // ]);
+      });
+  };
 
   const onDragEnd = (result: any) => {
     // dropped outside the list
@@ -59,9 +74,23 @@ const StrungPipes = () => {
       return;
     }
 
-    const items = reorder(data, result.source.index, result.destination.index);
+    const [items, pipe, left_pipe] = reorder(
+      data,
+      result.source.index,
+      result.destination.index
+    );
 
     setData(items);
+
+    api
+      .updateStringing(
+        pipe.pipe_id,
+        pipe.id,
+        pipe.station,
+        left_pipe ? left_pipe.pipe_id : null
+      )
+      .then((res) => updateData())
+      .catch((err) => alert(err));
   };
 
   return (
@@ -77,7 +106,11 @@ const StrungPipes = () => {
               return (
                 <>
                   <div>{`${item.station} + ${item.id}`}</div>
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                  <Draggable
+                    key={item.id}
+                    draggableId={`${item.id}`}
+                    index={index}
+                  >
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}

@@ -33,4 +33,22 @@ export default {
   getSchedules: (diameter: string) => {
     return authGet(API.getSchedules, diameter.replaceAll(' ', '%20'));
   },
+
+  getStringingInfo: () => {
+    return authGet(API.getStringingInfo, '');
+  },
+
+  updateStringing: (
+    pipe_id: string,
+    curr_id: string,
+    curr_station: string,
+    left_of_target: string | null
+  ) => {
+    return authPut(API.updateStringing, {
+      pipe_id,
+      curr_id,
+      curr_station,
+      left_of_target,
+    });
+  },
 };
