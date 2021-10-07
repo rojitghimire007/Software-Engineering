@@ -1,4 +1,4 @@
-import React, { createRef, forwardRef, useEffect, useState } from 'react';
+import React, { createRef, forwardRef, useCallback, useEffect, useState } from 'react';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MaterialTable from 'material-table';
@@ -7,6 +7,19 @@ import api from 'api';
 import { unstable_batchedUpdates } from 'react-dom';
 import { MenuItem } from '@mui/material';
 
+/////////////////////////////////////////////////////////////
+          // NEW CODE BELOW //
+/////////////////////////////////////////////////////////////
+
+import useKeyPress from 'hooks/useKeyPress';
+
+const shortcuts = [
+  'a', 's'
+];
+
+/////////////////////////////////////////////////////////////
+          // NEW CODE ABOVE //
+/////////////////////////////////////////////////////////////
 interface dataType {
   void: boolean;
   date: string;
@@ -102,6 +115,33 @@ const ShowPipes = () => {
   const [materials, setMaterials] = useState({});
   const [po_numbers, setPO_numbers] = useState({});
 
+  /////////////////////////////////////////////////////////////
+            // NEW CODE BELOW //
+  /////////////////////////////////////////////////////////////
+
+  //Used for keyboard shortcuts
+  //Currently using this for the add pipe shortcut
+  //shortcut: 'ctrl+space'
+  const handleKeyPress = useCallback((event) => {
+    if (event.ctrlKey === true &&
+      event.keyCode == 32) {
+      console.log('*add Pipe Command*');
+    };
+  }, []);
+
+  useEffect(() => {
+    //start listening
+    document.addEventListener('keydown', handleKeyPress);
+
+    //stop listening
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
+
+  /////////////////////////////////////////////////////////////
+        // NEW CODE ABOVE //
+  ////////////////////////////////////////////////////////////
   useEffect(() => {
     api
       .getPipes()
@@ -162,6 +202,22 @@ const ShowPipes = () => {
         search: false,
         // tableLayout: 'fixed',
       }}
+      /////////////////////////////////////////////////////////////
+                // NEW CODE BELOW //
+      /////////////////////////////////////////////////////////////
+
+      // components={{
+      //   Action: (shortcuts)=> {
+      //     // <>
+      //     //   {useKeyPress(shortcuts, onKeyPress)}
+      //     //   {const whatever = props}
+      //     // </>
+      //   }
+      // }}
+
+      /////////////////////////////////////////////////////////////
+                // NEW CODE BELOW //
+      /////////////////////////////////////////////////////////////
       columns={[
         { title: 'Void', field: 'void', type: 'boolean' },
         {
@@ -296,8 +352,19 @@ const ShowPipes = () => {
             });
           },
         },
+      /////////////////////////////////////////////////////////////
+                          // NEW CODE BELOW //
+      /////////////////////////////////////////////////////////////
+
+        // {
+        //   useKeyPress(shortcuts, onKeyPress)
+        // },
+
+      /////////////////////////////////////////////////////////////
+                          // NEW CODE ABOVE //
+      /////////////////////////////////////////////////////////////  
       ]}
-    />
+    ></MaterialTable>
   );
 };
 
