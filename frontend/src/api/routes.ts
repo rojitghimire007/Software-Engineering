@@ -11,6 +11,11 @@ const API = {
   // pipes
   getPipes: `${URL}/pipes`,
   addPipe: `${URL}/pipes`,
+  getOptions: `${URL}/getOptions`,
+  getSchedules: `${URL}/getSchedules`,
+  getStringingInfo: `${URL}/stringing`,
+  updateStringing: `${URL}/updateStrung`,
+  getFittings: `${URL}/fittings`,
 };
 
 export { URL, API };

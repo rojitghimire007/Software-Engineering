@@ -3,7 +3,7 @@ client = new Client({
   host: 'teamdaemon.chdmjbgrdfsw.us-east-2.rds.amazonaws.com',
   user: 'postgres',
   password: 'teamDaemon',
-  database: 'alpha',
+  database: 'pipeline',
 });
 
 client.connect();

@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 const cors = require('cors');
+const { InitialMiddleWare, TokenMiddleWare } = require('./middlewares');
 const { client } = require('./utils/databaseConnection');
 const { SetRoutes } = require('./routes');
 
@@ -9,6 +10,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+InitialMiddleWare(app); //Add initial middlewares (cors, body-parser)
+// TokenMiddleWare(app); // Extract email from the jwt token and put it in body
 SetRoutes(app);
 
 // Default error handler
