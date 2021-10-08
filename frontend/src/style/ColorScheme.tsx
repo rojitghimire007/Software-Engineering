@@ -34,9 +34,6 @@ const ColorScheme = {
     onError: '#FFFFFF',
 };
 
-// Tool for Changing Hue
-const HueSelector = () => {};
-
 /* 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     || Primary Swatch ||    

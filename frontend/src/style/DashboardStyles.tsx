@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import { borderColor } from "@mui/system";
 import ColorScheme from "./ColorScheme";
+import HueSelector from "./HueSelector";
 
 const useStyles = makeStyles ((theme) => ({
     dropDown: {

@@ -2,18 +2,20 @@ import { makeStyles } from "@material-ui/core";
 import { autocompleteClasses } from "@mui/material";
 import { url } from "inspector";
 
-// import "@fontsource/fenix"; // default weight 400, normal
-
+import ColorScheme from "./ColorScheme";
+import HueSelector from "./HueSelector";
 
 const useStyles = makeStyles ((theme) => ({
     buttonPrimary: {
         margin: "20px",
-        backgroundColor: "#9de0ad",
+        // backgroundColor: "#9de0ad",
         fontSize: '30px',
 
         '&.MuiButtonBase-root' : {
             fontFamily: 'Bebas Neue',
-        }
+        },
+
+        // backgroundColor: HueSelector(ColorScheme.primaryDark,1,1),
     },
     buttonSecondary: {
         margin: "20px",
