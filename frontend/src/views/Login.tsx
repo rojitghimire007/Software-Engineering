@@ -26,20 +26,14 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   FormControl,
   InputLabel,
-  OutlinedInput, // switched to Input
   Input,
   InputAdornment,
   IconButton,
   createTheme,
   Paper,
 } from '@mui/material';
-//import { Stack } from '@mui/material'; // not working , be real cool if it did
-import Stack from '@mui/material/Stack'; // works?? NO: people are complaining since there was a new update
-// Stack may be broken atm.
 
 import useStyles from '../style/LoginStyles'; // new styling
-//import '../style/Login.css';
-import '../style/fonts.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -124,40 +118,13 @@ const Login = () => {
   })
 
   return (
-    // <div className="login-splash" style={{ padding: '5vh' }}>
-    //   <h1>Log-in to HGI System</h1>
-    //   <form action="" method="post" onSubmit={loginUser} className="login-form">
-    //     <input
-    //       onChange={updateFields}
-    //       value={email}
-    //       type="email"
-    //       name=""
-    //       id="login-field"
-    //       placeholder="Email"
-    //     />{' '}
-    //     <br />
-    //     <br />
-    //     <input
-    //       onChange={updateFields}
-    //       value={password}
-    //       type="password"
-    //       name=""
-    //       id="login-field"
-    //       placeholder="Username"
-    //     />{' '}
-    //     <br />
-    //     <br />
-    //     <input type="submit" value="Login" id="login-button" />
-    //   </form>
-    // </div>
     <>
-
       <CssBaseline />
 
       <AppBar position="relative">
         <Toolbar className={classes.title}>
-          <Typography variant="h3"  className={classes.titleContent}>
-            Honor Guard Inspections
+          <Typography  variant='h3' className={classes.titleContent}>
+            HONOR GUARD INSPECTIONS
           </Typography>
         </Toolbar>
       </AppBar>
@@ -171,15 +138,6 @@ const Login = () => {
         justify="center"
         className={classes.page}
       >
-        {/* <html style={{backgroundColor: "blue"}}> */}
-        {/* <CssBaseline />
-        <AppBar position="relative">
-          <Toolbar>
-            <Typography variant="h1">
-              HELLO!
-            </Typography>
-          </Toolbar>
-        </AppBar> */}
         <main className={classes.main}>
           <div>
             <Container maxWidth="md" >
@@ -276,9 +234,7 @@ const Login = () => {
             </Container>
           </div>
         </main>
-        {/* </html> */}
       </Grid>
-    
     </>
   );
 };

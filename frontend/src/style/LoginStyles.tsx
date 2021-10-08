@@ -1,31 +1,28 @@
 import { makeStyles } from "@material-ui/core";
 import { autocompleteClasses } from "@mui/material";
 import { url } from "inspector";
-// import Image from "https://source.unsplash.com/_EMkxLdko9k/1920x1440";
-// https://images.unsplash.com/photo-1503435824048-a799a3a84bf7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80
 
-//`````````````````````````````
-// ------COLOR SCHEME-----
-//  check Login.css for colors
-//=============================
-// --colorsC-01: #1c77c3;
-// --colorsC-02: #39a9db;
-// --colorsC-03: #40bcd8;
-// --colorsC-04: #f39237;
-// --colorsC-05: #d63230;
-//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+// import "@fontsource/fenix"; // default weight 400, normal
 
 
 const useStyles = makeStyles ((theme) => ({
     buttonPrimary: {
         margin: "20px",
         backgroundColor: "#9de0ad",
-        fontSize: '20px',
+        fontSize: '30px',
+
+        '&.MuiButtonBase-root' : {
+            fontFamily: 'Bebas Neue',
+        }
     },
     buttonSecondary: {
         margin: "20px",
         backgroundColor: '#e5fcc2',
-        fontSize: '20px',
+        fontSize: '30px',
+
+        '&.MuiButtonBase-root' : {
+            fontFamily: 'Bebas Neue',
+        }
     },
     header: {
         // backgroundColor: "#45ada8",
@@ -33,7 +30,9 @@ const useStyles = makeStyles ((theme) => ({
     },
     headerText: {
         color: "#e5fcc2",
-        padding: '0 50px',
+        padding: '0 30px',
+        fontFamily: 'Bebas Neue',
+        fontSize: '72px',
     },
     page: {
         minHeight: "100vh",
@@ -52,7 +51,7 @@ const useStyles = makeStyles ((theme) => ({
         // height: '',
         // top: '0',
         width: '100%',
-        padding: '20px 0 10px 0',
+        padding: '0 0 5px 0',
         //borderRadius: '0 0 15px 15px',
         backgroundColor: "#594f4f",
         background: 'linearGradient(19deg, #594f4f, #594f4f)',
@@ -61,9 +60,17 @@ const useStyles = makeStyles ((theme) => ({
     },
     titleContent: {
         margin: '0 auto',
-        //padding: '10px 0',
         textAlign: 'center',
         color: "#e5fcc2",
+        fontFamily: "alfa-slab-one",
+        fontWeight: 400,
+        fontSize: '5em',
+        
+        '&.MuiTypography-root' : {
+            fontStyle: 'bold',
+            fontStretch: 'expanded',
+            
+        }
     },
     wrapper: {
         backgroundImage: 'linear-gradient(to bottom right, #45ADA8, #e5fcc2)',
