@@ -2,6 +2,23 @@ import React, { Component, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import api from 'api';
+import {
+  Typography,
+  AppBar,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  CardHeader,
+  CssBaseline,
+  Grid,
+  Toolbar,
+  Button,
+  TextField,
+  Container,
+  CardActionArea,
+} from '@material-ui/core';
+import { typography } from '@mui/system';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
@@ -23,7 +40,8 @@ const reorder = (
   return [result, removed, result[endIndex - 1]];
 };
 
-const grid = 8;
+const grid = 50
+
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   // some basic styles to make the items look a bit nicer
@@ -94,45 +112,61 @@ const StrungPipes = () => {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable" direction="horizontal">
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-            {...provided.droppableProps}
-          >
-            {data.map((item, index) => {
-              return (
-                <>
-                  <div>{`${item.station} + ${item.id}`}</div>
-                  <Draggable
-                    key={item.id}
-                    draggableId={`${item.id}`}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style
-                        )}
-                      >
-                        {item.pipe_id}
-                      </div>
-                    )}
-                  </Draggable>
-                </>
-              );
-            })}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+    <CssBaseline />
+      
+        <Toolbar>
+          <Button variant="contained" color="secondary">Refresh</Button>
+        </Toolbar>
+      
+     
+      
+    <main> 
+      <div>
+        
+        <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable" direction="horizontal">
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+              {...provided.droppableProps}
+            >
+              {data.map((item, index) => {
+                return (
+                  <>
+                    <div>{`${item.station} + ${item.id}`}</div>
+                    <Draggable
+                      key={item.id}
+                      draggableId={`${item.id}`}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                        >
+                          {item.pipe_id}
+                        </div>
+                      )}
+                    </Draggable>
+                  </>
+                );
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      
+      </div>
+      </main>
+      </>
   );
 };
 
