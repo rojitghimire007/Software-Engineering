@@ -20,6 +20,8 @@ import {
 } from '@material-ui/core';
 import { typography } from '@mui/system';
 
+import useStyles from '../../style/StringingStyles';
+
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
   station: string;
@@ -43,28 +45,34 @@ const reorder = (
 const grid = 50
 
 
-const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 ${grid}px 0 0`,
 
-  // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
 
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-
-const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  display: 'flex',
-  padding: grid,
-  overflow: 'auto',
-});
 
 const StrungPipes = () => {
   const [data, setData] = useState<dataType[]>([]);
+  
+  const classes = useStyles();
+  
+  const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: 'none',
+    paddingLeft: grid * 2,
+    paddingRight: grid * 2,
+    margin: `0 ${grid}px 0 10px`,
+  
+    // change background colour if dragging
+    background: isDragging ? 'lightgreen' : `${classes.pipe}`,
+  
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  });
+  
+  const getListStyle = (isDraggingOver: boolean) => ({
+    background: isDraggingOver ? 'lightblue' : `lightgrey`,
+    display: 'flex',
+    padding: grid,
+    overflow: 'auto',
+  });
 
   useEffect(() => {
     updateData();
@@ -113,60 +121,63 @@ const StrungPipes = () => {
 
   return (
     <>
-    <CssBaseline />
-      
-        <Toolbar>
-          <Button variant="contained" color="secondary">Refresh</Button>
-        </Toolbar>
-      
-     
-      
-    <main> 
-      <div>
+      <CssBaseline />
         
-        <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-              {...provided.droppableProps}
-            >
-              {data.map((item, index) => {
-                return (
-                  <>
-                    <div>{`${item.station} + ${item.id}`}</div>
-                    <Draggable
-                      key={item.id}
-                      draggableId={`${item.id}`}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          {item.pipe_id}
-                        </div>
-                      )}
-                    </Draggable>
-                  </>
-                );
-              })}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <Toolbar>
+        <Button variant="contained" color="secondary">Refresh</Button>
+      </Toolbar>
+        
       
-      </div>
-      </main>
-      </>
+        
+      <main> 
+        <div>
+          <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable" direction="horizontal">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}
+                {...provided.droppableProps}
+              >
+                {data.map((item, index) => {
+                  return (
+                    <>
+                      <div>{`${item.station} + ${item.id}`}</div>
+                      <Draggable
+                        key={item.id}
+                        draggableId={`${item.id}`}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                            className={classes.pipe}
+                          >
+                            {item.pipe_id}
+                            <div className={classes.pipe}>hey</div>
+                            <div className={classes.pipe}>hello</div>
+                            <div className={classes.pipe}>world</div>
+                          </div>
+                        )}
+                      </Draggable>
+                    </>
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          </DragDropContext>
+        
+          </div>
+        </main>
+    </>
   );
 };
 
