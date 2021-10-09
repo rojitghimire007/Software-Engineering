@@ -7,6 +7,8 @@ import api from 'api';
 import { unstable_batchedUpdates } from 'react-dom';
 import { MenuItem } from '@mui/material';
 
+const classData = require('others/schedule&class.json');
+
 interface dataType {
   color?: string;
   void: boolean;
@@ -114,37 +116,71 @@ const ShowPipes = () => {
       coating_color: 'Green',
       manufacturer: 'Ameriacan Steel Pipe',
       material_type: 'Steel',
-      po_number: 43526725,
+      po_number: 1,
       comments: 'Hello World',
     },
   ]);
 
-  const [schedules, setSchedules] = useState({});
+  const [schedules, setSchedules] = useState([]);
   const [grades, setGrades] = useState({});
   const [coatings, setCoatings] = useState({});
   const [materials, setMaterials] = useState({});
   const [po_numbers, setPO_numbers] = useState({});
+  const [heat_numbers, setHeat_numbers] = useState({});
 
   useEffect(() => {
+    console.log(classData);
+
     api
       .getPipes()
       .then((res) => {
         setData(res.pipes);
-        //     api
-        //       .getOptions()
-        //       .then((res2) => {
-        //     unstable_batchedUpdates(() => {
-        //         setSchedules(res2.schedules);
-        //         setGrades(res2.grades);
-        //         setCoatings(res2.coatings);
-        //         setMaterials(res2.materials);
-        //         setPO_nos(res2.po_numbers);
-        //     })
-        // })
-        //       .catch((err) => alert(err.message));
+        api
+          .getOptions()
+          .then((res2) => {
+            unstable_batchedUpdates(() => {
+              setPO_numbers(
+                res2.po_numbers.reduce(
+                  (a: any, v: any) => ({ ...a, [v]: v }),
+                  {}
+                )
+              );
+              setSchedules(res2.schedules);
+              setGrades(
+                res2.grades.reduce((a: any, v: any) => ({ ...a, [v]: v }), {})
+              );
+              setCoatings(res2.coatings);
+              setMaterials(
+                res2.materials.reduce(
+                  (a: any, v: any) => ({ ...a, [v]: v }),
+                  {}
+                )
+              );
+              setHeat_numbers(
+                res2.heat_numbers.reduce(
+                  (a: any, v: any) => ({ ...a, [v]: v }),
+                  {}
+                )
+              );
+            });
+          })
+          .catch((err) => alert(err.message));
       })
       .catch((err) => alert(err.message));
   }, []);
+
+  const getThickness = (diameter: string) => {
+    let x = classData[diameter];
+
+    let ans: Array<string> = [];
+
+    for (let i = 0; i < x[0].length; i++) {
+      ans.push(`${x[0][i]} - ${x[1][i]}`);
+    }
+    console.log(ans);
+
+    return ans;
+  };
 
   const arrayToKeyValues = (data: any[]) => {
     let ans: any = {};
@@ -168,6 +204,7 @@ const ShowPipes = () => {
   };
 
   const handleDiameterChange = (event: SelectChangeEvent) => {
+    setSchedules([]);
     // api
     //   .getSchedules(event.target.value)
     //   .then((res) => {
@@ -194,7 +231,7 @@ const ShowPipes = () => {
         { title: 'Void', field: 'void', type: 'boolean' },
         {
           title: 'Date',
-          field: 'inventory_date',
+          field: 'date',
           editable: 'never',
           hidden: true,
         },
@@ -203,42 +240,66 @@ const ShowPipes = () => {
 
         { title: 'Location', field: 'location' },
         // { title: 'ID', field: 'id' },
-        { title: 'Coil Number', field: 'coil_number' },
-        { title: 'Heat Number', field: 'heat_number' },
-        { title: 'Manufacturer', field: 'mfg' },
+        { title: 'Coil Number', field: 'coil_no' },
+        { title: 'Heat Number', field: 'heat_no', lookup: heat_numbers },
+        { title: 'Manufacturer', field: 'manufacturer', editable: 'never' },
 
         //Requires extraction
         {
           title: 'Diameter',
           field: 'diameter',
           // lookup: arrayToKeyValues(diameters),
-          editComponent: (rowData) => (
+          editComponent: ({ onRowDataChange, rowData }) => (
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              onChange={handleDiameterChange}
-              label="Age"
+              onChange={(e) => {
+                onRowDataChange({
+                  ...rowData,
+                  diameter: (e.target.value as string) ?? '',
+                  schedule: '',
+                });
+              }}
+              label="Diameter"
             >
               {diameters.map((value) => (
-                <MenuItem value={value}>{value}</MenuItem>
+                <MenuItem key={value} value={value}>
+                  {value}
+                </MenuItem>
               ))}
             </Select>
           ),
         },
         {
-          title: 'Schedule & Class',
-          field: 'schedule_class',
-          lookup: schedules,
+          title: 'Schedule - Thickness',
+          field: 'schedule',
+          render: (rowData) => (
+            <>
+              {rowData.schedule} - {rowData.wall_thickness}
+            </>
+          ),
+          editComponent: ({ rowData }) => (
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              onChange={handleDiameterChange}
+            >
+              {console.log(rowData)}
+              {getThickness(rowData.diameter).map((value) => (
+                <MenuItem value={value}>{value}</MenuItem>
+              ))}
+            </Select>
+          ),
         },
 
         { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
 
-        { title: 'Length', field: 'pipe_length' },
+        { title: 'Length', field: 'length' },
 
         // Requires extraction
         {
           title: 'Coating',
-          field: 'coating_type',
+          field: 'coating',
           lookup: Object.keys(coatings),
         },
         {
@@ -247,8 +308,8 @@ const ShowPipes = () => {
           lookup: Object.values(coatings),
         },
 
-        { title: 'Material', field: 'material', lookup: materials },
-        { title: 'P.O. Number', field: 'purchase_order', lookup: po_numbers },
+        { title: 'Material', field: 'material_type', lookup: materials },
+        { title: 'P.O. Number', field: 'po_number', lookup: po_numbers },
         { title: 'Smart Label', field: 'smart_label' },
         { title: 'Comments', field: 'comments' },
       ]}
