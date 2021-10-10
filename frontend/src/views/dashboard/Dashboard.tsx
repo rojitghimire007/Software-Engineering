@@ -229,7 +229,7 @@ const Dashboard = () => {
                                 onClick={(event) => handleListItemClick(event, 0)}
                               >
                                 {/* <ListItemText primary="Valves" /> */}
-                                <Link to="/valves" className={classes.link}>Valves</Link>
+                                <Link to="/pipes/strung" className={classes.link}>Pipe Stringing</Link>
                               </ListItemButton>
                             </List>
 

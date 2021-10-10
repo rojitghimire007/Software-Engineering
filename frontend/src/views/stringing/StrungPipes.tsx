@@ -61,7 +61,7 @@ const StrungPipes = () => {
     margin: `0 ${grid}px 0 10px`,
   
     // change background colour if dragging
-    background: isDragging ? `${classes.pipeDrag}` : `${classes.pipe}`,
+    // background: isDragging ? `${classes.pipeDrag}` : `${classes.pipe}`,
   
     // styles we need to apply on draggables
     ...draggableStyle,
