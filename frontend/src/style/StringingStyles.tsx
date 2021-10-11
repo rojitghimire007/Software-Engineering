@@ -12,7 +12,6 @@ const useStyles = makeStyles ((theme) => ({
       /* background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')}; */
       width: '40px',
       height: '40px',
-    
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -24,6 +23,7 @@ const useStyles = makeStyles ((theme) => ({
       fontFamily: "'Teko', serif",
       backgroundColor: ColorScheme.primary,
       color: ColorScheme.onPrimary,
+      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
       
       '&:hover' : {
         borderColor: `${ColorScheme.secondaryDark}`,
@@ -54,6 +54,9 @@ const useStyles = makeStyles ((theme) => ({
                                      // likely not, keeping it for now
       },
     },
+    virtList: {
+      margin: '0 12px 0 12px',
+    },
     pipeDrag: {
       border: '30px dashed ' + `${ColorScheme.secondaryDark}`,
       borderRadius: '15px',
@@ -65,7 +68,7 @@ const useStyles = makeStyles ((theme) => ({
     center: {
       display: 'flex',
       justifyContent: 'center',
-      margin: 'auto',
+      margin: '10px auto',
     },
     container: {
       height: '200px',
@@ -78,7 +81,8 @@ const useStyles = makeStyles ((theme) => ({
     },
     body: {
       backgroundColor: '#002984',
-      height: '100vh'
+      height: '100vh',
+      padding: '10px 5px 0 5px',
     },
     left: {
       position: 'absolute',
@@ -99,6 +103,8 @@ const useStyles = makeStyles ((theme) => ({
       margin: '0 auto',
       textAlign: 'center',
       color: ColorScheme.onPrimary,
+      fontFamily: 'Bebas Neue',
+      fontSize: '72px',
     },
 }));
 

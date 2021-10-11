@@ -128,7 +128,7 @@ const StrungPipes = () => {
       <CssBaseline />
       <Toolbar className={classes.title}>
         <Typography variant="h4" className={classes.titleContent}>
-          Honor Guard Inspections 
+          Pipe Stringing
         </Typography>  
       </Toolbar>  
      {/* <Toolbar className={classes.title}> */ }
@@ -148,6 +148,7 @@ const StrungPipes = () => {
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
                 {...provided.droppableProps}
+                className={classes.virtList}
               >
                 {data.map((item, index) => {
                   return (
