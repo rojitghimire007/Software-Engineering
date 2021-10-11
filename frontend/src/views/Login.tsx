@@ -215,6 +215,7 @@ const Login = () => {
                       className={classes.buttonPrimary}
                       onClick={loginUser}
                     >
+                      Login
                     </Button>
                   </div>
 
