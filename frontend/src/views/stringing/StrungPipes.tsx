@@ -22,8 +22,6 @@ import { typography } from '@mui/system';
 import useStyles from '../../style/StringingStyles';
 
 
-import useStyles from '../../style/StringingStyles';
-
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
   station: string;
@@ -123,7 +121,7 @@ const StrungPipes = () => {
 
 
   return (
-    <div div className={classes.body}>
+    <div className={classes.body}>
       <CssBaseline />
       <Toolbar className={classes.title}>
         <Typography variant="h4" className={classes.titleContent}>
