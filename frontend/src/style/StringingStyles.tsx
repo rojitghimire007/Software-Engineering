@@ -55,7 +55,7 @@ const useStyles = makeStyles ((theme) => ({
       },
     },
     pipeDrag: {
-      border: '3px solid ' + `${ColorScheme.secondaryDark}`,
+      border: '30px dashed ' + `${ColorScheme.secondaryDark}`,
       borderRadius: '15px',
       transition: '0.4s',
       fontFamily: "'Teko', serif",
