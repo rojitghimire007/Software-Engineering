@@ -227,10 +227,10 @@ const ShowPipes = () => {
           hidden: true,
         },
 
+        { title: 'ID', field: 'id', type: 'numeric' },
         { title: 'Inspector', field: 'inspector', editable: 'never' }, //extract
 
         { title: 'Location', field: 'location' },
-        // { title: 'ID', field: 'id' },
         { title: 'Coil Number', field: 'coil_no' },
         { title: 'Heat Number', field: 'heat_no', lookup: heat_numbers },
         { title: 'Manufacturer', field: 'manufacturer', editable: 'never' },
@@ -330,17 +330,9 @@ const ShowPipes = () => {
               resolve('Row Updated');
             }, 1000);
           }),
-        onRowDelete: (oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              // const dataDelete = [...data];
-              // const index = oldData.tableData.id;
-              // dataDelete.splice(index, 1);
-              // setData([...dataDelete]);
-
-              resolve('Row Deleted');
-            }, 1000);
-          }),
+        onRowDelete: (oldData) => {
+          return api.deletePipe(oldData.id.toString());
+        },
       }}
       actions={[
         {
@@ -352,6 +344,8 @@ const ShowPipes = () => {
             setInitialFormData({
               ...rowData,
               name: null,
+              id: null,
+              inspector: null,
             });
 
             (materialTable as any).dataManager.changeRowEditing();

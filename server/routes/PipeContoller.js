@@ -21,12 +21,10 @@ const addPipe = async (req, res, next) => {
   try {
     if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
 
-    console.log(req.userEmail);
-
     let user = await client.query(
       `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
     );
-    user = user.rows[0];
+    user = user.rows[0].id;
     return res.status(201).send({
       success: true,
       message: 'Pipe Added!',
@@ -80,6 +78,19 @@ const allPipes = (req, res, next) => {
       console.log(err);
       next({ status: 500, message: 'Something went wrong!' });
     });
+};
+
+const deletePipe = async (req, res, next) => {
+  let { pipeID } = req.params;
+
+  try {
+    await client.query(`DELETE FROM pipes WHERE pipe_id = ${pipeID}`);
+
+    return res.status(204).send({ success: true });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 };
 
 const getStringingInfo = async (req, res, next) => {
@@ -200,6 +211,7 @@ const getOptions = async (req, res, next) => {
 module.exports = {
   addPipe,
   allPipes,
+  deletePipe,
   updateStrung,
   deleteFromString,
   getStringingInfo,
