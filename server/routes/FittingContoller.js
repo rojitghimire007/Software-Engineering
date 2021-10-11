@@ -1,70 +1,70 @@
 const { client } = require('../utils/databaseConnection');
 
-const addFittings = (req, res, next) => {
+const addFittings = async (req, res, next) => {
   let {
     id,
+    isVoid,
+    inventory_date,
     location,
     dimension,
     style,
     wall_thickness,
-    heat_number,
     grade,
-    coating_type,
+    heat_number,
     mfg,
+    length,
+    coating_type,
+    description,
+    material,
     purchase_order,
     smart_label,
+    comments,
   } = req.body;
 
-  console.log(
-    id,
-    location,
-    dimension,
-    style,
-    wall_thickness,
-    heat_number,
-    grade,
-    coating_type,
-    mfg,
-    purchase_order,
-    smart_label
-  );
-  client
-    .query({
-      text: 'INSERT INTO fittings(id,location,dimension,style,wall_thickness,heat_number,grade,coating_type,mfg,purchase_order,smart_label) VALUES($1, $2,  $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+  try {
+    if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
+
+    let user = await client.query(
+      `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
+    );
+    let inspector_id = user.rows[0].id;
+
+    await client.query({
+      text: 'INSERT INTO FITTINGS (id, isVoid, location, dimension, style, wall_thickness, grade, heat_number, mfg, length, coating_type, description, material, purchase_order, smart_label, comments, inspector_id) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)',
       values: [
         id,
+        isVoid,
         location,
         dimension,
         style,
         wall_thickness,
-        heat_number,
         grade,
-        coating_type,
+        heat_number,
         mfg,
+        length,
+        coating_type,
+        description,
+        material,
         purchase_order,
         smart_label,
+        comments,
+        inspector_id,
       ],
-    })
-    .then((r) => {
-      return res.status(201).send({
-        success: true,
-        message: 'Fittings Added!',
-      });
-    })
-    .catch((e) => {
-      console.log(e);
-      next({ status: 500, message: 'Something went wrong!' });
     });
+
+    return res.status(200).send({ success: true, message: 'Fitting Added!' });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 };
 
-const getFittings = (req, res, next) => {
+const getFittings = async (req, res, next) => {
   try {
-    client.query(
-      "SELECT fittings.id AS id , CONCAT(first_name, ' ', last_name) AS inspector, location, dimension, style, wall_thickness, grade, heat_number, mfg, fitting_coating.coating_type,description, material, purchase_order , smart_label FROM fittings RIGHT JOIN users ON fittings.inspector_id = users.id LEFT JOIN fitting_coating ON fittings.coating_type = fitting_coating.coating_type;"
+    let data = await client.query(
+      "SELECT fittings.id AS id , CONCAT(first_name, ' ', last_name) AS inspector, isVoid, inventory_date, length, location, dimension, style, wall_thickness, grade, heat_number, mfg, fitting_coating.coating_type,description, material, purchase_order , smart_label, comments FROM fittings RIGHT JOIN users ON fittings.inspector_id = users.id LEFT JOIN fitting_coating ON fittings.coating_type = fitting_coating.coating_type;"
     );
-    res.status(200).send({
-      success: true,
-    });
+    res.status(200).send(data.rows);
   } catch (err) {
     console.log(err);
     next(err);

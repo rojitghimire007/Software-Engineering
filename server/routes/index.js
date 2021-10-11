@@ -8,6 +8,7 @@ const {
   deleteFromString,
   getStringingInfo,
   getOptions,
+  deletePipe,
 } = require('./PipeContoller');
 
 const { addFittings, getFittings } = require('./FittingContoller');
@@ -21,6 +22,7 @@ const SetRoutes = (app) => {
   // pipe routes
   app.post('/pipes', addPipe);
   app.get('/pipes', allPipes);
+  app.delete('/pipes/:pipeID', deletePipe);
   app.get('/stringing', getStringingInfo);
   app.put('/updateStrung', updateStrung);
   app.delete('/deleteFromString', deleteFromString);
@@ -28,7 +30,7 @@ const SetRoutes = (app) => {
 
   // fittings routes
   app.post('/fittings', addFittings);
-  app.get('/getFittings', getFittings);
+  app.get('/fittings', getFittings);
 
   // otherdata
   app.get('/scheduleAndThickness', getScheduleAndThickness);
