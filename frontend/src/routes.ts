@@ -2,8 +2,6 @@ import React, { ComponentType } from 'react';
 import ShowPipes from 'views/pipes/ShowPipes';
 import ShowFittings from 'views/fittings/ShowFittings';
 
-const ViewPipes = React.lazy(() => import('views/pipes/ViewPipes'));
-const AddPipe = React.lazy(() => import('views/pipes/AddPipe'));
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 const StrungPipes = React.lazy(() => import('views/stringing/StrungPipes'));
 const Login = React.lazy(() => import('views/Login'));

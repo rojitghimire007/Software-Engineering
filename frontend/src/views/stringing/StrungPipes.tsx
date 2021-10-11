@@ -21,6 +21,7 @@ import {
 import { typography } from '@mui/system';
 
 import useStyles from '../../style/StringingStyles';
+import AddPipe from 'views/pipes/AddPipe';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
@@ -43,6 +44,7 @@ const reorder = (
 };
 
 const grid = 50
+const keys = ['0','1','2','3'];
 
 
 
@@ -59,9 +61,10 @@ const StrungPipes = () => {
     paddingLeft: grid * 2,
     paddingRight: grid * 2,
     margin: `0 ${grid}px 0 10px`,
+    // position: 'static',
   
     // change background colour if dragging
-    // background: isDragging ? `${classes.pipeDrag}` : `${classes.pipe}`,
+    background: isDragging ? `${classes.pipeDrag}` : `${classes.pipe}`,
   
     // styles we need to apply on draggables
     ...draggableStyle,
@@ -102,8 +105,8 @@ const StrungPipes = () => {
 
     const [items, pipe, left_pipe] = reorder(
       data,
+      result.destination.index,
       result.source.index,
-      result.destination.index
     );
 
     setData(items);
@@ -119,12 +122,25 @@ const StrungPipes = () => {
       .catch((err) => alert(err));
   };
 
+  // const addPipeTesting = () => {
+  //   api
+  //     .updateStringing(
+  //       "430",
+  //       "90",
+  //       "40",
+  //       // left_pipe ? left_pipe.pipe_id : null
+
+  //     )
+  // }
+
   return (
     <>
       <CssBaseline />
         
       <Toolbar>
-        <Button variant="contained" color="secondary">Refresh</Button>
+        <Button variant="contained" color="secondary" > 
+          Refresh
+        </Button>
       </Toolbar>
         
       
@@ -142,13 +158,19 @@ const StrungPipes = () => {
                 {data.map((item, index) => {
                   return (
                     <>
-                      <div>{`${item.station} + ${item.id}`}</div>
+
+                      {/* {console.log(index)}
+                      {console.log(item)} */}
+
+                      {/* <div>{`${item.station} + ${item.id}`}</div> */}
+                      
+
                       <Draggable
-                        key={item.id}
-                        draggableId={`${item.id}`}
+                        key={`${item.id}`}
+                        draggableId={`${item.pipe_id}`}
                         index={index}
                       >
-                        {(provided, snapshot) => (
+                      {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
@@ -166,12 +188,15 @@ const StrungPipes = () => {
                               </span>
                             </div>
 
+                            {/* {console.log(index)}
+                            {console.log(item)} */}
+
                             {/* Information Below */}
-                            <div>hey</div>
-                            <div>hello</div>
-                            <div>world</div>
+                            <div>pipe id = {item.id}</div>
+                            <div>station = {item.station}</div>
+                            <div>index = {index}</div>
                           </div>
-                        )}
+                      )}
                       </Draggable>
                     </>
                   );
