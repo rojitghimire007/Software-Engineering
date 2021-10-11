@@ -1,32 +1,63 @@
 const { client } = require('../utils/databaseConnection');
 
+const getSchedule = async (schedule) => {
+  const breakSchedule = schedule.split(' ');
+  const schedule = breakSchedule[0].trim();
+  const wallThick = breakSchedule[1].trim();
+
+  let schedule_class = await client.query(
+    `SELECT id FROM SCHEDULE_AND_CLASS WHERE (diameter = ${diameter} AND designation = ${schedule} AND wall_thickness = ${wallThick})`
+  );
+
+  schedule_class = schedule_class.rows[0].id;
+  return schedule_class;
+};
 const addPipe = async (req, res, next) => {
   let {
-    location,
-    coil_no,
-    heat_no,
-    grade,
-    length,
-    coating,
-    coating_color,
-    material_type,
-    po_number,
-    smart_label,
+    coating_type,
+    coil_number,
     comments,
-    isVoid,
     diameter,
+    grade,
+    heat_number,
+    pipe_length,
+    location,
+    material,
+    purchase_order,
     schedule,
+    isVoid,
+    pipe_id,
   } = req.body;
+  // var pipeData = req.body;
 
   try {
     if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
 
-    console.log(req.userEmail);
-
     let user = await client.query(
       `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
     );
-    user = user.rows[0];
+    user = user.rows[0].id;
+    getSchedule();
+
+    client.query({
+      text: 'INSERT INTO pipes(coating_type,coil_number,comments,grade,heat_number,pipe_length,location,material, purchase_order,schedule_class,void,pipe_id, inspector_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13)',
+      values: [
+        coating_type,
+        coil_number,
+        comments,
+        grade,
+        heat_number,
+        pipe_length,
+        location,
+        material,
+        purchase_order,
+        schedule_class,
+        isVoid,
+        pipe_id,
+        user,
+      ],
+    });
+
     return res.status(201).send({
       success: true,
       message: 'Pipe Added!',
@@ -36,36 +67,6 @@ const addPipe = async (req, res, next) => {
     console.log(error);
     next({ status: 500, message: 'Something went wrong!' });
   }
-  // client
-  //   .query({
-  //     text: 'INSERT INTO pipes(location, coil_number, heat_number, grade_type, pipe_length,coating_type, coating_color, type_name, porder_id, smart_label, comments, void, schedule_class, diameter) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)',
-  //     values: [
-  //       location,
-  //       coil_no,
-  //       heat_no,
-  //       grade,
-  //       length,
-  //       coating,
-  //       coating_color,
-  //       material_type,
-  //       po_number,
-  //       smart_label,
-  //       comments,
-  //       isVoid,
-  //       schedule,
-  //       diameter,
-  //     ],
-  //   })
-  //   .then((r) => {
-  //     return res.status(201).send({
-  //       success: true,
-  //       message: 'Pipe Added!',
-  //     });
-  //   })
-  //   .catch((e) => {
-  //     console.log(e);
-  //     next({ status: 500, message: 'Something went wrong!' });
-  //   });
 };
 
 const allPipes = (req, res, next) => {
@@ -92,6 +93,35 @@ const getStringingInfo = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     next(error);
+  }
+};
+
+const editPipe = async (req, res, next) => {
+  let {
+    coating_type,
+    coil_number,
+    comments,
+    diameter,
+    grade,
+    heat_number,
+    pipe_length,
+    location,
+    material,
+    purchase_order,
+    schedule,
+    isVoid,
+    pipe_id,
+  } = req.body;
+
+  getSchedule();
+
+  try {
+    let updateInfo = await client.query(
+      `UPDATE pipes SET coating_type = ${coating_type}, coil_number = ${coil_number}, comments = ${comments}, diameter = ${diameter}, grade = ${grade}, heat_number = ${heat_number}, pipe_length = ${pipe_length}, location = ${location}, material = ${material}, purchase_order = ${purchase_order}, schedule_class= ${schedule_class}, isVoid = ${isVoid} where pipe_id = ${pipe_id}`
+    );
+    return res.status(200).send(updateInfo.rows);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -134,6 +164,59 @@ const updateStrung = async (req, res, next) => {
     next(error);
   }
 };
+
+/*const addToString = async (req, res, next) => {
+  let { pipe_id, new_station, left_of_target, new_station_id, curr_station } =
+    req.body;
+
+  try {
+    //let new_station = false;
+    let pipe_length = await deleteFromString(
+      pipe_id,
+      new_station_id,
+      curr_station
+    );
+    var updated_station_id = 0;
+
+    if (new_station == false) {
+      updateStrung().then(() => {
+        res.status(200).send({ success: true });
+      });
+    } else {
+      if (left_of_target) {
+        let left_pipe = await client.query(
+          `SELECT * from STATIONS where pipe_id = ${left_of_target}`
+        );
+        let left_pipe_station = left_pipe.rows[0]['station'];
+
+        if (left_pipe_station == new_station) {
+          let left_pipe_details = await client.query(
+            `SELECT pipe_length from pipes where pipe_id = ${left_of_target}`
+          );
+
+          updated_station_id =
+            Number(left_pipe.rows[0]['id']) +
+            Number(left_pipe_details.rows[0]['pipe_length']);
+        }
+      }
+      await client.query(
+        `UPDATE STATIONS SET id = id + ${pipe_length} where id >= ${updated_station_id} and station = ${new_station}`
+      );
+
+      await client.query(
+        `INSERT INTO STATIONS(station, id, pipe_id) VALUES(${new_station}, ${updated_station_id}, ${pipe_id})`
+      );
+
+      res.status(200).send({ success: true });
+    }
+
+    //console.log('hello');
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+*/
 
 const deleteFromString = async (pipe_id, curr_id, curr_station) => {
   try {
