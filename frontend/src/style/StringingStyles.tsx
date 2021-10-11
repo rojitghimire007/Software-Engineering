@@ -62,6 +62,44 @@ const useStyles = makeStyles ((theme) => ({
       backgroundColor: ColorScheme.secondary,
       color: ColorScheme.onSecondary,
     },
+    center: {
+      display: 'flex',
+      justifyContent: 'center',
+      margin: 'auto',
+    },
+    container: {
+      height: '200px',
+      position: 'relative',
+      top: '100px',
+      bottom: '0',
+      left: '0',
+      right: '0',
+    
+    },
+    body: {
+      backgroundColor: '#002984',
+      height: '100vh'
+    },
+    left: {
+      position: 'absolute',
+      top: '50%',
+      left: '0'
+    } , 
+    title: {
+      backgroundColor: ColorScheme.primary,
+      alignItems: 'center',
+      width: '100%',
+      borderRadius: '8px 8px 8px 8px',
+      borderWidth: '0 0 3px 0',
+      borderStyle: 'solid',
+      borderColor: ColorScheme.primaryDark,
+    },
+    titleContent: {
+      alignItems: 'center',
+      margin: '0 auto',
+      textAlign: 'center',
+      color: ColorScheme.onPrimary,
+    },
 }));
 
 export default useStyles;

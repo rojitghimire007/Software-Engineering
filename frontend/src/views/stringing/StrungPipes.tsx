@@ -19,6 +19,8 @@ import {
   CardActionArea,
 } from '@material-ui/core';
 import { typography } from '@mui/system';
+import useStyles from '../../style/StringingStyles';
+
 
 import useStyles from '../../style/StringingStyles';
 
@@ -119,72 +121,79 @@ const StrungPipes = () => {
       .catch((err) => alert(err));
   };
 
+
   return (
-    <>
+    <div div className={classes.body}>
       <CssBaseline />
-        
-      <Toolbar>
-        <Button variant="contained" color="secondary">Refresh</Button>
-      </Toolbar>
+      <Toolbar className={classes.title}>
+        <Typography variant="h4" className={classes.titleContent}>
+          Honor Guard Inspections 
+        </Typography>  
+      </Toolbar>  
+     {/* <Toolbar className={classes.title}> */ }
+        <div className={classes.center}>
+          <Button variant="contained" color="secondary">Refresh</Button>
+        </div>
+      {/*</Toolbar>*/}
         
       
         
       <main> 
-        <div>
+        <div className={classes.container}>
           <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable" direction="horizontal">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}
-                {...provided.droppableProps}
-              >
-                {data.map((item, index) => {
-                  return (
-                    <>
-                      <div>{`${item.station} + ${item.id}`}</div>
-                      <Draggable
-                        key={item.id}
-                        draggableId={`${item.id}`}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
-                            )}
-                            className={classes.pipe}
-                          >
-                            {/* ID */}
-                            <div>
-                              <span>
-                                {item.pipe_id}
-                              </span>
-                            </div>
+            <Droppable droppableId="droppable" direction="horizontal">
+              {(provided, snapshot) => (
+                <div
+                  className={classes.center}
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                  {...provided.droppableProps}
+                >
+                  {data.map((item, index) => {
+                    return (
+                      <>
+                        <div>{`${item.station} + ${item.id}`}</div>
+                        <Draggable
+                          key={item.id}
+                          draggableId={`${item.id}`}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                              )}
+                              className={classes.pipe}
+                            >
+                              {/* ID */}
+                              <div>
+                                <span>
+                                  {item.pipe_id}
+                                </span>
+                              </div>
 
-                            {/* Information Below */}
-                            <div>hey</div>
-                            <div>hello</div>
-                            <div>world</div>
-                          </div>
-                        )}
-                      </Draggable>
-                    </>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+                              {/* Information Below */}
+                              <div>hey</div>
+                              <div>hello</div>
+                              <div>world</div>
+                            </div>
+                          )}
+                        </Draggable>
+                      </>
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </DragDropContext>
-        
           </div>
         </main>
-    </>
+    </div>
   );
 };
 

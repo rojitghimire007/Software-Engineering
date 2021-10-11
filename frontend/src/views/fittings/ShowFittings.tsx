@@ -1,166 +1,208 @@
 import React, { createRef, forwardRef, useEffect, useState } from 'react';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MaterialTable from 'material-table';
+import MaterialTable, {MTableToolbar} from 'material-table';
 import { tableIcons } from 'utils/tableIcons';
 import api from 'api';
 import { unstable_batchedUpdates } from 'react-dom';
 import { MenuItem } from '@mui/material';
+import {
+  Typography,
+  AppBar,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  CardHeader,
+  CssBaseline,
+  Grid,
+  Toolbar,
+  Button,
+  TextField,
+  Container,
+  CardActionArea,
+} from '@material-ui/core';
+import useStyles from "../../style/ShowFittingsStyles";
+import ColorScheme from "../../style/ColorScheme";
 
 interface dataType {
-    id: number;
-    inspector: string;
-    location: string;
-    dimension: string;
-    style: string;
-    wall_thickness: number;
-    grade: string;
-    heat_number: string;
-    mfg: string;
-    coating_type: string;
-    description: string;
-    material: string;
-    purchase_order: number;
-    smart_label: string;
+  id: number;
+  inspector: string;
+  location: string;
+  dimension: string;
+  style: string;
+  wall_thickness: number;
+  grade: string;
+  heat_number: string;
+  mfg: string;
+  coating_type: string;
+  description: string;
+  material: string;
+  purchase_order: number;
+  smart_label: string;
 }
 
 const ShowFittings = () => {
-    const materialTableRef = createRef();
+  const materialTableRef = createRef();
 
-    const [initialFormData, setInitialFormData] = useState({});
-    const [data, setData] = useState<dataType[]>([
-        // {
-        //     id: 1234,
-        //     inspector: "Todd Deville",
-        //     location: "Shreveport",
-        //     dimension: "20",
-        //     style: "Tee",
-        //     wall_thickness: 0.375,
-        //     grade: "Y65",
-        //     heat_number: "A15AAT",
-        //     mfg: "Hackney Ladish",
-        //     coating_type: "Bare",
-        //     description: "Barred",
-        //     material: "Steel",
-        //     purchase_order: 6969420,
-        //     smart_label: '',
-        // }
-    ]);
+  const [initialFormData, setInitialFormData] = useState({});
+  const [data, setData] = useState<dataType[]>([
+    // {
+    //     id: 1234,
+    //     inspector: "Todd Deville",
+    //     location: "Shreveport",
+    //     dimension: "20",
+    //     style: "Tee",
+    //     wall_thickness: 0.375,
+    //     grade: "Y65",
+    //     heat_number: "A15AAT",
+    //     mfg: "Hackney Ladish",
+    //     coating_type: "Bare",
+    //     description: "Barred",
+    //     material: "Steel",
+    //     purchase_order: 6969420,
+    //     smart_label: '',
+    // }
+  ]);
 
-    // const [schedules, setSchedules] = useState({});
-    // const [grades, setGrades] = useState({});
-    // const [coatings, setCoatings] = useState({});
-    // const [materials, setMaterials] = useState({});
-    // const [po_numbers, setPO_numbers] = useState({});
+  // const [schedules, setSchedules] = useState({});
+  // const [grades, setGrades] = useState({});
+  // const [coatings, setCoatings] = useState({});
+  // const [materials, setMaterials] = useState({});
+  // const [po_numbers, setPO_numbers] = useState({});
 
-    useEffect(() => {
-        api
-          .getFittings()
-          .then((res) => {
-            setData(res);
-          })
-          .catch((err) => alert(err.message));
-    }, []);
+  useEffect(() => {
+    api
+      .getFittings()
+      .then((res) => {
+        setData(res);
+      })
+      .catch((err) => alert(err.message));
+  }, []);
 
-    const arrayToKeyValues = (data: any[]) => {
-        let ans: any = {};
-        let i = 0;
-        for (let element of data) {
-            ans[i] = element;
-            i++;
-        }
-    
-        return ans;
-    };
+  const arrayToKeyValues = (data: any[]) => {
+    let ans: any = {};
+    let i = 0;
+    for (let element of data) {
+      ans[i] = element;
+      i++;
+    }
 
-    const onRowAdd = (newData: dataType) => {
-        return api
-            .addPipe(newData)
-            // 'fitting' is not defined, generic results
-            .then((res) => {
-            setData([...data, newData]);
-                return res;
-            })
-            .catch((err) => alert(err.message));
-    };
+    return ans;
+  };
 
-    return(
+  const onRowAdd = (newData: dataType) => {
+    return api
+      .addPipe(newData)
+      // 'fitting' is not defined, generic results
+      .then((res) => {
+        setData([...data, newData]);
+        return res;
+      })
+      .catch((err) => alert(err.message));
+  };
+  const classes = useStyles()
+  return (
+    <><div>
+      <CssBaseline />
+      <Toolbar className={classes.title}>
+        <Typography variant="h4" className={classes.titleContent}>
+          Fittings Inventory
+        </Typography>
+      </Toolbar>
+    </div>
+      <div>
         <MaterialTable
-            icons={tableIcons}
-            title="Duplicate Action Preview"
-            options={{
-                filtering: true,
-                search: false,
-                rowStyle: (rowData) => ({
-                backgroundColor: rowData.color ? rowData.color : null,
-                color: rowData.color ? 'white' : 'black',
-                }),
-                columnsButton: true,
-            }}
-            columns={[
-                { title: 'Void'},
-                { title: 'Date'},
-                { title: 'Inspector', field: 'inspector'},
-                { title: 'Material Location', field: 'location' },
-                { title: 'ID', field: 'id'},
-                { title: 'Coil Number', field: 'coil_number' },
-                { title: 'Dimensions', field: 'dimension' },
-                { title: 'Style', field: 'style' },
-                { title: 'Type'},
-                { title: 'Wall Thickness', field: 'wall_thickness'},
-                { title: 'Grade Type', field: 'grade'},
-                { title: 'Heat Number', field: 'heat_number'},
-                { title: 'Length'},
-                { title: 'Coating', field: 'coating_type'},
-                { title: 'Description', field: 'description'},
-                { title: 'Manufacturer', field: 'mfg'},
-                { title: 'Material', field: 'material'},
-                { title: 'P.O. Number', field: 'purchase_order'},
-                { title: 'Smart Label', field: 'smart_label'},
-                { title: 'Comments'},
-            ]}
-            data={data}
-            tableRef={materialTableRef}
-            initialFormData={initialFormData}
-            editable={{
-                onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
-                onRowUpdateCancelled: (rowData) => console.log('Row editing cancelled'),
-                onRowAdd: onRowAdd,
-                onRowUpdate: (newData, oldData) =>
-                  new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                      resolve('Row Updated');
-                    }, 1000);
-                  }),
-                onRowDelete: (oldData) =>
-                  new Promise((resolve, reject) => {
-                    setTimeout(() => {
+          icons={tableIcons}
+          title=""
+          //removes title toolbar
+          components={{
+            Toolbar: (props) => (
+              <div
+                style={{
+                  height: '0px',
+                }}
+              >
+                <MTableToolbar {...props} />
+              </div>
+            ),
+          }}
+          options={{
+            filtering: true,
+            search: false,
+            //headerStyle: {backgroundColor: classes.headerStyle},
+            rowStyle: (rowData) => ({
+              backgroundColor: rowData.color ? rowData.color : null,
+              color: rowData.color ? 'white' : 'black',
+            }),
+            columnsButton: true,
+          }}
+          columns={[
+            { title: 'Void' },
+            { title: 'Date' },
+            { title: 'Inspector', field: 'inspector' },
+            { title: 'Material Location', field: 'location' },
+            { title: 'ID', field: 'id' },
+            { title: 'Coil Number', field: 'coil_number' },
+            { title: 'Dimensions', field: 'dimension' },
+            { title: 'Style', field: 'style' },
+            { title: 'Type' },
+            { title: 'Wall Thickness', field: 'wall_thickness' },
+            { title: 'Grade Type', field: 'grade' },
+            { title: 'Heat Number', field: 'heat_number' },
+            { title: 'Length' },
+            { title: 'Coating', field: 'coating_type' },
+            { title: 'Description', field: 'description' },
+            { title: 'Manufacturer', field: 'mfg' },
+            { title: 'Material', field: 'material' },
+            { title: 'P.O. Number', field: 'purchase_order' },
+            { title: 'Smart Label', field: 'smart_label' },
+            { title: 'Comments' },
+          ]}
+          data={data}
+          tableRef={materialTableRef}
+          initialFormData={initialFormData}
+          editable={{
+            onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
+            onRowUpdateCancelled: (rowData) => console.log('Row editing cancelled'),
+            onRowAdd: onRowAdd,
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  resolve('Row Updated');
+                }, 1000);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
 
-                      resolve('Row Deleted');
-                    }, 1000);
-                  }),
-            }}
-            actions={[
-                {
-                    icon: () => <LibraryAddIcon />,
-                    tooltip: 'Duplicate Pipe',
-                    onClick: (event, rowData) => {
-                        const materialTable = materialTableRef.current;
+                  resolve('Row Deleted');
+                }, 1000);
+              }),
+          }}
+          actions={[
+            {
+              icon: () => <LibraryAddIcon />,
+              tooltip: 'Duplicate Pipe',
+              onClick: (event, rowData) => {
+                const materialTable = materialTableRef.current;
 
-                        setInitialFormData({
-                        ...rowData,
-                        name: null,
-                        });
+                setInitialFormData({
+                  ...rowData,
+                  name: null,
+                });
 
-                        (materialTable as any).dataManager.changeRowEditing();
-                        (materialTable as any).setState({
-                        ...(materialTable as any).dataManager.getRenderState(),
-                        showAddRow: true,
-                        });
-                    },
-                },
-            ]}
+                (materialTable as any).dataManager.changeRowEditing();
+                (materialTable as any).setState({
+                  ...(materialTable as any).dataManager.getRenderState(),
+                  showAddRow: true,
+                });
+              },
+            },
+          ]}
         />
+      </div>
+    </>
   );
 }
 

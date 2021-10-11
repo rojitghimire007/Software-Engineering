@@ -25,9 +25,7 @@ const routes: {
 }[] = [
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
   { path: '/login', exact: true, name: 'Login', component: Login },
-  { path: '/pipes', exact: true, name: 'ViewPipes', component: ViewPipes },
-  { path: '/pipes/add', exact: true, name: 'AddPipe', component: AddPipe },
-  { path: '/pipes/new', exact: true, name: 'Show', component: ShowPipes },
+  { path: '/pipes', exact: true, name: 'Show', component: ShowPipes },
   { path: '/pipes/strung', exact: true, name: 'Show', component: StrungPipes },
   { path: '/fittings', exact: true, name: 'Fittings', component: ShowFittings },
   //   {
