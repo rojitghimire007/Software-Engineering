@@ -31,46 +31,46 @@ interface dataType {
   comments: string;
 }
 
-const diameters = [
-  '10″',
-  '2 1/2″',
-  '26″',
-  '7″',
-  '46″',
-  '1″',
-  '32″',
-  '8″',
-  '48″',
-  '1 1/2″',
-  '18″',
-  '4 1/2″',
-  '11″',
-  '30″',
-  '34″',
-  '6″',
-  '1/4″',
-  '3/8″',
-  '24″',
-  '9″',
-  '2″',
-  '28″',
-  '14″',
-  '1 1/4″',
-  '3″',
-  '12″',
-  '3/4″',
-  '20″',
-  '16″',
-  '4″',
-  '22″',
-  '54″',
-  '1/2″',
-  '1/8″',
-  '5″',
-  '3 1/2″',
-  '42″',
-  '36″',
-];
+const diameters = {
+  '10″': '10″',
+  '2 1/2″': '2 1/2″',
+  '26″': '26″',
+  '7″': '7″',
+  '46″': '46″',
+  '1″': '1″',
+  '32″': '32″',
+  '8″': '8″',
+  '48″': '48″',
+  '1 1/2″': '1 1/2″',
+  '18″': '18″',
+  '4 1/2″': '4 1/2″',
+  '11″': '11″',
+  '30″': '30″',
+  '34″': '34″',
+  '6″': '6″',
+  '1/4″': '1/4″',
+  '3/8″': '3/8″',
+  '24″': '24″',
+  '9″': '9″',
+  '2″': '2″',
+  '28″': '28″',
+  '14″': '14″',
+  '1 1/4″': '1 1/4″',
+  '3″': '3″',
+  '12″': '12″',
+  '3/4″': '3/4″',
+  '20″': '20″',
+  '16″': '16″',
+  '4″': '4″',
+  '22″': '22″',
+  '54″': '54″',
+  '1/2″': '1/2″',
+  '1/8″': '1/8″',
+  '5″': '5″',
+  '3 1/2″': '3 1/2″',
+  '42″': '42″',
+  '36″': '36″',
+};
 
 const ShowPipes = () => {
   const materialTableRef = createRef();
@@ -123,14 +123,12 @@ const ShowPipes = () => {
 
   const [schedules, setSchedules] = useState([]);
   const [grades, setGrades] = useState({});
-  const [coatings, setCoatings] = useState({});
+  const [myCoatings, setMyCoatings] = useState<{ [key: string]: string }>({});
   const [materials, setMaterials] = useState({});
   const [po_numbers, setPO_numbers] = useState({});
   const [heat_numbers, setHeat_numbers] = useState({});
 
   useEffect(() => {
-    console.log(classData);
-
     api
       .getPipes()
       .then((res) => {
@@ -149,7 +147,8 @@ const ShowPipes = () => {
               setGrades(
                 res2.grades.reduce((a: any, v: any) => ({ ...a, [v]: v }), {})
               );
-              setCoatings(res2.coatings);
+              // setCoatings(res2.coatings);
+              setMyCoatings(res2.coatings);
               setMaterials(
                 res2.materials.reduce(
                   (a: any, v: any) => ({ ...a, [v]: v }),
@@ -170,6 +169,8 @@ const ShowPipes = () => {
   }, []);
 
   const getThickness = (diameter: string) => {
+    if (!diameter || diameter == '') return [];
+
     let x = classData[diameter];
 
     let ans: Array<string> = [];
@@ -177,30 +178,20 @@ const ShowPipes = () => {
     for (let i = 0; i < x[0].length; i++) {
       ans.push(`${x[0][i]} - ${x[1][i]}`);
     }
-    console.log(ans);
-
-    return ans;
-  };
-
-  const arrayToKeyValues = (data: any[]) => {
-    let ans: any = {};
-    let i = 0;
-    for (let element of data) {
-      ans[i] = element;
-      i++;
-    }
-
     return ans;
   };
 
   const onRowAdd = (newData: dataType) => {
-    return api
-      .addPipe(newData)
-      .then((res) => {
-        setData([...data, newData]);
-        return res;
-      })
-      .catch((err) => alert(err.message));
+    console.log(newData);
+
+    return new Promise((resolve, reject) => reject('foo'));
+    // return api
+    //   .addPipe(newData)
+    //   .then((res) => {
+    //     setData([...data, newData]);
+    //     return res;
+    //   })
+    //   .catch((err) => alert(err.message));
   };
 
   const handleDiameterChange = (event: SelectChangeEvent) => {
@@ -248,7 +239,7 @@ const ShowPipes = () => {
         {
           title: 'Diameter',
           field: 'diameter',
-          // lookup: arrayToKeyValues(diameters),
+          lookup: diameters,
           editComponent: ({ onRowDataChange, rowData }) => (
             <Select
               labelId="demo-simple-select-standard-label"
@@ -262,7 +253,7 @@ const ShowPipes = () => {
               }}
               label="Diameter"
             >
-              {diameters.map((value) => (
+              {Object.keys(diameters).map((value) => (
                 <MenuItem key={value} value={value}>
                   {value}
                 </MenuItem>
@@ -278,13 +269,17 @@ const ShowPipes = () => {
               {rowData.schedule} - {rowData.wall_thickness}
             </>
           ),
-          editComponent: ({ rowData }) => (
+          editComponent: ({ rowData, onRowDataChange }) => (
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              onChange={handleDiameterChange}
+              onChange={(e: SelectChangeEvent) =>
+                onRowDataChange({
+                  ...rowData,
+                  schedule: e.target.value as string,
+                })
+              }
             >
-              {console.log(rowData)}
               {getThickness(rowData.diameter).map((value) => (
                 <MenuItem value={value}>{value}</MenuItem>
               ))}
@@ -295,35 +290,16 @@ const ShowPipes = () => {
         { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
 
         { title: 'Length', field: 'length' },
-
-        // Requires extraction
         {
-          title: 'Coating',
+          title: 'Coaing - Coating Color',
           field: 'coating',
-          lookup: Object.keys(coatings),
+          lookup: myCoatings,
         },
-        {
-          title: 'Coating Color',
-          field: 'coating_color',
-          lookup: Object.values(coatings),
-        },
-
         { title: 'Material', field: 'material_type', lookup: materials },
         { title: 'P.O. Number', field: 'po_number', lookup: po_numbers },
         { title: 'Smart Label', field: 'smart_label' },
         { title: 'Comments', field: 'comments' },
       ]}
-      //   columns={[
-      //     { title: 'Name', field: 'name' },
-      //     { title: 'Surname', field: 'surname' },
-      //     { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-      //     { title: 'Birth Date', field: 'birthYear', type: 'date' },
-      //     {
-      //       title: 'Birth Place',
-      //       field: 'birthCity',
-      //       lookup: { 62: 'Cucq' },
-      //     },
-      //   ]}
       data={data}
       tableRef={materialTableRef}
       initialFormData={initialFormData}
