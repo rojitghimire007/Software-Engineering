@@ -5,6 +5,13 @@ import { useHistory } from 'react-router-dom';
 import api from 'api';
 import { setLocalStorage } from 'utils/utils';
 
+// Fonts
+import "@fontsource/fenix";
+import "@fontsource/roboto";
+import "@fontsource/bebas-neue";
+import "@fontsource/teko";
+import "@fontsource/alfa-slab-one";
+
 const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
 function App() {

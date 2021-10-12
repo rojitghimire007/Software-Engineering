@@ -1,11 +1,29 @@
 import React, { createRef, forwardRef, useEffect, useState } from 'react';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MaterialTable from 'material-table';
+import MaterialTable, {MTableToolbar} from 'material-table';
 import { tableIcons } from 'utils/tableIcons';
 import api from 'api';
 import { unstable_batchedUpdates } from 'react-dom';
 import { MenuItem } from '@mui/material';
+import {
+  Typography,
+  AppBar,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  CardHeader,
+  CssBaseline,
+  Grid,
+  Toolbar,
+  Button,
+  TextField,
+  Container,
+  CardActionArea,
+} from '@material-ui/core';
+import useStyles from "../../style/ShowFittingsStyles";
+import ColorScheme from "../../style/ColorScheme";
 
 interface dataType {
   id: number;
@@ -64,93 +82,121 @@ const ShowFittings = () => {
       .catch((err) => alert(err.message));
   }, []);
 
-  const onRowAdd = (newData: dataType) => {
-    return api
-      .addFitting(newData)
-      .then((res) => {
-        setData([...data, newData]);
-        return res;
-      })
-      .catch((err) => alert(err.message));
-  };
+const onRowAdd = (newData: dataType) => {
+  return api
+    .addFitting(newData)
+    .then((res) => {
+      setData([...data, newData]);
+      return res;
+    })
+    .catch((err) => alert(err.message));
+};
+
+  const classes = useStyles()
 
   return (
-    <MaterialTable
-      icons={tableIcons}
-      title="Duplicate Action Preview"
-      options={{
-        filtering: true,
-        search: false,
-        rowStyle: (rowData) => ({
-          backgroundColor: rowData.color ? rowData.color : null,
-          color: rowData.color ? 'white' : 'black',
-        }),
-        columnsButton: true,
-      }}
-      columns={[
-        { title: 'Void', field: 'isvoid', type: 'boolean' },
-        { title: 'Date', field: 'inventory_date', editable: 'never' },
-        { title: 'Inspector', field: 'inspector', editable: 'never' },
-        { title: 'ID', field: 'id' },
-        { title: 'Location', field: 'location' },
-        { title: 'Dimensions', field: 'dimension' },
-        { title: 'Style', field: 'style' },
-        { title: 'Type' },
-        { title: 'Wall Thickness', field: 'wall_thickness' },
-        { title: 'Grade Type', field: 'grade' },
-        { title: 'Heat Number', field: 'heat_number' },
-        { title: 'Manufacturer', field: 'mfg', editable: 'never' },
-        { title: 'Length', field: 'length' },
-        { title: 'Coating', field: 'coating_type' },
-        { title: 'Description', field: 'description' },
-        { title: 'Material', field: 'material' },
-        { title: 'P.O. Number', field: 'purchase_order' },
-        { title: 'Smart Label', field: 'smart_label' },
-        { title: 'Comments', field: 'comments' },
-      ]}
-      data={data}
-      tableRef={materialTableRef}
-      initialFormData={initialFormData}
-      editable={{
-        onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
-        onRowUpdateCancelled: (rowData) => console.log('Row editing cancelled'),
-        onRowAdd: onRowAdd,
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve('Row Updated');
-            }, 1000);
-          }),
-        onRowDelete: (oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve('Row Deleted');
-            }, 1000);
-          }),
-      }}
-      actions={[
-        {
-          icon: () => <LibraryAddIcon />,
-          tooltip: 'Duplicate Fitting',
-          onClick: (event, rowData) => {
-            const materialTable = materialTableRef.current;
+    <div className={classes.wrapper}>
+    <div>
+      <CssBaseline />
+      <Toolbar className={classes.title}>
+        <Typography variant="h4" className={classes.titleContent}>
+          Fittings Inventory
+        </Typography>
+      </Toolbar>
+    </div>
+      <div>
+        <MaterialTable
+          icons={tableIcons}
+          title=""
+          //removes title toolbar
+          components={{
+            Toolbar: (props) => (
+              <div
+                style={{
+                  height: '0px',
+                }}
+              >
+                <MTableToolbar {...props} />
+              </div>
+            ),
+          }}
+          options={{
+            filtering: true,
+            search: false,
+            //headerStyle: {backgroundColor: classes.headerStyle},
+            rowStyle: (rowData) => ({
+              backgroundColor: rowData.color ? rowData.color : null,
+              color: rowData.color ? 'white' : 'black',
+            }),
+            columnsButton: true,
+          }}
+          columns={[
+            { title: 'Void', field: 'isvoid', type: 'boolean' },
+            { title: 'Date', field: 'inventory_date', editable: 'never' },
+            { title: 'Inspector', field: 'inspector', editable: 'never' },
+            { title: 'ID', field: 'id' },
+            { title: 'Location', field: 'location' },
+            { title: 'Dimensions', field: 'dimension' },
+            { title: 'Style', field: 'style' },
+            { title: 'Type' },
+            { title: 'Wall Thickness', field: 'wall_thickness' },
+            { title: 'Grade Type', field: 'grade' },
+            { title: 'Heat Number', field: 'heat_number' },
+            { title: 'Manufacturer', field: 'mfg', editable: 'never' },
+            { title: 'Length', field: 'length' },
+            { title: 'Coating', field: 'coating_type' },
+            { title: 'Description', field: 'description' },
+            { title: 'Material', field: 'material' },
+            { title: 'P.O. Number', field: 'purchase_order' },
+            { title: 'Smart Label', field: 'smart_label' },
+            { title: 'Comments', field: 'comments' },
+          ]}
+          data={data}
+          tableRef={materialTableRef}
+          initialFormData={initialFormData}
+          editable={{
+            onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
+            onRowUpdateCancelled: (rowData) => console.log('Row editing cancelled'),
+            onRowAdd: onRowAdd,
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  resolve('Row Updated');
+                }, 1000);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
 
-            setInitialFormData({
-              ...rowData,
-              id: null,
-              inspector: null,
-              inventory_date: null,
-            });
-
-            (materialTable as any).dataManager.changeRowEditing();
-            (materialTable as any).setState({
-              ...(materialTable as any).dataManager.getRenderState(),
-              showAddRow: true,
-            });
-          },
-        },
-      ]}
-    />
+                  resolve('Row Deleted');
+                }, 1000);
+              }),
+          }}
+          actions={[
+            {
+              icon: () => <LibraryAddIcon />,
+              tooltip: 'Duplicate Fitting',
+              onClick: (event, rowData) => {
+                const materialTable = materialTableRef.current;
+    
+                setInitialFormData({
+                  ...rowData,
+                  id: null,
+                  inspector: null,
+                  inventory_date: null,
+                });
+    
+                (materialTable as any).dataManager.changeRowEditing();
+                (materialTable as any).setState({
+                  ...(materialTable as any).dataManager.getRenderState(),
+                  showAddRow: true,
+                });
+              },
+            },
+          ]}
+        />
+      </div>
+    </div>
   );
 };
 

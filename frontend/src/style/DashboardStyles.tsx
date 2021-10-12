@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import { borderColor } from "@mui/system";
 import ColorScheme from "./ColorScheme";
+import HueSelector from "./HueSelector";
 
 const useStyles = makeStyles ((theme) => ({
     dropDown: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles ((theme) => ({
     cardContent: {
         flexGrow: 1,
         fontSize: '1.4em',
+        fontFamily: 'Roboto',
         backgroundColor: ColorScheme.secondaryDark,
 
         // wrapper below image
@@ -27,41 +29,62 @@ const useStyles = makeStyles ((theme) => ({
             padding: '0px',
             
             // Implement Once image has been extended far enough
-            //borderRadius: '8px 0',
+            // borderRadius: '8px 0',
         },
     },
     cardTitle: {
         flexGrow: 1,
-        fontSize: '1.4em',
+        fontSize: '1.7em',
+        fontFamily: 'Teko',
         backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
     },
     title: {
         backgroundColor: ColorScheme.primary,
         alignItems: 'center',
-        width: '100%',
+        width: '90vw',
         borderRadius: '8px 8px 8px 8px',
-        borderWidth: '0 0 3px 0',
+        borderWidth: '0 8px 4px 0',
         borderStyle: 'solid',
         borderColor: ColorScheme.primaryDark,
+        paddingTop: '5px',
+        margin: '0 auto'
     },
     titleContent: {
         margin: '0 auto',
         textAlign: 'center',
         color: ColorScheme.onPrimary,
+        fontFamily: 'Bebas Neue',
+        fontSize: '5em',
+        borderRadius: '0 0 0 0',
     },
     cardAction: {
         borderRadius: 7,
-        transition: '0.3s',
-        
-        // card animation
-        '&:hover': {
-            transform: 'scale(1.02)'
-        },
-        
         borderWidth: '3px', 
         borderStyle: 'solid',
         borderColor: ColorScheme.primary,
+        boxShadow: '10px 10px 12px -10px ',
+        // transition: '0.6s ease-in-out',
+        transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
+        
+        // prevents the many repaints
+        '&:after': {
+            boxShadow: '12px 12px 12px -10px ',
+            opacity: 2,
+            // transition: 'opacity 0.8s ease-in-out',
+            transition: 'all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
+        },
+
+        // card animation
+        '&:hover': {
+            transform: 'scale(1.02,1.02)',
+        },
+        
+        '&:hover::after': {
+            opacity: 1,
+        },
+
+        
     },
     divider: {
         color: ColorScheme.primary,
@@ -86,7 +109,7 @@ const useStyles = makeStyles ((theme) => ({
         flexShrink: 0,
     },
     link: {
-        textAlign: 'center',
+        textAlign: 'left',
         fontSize: '1.2em',
         margin: '0 auto'
     },
