@@ -27,6 +27,7 @@ import ColorScheme from "../../style/ColorScheme";
 
 interface dataType {
   id: number;
+  isvoid: boolean;
   inspector: string;
   location: string;
   dimension: string;
@@ -40,6 +41,7 @@ interface dataType {
   material: string;
   purchase_order: number;
   smart_label: string;
+  comments: string;
 }
 
 const ShowFittings = () => {
@@ -80,28 +82,18 @@ const ShowFittings = () => {
       .catch((err) => alert(err.message));
   }, []);
 
-  const arrayToKeyValues = (data: any[]) => {
-    let ans: any = {};
-    let i = 0;
-    for (let element of data) {
-      ans[i] = element;
-      i++;
-    }
+const onRowAdd = (newData: dataType) => {
+  return api
+    .addFitting(newData)
+    .then((res) => {
+      setData([...data, newData]);
+      return res;
+    })
+    .catch((err) => alert(err.message));
+};
 
-    return ans;
-  };
-
-  const onRowAdd = (newData: dataType) => {
-    return api
-      .addPipe(newData)
-      // 'fitting' is not defined, generic results
-      .then((res) => {
-        setData([...data, newData]);
-        return res;
-      })
-      .catch((err) => alert(err.message));
-  };
   const classes = useStyles()
+
   return (
     <><div>
       <CssBaseline />
@@ -138,26 +130,25 @@ const ShowFittings = () => {
             columnsButton: true,
           }}
           columns={[
-            { title: 'Void' },
-            { title: 'Date' },
-            { title: 'Inspector', field: 'inspector' },
-            { title: 'Material Location', field: 'location' },
+            { title: 'Void', field: 'isvoid', type: 'boolean' },
+            { title: 'Date', field: 'inventory_date', editable: 'never' },
+            { title: 'Inspector', field: 'inspector', editable: 'never' },
             { title: 'ID', field: 'id' },
-            { title: 'Coil Number', field: 'coil_number' },
+            { title: 'Location', field: 'location' },
             { title: 'Dimensions', field: 'dimension' },
             { title: 'Style', field: 'style' },
             { title: 'Type' },
             { title: 'Wall Thickness', field: 'wall_thickness' },
             { title: 'Grade Type', field: 'grade' },
             { title: 'Heat Number', field: 'heat_number' },
-            { title: 'Length' },
+            { title: 'Manufacturer', field: 'mfg', editable: 'never' },
+            { title: 'Length', field: 'length' },
             { title: 'Coating', field: 'coating_type' },
             { title: 'Description', field: 'description' },
-            { title: 'Manufacturer', field: 'mfg' },
             { title: 'Material', field: 'material' },
             { title: 'P.O. Number', field: 'purchase_order' },
             { title: 'Smart Label', field: 'smart_label' },
-            { title: 'Comments' },
+            { title: 'Comments', field: 'comments' },
           ]}
           data={data}
           tableRef={materialTableRef}
@@ -183,15 +174,17 @@ const ShowFittings = () => {
           actions={[
             {
               icon: () => <LibraryAddIcon />,
-              tooltip: 'Duplicate Pipe',
+              tooltip: 'Duplicate Fitting',
               onClick: (event, rowData) => {
                 const materialTable = materialTableRef.current;
-
+    
                 setInitialFormData({
                   ...rowData,
-                  name: null,
+                  id: null,
+                  inspector: null,
+                  inventory_date: null,
                 });
-
+    
                 (materialTable as any).dataManager.changeRowEditing();
                 (materialTable as any).setState({
                   ...(materialTable as any).dataManager.getRenderState(),
@@ -204,6 +197,6 @@ const ShowFittings = () => {
       </div>
     </>
   );
-}
+};
 
 export default ShowFittings;

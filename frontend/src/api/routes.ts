@@ -11,6 +11,7 @@ const API = {
   // pipes
   getPipes: `${URL}/pipes`,
   addPipe: `${URL}/pipes`,
+  deletePipe: `${URL}/pipes`,
   getOptions: `${URL}/getOptions`,
   getSchedules: `${URL}/getSchedules`,
   getStringingInfo: `${URL}/stringing`,

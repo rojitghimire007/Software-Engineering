@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 InitialMiddleWare(app); //Add initial middlewares (cors, body-parser)
-// TokenMiddleWare(app); // Extract email from the jwt token and put it in body
+TokenMiddleWare(app); // Extract email from the jwt token and put it in body
 SetRoutes(app);
 
 // Default error handler

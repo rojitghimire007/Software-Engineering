@@ -8,9 +8,10 @@ const {
   deleteFromString,
   getStringingInfo,
   getOptions,
+  deletePipe,
 } = require('./PipeContoller');
 
-const { getFittings } = require('./FittingContoller');
+const { addFittings, getFittings } = require('./FittingContoller');
 
 const SetRoutes = (app) => {
   //user routes
@@ -21,12 +22,14 @@ const SetRoutes = (app) => {
   // pipe routes
   app.post('/pipes', addPipe);
   app.get('/pipes', allPipes);
+  app.delete('/pipes/:pipeID', deletePipe);
   app.get('/stringing', getStringingInfo);
   app.put('/updateStrung', updateStrung);
   app.delete('/deleteFromString', deleteFromString);
   app.get('/getOptions', getOptions);
 
   // fittings routes
+  app.post('/fittings', addFittings);
   app.get('/fittings', getFittings);
 
   // otherdata

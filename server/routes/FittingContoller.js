@@ -1,44 +1,74 @@
 const { client } = require('../utils/databaseConnection');
 
-const getFittings = (req, res, next) => {
-  res.status(200).send([
-    {
-      id: 1234,
-      inspector: 'Todd Deville',
-      location: 'Shreveport',
-      dimension: '20"',
-      style: 'Tee',
-      wall_thickness: 0.375,
-      grade: 'Y65',
+const addFittings = async (req, res, next) => {
+  let {
+    id,
+    isVoid,
+    inventory_date,
+    location,
+    dimension,
+    style,
+    wall_thickness,
+    grade,
+    heat_number,
+    mfg,
+    length,
+    coating_type,
+    description,
+    material,
+    purchase_order,
+    smart_label,
+    comments,
+  } = req.body;
 
-      heat_number: 'A15AAT',
-      mfg: 'Hackney Ladish',
+  try {
+    if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
 
-      coating_type: 'Bare',
-      description: 'Barred',
-      material: 'Steel',
-      purchase_order: 6969420,
-      smart_label: '',
-    },
-    {
-      id: 5678,
-      inspector: 'Buster Mother',
-      location: 'Some',
-      dimension: '2"',
-      style: 'Eff',
-      wall_thickness: 0.375,
-      grade: 'YEP',
+    let user = await client.query(
+      `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
+    );
+    let inspector_id = user.rows[0].id;
 
-      heat_number: 'TOO HOT',
-      mfg: 'Smiffen Wessing',
+    await client.query({
+      text: 'INSERT INTO FITTINGS (id, isVoid, location, dimension, style, wall_thickness, grade, heat_number, mfg, length, coating_type, description, material, purchase_order, smart_label, comments, inspector_id) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)',
+      values: [
+        id,
+        isVoid,
+        location,
+        dimension,
+        style,
+        wall_thickness,
+        grade,
+        heat_number,
+        mfg,
+        length,
+        coating_type,
+        description,
+        material,
+        purchase_order,
+        smart_label,
+        comments,
+        inspector_id,
+      ],
+    });
 
-      coating_type: 'Coated',
-      description: 'Hello',
-      material: 'Dangerous',
-      purchase_order: 6969420,
-      smart_label: 'F',
-    },
-  ]);
+    return res.status(200).send({ success: true, message: 'Fitting Added!' });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 };
 
-module.exports = { getFittings };
+const getFittings = async (req, res, next) => {
+  try {
+    let data = await client.query(
+      "SELECT fittings.id AS id , CONCAT(first_name, ' ', last_name) AS inspector, isVoid, inventory_date, length, location, dimension, style, wall_thickness, grade, heat_number, mfg, fitting_coating.coating_type,description, material, purchase_order , smart_label, comments FROM fittings RIGHT JOIN users ON fittings.inspector_id = users.id LEFT JOIN fitting_coating ON fittings.coating_type = fitting_coating.coating_type;"
+    );
+    res.status(200).send(data.rows);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+module.exports = { addFittings, getFittings };

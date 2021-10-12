@@ -26,6 +26,12 @@ function authGet(url: string, param: string) {
     .then(handleResponse);
 }
 
+function authDelete(url: string) {
+  return fetch(url, { method: 'DELETE', headers: authHeader() })
+    .catch(handleFetchFail)
+    .then(handleResponse);
+}
+
 function post(url: string, body: object) {
   return fetch(url, {
     method: 'POST',
@@ -56,4 +62,4 @@ function authPut(url: string, body: any) {
     .then(handleResponse);
 }
 
-export { get, authGet, post, authPost, authPut };
+export { get, authGet, post, authPost, authPut, authDelete };

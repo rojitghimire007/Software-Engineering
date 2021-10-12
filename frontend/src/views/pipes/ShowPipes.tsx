@@ -25,6 +25,8 @@ import {
 import useStyles from '../../style/ShowPipeStyles';
 import ColorScheme from "../../style/ColorScheme";
 
+const classData = require('others/schedule&class.json');
+
 interface dataType {
   color?: string;
   void: boolean;
@@ -47,46 +49,46 @@ interface dataType {
   comments: string;
 }
 
-const diameters = [
-  '10″',
-  '2 1/2″',
-  '26″',
-  '7″',
-  '46″',
-  '1″',
-  '32″',
-  '8″',
-  '48″',
-  '1 1/2″',
-  '18″',
-  '4 1/2″',
-  '11″',
-  '30″',
-  '34″',
-  '6″',
-  '1/4″',
-  '3/8″',
-  '24″',
-  '9″',
-  '2″',
-  '28″',
-  '14″',
-  '1 1/4″',
-  '3″',
-  '12″',
-  '3/4″',
-  '20″',
-  '16″',
-  '4″',
-  '22″',
-  '54″',
-  '1/2″',
-  '1/8″',
-  '5″',
-  '3 1/2″',
-  '42″',
-  '36″',
-];
+const diameters = {
+  '10″': '10″',
+  '2 1/2″': '2 1/2″',
+  '26″': '26″',
+  '7″': '7″',
+  '46″': '46″',
+  '1″': '1″',
+  '32″': '32″',
+  '8″': '8″',
+  '48″': '48″',
+  '1 1/2″': '1 1/2″',
+  '18″': '18″',
+  '4 1/2″': '4 1/2″',
+  '11″': '11″',
+  '30″': '30″',
+  '34″': '34″',
+  '6″': '6″',
+  '1/4″': '1/4″',
+  '3/8″': '3/8″',
+  '24″': '24″',
+  '9″': '9″',
+  '2″': '2″',
+  '28″': '28″',
+  '14″': '14″',
+  '1 1/4″': '1 1/4″',
+  '3″': '3″',
+  '12″': '12″',
+  '3/4″': '3/4″',
+  '20″': '20″',
+  '16″': '16″',
+  '4″': '4″',
+  '22″': '22″',
+  '54″': '54″',
+  '1/2″': '1/2″',
+  '1/8″': '1/8″',
+  '5″': '5″',
+  '3 1/2″': '3 1/2″',
+  '42″': '42″',
+  '36″': '36″',
+};
 
 const ShowPipes = () => {
   const materialTableRef = createRef();
@@ -132,60 +134,86 @@ const ShowPipes = () => {
       coating_color: 'Green',
       manufacturer: 'Ameriacan Steel Pipe',
       material_type: 'Steel',
-      po_number: 43526725,
+      po_number: 1,
       comments: 'Hello World',
     },
   ]);
 
-  const [schedules, setSchedules] = useState({});
+  const [schedules, setSchedules] = useState([]);
   const [grades, setGrades] = useState({});
-  const [coatings, setCoatings] = useState({});
+  const [myCoatings, setMyCoatings] = useState<{ [key: string]: string }>({});
   const [materials, setMaterials] = useState({});
   const [po_numbers, setPO_numbers] = useState({});
+  const [heat_numbers, setHeat_numbers] = useState({});
 
   useEffect(() => {
     api
       .getPipes()
       .then((res) => {
         setData(res.pipes);
-        //     api
-        //       .getOptions()
-        //       .then((res2) => {
-        //     unstable_batchedUpdates(() => {
-        //         setSchedules(res2.schedules);
-        //         setGrades(res2.grades);
-        //         setCoatings(res2.coatings);
-        //         setMaterials(res2.materials);
-        //         setPO_nos(res2.po_numbers);
-        //     })
-        // })
-        //       .catch((err) => alert(err.message));
+        api
+          .getOptions()
+          .then((res2) => {
+            unstable_batchedUpdates(() => {
+              setPO_numbers(
+                res2.po_numbers.reduce(
+                  (a: any, v: any) => ({ ...a, [v]: v }),
+                  {}
+                )
+              );
+              setSchedules(res2.schedules);
+              setGrades(
+                res2.grades.reduce((a: any, v: any) => ({ ...a, [v]: v }), {})
+              );
+              // setCoatings(res2.coatings);
+              setMyCoatings(res2.coatings);
+              setMaterials(
+                res2.materials.reduce(
+                  (a: any, v: any) => ({ ...a, [v]: v }),
+                  {}
+                )
+              );
+              setHeat_numbers(
+                res2.heat_numbers.reduce(
+                  (a: any, v: any) => ({ ...a, [v]: v }),
+                  {}
+                )
+              );
+            });
+          })
+          .catch((err) => alert(err.message));
       })
       .catch((err) => alert(err.message));
   }, []);
 
-  const arrayToKeyValues = (data: any[]) => {
-    let ans: any = {};
-    let i = 0;
-    for (let element of data) {
-      ans[i] = element;
-      i++;
-    }
+  const getThickness = (diameter: string) => {
+    if (!diameter || diameter == '') return [];
 
+    let x = classData[diameter];
+
+    let ans: Array<string> = [];
+
+    for (let i = 0; i < x[0].length; i++) {
+      ans.push(`${x[0][i]} - ${x[1][i]}`);
+    }
     return ans;
   };
 
   const onRowAdd = (newData: dataType) => {
-    return api
-      .addPipe(newData)
-      .then((res) => {
-        setData([...data, newData]);
-        return res;
-      })
-      .catch((err) => alert(err.message));
+    console.log(newData);
+
+    return new Promise((resolve, reject) => reject('foo'));
+    // return api
+    //   .addPipe(newData)
+    //   .then((res) => {
+    //     setData([...data, newData]);
+    //     return res;
+    //   })
+    //   .catch((err) => alert(err.message));
   };
 
   const handleDiameterChange = (event: SelectChangeEvent) => {
+    setSchedules([]);
     // api
     //   .getSchedules(event.target.value)
     //   .then((res) => {
@@ -209,92 +237,103 @@ const ShowPipes = () => {
       <div className={classes.table}>
         <MaterialTable
           icons={tableIcons}
-          title=""
+          title="Duplicate Action Preview"
           //removes title toolbar
           options={{
             filtering: true,
             search: true,
-            // rowStyle: (rowData : any) => ({
-              //   // backgroundColor: `${classes.row}` ? `${classes.row}` : null,
-            //   // color: rowData.color ? 'blue' : 'black',
-            //   // color: 'blue',
-            //   // '&.MuiTable-Root' : {
-            //   //   backgroundColor: ColorScheme.secondaryLight,
-            
-            //   //   '&:nth-child(even)' : {
-              //   //     backgroundColor: ColorScheme.secondaryDark,
-              //   //   },
-              //   // },
-              // }),
-            tableLayout: 'auto',
+            rowStyle: (rowData) => ({
+              backgroundColor: rowData.color ? rowData.color : null,
+              color: rowData.color ? 'white' : 'black',
+            }),
+            tableLayout: 'auto', // idk if this is important
             columnsButton: true,
             searchAutoFocus: true,
             loadingType: 'linear',
             draggable: true,
             // rowStyle: classes['row'],
           }}
-          columns={[
-            {
-              title: 'Void', field: 'void', type: 'boolean',   },
-            {
-              title: 'Date',
-              field: 'inventory_date',
-              editable: 'never',
-              hidden: true,
-            },
-            
-            { title: 'Inspector', field: 'inspector', editable: 'never' },
-            
-            { title: 'Location', field: 'location' },
-            // { title: 'ID', field: 'id' },
-            { title: 'Coil Number', field: 'coil_number' },
-            { title: 'Heat Number', field: 'heat_number' },
-            { title: 'Manufacturer', field: 'mfg' },
-            
-            //Requires extraction
-            {
-              title: 'Diameter',
-              field: 'diameter',
-              // lookup: arrayToKeyValues(diameters),
-              editComponent: (rowData) => (
-                <Select
+          columns = {[
+          { title: 'Void', field: 'void', type: 'boolean' },
+          {
+            title: 'Date',
+            field: 'date',
+            editable: 'never',
+            hidden: true,
+          },
+
+          { title: 'ID', field: 'id', type: 'numeric' },
+          { title: 'Inspector', field: 'inspector', editable: 'never' }, //extract
+
+          { title: 'Location', field: 'location' },
+          { title: 'Coil Number', field: 'coil_no' },
+          { title: 'Heat Number', field: 'heat_no', lookup: heat_numbers },
+          { title: 'Manufacturer', field: 'manufacturer', editable: 'never' },
+
+          //Requires extraction
+          {
+            title: 'Diameter',
+            field: 'diameter',
+            lookup: diameters,
+            editComponent: ({ onRowDataChange, rowData }) => (
+              <Select
                 labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  onChange={handleDiameterChange}
-                  label="Age"
-                >
-                  {diameters.map((value) => (
-                    <MenuItem value={value}>{value}</MenuItem>
-                    ))}
-                </Select>
-              ),
-            },
-            {
-              title: 'Schedule & Class',
-              field: 'schedule_class',
-              lookup: schedules,
-            },
-            
-            { title: 'Grade', field: 'grade', lookup: grades },
-            
-            { title: 'Length', field: 'pipe_length' },
-            
-            // Requires extraction
-            {
-              title: 'Coating',
-              field: 'coating_type',
-              lookup: Object.keys(coatings),
-            },
-            {
-              title: 'Coating Color',
-              field: 'coating_color',
-              lookup: Object.values(coatings),
-            },
-            
-            { title: 'Material', field: 'material', lookup: materials },
-            { title: 'P.O. Number', field: 'purchase_order', lookup: po_numbers },
-            { title: 'Smart Label', field: 'smart_label' },
-            { title: 'Comments', field: 'comments' },
+                id="demo-simple-select-standard"
+                onChange={(e) => {
+                  onRowDataChange({
+                    ...rowData,
+                    diameter: (e.target.value as string) ?? '',
+                    schedule: '',
+                  });
+                }}
+                label="Diameter"
+              >
+                {Object.keys(diameters).map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {value}
+                  </MenuItem>
+                ))}
+              </Select>
+            ),
+          },
+          {
+            title: 'Schedule - Thickness',
+            field: 'schedule',
+            render: (rowData) => (
+              <>
+                {rowData.schedule} - {rowData.wall_thickness}
+              </>
+            ),
+            editComponent: ({ rowData, onRowDataChange }) => (
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                onChange={(e: SelectChangeEvent) =>
+                  onRowDataChange({
+                    ...rowData,
+                    schedule: e.target.value as string,
+                  })
+                }
+              >
+                {getThickness(rowData.diameter).map((value) => (
+                  <MenuItem value={value}>{value}</MenuItem>
+                ))}
+              </Select>
+            ),
+          },
+
+          { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
+
+          { title: 'Length', field: 'length' },
+          {
+            title: 'Coaing - Coating Color',
+            field: 'coating',
+            lookup: myCoatings,
+          },
+          { title: 'Material', field: 'material_type', lookup: materials },
+          { title: 'P.O. Number', field: 'po_number', lookup: po_numbers },
+          { title: 'Smart Label', field: 'smart_label' },
+          { title: 'Comments', field: 'comments' },
           ]}
           components={{
             Toolbar: (props)=> (
@@ -332,53 +371,52 @@ const ShowPipes = () => {
               //     },
               //   ]}
               data={data}
-          tableRef={materialTableRef}
-          initialFormData={initialFormData}
-          editable={{
-            // isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
-            // isEditHidden: rowData => rowData.name === 'x',
-            // isDeletable: rowData => rowData.name === 'b', // only name(b) rows would be deletable,
-            // isDeleteHidden: rowData => rowData.name === 'y',
-            // onBulkUpdate: changes =>
-            //     new Promise((resolve, reject) => {
-            //         setTimeout(() => {
-            //             /* setData([...data, newData]); */
-            //             resolve(void);
-            //         }, 1000);
-            //     }),
-            onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
-            onRowUpdateCancelled: (rowData) => console.log('Row editing cancelled'),
-            onRowAdd: onRowAdd,
-            onRowUpdate: (newData, oldData) => new Promise((resolve, reject) => {
-              setTimeout(() => {
-                // const dataUpdate = [...data];
-                // const index = oldData.tableData.id;
-                // dataUpdate[index] = newData;
-                // setData([...dataUpdate]);
-                resolve('Row Updated');
-              }, 1000);
-            }),
-            onRowDelete: (oldData) => new Promise((resolve, reject) => {
-              setTimeout(() => {
-                // const dataDelete = [...data];
-                // const index = oldData.tableData.id;
-                // dataDelete.splice(index, 1);
-                // setData([...dataDelete]);
-                resolve('Row Deleted');
-              }, 1000);
-            }),
-          }}
+              tableRef={materialTableRef}
+              initialFormData={initialFormData}
+              editable={{
+                // isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
+                // isEditHidden: rowData => rowData.name === 'x',
+                // isDeletable: rowData => rowData.name === 'b', // only name(b) rows would be deletable,
+                // isDeleteHidden: rowData => rowData.name === 'y',
+                // onBulkUpdate: changes =>
+                //     new Promise((resolve, reject) => {
+                //         setTimeout(() => {
+                //             /* setData([...data, newData]); */
+        
+                //             resolve(void);
+                //         }, 1000);
+                //     }),
+                onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
+                onRowUpdateCancelled: (rowData) => console.log('Row editing cancelled'),
+                onRowAdd: onRowAdd,
+                onRowUpdate: (newData, oldData) =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      // const dataUpdate = [...data];
+                      // const index = oldData.tableData.id;
+                      // dataUpdate[index] = newData;
+                      // setData([...dataUpdate]);
+        
+                      resolve('Row Updated');
+                    }, 1000);
+                  }),
+                onRowDelete: (oldData) => {
+                  return api.deletePipe(oldData.id.toString());
+                },
+              }}
           actions={[
             {
               icon: () => <LibraryAddIcon />,
               tooltip: 'Duplicate Pipe',
               onClick: (event, rowData) => {
                 const materialTable = materialTableRef.current;
-
+    
                 setInitialFormData({
                   ...rowData,
                   name: null,
-                });
+                  id: null,
+                  inspector: null,
+          });
 
                 (materialTable as any).dataManager.changeRowEditing();
                 (materialTable as any).setState({

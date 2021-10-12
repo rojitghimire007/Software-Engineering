@@ -1,4 +1,4 @@
-import { authGet, post, authPost, authPut, get } from './request';
+import { authGet, post, authPost, authPut, get, authDelete } from './request';
 import { API } from './routes';
 
 export default {
@@ -24,6 +24,10 @@ export default {
 
   addPipe: (data: any) => {
     return authPost(API.addPipe, data);
+  },
+
+  deletePipe: (id: string) => {
+    return authDelete(`${API.deletePipe}/${id}`);
   },
 
   getOptions: () => {
@@ -54,5 +58,9 @@ export default {
 
   getFittings: () => {
     return authGet(API.getFittings, '');
+  },
+
+  addFitting: (data: any) => {
+    return authPost(API.getFittings, data);
   },
 };

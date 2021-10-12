@@ -19,8 +19,7 @@ const getScheduleAndThickness = (req, res, next) => {
     console.log(err);
     next(err);
   }
-  return;
-  res
+  return res
     .status(200)
     .json({ success: true, data: scheduleAndClassData[req.body.diameter] });
 };
