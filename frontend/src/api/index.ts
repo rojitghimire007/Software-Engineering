@@ -2,14 +2,6 @@ import { authGet, post, authPost, authPut, get, authDelete } from './request';
 import { API } from './routes';
 
 export default {
-  getPOC: () => {
-    return get(API.poc);
-  },
-
-  postPOC: (data: { name: string; phone: string }) => {
-    return post(API.poc, data);
-  },
-
   auth: () => {
     return authPost(API.auth, {});
   },
@@ -24,6 +16,10 @@ export default {
 
   addPipe: (data: any) => {
     return authPost(API.addPipe, data);
+  },
+
+  editPipe: (data: any, id: any) => {
+    return authPut(`${API.getPipes}/${id}`, data);
   },
 
   deletePipe: (id: string) => {
