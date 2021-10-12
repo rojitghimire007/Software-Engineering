@@ -26,8 +26,8 @@ const useStyles = makeStyles ((theme) => ({
       boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
       
       '&:hover' : {
-        borderColor: `${ColorScheme.secondaryDark}`,
-        backgroundColor: ColorScheme.secondaryLight,
+        borderColor: `${ColorScheme.primary}`,
+        backgroundColor: ColorScheme.primaryLight,
         color: ColorScheme.onSecondary,
         transform: 'scale(1.03)',
       },
@@ -80,7 +80,7 @@ const useStyles = makeStyles ((theme) => ({
     
     },
     body: {
-      backgroundColor: '#002984',
+      backgroundColor: ColorScheme.background,
       height: '100vh',
       padding: '10px 5px 0 5px',
     },

@@ -1,7 +1,7 @@
 import React, { createRef, forwardRef, useEffect, useState } from 'react';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MaterialTable, { MTableToolbar } from 'material-table';
+import MaterialTable, { MTableBodyRow, MTableFilterRow, MTableHeader, MTableToolbar } from 'material-table';
 import { tableIcons } from 'utils/tableIcons';
 import api from 'api';
 import { unstable_batchedUpdates } from 'react-dom';
@@ -197,60 +197,60 @@ const ShowPipes = () => {
   const classes = useStyles()
 
   return (
-    <><div>
-      <CssBaseline />
-      <Toolbar className={classes.title}>
-        <Typography variant="h4" className={classes.titleContent}>
-          Pipe Inventory
-        </Typography>
-      </Toolbar>
-    </div>
+    <div className={classes.wrapper}>
       <div>
+        <CssBaseline />
+        <Toolbar className={classes.title}>
+          <Typography variant="h4" className={classes.titleContent}>
+            Pipe Inventory
+          </Typography>
+        </Toolbar>
+      </div>
+      <div className={classes.table}>
         <MaterialTable
           icons={tableIcons}
           title=""
           //removes title toolbar
-          components={{
-            Toolbar: (props)=> (
-              <div
-                style= {{
-                  height: '0px',
-                }}
-                >
-                  <MTableToolbar {...props} />
-                </div>  
-            ),
-          }}
           options={{
             filtering: true,
-            search: false,
-            //headerStyle: {backgroundColor: classes.headerStyle},
-            rowStyle: (rowData) => ({
-              backgroundColor: rowData.color ? rowData.color : null,
-              color: rowData.color ? 'white' : 'black',
-            }),
-            // tableLayout: 'fixed',
+            search: true,
+            // rowStyle: (rowData : any) => ({
+              //   // backgroundColor: `${classes.row}` ? `${classes.row}` : null,
+            //   // color: rowData.color ? 'blue' : 'black',
+            //   // color: 'blue',
+            //   // '&.MuiTable-Root' : {
+            //   //   backgroundColor: ColorScheme.secondaryLight,
+            
+            //   //   '&:nth-child(even)' : {
+              //   //     backgroundColor: ColorScheme.secondaryDark,
+              //   //   },
+              //   // },
+              // }),
+            tableLayout: 'auto',
             columnsButton: true,
+            searchAutoFocus: true,
+            loadingType: 'linear',
+            draggable: true,
+            // rowStyle: classes['row'],
           }}
           columns={[
             {
-              title: 'Void', field: 'void', type: 'boolean'
-            },
+              title: 'Void', field: 'void', type: 'boolean',   },
             {
               title: 'Date',
               field: 'inventory_date',
               editable: 'never',
               hidden: true,
             },
-
+            
             { title: 'Inspector', field: 'inspector', editable: 'never' },
-
+            
             { title: 'Location', field: 'location' },
             // { title: 'ID', field: 'id' },
             { title: 'Coil Number', field: 'coil_number' },
             { title: 'Heat Number', field: 'heat_number' },
             { title: 'Manufacturer', field: 'mfg' },
-
+            
             //Requires extraction
             {
               title: 'Diameter',
@@ -258,14 +258,14 @@ const ShowPipes = () => {
               // lookup: arrayToKeyValues(diameters),
               editComponent: (rowData) => (
                 <Select
-                  labelId="demo-simple-select-standard-label"
+                labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
                   onChange={handleDiameterChange}
                   label="Age"
                 >
                   {diameters.map((value) => (
                     <MenuItem value={value}>{value}</MenuItem>
-                  ))}
+                    ))}
                 </Select>
               ),
             },
@@ -274,11 +274,11 @@ const ShowPipes = () => {
               field: 'schedule_class',
               lookup: schedules,
             },
-
+            
             { title: 'Grade', field: 'grade', lookup: grades },
-
+            
             { title: 'Length', field: 'pipe_length' },
-
+            
             // Requires extraction
             {
               title: 'Coating',
@@ -290,24 +290,48 @@ const ShowPipes = () => {
               field: 'coating_color',
               lookup: Object.values(coatings),
             },
-
+            
             { title: 'Material', field: 'material', lookup: materials },
             { title: 'P.O. Number', field: 'purchase_order', lookup: po_numbers },
             { title: 'Smart Label', field: 'smart_label' },
             { title: 'Comments', field: 'comments' },
           ]}
+          components={{
+            Toolbar: (props)=> (
+              <div className={classes.toolbar}>
+                  <MTableToolbar {...props} />
+              </div>  
+            ),
+            Header: (props) => (
+              <thead className={classes.header}>
+                <MTableHeader {...props}/>
+              </thead>
+            ),
+            FilterRow: (props) => {
+              return(
+                <tr className={classes.filterRow}>
+                  <MTableFilterRow {...props}/>
+                </tr>
+              )
+            },
+            Row: (props)=> (
+              <tbody className={classes.row}>
+                <MTableBodyRow {...props} />
+              </tbody>
+            )
+          }}
           //   columns={[
-          //     { title: 'Name', field: 'name' },
-          //     { title: 'Surname', field: 'surname' },
-          //     { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-          //     { title: 'Birth Date', field: 'birthYear', type: 'date' },
-          //     {
-          //       title: 'Birth Place',
-          //       field: 'birthCity',
-          //       lookup: { 62: 'Cucq' },
-          //     },
-          //   ]}
-          data={data}
+            //     { title: 'Name', field: 'name' },
+            //     { title: 'Surname', field: 'surname' },
+            //     { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
+            //     { title: 'Birth Date', field: 'birthYear', type: 'date' },
+            //     {
+              //       title: 'Birth Place',
+              //       field: 'birthCity',
+              //       lookup: { 62: 'Cucq' },
+              //     },
+              //   ]}
+              data={data}
           tableRef={materialTableRef}
           initialFormData={initialFormData}
           editable={{
@@ -366,7 +390,7 @@ const ShowPipes = () => {
           ]}
         />
       </div>
-      </>
+    </div>
   );
 };
 export default ShowPipes;

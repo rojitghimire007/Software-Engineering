@@ -18,12 +18,12 @@ interface ColorScheme {
 };
 
 const ColorScheme = {
-    primary: '#008b00', // default hue: 700
-    primaryLight: '#4fbc3d',
-    primaryDark: '#005c00',
-    secondary: '#b83ca5', // default hue: 400
-    secondaryLight: '#ed6fd7',
-    secondaryDark: '#850076',
+    primary: '#0288d1', // default hue: 700
+    primaryLight: '#5eb8ff',
+    primaryDark: '#005b9f',
+    secondary: '#9e9e9e', // default hue: 400
+    secondaryLight: '#cfcfcf',
+    secondaryDark: '#707070',
     background: '#cfd8dc',
     surface: '#000000',
     error: '#B00020',
