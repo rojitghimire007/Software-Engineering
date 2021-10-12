@@ -95,7 +95,8 @@ const onRowAdd = (newData: dataType) => {
   const classes = useStyles()
 
   return (
-    <><div>
+    <div className={classes.wrapper}>
+    <div>
       <CssBaseline />
       <Toolbar className={classes.title}>
         <Typography variant="h4" className={classes.titleContent}>
@@ -195,7 +196,7 @@ const onRowAdd = (newData: dataType) => {
           ]}
         />
       </div>
-    </>
+    </div>
   );
 };
 

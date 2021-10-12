@@ -237,7 +237,7 @@ const ShowPipes = () => {
       <div className={classes.table}>
         <MaterialTable
           icons={tableIcons}
-          title="Duplicate Action Preview"
+          title=""
           //removes title toolbar
           options={{
             filtering: true,

@@ -16,16 +16,25 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: '0 0 3px 0',
     borderStyle: 'solid',
     borderColor: ColorScheme.primaryDark,
+    margin: '0 0 10px 0',
+    paddingTop: '5px',
   },
   titleContent: {
     alignItems: 'center',
     margin: '0 auto',
     textAlign: 'center',
     color: ColorScheme.onPrimary,
+    fontFamily: 'Bebas Neue',
+    fontSize: '5em',
   },
   cellStyle: {
     //backgroundColor:
-  }
+  },
+  wrapper: {
+    backgroundColor: ColorScheme.background,
+    height: '100vh',
+    padding: '10px',
+  },
 
 
 

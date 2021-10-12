@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     borderStyle: 'solid',
     borderColor: ColorScheme.primaryDark,
     margin: '0 0 10px 0',
+    paddingTop: '5px',
   },
   titleContent: {
     alignItems: 'center',
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: ColorScheme.onPrimary,
     fontFamily: 'Bebas Neue',
-    fontSize: '72px',
+    fontSize: '5em',
   },
   cellStyle: {
     //backgroundColor:
@@ -43,8 +44,10 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     backgroundColor: `${ColorScheme.primaryLight}`,
-    color: ColorScheme.onPrimary,
-    borderRadius: '15px 15px 0 0'
+    color: 'black',
+    // borderRadius: '15px 15px 0 0',
+    // border: '5px 5px 0 5px',
+    // borderColor: ColorScheme.background,
   },
   columnHead: {
     backgroundColor: `${ColorScheme.secondary}`,
@@ -52,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
   row: {
     backgroundColor: ColorScheme.secondaryLight,
 
-    '&:nth-child(even)' : {
-      backgroundColor: ColorScheme.secondary,
+    '&:nth-child(odd)' : {
+      backgroundColor: ColorScheme.secondaryLight,
     }
   },
   filterRow: {},
