@@ -63,23 +63,25 @@ const useStyles = makeStyles ((theme) => ({
         borderWidth: '3px', 
         borderStyle: 'solid',
         borderColor: ColorScheme.primary,
-        boxShadow: '12px 12px 12px -10px ',
-        transition: '0.4s ease-in-out',
+        boxShadow: '10px 10px 12px -10px ',
+        // transition: '0.6s ease-in-out',
+        transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
         
         // prevents the many repaints
-        '&::before': {
+        '&:after': {
             boxShadow: '12px 12px 12px -10px ',
-            opacity: 1,
-            transition: 'opacity 0.4s ease-in-out',
+            opacity: 2,
+            // transition: 'opacity 0.8s ease-in-out',
+            transition: 'all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
         },
 
         // card animation
         '&:hover': {
-            transform: 'scale(1.02)',
+            transform: 'scale(1.02,1.02)',
         },
         
         '&:hover::after': {
-            opacity: 0,
+            opacity: 1,
         },
 
         
