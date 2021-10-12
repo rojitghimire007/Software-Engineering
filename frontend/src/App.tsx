@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Poc from './components/Poc';
 import { useHistory } from 'react-router-dom';
 import api from 'api';
 import { setLocalStorage } from 'utils/utils';
