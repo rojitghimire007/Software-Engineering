@@ -165,7 +165,6 @@ const ShowPipes = () => {
               setGrades(
                 res2.grades.reduce((a: any, v: any) => ({ ...a, [v]: v }), {})
               );
-              // setCoatings(res2.coatings);
               setMyCoatings(res2.coatings);
               setMaterials(
                 res2.materials.reduce(
@@ -200,16 +199,31 @@ const ShowPipes = () => {
   };
 
   const onRowAdd = (newData: dataType) => {
-    console.log(newData);
+    return api
+      .addPipe({
+        ...newData,
+        isVoid: newData.void,
+        schedule: `${newData.schedule} - ${newData.wall_thickness}`,
+      })
+      .then((res) => {
+        setData([...data, newData]);
+        return res;
+      })
+      .catch((err) => alert(err.message));
+  };
 
-    return new Promise((resolve, reject) => reject('foo'));
-    // return api
-    //   .addPipe(newData)
-    //   .then((res) => {
-    //     setData([...data, newData]);
-    //     return res;
-    //   })
-    //   .catch((err) => alert(err.message));
+  const onRowUpdate = (newData: dataType, oldData: dataType | undefined) => {
+    return api
+      .editPipe(
+        {
+          ...newData,
+          isVoid: newData.void,
+          schedule: `${newData.schedule} - ${newData.wall_thickness}`,
+        },
+        oldData ? oldData.id : ''
+      )
+      .then((res) => console.log(res))
+      .catch((err) => alert(err));
   };
 
   const handleDiameterChange = (event: SelectChangeEvent) => {
@@ -287,6 +301,7 @@ const ShowPipes = () => {
                   });
                 }}
                 label="Diameter"
+                defaultValue={rowData.diameter}
               >
                 {Object.keys(diameters).map((value) => (
                   <MenuItem key={value} value={value}>
@@ -308,27 +323,52 @@ const ShowPipes = () => {
               <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
-                onChange={(e: SelectChangeEvent) =>
+                onChange={(e: SelectChangeEvent) => {
+                  let breakSchedule = e.target.value.split('-');
                   onRowDataChange({
                     ...rowData,
-                    schedule: e.target.value as string,
-                  })
-                }
+                    schedule: breakSchedule[0].trim(),
+                    wall_thickness: Number(breakSchedule[1].trim()),
+                  });
+                }}
+                defaultValue={`${rowData.schedule} - ${rowData.wall_thickness}`}
               >
                 {getThickness(rowData.diameter).map((value) => (
-                  <MenuItem value={value}>{value}</MenuItem>
+                  <MenuItem key={value} value={value}>
+                    {value}
+                  </MenuItem>
                 ))}
               </Select>
             ),
           },
-
+  
           { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
-
+  
           { title: 'Length', field: 'length' },
           {
             title: 'Coaing - Coating Color',
             field: 'coating',
-            lookup: myCoatings,
+            render: (rowData) => (
+              <>
+                {rowData.coating} - {myCoatings[rowData.coating]}
+              </>
+            ),
+            editComponent: ({ rowData, onRowDataChange }) => (
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                onChange={(e: SelectChangeEvent) => {
+                  onRowDataChange({ ...rowData, coating: e.target.value });
+                }}
+                defaultValue={rowData.coating}
+              >
+                {Object.keys(myCoatings).map((key) => (
+                  <MenuItem key={key} value={key}>
+                    {key} - {myCoatings[key]}
+                  </MenuItem>
+                ))}
+              </Select>
+            ),
           },
           { title: 'Material', field: 'material_type', lookup: materials },
           { title: 'P.O. Number', field: 'po_number', lookup: po_numbers },
@@ -389,17 +429,7 @@ const ShowPipes = () => {
                 onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
                 onRowUpdateCancelled: (rowData) => console.log('Row editing cancelled'),
                 onRowAdd: onRowAdd,
-                onRowUpdate: (newData, oldData) =>
-                  new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                      // const dataUpdate = [...data];
-                      // const index = oldData.tableData.id;
-                      // dataUpdate[index] = newData;
-                      // setData([...dataUpdate]);
-        
-                      resolve('Row Updated');
-                    }, 1000);
-                  }),
+                onRowUpdate: onRowUpdate,
                 onRowDelete: (oldData) => {
                   return api.deletePipe(oldData.id.toString());
                 },
