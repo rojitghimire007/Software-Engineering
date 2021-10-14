@@ -28,8 +28,9 @@ import {
   Container,
   CardActionArea,
 } from '@material-ui/core';
-import useStyles from '../../style/ShowPipeStyles';
-import ColorScheme from '../../style/ColorScheme';
+import useStyles from 'style/ShowPipeStyles';
+import ColorScheme from 'style/ColorScheme';
+// import 'style/test.css';
 
 const classData = require('others/schedule&class.json');
 
