@@ -14,6 +14,12 @@ const {
 } = require('./PipeContoller');
 
 const { addFittings, getFittings } = require('./FittingContoller');
+const {
+  getStringing,
+  getStrungPipesInfo,
+  appendToString,
+  updateSequence,
+} = require('./PipeStringing');
 
 const SetRoutes = (app) => {
   //user routes
@@ -30,6 +36,12 @@ const SetRoutes = (app) => {
   app.delete('/deleteFromString', deleteFromString);
   app.get('/getOptions', getOptions);
   app.put('/pipes/:pipeID', editPipe);
+
+  //stringing
+  app.get('/string', getStringing);
+  app.post('/string', appendToString);
+  app.put('/string/update', updateSequence);
+  app.get('/pipes/info/:pipes', getStrungPipesInfo);
 
   // fittings routes
   app.post('/fittings', addFittings);
