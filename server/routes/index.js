@@ -40,7 +40,7 @@ const SetRoutes = (app) => {
   //stringing
   app.get('/string', getStringing);
   app.post('/string', appendToString);
-  app.put('/string/update', updateSequence);
+  app.put('/string', updateSequence);
   app.get('/pipes/info/:pipes', getStrungPipesInfo);
 
   // fittings routes

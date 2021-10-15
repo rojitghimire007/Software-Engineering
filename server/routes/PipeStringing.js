@@ -67,7 +67,9 @@ const getStrungPipesInfo = async (req, res, next) => {
 
   try {
     let data = await client.query(
-      `SELECT * FROM pipes WHERE pipe_id in (${pipes.join(',')})`
+      `SELECT void, DATE(inventory_date), CONCAT(first_name, ' ', last_name) AS inspector, location, pipe_id as id,  coil_number as coil_no, heat_number as heat_no, diameter, designation as schedule, wall_thickness, grade, pipe_length as length, pipes.coating_type as coating, color as coating_color, mfg as manufacturer, material as material_type, purchase_order as po_number, comments FROM pipes INNER JOIN schedule_and_class ON pipes.schedule_class = schedule_and_class.id INNER JOIN users ON pipes.inspector_id = users.id INNER JOIN pipe_coating ON pipes.coating_type = pipe_coating.coating_type WHERE pipe_id in (${pipes.join(
+        ','
+      )})`
     );
 
     return res.status(200).send(data.rows);

@@ -38,6 +38,22 @@ export default {
     return authGet(API.getStringingInfo, '');
   },
 
+  // Stringing calls
+
+  getStringing: () => authGet(API.stringing, ''),
+
+  appendToString: (data: { pipe_id: string | number }) =>
+    authPost(API.stringing, data),
+
+  updateSequence: (data: {
+    target_pipe: string | number;
+    left_pipe: string | number;
+  }) => authPut(API.stringing, data),
+
+  getStrungPipesInfo: (pipes: Array<string | number>) => {
+    return authGet(API.getStrungPipesInfo, pipes.join('_'));
+  },
+
   updateStringing: (
     pipe_id: string,
     curr_id: string,

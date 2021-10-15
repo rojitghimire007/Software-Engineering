@@ -17,6 +17,8 @@ const API = {
   getStringingInfo: `${URL}/stringing`,
   updateStringing: `${URL}/updateStrung`,
   getFittings: `${URL}/fittings`,
+  stringing: `${URL}/string`,
+  getStrungPipesInfo: `${URL}/pipes/info/`,
 };
 
 export { URL, API };
