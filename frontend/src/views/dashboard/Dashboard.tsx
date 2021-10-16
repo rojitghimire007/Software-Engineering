@@ -40,14 +40,44 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // import 'style/Dashboard.css';
 import useStyles from '../../style/DashboardStyles'; // new styling
 
+// type links = {
+//   parent: string,
+//   link: string,
+//   id: string,
+// }; 
+
 const Dashboard = () => {
   const menus: string[] = [
-    'Materials Inventory',
+    'Material Inventory',
     'Welding',
     'Stringing',
     'Bending',
     'Coating',
-    'Extra',
+    'Other',
+  ];
+
+  const links = [
+    // Inventory
+    {
+      parent: 'Material Inventory',
+      link: '/pipes',
+      id: 'Pipes',
+    },
+    {
+      parent: 'Material Inventory',
+      link: '/fittings',
+      id: 'Fittings',
+    },
+    // Welding
+    // Stringing
+    {
+      parent: 'Stringing',
+      link: 'pipes/strung',
+      id: 'Stringing',
+    },
+    // Bending
+    // Coating
+    // Other
   ];
 
   // Used for menu links
@@ -65,7 +95,7 @@ const Dashboard = () => {
 
   // }
 
-  const generateMenus = () => {
+  const generateLinks = (parentMenu:string) => {
     // simply maps each menu item in the array to a new gridItem/card
     // {menus.map((menuName, card) => (
     //   <Grid item key={card} xs={12} sm={5} md={4}>
@@ -99,6 +129,30 @@ const Dashboard = () => {
     //     </div>
     //   );
     // });
+
+    return (
+      links.map((hyperlink, i) => {
+        console.log("link's parent " + hyperlink.parent + " checked with " + parentMenu)
+        if (hyperlink.parent === parentMenu) {
+          {console.log(true + " " + hyperlink.id)}
+          return (
+            <div key={i}>
+              <ListItemButton
+                // selected={selectedIndex === 0}
+                onClick={(event) => handleListItemClick(event, 0)}
+              >
+                <Link to={hyperlink.link} className={classes.link}>
+                  {hyperlink.id}
+                </Link>
+              </ListItemButton>
+            </div>
+          )
+        }// end if
+        else  {
+          console.log(false)
+        }
+      })
+    )
   };
 
   // Used for menu links
@@ -195,46 +249,9 @@ const Dashboard = () => {
                             />
                           </Divider>
 
-                          {/* Need to map submenus!!!! */}
-                          {/* <Link
-                            component="button"
-                            variant="body2"
-                            underline="hover"
-                            
-                            onClick={() => {
-                              console.info("I'm a link.");
-                            }}
-                          > */}
-                            {/* <a href="http://localhost:3000/pipes">Pipe Inventory</a> */}
-                            {/* <a href="http://localhost:3000/fittings">Fittings Inventory</a> */}
-
-
-                            <List component="nav">
-                              <ListItemButton
-                                selected={selectedIndex === 0}
-                                onClick={(event) => handleListItemClick(event, 0)}
-                              >
-                                {/* <ListItemText primary="Pipes" /> */}
-                                <Link to="/pipes" className={classes.link}>Pipes</Link>
-                              </ListItemButton>
-                              <ListItemButton
-                                selected={selectedIndex === 0}
-                                onClick={(event) => handleListItemClick(event, 0)}
-                              >
-                                {/* <ListItemText primary="Fittings" /> */}
-                                <Link to="/fittings" className={classes.link}>Fittings</Link>
-                              </ListItemButton>
-                              <ListItemButton
-                                selected={selectedIndex === 0}
-                                onClick={(event) => handleListItemClick(event, 0)}
-                              >
-                                {/* <ListItemText primary="Valves" /> */}
-                                <Link to="/pipes/strung" className={classes.link}>Pipe Stringing</Link>
-                              </ListItemButton>
-                            </List>
-
-
-
+                          <List component="nav">
+                            {generateLinks(menuName)}
+                          </List>
 
 
 
