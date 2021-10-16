@@ -1,0 +1,17 @@
+th:nth-child(odd){
+    background-color: #d3d3d3 !important;
+    font-weight: bold !important;
+    /*text-align: center !important;*/
+}
+
+th:nth-child(even){
+    background-color: #d3d3d3 !important;
+    font-weight: bold !important;
+    /*text-align: center !important;*/
+}
+
+.MuiTableCell-root {
+    padding: 1px !important;
+    border:  thin solid !important;
+    text-align: left !important;
+}

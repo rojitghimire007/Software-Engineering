@@ -28,8 +28,9 @@ import {
   Container,
   CardActionArea,
 } from '@material-ui/core';
-import useStyles from '../../style/ShowPipeStyles';
-import ColorScheme from '../../style/ColorScheme';
+import useStyles from 'style/ShowPipeStyles';
+import ColorScheme from 'style/ColorScheme';
+import 'style/TableStyles.css';
 
 const classData = require('others/schedule&class.json');
 
@@ -241,7 +242,7 @@ const ShowPipes = () => {
     //   })
     //   .catch((err) => alert(err.message));
   };
-
+  
   const classes = useStyles();
 
   return (
@@ -254,8 +255,8 @@ const ShowPipes = () => {
           </Typography>
         </Toolbar>
       </div>
-      <div className={classes.table}>
-        <MaterialTable
+      <div className={classes.table + classes.cell}>
+        <MaterialTable 
           icons={tableIcons}
           title=""
           //removes title toolbar

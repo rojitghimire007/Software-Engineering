@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { ImportantDevices } from '@mui/icons-material';
 
 import ColorScheme from './ColorScheme';
 import HueSelector from './HueSelector';
@@ -27,10 +28,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Bebas Neue',
     fontSize: '5em',
   },
-  cellStyle: {
-    //backgroundColor:
-  },
-  wrapper: {
+   wrapper: {
     backgroundColor: ColorScheme.background,
     height: '100vh',
     padding: '10px',
@@ -59,5 +57,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   filterRow: {},
+
+  cell: {
+    padding: '1px !important',
+    border: 'thin solid !important',
+
+  },
+/*
+  root: {
+    "& .MuiTableCell-root": {
+        padding: '1px',
+        border: ' thin solid',
+        border-bottom: 'thin solid',
+    },*/
+  
 }));
 export default useStyles;
