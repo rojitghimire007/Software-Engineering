@@ -100,6 +100,8 @@ const diameters = {
 const ShowPipes = () => {
   const materialTableRef = createRef();
 
+  let date = new Date();
+
   const [initialFormData, setInitialFormData] = useState({});
   const [data, setData] = useState<dataType[]>([
     {
@@ -247,6 +249,7 @@ const ShowPipes = () => {
 
   return (
     <div className={classes.wrapper}>
+      {console.log(date)}
       <div>
         <CssBaseline />
         <Toolbar className={classes.title}>
@@ -264,15 +267,23 @@ const ShowPipes = () => {
             filtering: true,
             search: true,
             rowStyle: (rowData) => ({
-              // backgroundColor: rowData.color ? rowData.color : null,
+              backgroundColor: rowData.color ? rowData.color : null,
               color: rowData.color ? 'white' : 'black',
             }),
-            tableLayout: 'auto', // idk if this is important
+            tableLayout: 'fixed', // idk if this is important
             columnsButton: true,
-            searchAutoFocus: true,
             loadingType: 'linear',
             draggable: true,
-            // rowStyle: classes['row'],
+            // padding: 'dense',
+            // showTextRowsSelected: true,
+            // selection: true,
+            toolbarButtonAlignment: 'left',
+            pageSize: 10,
+            actionsCellStyle: {zIndex: 999,},
+            columnResizable: true,
+            exportButton: true,
+            exportFileName: "Pipe_Data_" + date.getFullYear() + 
+              '_' + (date.getMonth() + 1) + '_' + date.getDate(),
           }}
           columns={[
             { title: 'Void', field: 'void', type: 'boolean' },

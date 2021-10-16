@@ -92,6 +92,11 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid black',
       },
     },
+    '& th':{
+      '& span.material-icons.MuiIcon-root': {
+          opacity: 0.0 + '!important',
+      },
+    },
   },
 }));
 export default useStyles;
