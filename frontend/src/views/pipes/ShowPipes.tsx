@@ -276,19 +276,12 @@ const ShowPipes = () => {
           }}
           columns={[
             { title: 'Void', field: 'void', type: 'boolean' },
-            {
-              title: 'Date',
-              field: 'date',
-              editable: 'never',
-              hidden: true,
-            },
-
-            { title: 'ID', field: 'id', type: 'numeric' },
+            { title: 'Date', field: 'date', editable: 'never', hidden: true},
+            { title: 'ID', field: 'id'}, //took off type: numeric b/c letters would possibly be added
             { title: 'Inspector', field: 'inspector', editable: 'never' }, //extract
-
             { title: 'Location', field: 'location' },
             { title: 'Coil Number', field: 'coil_no' },
-            { title: 'Heat Number', field: 'heat_no', lookup: heat_numbers },
+            { title: 'Heat Number', field: 'heat_no', /*lookup: heat_numbers*/ },//took out lookup b/c this will be manual input
             { title: 'Manufacturer', field: 'manufacturer', editable: 'never' },
 
             //Requires extraction
@@ -319,7 +312,7 @@ const ShowPipes = () => {
               ),
             },
             {
-              title: 'Schedule - Thickness',
+              title: 'Schedule-Thickness',
               field: 'schedule',
               render: (rowData) => (
                 <>
@@ -353,7 +346,7 @@ const ShowPipes = () => {
 
             { title: 'Length', field: 'length' },
             {
-              title: 'Coaing - Coating Color',
+              title: 'Coating/Coating Color',
               field: 'coating',
               render: (rowData) => (
                 <>
@@ -378,7 +371,7 @@ const ShowPipes = () => {
               ),
             },
             { title: 'Material', field: 'material_type', lookup: materials },
-            { title: 'P.O. Number', field: 'po_number', lookup: po_numbers },
+            { title: 'P.O. Number', field: 'po_number', /*lookup: po_numbers*/},
             { title: 'Smart Label', field: 'smart_label' },
             { title: 'Comments', field: 'comments' },
           ]}

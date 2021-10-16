@@ -45,7 +45,7 @@ const reorder = (
 const grid = 50
 
 // TEMPORARY until database becomes accurate
-const keys = ['0','1','2','3'];
+const keys = ['0', '1', '2', '3'];
 
 
 
@@ -53,9 +53,9 @@ const keys = ['0','1','2','3'];
 
 const StrungPipes = () => {
   const [data, setData] = useState<dataType[]>([]);
-  
+
   const classes = useStyles();
-  
+
   // Currently, a proof of concept for size based rendering.
   // Update the argument 'length' to be the size of the pipe
   const getItemStyle = (isDragging: boolean, draggableStyle: any, length: number) => ({
@@ -64,15 +64,15 @@ const StrungPipes = () => {
     paddingLeft: length / 2, // divide by 2 in both cases to center
     paddingRight: length / 2,
     margin: `0 ${grid}px 0 10px`,
-  
+
     // change background colour if dragging
     // drag colors not changing yet
     background: isDragging ? `${classes.pipeDrag}` : `${classes.pipe}`,
-  
+
     // styles we need to apply on draggables
     ...draggableStyle,
   });
-  
+
   const getListStyle = (isDraggingOver: boolean) => ({
     background: isDraggingOver ? 'lightblue' : `lightgrey`,
     display: 'flex',
@@ -131,73 +131,73 @@ const StrungPipes = () => {
       <Toolbar className={classes.title}>
         <Typography variant="h4" className={classes.titleContent}>
           Pipe Stringing
-        </Typography>  
-      </Toolbar>  
-     {/* <Toolbar className={classes.title}> */ }
-        <div className={classes.center}>
-          <Button variant="contained" color="secondary">Refresh</Button>
-        </div>
+        </Typography>
+      </Toolbar>
+      {/* <Toolbar className={classes.title}> */}
+      <div className={classes.center}>
+        <Button variant="contained" color="secondary">Refresh</Button>
+      </div>
       {/*</Toolbar>*/}
-        
-      
-        
-      <main> 
+
+
+
+      <main>
         <div>
           <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable" direction="horizontal">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}
-                {...provided.droppableProps}
-                className={classes.virtList}
-              >
-                {data.map((item, index) => {
-                  return (
-                    <>
-                      {/* <div>{`${item.station} + ${item.id}`}</div> */}
-                      <Draggable
-                        key={`${item.id}`}
-                        draggableId={`${item.pipe_id}`}
-                        index={index}
-                      >
-                      {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style,
-                              (index * grid)
-                            )}
-                            className={classes.pipe}
-                          >
-                            {/* ID */}
-                            <div>
-                              <span>
-                                {item.pipe_id}
-                              </span>
-                            </div>
+            <Droppable droppableId="droppable" direction="horizontal">
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                  {...provided.droppableProps}
+                  className={classes.virtList}
+                >
+                  {data.map((item, index) => {
+                    return (
+                      <>
+                        {/* <div>{`${item.station} + ${item.id}`}</div> */}
+                        <Draggable
+                          key={`${item.id}`}
+                          draggableId={`${item.pipe_id}`}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style,
+                                (index * grid)
+                              )}
+                              className={classes.pipe}
+                            >
+                              {/* ID */}
+                              <div>
+                                <span>
+                                  {item.pipe_id}
+                                </span>
+                              </div>
 
-                            {/* Information Below */}
-                            <div>pipe location = {item.id}'</div>
-                            <div>station = {item.station} + {item.id}</div>
-                            <div>index = {index}</div>
-                          </div>
-                      )}
-                      </Draggable>
-                    </>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+                              {/* Information Below */}
+                              <div>pipe location = {item.id}'</div>
+                              <div>station = {item.station} + {item.id}</div>
+                              <div>index = {index}</div>
+                            </div>
+                          )}
+                        </Draggable>
+                      </>
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </DragDropContext>
-        
-          </div>
-        </main>
+
+        </div>
+      </main>
     </div>
   );
 };
