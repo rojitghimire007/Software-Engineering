@@ -104,25 +104,25 @@ const onRowAdd = (newData: dataType) => {
         </Typography>
       </Toolbar>
     </div>
-      <div>
+      <div className={classes.stickyActions}>
         <MaterialTable
           icons={tableIcons}
           title=""
           //removes title toolbar
           components={{
-            Toolbar: (props) => (
-              <div
-                style={{
-                  height: '0px',
-                }}
-              >
-                <MTableToolbar {...props} />
-              </div>
-            ),
+            // Toolbar: (props) => (
+            //   <div
+            //     style={{
+            //       height: '0px',
+            //     }}
+            //   >
+            //     <MTableToolbar {...props} />
+            //   </div>
+            // ),
           }}
           options={{
             filtering: true,
-            search: false,
+            search: true,
             //headerStyle: {backgroundColor: classes.headerStyle},
             rowStyle: (rowData) => ({
               backgroundColor: rowData.color ? rowData.color : null,
