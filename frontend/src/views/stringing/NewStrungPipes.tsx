@@ -32,15 +32,15 @@ type dataType = {
 
 // a little function to help us with reordering the result
 const reorder = (
-  list: dataType[],
+  list: Array<any>,
   startIndex: number,
   endIndex: number
-): [dataType[], dataType, dataType] => {
+): Array<any> => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
 
-  return [result, removed, result[endIndex - 1]];
+  return result;
 };
 
 const grid = 50;
@@ -126,31 +126,29 @@ const NewStrungPipes = () => {
 
   const onDragEnd = (result: any) => {
     // dropped outside the list
-    // if (!result.destination) {
-    //   return;
-    // }
+    if (!result.destination) {
+      return;
+    }
 
-    console.log(result);
+    let target_pipe = result.draggableId;
 
-    // const [items, pipe, left_pipe] = reorder(
-    //   data,
-    //   result.destination.index,
-    //   result.source.index
-    // );
+    const items = reorder(
+      sequence,
+      window + result.source.index,
+      window + result.destination.index
+    );
 
-    // setData(items);
+    let left_pipe = items[window + result.destination.index - 1];
 
-    // api
-    //   .updateStringing(
-    //     pipe.pipe_id,
-    //     pipe.id,
-    //     pipe.station,
-    //     left_pipe ? left_pipe.pipe_id : null
-    //   )
-    //   .then((res) => updateData())
-    //   .catch((err) => alert(err));
+    let temp = sequence;
+    setSequence(items);
 
-    return new Promise((resolve, reject) => reject('Hello'));
+    if (!left_pipe) left_pipe = null;
+
+    return api.updateSequence({ target_pipe, left_pipe }).catch((err) => {
+      alert(err.message);
+      setSequence(temp);
+    });
   };
 
   if (!loading)
