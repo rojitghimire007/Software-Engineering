@@ -88,9 +88,12 @@ const updateSequence = async (req, res, next) => {
 
     nexts = nexts.rows;
 
-    if (nexts[0].pipe == left_pipe) {
-      curr_next = nexts[0].next;
-      temp_next = nexts[1].next;
+    if (!left_pipe) {
+      curr_next = null;
+      temp_next = nexts[0].next;
+    } else if (nexts[0].pipe == left_pipe) {
+      curr_next = nexts[0].next; // next val of left pipe
+      temp_next = nexts[1].next; //next val of target pipe
     } else {
       curr_next = nexts[1].next;
       temp_next = nexts[0].next;
@@ -102,11 +105,24 @@ const updateSequence = async (req, res, next) => {
       when pipe = ${left_pipe} then ${target_pipe}
       when next = ${target_pipe} then ${temp_next}
       end
-      where next in (${target_pipe} , ${curr_next});
+      where next in (${target_pipe} , ${curr_next})
+      ${!target_pipe || !curr_next ? 'or next is null' : ''};
 
-      delete from stringing where pipe=${target_pipe};
-      insert into stringing(pipe, next) values(${target_pipe}, ${curr_next});
     `);
+
+    await client.query(`delete from stringing where pipe=${target_pipe};`);
+
+    let firstPipe = await client.query('SELECT * from first_pipe;');
+    firstPipe = firstPipe.rows[0].id;
+
+    await client.query(
+      `insert into stringing(pipe, next) values(${target_pipe}, ${
+        curr_next ? curr_next : firstPipe
+      });`
+    );
+
+    if (firstPipe == target_pipe) updateFirstPipe(temp_next);
+    if (!left_pipe) updateFirstPipe(target_pipe);
 
     return res.status(200).send({ success: true });
   } catch (error) {
