@@ -57,19 +57,41 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   filterRow: {},
-
-  cell: {
-    padding: '1px !important',
-    border: 'thin solid !important',
-
+  stickyActions: {
+    tfoot: {
+      border: '0px !important',
+      borderColor: '0 !important',
+      backgroundColor: 'blue !important',
+    },
+    '& table:first-child': {
+      '& tr': {
+        '& td:first-child, th:first-child': {
+          backgroundColor: '#fffff0',
+          
+          position: 'sticky',
+          left: 0,
+          zIndex: 999,
+        },
+        '& th:first-child': {
+          
+          zIndex: 999,
+        },
+      },
+      '& tr:last-child': {
+        '& td:first-child, th:first-child': {
+          backgroundColor: '#fffff0',
+          boxShadow: '10px 0px black',
+          position: 'sticky',
+          left: 0,
+          zIndex: 999,
+        },
+      },
+    },
+    '& table:not(first-child)': {
+      '& td, th': {
+        border: '1px solid black',
+      },
+    },
   },
-/*
-  root: {
-    "& .MuiTableCell-root": {
-        padding: '1px',
-        border: ' thin solid',
-        border-bottom: 'thin solid',
-    },*/
-  
 }));
 export default useStyles;

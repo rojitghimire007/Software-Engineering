@@ -255,8 +255,8 @@ const ShowPipes = () => {
           </Typography>
         </Toolbar>
       </div>
-      <div className={classes.table + classes.cell}>
-        <MaterialTable 
+      <div className={classes.stickyActions}>
+        <MaterialTable
           icons={tableIcons}
           title=""
           //removes title toolbar
@@ -264,7 +264,7 @@ const ShowPipes = () => {
             filtering: true,
             search: true,
             rowStyle: (rowData) => ({
-              backgroundColor: rowData.color ? rowData.color : null,
+              // backgroundColor: rowData.color ? rowData.color : null,
               color: rowData.color ? 'white' : 'black',
             }),
             tableLayout: 'auto', // idk if this is important
@@ -382,46 +382,9 @@ const ShowPipes = () => {
             { title: 'Smart Label', field: 'smart_label' },
             { title: 'Comments', field: 'comments' },
           ]}
-          // components={{
-          //   Toolbar: (props) => (
-          //     <div className={classes.toolbar}>
-          //       <MTableToolbar {...props} />
-          //     </div>
-          //   ),
-          //   Header: (props) => (
-          //     <thead className={classes.header}>
-          //       <MTableHeader {...props} />
-          //     </thead>
-          //   ),
-          //   FilterRow: (props) => {
-          //     return (
-          //       <tr className={classes.filterRow}>
-          //         <MTableFilterRow {...props} />
-          //       </tr>
-          //     );
-          //   },
-          //   Row: (props) => (
-          //     <tbody className={classes.row}>
-          //       <MTableBodyRow {...props} />
-          //     </tbody>
-          //   ),
-          //   EditRow: (props) => (
-          //     <tbody className={classes.row}>
-          //       <MTableEditRow {...props} />
-          //     </tbody>
-          //   ),
-          // }}
-          //   columns={[
-          //     { title: 'Name', field: 'name' },
-          //     { title: 'Surname', field: 'surname' },
-          //     { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-          //     { title: 'Birth Date', field: 'birthYear', type: 'date' },
-          //     {
-          //       title: 'Birth Place',
-          //       field: 'birthCity',
-          //       lookup: { 62: 'Cucq' },
-          //     },
-          //   ]}
+          components={{
+
+          }}
           data={data}
           tableRef={materialTableRef}
           initialFormData={initialFormData}

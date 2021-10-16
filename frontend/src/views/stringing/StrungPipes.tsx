@@ -56,11 +56,13 @@ const StrungPipes = () => {
   
   const classes = useStyles();
   
-  const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+  // Currently, a proof of concept for size based rendering.
+  // Update the argument 'length' to be the size of the pipe
+  const getItemStyle = (isDragging: boolean, draggableStyle: any, length: number) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
-    paddingLeft: grid * 2,
-    paddingRight: grid * 2,
+    paddingLeft: length / 2, // divide by 2 in both cases to center
+    paddingRight: length / 2,
     margin: `0 ${grid}px 0 10px`,
   
     // change background colour if dragging
@@ -166,7 +168,8 @@ const StrungPipes = () => {
                             {...provided.dragHandleProps}
                             style={getItemStyle(
                               snapshot.isDragging,
-                              provided.draggableProps.style
+                              provided.draggableProps.style,
+                              (index * grid)
                             )}
                             className={classes.pipe}
                           >

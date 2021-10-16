@@ -1,4 +1,4 @@
-th:nth-child(odd){
+pullth:nth-child(odd){
     background-color: #d3d3d3 !important;
     font-weight: bold !important;
     /*text-align: center !important;*/
