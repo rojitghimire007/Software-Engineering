@@ -3,6 +3,8 @@ import { borderColor } from "@mui/system";
 import ColorScheme from "./ColorScheme";
 import HueSelector from "./HueSelector";
 
+import PipelineImg from 'img/pipeline-1.jpg';
+
 const useStyles = makeStyles ((theme) => ({
     dropDown: {
         // Dropdown background
@@ -16,6 +18,12 @@ const useStyles = makeStyles ((theme) => ({
     },
     page: {
         minHeight: "100vh",
+    },
+    background: {
+        backgroundImage: `url(${PipelineImg})`,
+        backgroundPosition: 'center',
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',       
         backgroundColor: ColorScheme.background,
     },
     cardContent: {

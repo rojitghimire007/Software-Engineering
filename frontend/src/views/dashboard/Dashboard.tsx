@@ -176,7 +176,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className={classes.page}>
+    <div className={`${classes.page} ${classes.background}`}>
 
       {/* Used to enhance title bar spacing */}
       <div className={classes.divPad}></div>
