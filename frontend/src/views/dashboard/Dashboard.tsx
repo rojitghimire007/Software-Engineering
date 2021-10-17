@@ -68,9 +68,9 @@ const Dashboard = () => {
       link: '/fittings',
       id: 'Fittings',
     },
-    
+
     // Welding
-   // Stringing
+    // Stringing
     {
       parent: 'Stringing',
       link: 'pipes/strung',
@@ -96,7 +96,7 @@ const Dashboard = () => {
 
   // }
 
-  const generateLinks = (parentMenu:string) => {
+  const generateLinks = (parentMenu: string) => {
     // simply maps each menu item in the array to a new gridItem/card
     // {menus.map((menuName, card) => (
     //   <Grid item key={card} xs={12} sm={5} md={4}>
@@ -135,7 +135,7 @@ const Dashboard = () => {
       links.map((hyperlink, i) => {
         console.log("link's parent " + hyperlink.parent + " checked with " + parentMenu)
         if (hyperlink.parent === parentMenu) {
-          {console.log(true + " " + hyperlink.id)}
+          { console.log(true + " " + hyperlink.id) }
           return (
             <div key={i}>
               <ListItemButton
@@ -149,7 +149,7 @@ const Dashboard = () => {
             </div>
           )
         }// end if
-        else  {
+        else {
           console.log(false)
         }
       })
@@ -172,8 +172,8 @@ const Dashboard = () => {
         setLoading(false);
       }, 2000);
     }
-    
-    return(<LinearProgress color="secondary" variant="determinate" value={75}/>);
+
+    return (<LinearProgress color="secondary" variant="determinate" value={75} />);
   };
 
   return (
@@ -181,7 +181,7 @@ const Dashboard = () => {
 
       {/* Used to enhance title bar spacing */}
       <div className={classes.divPad}></div>
-      
+
       <CssBaseline />
       <AppBar position="relative" className={classes.title}>
         <Toolbar className={classes.title}>
@@ -218,59 +218,59 @@ const Dashboard = () => {
             {menus.map((menuName, card) => (
               <Grid item key={card} xs={12} sm={5} md={4}>
                 {/* <CardActionArea className={classes.cardAction}> */}
-                  <Card className={classes.cardAction}>
-                    <CardMedia
-                      className={classes.cardMedia}
-                      image="https://source.unsplash.com/random"
-                      title="Image Title"
-                    />
-                    <CardContent className={classes.cardContent}>
+                <Card className={classes.cardAction}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image Title"
+                  />
+                  <CardContent className={classes.cardContent}>
 
-                      {/* Card submenus */}
-                      {/* Works, but I'll probably switch to the Collapse component. */}
-                      {/* Transitions for sidebar may also work. Less responsive out of the gate, though. */}
-                      <Accordion
-                        variant='outlined'
-                        className={classes.dropDown}
-                      >
-                        <AccordionSummary expandIcon={<ExpandMoreIcon color="inherit" className={ classes.icon } />}>
-                          <Typography className={classes.cardTitle} style={{fontWeight: 'bold'}}>
-                            {menuName}
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
+                    {/* Card submenus */}
+                    {/* Works, but I'll probably switch to the Collapse component. */}
+                    {/* Transitions for sidebar may also work. Less responsive out of the gate, though. */}
+                    <Accordion
+                      variant='outlined'
+                      className={classes.dropDown}
+                    >
+                      <AccordionSummary expandIcon={<ExpandMoreIcon color="inherit" className={classes.icon} />}>
+                        <Typography className={classes.cardTitle} style={{ fontWeight: 'bold' }}>
+                          {menuName}
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
 
-                          <Divider className={classes.divider}>
-                            <Chip 
-                              label=":ICON_HERE:" 
-                              variant="filled"
-                              size='medium'
-                              clickable={false}
-                              className={classes.dividerIcon}
-                            />
-                          </Divider>
+                        <Divider className={classes.divider}>
+                          <Chip
+                            label=":ICON_HERE:"
+                            variant="filled"
+                            size='medium'
+                            clickable={false}
+                            className={classes.dividerIcon}
+                          />
+                        </Divider>
 
-                          <List component="nav">
-                            {generateLinks(menuName)}
-                          </List>
-
-
+                        <List component="nav">
+                          {generateLinks(menuName)}
+                        </List>
 
 
-                            {/* <div className={classes.link}>
+
+
+                        {/* <div className={classes.link}>
                               <a href="http://localhost:3000/pipes">Pipe Inventory</a>
                             </div>
                             <div className={classes.link}>
                               <a href="http://localhost:3000/fittings">Fittings Inventory</a>
                             </div>                           */}
-                          {/* </Link> */}
+                        {/* </Link> */}
 
-                        </AccordionDetails>
-                      </Accordion>
+                      </AccordionDetails>
+                    </Accordion>
 
-                      {/* Collapse submenus */}
-                      {/* Can't get this working */}
-                      {/* <CardActions>
+                    {/* Collapse submenus */}
+                    {/* Can't get this working */}
+                    {/* <CardActions>
                             <ExpandMore
                               expand={expanded}
                               onClick={handleExpandClick}
@@ -281,15 +281,15 @@ const Dashboard = () => {
                             </ExpandMore>
                           </CardActions> */}
 
-                      {/*<Collapse timeout="auto" unmountOnExit>
+                    {/*<Collapse timeout="auto" unmountOnExit>
                             <CardContent>
                               <Typography>
                                 Trying stuff out
                               </Typography>
                             </CardContent>
                           </Collapse> */}
-                    </CardContent>
-                  </Card>
+                  </CardContent>
+                </Card>
                 {/* </CardActionArea> */}
               </Grid>
             ))}

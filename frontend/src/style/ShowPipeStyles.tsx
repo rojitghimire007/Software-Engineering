@@ -26,7 +26,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: ColorScheme.onPrimary,
     fontFamily: 'Bebas Neue',
-    fontSize: '5em',
+    fontSize: '5vw',
+    borderRadius: '0 0 0 0',
+    letterSpacing: '8px',
   },
    wrapper: {
     backgroundColor: ColorScheme.background,

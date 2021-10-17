@@ -55,8 +55,9 @@ const useStyles = makeStyles ((theme) => ({
         textAlign: 'center',
         color: ColorScheme.onPrimary,
         fontFamily: 'Bebas Neue',
-        fontSize: '5em',
+        fontSize: '5vw',
         borderRadius: '0 0 0 0',
+        letterSpacing: '8px',
     },
     cardAction: {
         borderRadius: 7,
@@ -122,8 +123,9 @@ const useStyles = makeStyles ((theme) => ({
 
     //single Liners (temporary)
     buttonSecondary: { margin: "20px", },
-    header: { 
+    header: {
         backgroundColor: ColorScheme.primary,
+        letterSpacing: '2px',
     },
     listButton: { backgroundColor: 'grey', },
     menuItem: { padding: '1rem 1.5rem 1.5rem', },

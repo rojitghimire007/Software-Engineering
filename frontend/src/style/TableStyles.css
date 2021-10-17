@@ -15,6 +15,3 @@ th:nth-child(odd){
     border: thin solid !important;
     text-align: left !important;
 }
-th{
-    text-align: center !important;
-}

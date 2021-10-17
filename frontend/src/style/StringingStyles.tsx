@@ -70,6 +70,7 @@ const useStyles = makeStyles ((theme) => ({
       justifyContent: 'center',
       margin: '10px auto',
     },
+  
     container: {
       height: '200px',
       position: 'relative',
@@ -97,6 +98,8 @@ const useStyles = makeStyles ((theme) => ({
       borderWidth: '0 0 3px 0',
       borderStyle: 'solid',
       borderColor: ColorScheme.primaryDark,
+      margin: '0 0 10px 0',
+      paddingTop: '5px',
     },
     titleContent: {
       alignItems: 'center',
@@ -104,7 +107,9 @@ const useStyles = makeStyles ((theme) => ({
       textAlign: 'center',
       color: ColorScheme.onPrimary,
       fontFamily: 'Bebas Neue',
-      fontSize: '72px',
+      fontSize: '5vw',
+      borderRadius: '0 0 0 0',
+      letterSpacing: '8px',
     },
 }));
 
