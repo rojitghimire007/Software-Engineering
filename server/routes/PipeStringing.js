@@ -16,6 +16,7 @@ const getStringing = async (req, res, next) => {
   try {
     let first_pipe = await client.query(`SELECT * FROM first_pipe;`);
 
+    console.log('==================');
     first_pipe = first_pipe.rows[0];
 
     let data = await client.query(
@@ -117,14 +118,34 @@ const updateSequence = async (req, res, next) => {
 
     await client.query(
       `insert into stringing(pipe, next) values(${target_pipe}, ${
-        curr_next ? curr_next : firstPipe
+        !left_pipe ? firstPipe : !curr_next ? null : curr_next
       });`
     );
 
-    if (firstPipe == target_pipe) updateFirstPipe(temp_next);
+    if (firstPipe == target_pipe) updateFirstPipe(temp_next); //first pipe is being moved
     if (!left_pipe) updateFirstPipe(target_pipe);
 
     return res.status(200).send({ success: true });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+const lengthofSequence = async (req, res, next) => {
+  let { sequence } = req.body;
+
+  if (!sequence || sequence.length == 0)
+    return res.status(200).send({ length: 0 });
+  try {
+    let length = await client.query(
+      `SELECT SUM(pipe_length) as length from pipes where pipe_id in (${sequence.join(
+        ','
+      )})`
+    );
+    length = length.rows[0];
+
+    return res.status(200).send(length);
   } catch (error) {
     console.log(error);
     next(error);
@@ -136,4 +157,5 @@ module.exports = {
   getStrungPipesInfo,
   appendToString,
   updateSequence,
+  lengthofSequence,
 };

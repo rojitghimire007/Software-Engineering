@@ -19,6 +19,7 @@ const {
   getStrungPipesInfo,
   appendToString,
   updateSequence,
+  lengthofSequence,
 } = require('./PipeStringing');
 
 const SetRoutes = (app) => {
@@ -42,6 +43,7 @@ const SetRoutes = (app) => {
   app.post('/string', appendToString);
   app.put('/string', updateSequence);
   app.get('/pipes/info/:pipes', getStrungPipesInfo);
+  app.post('/pipes/length', lengthofSequence);
 
   // fittings routes
   app.post('/fittings', addFittings);
