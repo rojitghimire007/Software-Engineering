@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: ColorScheme.onPrimary,
     fontFamily: 'Bebas Neue',
-    fontSize: '5em',
+    fontSize: '5vw',
+    borderRadius: '0 0 0 0',
+    letterSpacing: '8px',
   },
    wrapper: {
     backgroundColor: ColorScheme.background,
@@ -87,14 +89,14 @@ const useStyles = makeStyles((theme) => ({
           zIndex: 999,
           padding: 0 + ' !important',
           '& div': {
-            backgroundColor: '#fffff5',
+            backgroundColor: '#fffff5 !important',
             border: '1px solid black !important',
             boxShadow: '-1px 1px black',
           },
         },
         '& th:first-child': {
           // backgroundColor: `${ColorScheme.primaryDark} !important`,
-          backgroundColor: '#fffff5',
+          backgroundColor: '#fffff5 !important',
           // color: `${ColorScheme.onPrimary}`,
           border: '1px solid black !important',  
           position: 'sticky',

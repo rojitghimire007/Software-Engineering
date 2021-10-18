@@ -25,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: ColorScheme.onPrimary,
     fontFamily: 'Bebas Neue',
-    fontSize: '5em',
+    fontSize: '5vw',
+    borderRadius: '0 0 0 0',
+    letterSpacing: '8px',
   },
   cellStyle: {
     //backgroundColor:
@@ -45,14 +47,12 @@ const useStyles = makeStyles((theme) => ({
       '& tr': {
         '& td:first-child, th:first-child': {
           backgroundColor: '#fffff0',
-          
           position: 'sticky',
           left: 0,
           zIndex: 999,
         },
         '& th:first-child': {
-          
-          zIndex: 999,
+           zIndex: 999,
         },
       },
       '& tr:last-child': {

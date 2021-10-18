@@ -86,6 +86,7 @@ const Dashboard = () => {
       link: '/fittings',
       id: 'Fittings',
     },
+
     // Welding
     // Stringing
     {
@@ -153,8 +154,8 @@ const Dashboard = () => {
         setLoading(false);
       }, 2000);
     }
-    
-    return(<LinearProgress color="secondary" variant="determinate" value={75}/>);
+
+    return (<LinearProgress color="secondary" variant="determinate" value={75} />);
   };
 
   const [open, setOpen] = React.useState(false);

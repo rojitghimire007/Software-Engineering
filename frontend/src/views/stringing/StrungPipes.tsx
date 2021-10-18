@@ -45,7 +45,7 @@ const reorder = (
 const grid = 50
 
 // TEMPORARY until database becomes accurate
-const keys = ['0','1','2','3'];
+const keys = ['0', '1', '2', '3'];
 
 
 
@@ -53,9 +53,9 @@ const keys = ['0','1','2','3'];
 
 const StrungPipes = () => {
   const [data, setData] = useState<dataType[]>([]);
-  
+
   const classes = useStyles();
-  
+
   // Currently, a proof of concept for size based rendering.
   // Update the argument 'length' to be the size of the pipe
   const getItemStyle = (isDragging: boolean, draggableStyle: any, length: number) => ({
@@ -73,11 +73,11 @@ const StrungPipes = () => {
     // change background colour if dragging
     // drag colors not changing yet
     background: isDragging ? `${classes.pipeDrag}` : `${classes.pipe}`,
-  
+
     // styles we need to apply on draggables
     ...draggableStyle,
   });
-  
+
   const getListStyle = (isDraggingOver: boolean) => ({
     background: isDraggingOver ? 'lightblue' : `lightgrey`,
     display: 'flex',
@@ -140,17 +140,17 @@ const StrungPipes = () => {
       <Toolbar className={classes.title}>
         <Typography variant="h4" className={classes.titleContent}>
           Pipe Stringing
-        </Typography>  
-      </Toolbar>  
-     {/* <Toolbar className={classes.title}> */ }
-        <div className={classes.center}>
-          <Button variant="contained" color="secondary">Refresh</Button>
-        </div>
+        </Typography>
+      </Toolbar>
+      {/* <Toolbar className={classes.title}> */}
+      <div className={classes.center}>
+        <Button variant="contained" color="secondary">Refresh</Button>
+      </div>
       {/*</Toolbar>*/}
-        
-      
-        
-      <main> 
+
+
+
+      <main>
         <div>
           <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable" direction="horizontal">
@@ -214,9 +214,9 @@ const StrungPipes = () => {
             )}
           </Droppable>
           </DragDropContext>
-        
-          </div>
-        </main>
+
+        </div>
+      </main>
     </div>
   );
 };

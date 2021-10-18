@@ -77,6 +77,8 @@ const useStyles = makeStyles ((theme) => ({
         wordWrap: 'break-word',
         textShadow: '0 0 black, 0 2px black, 3px 2px black, 0 1px black',
         // borderRadius: '0 0 0 0',
+        // fontSize: '5vw',
+        // letterSpacing: '8px',
     },
     cardAction: {
         borderRadius: 7,
@@ -185,8 +187,9 @@ const useStyles = makeStyles ((theme) => ({
 
     //single Liners (temporary)
     buttonSecondary: { margin: "20px", },
-    header: { 
+    header: {
         backgroundColor: ColorScheme.primary,
+        letterSpacing: '2px',
     },
     cardMedia: { 
         // height: 0,
