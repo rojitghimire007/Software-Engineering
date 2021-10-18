@@ -37,7 +37,7 @@ const useStyles = makeStyles ((theme) => ({
             padding: '0px',
             
             // Implement Once image has been extended far enough
-            // borderRadius: '8px 0',
+            // borderRadius: '8px 8px 0 0',
         },
     },
     cardTitle: {
@@ -51,25 +51,28 @@ const useStyles = makeStyles ((theme) => ({
         backgroundColor: ColorScheme.primary,
         alignItems: 'center',
         width: '90vw',
-        borderRadius: '8px 8px 8px 8px',
-        borderWidth: '0 8px 4px 0',
-        borderStyle: 'solid',
-        borderColor: ColorScheme.primaryDark,
         paddingTop: '5px',
-        margin: '0 auto'
+        borderRadius: '8px 8px 8px 8px',
+        // borderWidth: '0 4px 4px 0',
+        borderStyle: 'ridge',
+        borderColor: ColorScheme.primaryDark,
+        margin: '0 auto',
     },
     titleContent: {
-        margin: '0 auto',
+        // margin: '0 auto',
         textAlign: 'center',
         color: ColorScheme.onPrimary,
         fontFamily: 'Bebas Neue',
-        fontSize: '5em',
-        borderRadius: '0 0 0 0',
+        fontSize: '5rem',
+        letterSpacing: '.5rem',
+        wordWrap: 'break-word',
+        textShadow: '0 0 black, 0 2px black, 3px 2px black, 0 1px black',
+        // borderRadius: '0 0 0 0',
     },
     cardAction: {
         borderRadius: 7,
         borderWidth: '3px', 
-        borderStyle: 'solid',
+        borderStyle: 'outset',
         borderColor: ColorScheme.primary,
         boxShadow: '10px 10px 12px -10px ',
         // transition: '0.6s ease-in-out',
@@ -85,12 +88,13 @@ const useStyles = makeStyles ((theme) => ({
 
         // card animation
         '&:hover': {
-            transform: 'scale(1.02,1.02)',
+            transform: 'scale(1.03,1.02)',
         },
         
         '&:hover::after': {
             opacity: 1,
         },
+
 
         
     },
@@ -133,10 +137,26 @@ const useStyles = makeStyles ((theme) => ({
     header: { 
         backgroundColor: ColorScheme.primary,
     },
+    cardMedia: { 
+        height: 0,
+        paddingTop: '56.25%' /* 16:9  aspect ratio*/, 
+        opacity: 0.5,
+        transition: 'opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
+
+            '&:hover': {
+                opacity: 2,
+                // transition: 'opacity 0.8s ease-in-out',
+                // transition: 'all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
+            },
+
+            '&:hover::after': {
+                opacity: 0.5,
+            },
+        // margin: 30,
+    },
     listButton: { backgroundColor: 'grey', },
     menuItem: { padding: '1rem 1.5rem 1.5rem', },
     cardGrid: { padding: '20px 0' },
-    cardMedia: { paddingTop: '56.25%' /* 16:9  aspect ratio*/ },
     divPad: {padding: '5px',},
     
     // Deprecated
