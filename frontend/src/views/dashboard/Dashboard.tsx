@@ -37,6 +37,7 @@ import {
 } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ArchitectureOutlinedIcon from '@mui/icons-material/ArchitectureOutlined';
 
 // import 'style/Dashboard.css';
 import useStyles from '../../style/DashboardStyles'; // new styling
@@ -164,6 +165,13 @@ const Dashboard = () => {
     setOpen(!open);
   };
 
+
+
+  // Future?:
+  // For keeping images opaque,
+  // need to keep state for EACH accordion.
+  const [accordionState, setExpanded] = React.useState();
+
   return (
     <div className={`${classes.page} ${classes.background}`}>
 
@@ -206,6 +214,12 @@ const Dashboard = () => {
                       <Accordion
                         variant='outlined'
                         className={classes.dropDown}
+                        
+                        // Future?:
+                        // For keeping images opaque,
+                        // need to keep state for EACH accordion.
+                        // expanded={open}
+                        // onChange={handleToggle}
                       >
 
                         <AccordionSummary expandIcon={<ExpandMoreIcon color="inherit" className={ classes.icon } />}>
@@ -217,7 +231,7 @@ const Dashboard = () => {
 
                         <Divider className={classes.divider}>
                           <Chip 
-                            label=":ICON_HERE:" 
+                            icon={<ArchitectureOutlinedIcon color='action' className={classes.dividerIcon}/>}
                             variant="filled"
                             size='medium'
                             clickable={false}

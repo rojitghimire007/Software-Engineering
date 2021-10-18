@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import { borderColor } from "@mui/system";
+import { borderColor, flexbox } from "@mui/system";
 import ColorScheme from "./ColorScheme";
 import HueSelector from "./HueSelector";
 
@@ -27,14 +27,17 @@ const useStyles = makeStyles ((theme) => ({
         backgroundColor: ColorScheme.background,
     },
     cardContent: {
-        flexGrow: 1,
+        // flexGrow: 1,
         fontSize: '1.4em',
         fontFamily: 'Roboto',
-        backgroundColor: ColorScheme.secondaryDark,
+        padding: '0px',
+        margin: '0px',
+        // backgroundColor: ColorScheme.primaryDark,
 
         // wrapper below image
-        '&.MuiCardContent-root' : {
-            padding: '0px',
+        '&.MuiCardContent-root:last-child' : {
+            padding: '0px !important',
+            margin: '0px !important',
             
             // Implement Once image has been extended far enough
             // borderRadius: '8px 8px 0 0',
@@ -42,10 +45,16 @@ const useStyles = makeStyles ((theme) => ({
     },
     cardTitle: {
         flexGrow: 1,
-        fontSize: '1.7em',
+        fontSize: '2.2em',
         fontFamily: 'Teko',
         backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
+
+        transition: 'all 0.4s',
+
+        '&:hover': {
+            color: ColorScheme.secondaryDark,
+        },
     },
     title: {
         backgroundColor: ColorScheme.primary,
@@ -79,27 +88,55 @@ const useStyles = makeStyles ((theme) => ({
         transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
         
         // prevents the many repaints
-        '&:after': {
-            boxShadow: '12px 12px 12px -10px ',
-            opacity: 2,
+        // '& :after': {
+            // boxShadow: '12px 12px 12px -10px ',
+            // opacity: 2,
             // transition: 'opacity 0.8s ease-in-out',
-            transition: 'all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
-        },
+            // transition: 'all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
+        // },
 
         // card animation
+        // idk why this works, but it does
         '&:hover': {
             transform: 'scale(1.03,1.02)',
+            color: ColorScheme.secondary,
+
+            '& .MuiTypography-body1': {                    
+                color: ColorScheme.primary,
+            },
+            '& .MuiCardMedia-root': {
+                opacity: 1,
+            },
         },
         
-        '&:hover::after': {
-            opacity: 1,
+        // keep menu highlighted while accordion is down
+        '& .Mui-expanded': {
+            '& .MuiTypography-body1': {                    
+                color: ColorScheme.primary,
+            },
+            '&.MuiCardMedia-root': {
+                opacity: 1,
+            },
         },
 
+        // Link Styles
+        '& div.MuiListItemButton-root, a': {
+            fontFamily: 'Bebas Neue',
+            fontSize: '2.25rem',
+            textDecoration: 'none',
+            color: ColorScheme.onSecondary,
+
+            '& :hover': {
+                color: ColorScheme.primary,
+                textDecoration: 'underline',
+                fontStyle: 'italic',
+            },
+        },
 
         
     },
     divider: {
-        color: ColorScheme.primary,
+        borderColor: ColorScheme.primaryDark,
 
         // the lines on the dropdown by the icon
         '&.MuiDivider-root::before' : {
@@ -110,7 +147,21 @@ const useStyles = makeStyles ((theme) => ({
         },
     },
     dividerIcon: {
+        color: ColorScheme.onPrimary + '!important',
+        margin: '0 auto !important',
+        
+        // gets rid of label placeholder space
+        '& .MuiChip-label': {
+            padding: 0 + ' !important',
+        },
+        
         // icon in divider selector
+        '& .MuiChip-icon': {
+            height: '2rem',
+            width: '2rem',
+            padding: '0 12px !important',
+        },
+
         '&.MuiChip-root' :{
             backgroundColor: ColorScheme.primary,
             color: ColorScheme.onPrimary,
@@ -127,7 +178,7 @@ const useStyles = makeStyles ((theme) => ({
     },
     icon: {
         // icon selector
-        '&.MuiSvgIcon-root' : {
+        '& .MuiSvgIcon-root' : {
             color: ColorScheme.onSecondary,
         },
     },
@@ -138,20 +189,16 @@ const useStyles = makeStyles ((theme) => ({
         backgroundColor: ColorScheme.primary,
     },
     cardMedia: { 
-        height: 0,
+        // height: 0,
         paddingTop: '56.25%' /* 16:9  aspect ratio*/, 
-        opacity: 0.5,
+        opacity: 0.75,
         transition: 'opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
 
-            '&:hover': {
-                opacity: 2,
-                // transition: 'opacity 0.8s ease-in-out',
-                // transition: 'all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
-            },
-
-            '&:hover::after': {
-                opacity: 0.5,
-            },
+        '&:hover': {
+            opacity: 2,
+            // transition: 'opacity 0.8s ease-in-out',
+            // transition: 'all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
+        },
         // margin: 30,
     },
     listButton: { backgroundColor: 'grey', },
