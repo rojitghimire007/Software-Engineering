@@ -19,6 +19,7 @@ import {
   CardActionArea,
 } from '@material-ui/core';
 import { typography } from '@mui/system';
+import Footer from 'views/Footer';
 
 import useStyles from '../../style/StringingStyles';
 
@@ -45,7 +46,7 @@ const reorder = (
 const grid = 50
 
 // TEMPORARY until database becomes accurate
-const keys = ['0','1','2','3'];
+const keys = ['0', '1', '2', '3'];
 
 
 
@@ -53,28 +54,35 @@ const keys = ['0','1','2','3'];
 
 const StrungPipes = () => {
   const [data, setData] = useState<dataType[]>([]);
-  
+
   const classes = useStyles();
-  
-  const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+
+  // Currently, a proof of concept for size based rendering.
+  // Update the argument 'length' to be the size of the pipe
+  const getItemStyle = (isDragging: boolean, draggableStyle: any, length: number) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
-    paddingLeft: grid * 2,
-    paddingRight: grid * 2,
-    margin: `0 ${grid}px 0 10px`,
+    paddingLeft: 0, // divide by 2 in both cases to center
+    paddingRight: 0 + '!important',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    margin: `0 ${grid}px 0 0`,
+    border: '3px dashed black',
+    position: 'relative',
+    
   
     // change background colour if dragging
     // drag colors not changing yet
     background: isDragging ? `${classes.pipeDrag}` : `${classes.pipe}`,
-  
+
     // styles we need to apply on draggables
     ...draggableStyle,
   });
-  
+
   const getListStyle = (isDraggingOver: boolean) => ({
     background: isDraggingOver ? 'lightblue' : `lightgrey`,
     display: 'flex',
-    padding: grid,
+    padding: '3px',
     overflow: 'auto',
   });
 
@@ -123,23 +131,27 @@ const StrungPipes = () => {
       .catch((err) => alert(err));
   };
 
+  const getRenderSize = ((pipeSize:number) => {
+    return  pipeSize * grid;
+  });
+
   return (
     <div className={classes.body}>
       <CssBaseline />
       <Toolbar className={classes.title}>
         <Typography variant="h4" className={classes.titleContent}>
           Pipe Stringing
-        </Typography>  
-      </Toolbar>  
-     {/* <Toolbar className={classes.title}> */ }
-        <div className={classes.center}>
-          <Button variant="contained" color="secondary">Refresh</Button>
-        </div>
+        </Typography>
+      </Toolbar>
+      {/* <Toolbar className={classes.title}> */}
+      <div className={classes.center}>
+        <Button variant="contained" color="secondary">Refresh</Button>
+      </div>
       {/*</Toolbar>*/}
-        
-      
-        
-      <main> 
+
+
+
+      <main>
         <div>
           <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable" direction="horizontal">
@@ -166,21 +178,32 @@ const StrungPipes = () => {
                             {...provided.dragHandleProps}
                             style={getItemStyle(
                               snapshot.isDragging,
-                              provided.draggableProps.style
+                              provided.draggableProps.style,
+                              // currently invalid, as id is a string
+                              // (`${item.id}` * grid)
+                              ((index + index) * grid)
                             )}
-                            className={classes.pipe}
-                          >
-                            {/* ID */}
-                            <div>
-                              <span>
-                                {item.pipe_id}
-                              </span>
-                            </div>
+                          >                            
+                            <div className={classes.dragContainer}>
+                              {/* <div className={classes.station} >
+                                station = {item.station} + {item.id}
+                              </div> */}
 
-                            {/* Information Below */}
-                            <div>pipe location = {item.id}'</div>
-                            <div>station = {item.station} + {item.id}</div>
-                            <div>index = {index}</div>
+
+                              <div className={classes.pipe} style={{paddingRight: index * grid}}>
+                                {/* ID */}
+                                <div>
+                                  <span>
+                                    {item.pipe_id}
+                                  </span>
+                                </div>
+
+                                {/* Information Below */}
+                                <div>pipe length = {item.id}'</div>
+                                {/* <div>station = {item.station} + {item.id}</div> */}
+                                <div>index = {index}</div>
+                              </div>
+                            </div>
                           </div>
                       )}
                       </Draggable>
@@ -192,9 +215,10 @@ const StrungPipes = () => {
             )}
           </Droppable>
           </DragDropContext>
-        
-          </div>
-        </main>
+
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 };

@@ -24,6 +24,9 @@ const useStyles = makeStyles ((theme) => ({
       backgroundColor: ColorScheme.primary,
       color: ColorScheme.onPrimary,
       boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
+      zIndex: 999,
+      paddingTop: '10px !important',
+      paddingBottom: '10px !important',
       
       '&:hover' : {
         borderColor: `${ColorScheme.primary}`,
@@ -54,6 +57,31 @@ const useStyles = makeStyles ((theme) => ({
                                      // likely not, keeping it for now
       },
     },
+    station: {
+      transformOrigin: '1 1',
+      transform: 'translate(2rem, 3rem) rotate(-90deg) ',
+      // background: 'none',
+      backgroundColor: ColorScheme.primaryLight,
+      color: ColorScheme.onSecondary,
+      position: 'relative',
+      // left: '-.5em',
+      boxSizing: 'border-box',
+      border: '1px black',
+      borderStyle: 'double !important',
+      boxShadow: '5px 2px black',
+      fontFamily: 'Bebas Neue',
+      fontStyle: 'italic',
+      textDecoration: 'underline',
+      padding: '0 1rem !important',
+      marginLeft: 0 + '!important',
+      width: '30%',
+      height: '100%',
+      // display: 'inline',
+      // zIndex: 999,
+    },
+    dragContainer: {
+      display: 'flex',
+    },
     virtList: {
       margin: '0 12px 0 12px',
     },
@@ -70,6 +98,7 @@ const useStyles = makeStyles ((theme) => ({
       justifyContent: 'center',
       margin: '10px auto',
     },
+  
     container: {
       height: '200px',
       position: 'relative',
@@ -97,6 +126,8 @@ const useStyles = makeStyles ((theme) => ({
       borderWidth: '0 0 3px 0',
       borderStyle: 'solid',
       borderColor: ColorScheme.primaryDark,
+      margin: '0 0 10px 0',
+      paddingTop: '5px',
     },
     titleContent: {
       alignItems: 'center',
@@ -104,7 +135,9 @@ const useStyles = makeStyles ((theme) => ({
       textAlign: 'center',
       color: ColorScheme.onPrimary,
       fontFamily: 'Bebas Neue',
-      fontSize: '72px',
+      fontSize: '5vw',
+      borderRadius: '0 0 0 0',
+      letterSpacing: '8px',
     },
 }));
 

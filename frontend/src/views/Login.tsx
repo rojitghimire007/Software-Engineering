@@ -34,6 +34,7 @@ import {
 } from '@mui/material';
 
 import useStyles from '../style/LoginStyles'; // new styling
+import Footer from 'views/Footer';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -235,6 +236,7 @@ const Login = () => {
           </div>
         </main>
       </Grid>
+      <Footer />
     </>
   );
 };

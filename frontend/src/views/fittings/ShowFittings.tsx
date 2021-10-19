@@ -24,6 +24,7 @@ import {
 } from '@material-ui/core';
 import useStyles from '../../style/ShowFittingsStyles';
 import ColorScheme from '../../style/ColorScheme';
+import Footer from 'views/Footer';
 
 interface dataType {
   id: number;
@@ -104,25 +105,27 @@ const ShowFittings = () => {
           </Typography>
         </Toolbar>
       </div>
-      <div>
+      <div className={classes.stickyActions}>
         <MaterialTable
           icons={tableIcons}
           title=""
           //removes title toolbar
-          components={{
-            Toolbar: (props) => (
-              <div
-                style={{
-                  height: '0px',
-                }}
-              >
-                <MTableToolbar {...props} />
-              </div>
-            ),
-          }}
+          components={
+            {
+              // Toolbar: (props) => (
+              //   <div
+              //     style={{
+              //       height: '0px',
+              //     }}
+              //   >
+              //     <MTableToolbar {...props} />
+              //   </div>
+              // ),
+            }
+          }
           options={{
             filtering: true,
-            search: false,
+            search: true,
             //headerStyle: {backgroundColor: classes.headerStyle},
             rowStyle: (rowData) => ({
               backgroundColor: rowData.color ? rowData.color : null,
@@ -199,6 +202,7 @@ const ShowFittings = () => {
           ]}
         />
       </div>
+      <Footer />
     </div>
   );
 };
