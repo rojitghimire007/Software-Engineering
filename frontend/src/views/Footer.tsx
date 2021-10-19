@@ -28,13 +28,13 @@ const Footer = () => {
                     <input type="email" placeholder="Enter your email address" id="footer-email"></input>
                     <input type="submit" value="Sign Up" id="footer-email-btn"></input>
                 </div>
+            </div>
                 
                 <div className="row">
-                    <p className="col-sm">
+                    <div className="col-sm">
                         &copy;{new Date().getFullYear()} Honor Guard Inspections | All Rights Reserved | Terms of Service | Privacy
-                    </p>
+                    </div>
                 </div>
-            </div>
         </div>
     )
 }

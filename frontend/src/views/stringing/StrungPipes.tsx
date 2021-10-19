@@ -19,6 +19,7 @@ import {
   CardActionArea,
 } from '@material-ui/core';
 import { typography } from '@mui/system';
+import Footer from 'views/Footer';
 
 import useStyles from '../../style/StringingStyles';
 
@@ -184,9 +185,9 @@ const StrungPipes = () => {
                             )}
                           >                            
                             <div className={classes.dragContainer}>
-                              <div className={classes.station} >
+                              {/* <div className={classes.station} >
                                 station = {item.station} + {item.id}
-                              </div>
+                              </div> */}
 
 
                               <div className={classes.pipe} style={{paddingRight: index * grid}}>
@@ -217,6 +218,7 @@ const StrungPipes = () => {
 
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

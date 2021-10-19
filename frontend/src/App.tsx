@@ -52,7 +52,7 @@ function App() {
   return (
     <><React.Suspense fallback={loading}>
       <>{ready && <TheLayout />}</>
-    </React.Suspense><Footer /></>
+    </React.Suspense></>
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />

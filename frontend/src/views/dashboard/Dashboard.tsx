@@ -36,6 +36,8 @@ import {
   LinearProgress,
 } from '@mui/material';
 
+import Footer from 'views/Footer';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArchitectureOutlinedIcon from '@mui/icons-material/ArchitectureOutlined';
 
@@ -258,6 +260,7 @@ const Dashboard = () => {
               </Grid>
             ))}
           </Grid>
+      <Footer />
         </Container>
       </main>
     </div>

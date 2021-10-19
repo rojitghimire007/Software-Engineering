@@ -23,8 +23,10 @@ const useStyles = makeStyles ((theme) => ({
         backgroundImage: `url(${PipelineImg})`,
         backgroundPosition: 'center',
         backgroundSize: '100% 100%',
+        transition: 'none',
         backgroundRepeat: 'no-repeat',       
         backgroundColor: ColorScheme.background,
+        backgroundOrigin: 'content-box',
     },
     cardContent: {
         // flexGrow: 1,
@@ -65,6 +67,7 @@ const useStyles = makeStyles ((theme) => ({
         // borderWidth: '0 4px 4px 0',
         borderStyle: 'ridge',
         borderColor: ColorScheme.primaryDark,
+        backgroundImage: `linear-gradient(to right, ${ColorScheme.primary}, ${ColorScheme.primaryLight})`,
         margin: '0 auto',
     },
     titleContent: {

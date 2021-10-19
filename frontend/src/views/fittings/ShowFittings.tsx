@@ -24,6 +24,7 @@ import {
 } from '@material-ui/core';
 import useStyles from "../../style/ShowFittingsStyles";
 import ColorScheme from "../../style/ColorScheme";
+import Footer from 'views/Footer';
 
 interface dataType {
   id: number;
@@ -196,6 +197,7 @@ const onRowAdd = (newData: dataType) => {
           ]}
         />
       </div>
+      <Footer />
     </div>
   );
 };
