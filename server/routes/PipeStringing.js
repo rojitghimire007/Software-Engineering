@@ -151,10 +151,30 @@ const lengthofSequence = async (req, res, next) => {
   }
 };
 
+const getStriningEligiblePipes = async (req, res, next) => {
+  try {
+    let ans = await client.query(
+      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' and iscut = false`
+    );
+    ans = ans.rows;
+
+    let _ = await client.query(
+      `select min(pipe_id) as pipe_id from pipes where pipe_id ~ '[0-9]+[A-Z]' group by SUBSTR(pipe_id, 0, LENGTH(pipe_id))`
+    );
+    ans = ans.concat(_.rows);
+
+    res.status(200).send(ans);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 module.exports = {
   getStringing,
   getStrungPipesInfo,
   appendToString,
   updateSequence,
   lengthofSequence,
+  getStriningEligiblePipes,
 };
