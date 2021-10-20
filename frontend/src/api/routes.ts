@@ -19,6 +19,7 @@ const API = {
   getFittings: `${URL}/fittings`,
   stringing: `${URL}/string`,
   getStrungPipesInfo: `${URL}/pipes/info/`,
+  getSequenceLength: `${URL}/pipes/length/`,
 };
 
 export { URL, API };

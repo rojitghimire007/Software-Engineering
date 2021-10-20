@@ -16,7 +16,6 @@ const getStringing = async (req, res, next) => {
   try {
     let first_pipe = await client.query(`SELECT * FROM first_pipe;`);
 
-    console.log('==================');
     first_pipe = first_pipe.rows[0];
 
     let data = await client.query(

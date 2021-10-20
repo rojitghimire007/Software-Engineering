@@ -46,12 +46,15 @@ const reorder = (
 const grid = 50;
 
 const NewStrungPipes = () => {
-  const [data, setData] = useState<dataType[]>([]);
   const [sequence, setSequence] = useState<Array<number>>([]);
   const [window, setWindow] = useState(-1); //careful sliding left when window = 0
   const [pipeDetails, setPipeDetails] = useState<{ [index: number]: any }>({});
 
   const [loading, setLoading] = useState(true);
+  const [stations, setStations] = useState<{
+    [index: number | string]: number;
+  }>({});
+  const [initialLength, setInitialLength] = useState<number>(-1);
   const classes = useStyles();
 
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -77,23 +80,26 @@ const NewStrungPipes = () => {
   });
 
   useEffect(() => {
-    updateData();
-  }, []);
-
-  useEffect(() => {
     api
       .getStringing()
       .then((res) => {
         setSequence(res);
         setWindow(0);
       })
-      .catch((err) => alert(err));
+      .catch((err) => alert(err.message));
   }, []);
 
   useUpdateEffect(() => {
     api
       .getStrungPipesInfo(sequence.slice(window, window + 4))
       .then((res) => {
+        api
+          .getSequenceLength(sequence.slice(0, window))
+          .then((res2) => {
+            setInitialLength(Number(res2.length));
+          })
+          .catch((error) => alert(error.message));
+
         setPipeDetails(
           res.reduce((result: any, entry: any) => {
             result[entry.id] = entry;
@@ -108,25 +114,24 @@ const NewStrungPipes = () => {
     setLoading(false);
   }, [pipeDetails]);
 
-  const updateData = () => {
-    api
-      .getStringingInfo()
-      .then((res) => setData(res))
-      .catch((err) => {
-        alert(err);
-        // setData([
-        //   { station: '237+10', id: '1', pipe_id: 'pipe 1' },
-        //   { station: '237+20', id: '10', pipe_id: 'pipe 2' },
-        //   { station: '237+30', id: '100', pipe_id: 'pipe 3' },
-        //   { station: '237+40', id: '1000', pipe_id: 'pipe 4' },
-        //   { station: '237+50', id: '10000', pipe_id: 'pipe 5' },
-        // ]);
-      });
-  };
+  useUpdateEffect(() => {
+    let stations: { [index: number | string]: number } = {};
+    let total = initialLength;
+
+    for (let i = 0; i < sequence.length; i++) {
+      stations[sequence[i]] = total;
+      total += Number(pipeDetails[sequence[i]].length);
+    }
+
+    setStations(stations);
+  }, [initialLength]);
 
   const onDragEnd = (result: any) => {
     // dropped outside the list
-    if (!result.destination) {
+    if (
+      !result.destination ||
+      result.source.index == result.destination.index
+    ) {
       return;
     }
 
@@ -145,10 +150,13 @@ const NewStrungPipes = () => {
 
     if (!left_pipe) left_pipe = null;
 
-    return api.updateSequence({ target_pipe, left_pipe }).catch((err) => {
-      alert(err.message);
-      setSequence(temp);
-    });
+    return api
+      .updateSequence({ target_pipe, left_pipe })
+      .then((res) => {})
+      .catch((err) => {
+        alert(err.message);
+        setSequence(temp);
+      });
   };
 
   if (!loading)
@@ -211,6 +219,10 @@ const NewStrungPipes = () => {
                                 </div>
                                 <div>Grade = {pipeDetails[item].grade}</div>
                                 <div>Length = {pipeDetails[item].length}</div>
+                                <div>
+                                  Station = {Math.floor(stations[item] / 100)} +{' '}
+                                  {stations[item] % 100}
+                                </div>
                               </div>
                             )}
                           </Draggable>
