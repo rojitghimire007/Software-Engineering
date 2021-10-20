@@ -14,6 +14,9 @@ const {
 } = require('./PipeContoller');
 
 const { addFittings, getFittings } = require('./FittingContoller');
+
+const { cutPipe, getCuttingEligiblePipes } = require('./PipeCutting');
+
 const {
   getStringing,
   getStrungPipesInfo,
@@ -37,6 +40,9 @@ const SetRoutes = (app) => {
   app.delete('/deleteFromString', deleteFromString);
   app.get('/getOptions', getOptions);
   app.put('/pipes/:pipeID', editPipe);
+
+  //cutting routes
+  app.get('/pipes/cuttable', getCuttingEligiblePipes);
 
   //stringing
   app.get('/string', getStringing);
