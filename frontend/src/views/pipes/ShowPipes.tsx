@@ -292,7 +292,7 @@ const ShowPipes = () => {
                 // },
                 // columnResizable: true,
                 maxBodyHeight: '70vh',
-                minBodyHeight: '35vh',
+                minBodyHeight: '20vh',
                 exportButton: true,
                 exportFileName: "Pipe_Data_" + date.getFullYear() + 
                   '_' + (date.getMonth() + 1) + '_' + date.getDate(),

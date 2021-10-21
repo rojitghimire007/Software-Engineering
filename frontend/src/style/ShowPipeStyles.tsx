@@ -16,22 +16,24 @@ const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: ColorScheme.primary,
     backgroundImage: `linear-gradient(to right, ${ColorScheme.primaryDark}, ${ColorScheme.primary}, ${ColorScheme.primaryLight})`,
-
     textAlign: 'center',
     width: '30vw',
+    height: '15vh',
     borderRadius: '8px 8px 8px 8px',
     borderWidth: '0 0 3px 0',
     borderStyle: 'solid',
     borderColor: ColorScheme.primaryDark,
     margin: '0 0 1.5vh 2vw',
     paddingTop: '5px',
+    display: 'flex',
+    alignItems: 'center',
   },
   titleContent: {
     textAlign: 'center',
     color: ColorScheme.onPrimary,
     fontFamily: 'Bebas Neue',
-    fontSize: '5rem',
-    letterSpacing: '.5rem',
+    fontSize: '3vw',
+    letterSpacing: '1.5vw',
     wordWrap: 'break-word',
     textShadow: '0 0 black, 0 2px black, 3px 2px black, 0 1px black',
   },
@@ -76,6 +78,12 @@ const useStyles = makeStyles((theme) => ({
   },
   stickyActions: {
     border: '2px solid #000 !important',
+    marginBottom: '10px',
+
+    // '& .MuiPaper-elevation2': {
+    '& > div': {
+      zIndex: 1,
+    },
 
     '& table': {
       // tableLayout: 'auto !important',
@@ -84,6 +92,17 @@ const useStyles = makeStyles((theme) => ({
       
       // Table Headers
       '& thead': {
+        '& :first-child': {
+          // position: 'sticky',
+          left: '0',
+          zIndex: 999 + ' !important',
+          '& th:first-child': {
+            backgroundColor: `${ColorScheme.primaryDark}`,
+            position: 'sticky',
+            left: '0',
+            zIndex: 999 + ' !important',
+          },
+        },
         '& th': {
           border: '2px solid #000',
           boxSizing: 'border-box !important',
@@ -100,12 +119,6 @@ const useStyles = makeStyles((theme) => ({
           color: `${ColorScheme.onPrimary}`,
           fontSize: '125%',
           
-          '&:first-child': {
-            backgroundColor: `${ColorScheme.primaryDark}`,
-            position: 'sticky',
-            left: '0',
-            zIndex: 999,
-          },
 
           '& > div':{
             display: 'flex',
@@ -159,17 +172,18 @@ const useStyles = makeStyles((theme) => ({
       // Table Rows
       '& tbody': {
         
-
-        '& td': {
-          border: '2px solid #000',
-          boxSizing: 'border-box !important',
-          verticalAlign: 'middle',
-
-          '&:first-child': {
-            backgroundColor: `${ColorScheme.secondaryLight}`,
+        
+        '& > tr': {
+          '& td:first-child': {
+            backgroundColor: `${ColorScheme.secondaryLight} !important`,
             position: 'sticky',
             left: '0',
-            zIndex: 9,
+            zIndex: 0 + ' !important',
+          },
+          '& td': {
+            border: '2px solid #000',
+            boxSizing: 'border-box !important',
+            verticalAlign: 'middle',
           },
         },
       },
