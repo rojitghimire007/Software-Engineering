@@ -154,12 +154,12 @@ const lengthofSequence = async (req, res, next) => {
 const getStriningEligiblePipes = async (req, res, next) => {
   try {
     let ans = await client.query(
-      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' and iscut = false`
+      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' and iscut = false and not exists(select 1 from stringing where stringing.pipe = pipes.pipe_id);`
     );
     ans = ans.rows;
 
     let _ = await client.query(
-      `select min(pipe_id) as pipe_id from pipes where pipe_id ~ '[0-9]+[A-Z]' group by SUBSTR(pipe_id, 0, LENGTH(pipe_id))`
+      `select min(pipe_id) as pipe_id from pipes where pipe_id ~ '[0-9]+[A-Z]' and not exists(select 1 from stringing where stringing.pipe = pipes.pipe_id) group by SUBSTR(pipe_id, 0, LENGTH(pipe_id))`
     );
     ans = ans.concat(_.rows);
 
