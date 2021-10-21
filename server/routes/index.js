@@ -24,7 +24,7 @@ const {
   updateSequence,
   lengthofSequence,
 } = require('./PipeStringing');
-const { cutPipe } = require('./PipeCutting');
+//const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
   //user routes

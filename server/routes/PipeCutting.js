@@ -49,7 +49,7 @@ const cutPipe = async (req, res, next) => {
   }
 };
 
-const getCuttingEligiblePipes = async (req, res, next) => {
+/*const getCuttingEligiblePipes = async (req, res, next) => {
   const { pipe, cut_length } = req.body;
 
   try {
@@ -65,6 +65,24 @@ const getCuttingEligiblePipes = async (req, res, next) => {
 
     cuttablePipes = cuttablePipes.rows[0].id;
     res.status(200).send({ success: true, cuttablePipes });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};*/
+const getCuttingEligiblePipes = async (req, res, next) => {
+  try {
+    let ans = await client.query(
+      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' and iscut = false`
+    );
+    ans = ans.rows;
+
+    let _ = await client.query(
+      `select max(pipe_id) as pipe_id from pipes where pipe_id ~ '[0-9]+[A-Z]' group by SUBSTR(pipe_id, 0, LENGTH(pipe_id))`
+    );
+    ans = ans.concat(_.rows);
+
+    res.status(200).send(ans);
   } catch (error) {
     console.log(error);
     next(error);
