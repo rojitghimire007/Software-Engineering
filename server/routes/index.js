@@ -24,6 +24,7 @@ const {
   updateSequence,
   lengthofSequence,
 } = require('./PipeStringing');
+const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
   //user routes
@@ -43,6 +44,8 @@ const SetRoutes = (app) => {
 
   //cutting routes
   app.get('/pipes/cuttable', getCuttingEligiblePipes);
+  //cutting
+  app.post('/pipes/cut', cutPipe);
 
   //stringing
   app.get('/string', getStringing);
