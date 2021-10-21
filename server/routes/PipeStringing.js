@@ -3,7 +3,7 @@ const { client } = require('../utils/databaseConnection');
 const updateFirstPipe = async (pipe_id) => {
   try {
     await client.query(
-      `DELETE FROM first_pipe; INSERT INTO first_pipe(id) VALUES(${pipe_id});`
+      `DELETE FROM first_pipe; INSERT INTO first_pipe(id) VALUES('${pipe_id}');`
     );
     return true;
   } catch (error) {
@@ -22,12 +22,12 @@ const getStringing = async (req, res, next) => {
 
     let data = await client.query(
       `with recursive walk as (
-            select s1.pipe, s1.next, array[pipe] as path from stringing s1
-            where s1.pipe = ${first_pipe.id}
+            select s1.pipe::varchar(20), s1.next::varchar(20), array[pipe]::varchar(20)[] as path from stringing s1
+            where s1.pipe = '${first_pipe.id}'
             
             union all
             
-            select s2.pipe, s2.next, w.path || s2.pipe from stringing s2
+            select s2.pipe::varchar(20), s2.next::varchar(20), (w.path || s2.pipe)::varchar(20)[] from stringing s2
             join walk w
             on w.next = s2.pipe
         )
@@ -49,11 +49,11 @@ const appendToString = async (req, res, next) => {
     if (firstPipe.rows.length == 0) updateFirstPipe(pipe_id);
     else
       await client.query(
-        `update stringing set next = ${pipe_id} where next is null;`
+        `update stringing set next = '${pipe_id}' where next is null;`
       );
 
     await client.query(
-      `INSERT INTO stringing(pipe, next) VALUES(${pipe_id}, null)`
+      `INSERT INTO stringing(pipe, next) VALUES('${pipe_id}', null)`
     );
 
     res.status(200).send({ success: true });
@@ -66,12 +66,17 @@ const appendToString = async (req, res, next) => {
 const getStrungPipesInfo = async (req, res, next) => {
   let { pipes } = req.params;
   pipes = pipes.split('_');
+  var offset = 1;
+  var placeholders = pipes
+    .map(function (name, i) {
+      return '$' + (i + offset);
+    })
+    .join(',');
 
   try {
     let data = await client.query(
-      `SELECT void, DATE(inventory_date), CONCAT(first_name, ' ', last_name) AS inspector, location, pipe_id as id,  coil_number as coil_no, heat_number as heat_no, diameter, designation as schedule, wall_thickness, grade, pipe_length as length, pipes.coating_type as coating, color as coating_color, mfg as manufacturer, material as material_type, purchase_order as po_number, comments FROM pipes INNER JOIN schedule_and_class ON pipes.schedule_class = schedule_and_class.id INNER JOIN users ON pipes.inspector_id = users.id INNER JOIN pipe_coating ON pipes.coating_type = pipe_coating.coating_type WHERE pipe_id in (${pipes.join(
-        ','
-      )})`
+      `SELECT void, DATE(inventory_date), CONCAT(first_name, ' ', last_name) AS inspector, location, pipe_id as id,  coil_number as coil_no, heat_number as heat_no, diameter, designation as schedule, wall_thickness, grade, pipe_length as length, pipes.coating_type as coating, color as coating_color, mfg as manufacturer, material as material_type, purchase_order as po_number, comments FROM pipes INNER JOIN schedule_and_class ON pipes.schedule_class = schedule_and_class.id INNER JOIN users ON pipes.inspector_id = users.id INNER JOIN pipe_coating ON pipes.coating_type = pipe_coating.coating_type WHERE pipe_id in (${placeholders})`,
+      pipes
     );
 
     return res.status(200).send(data.rows);
@@ -84,8 +89,8 @@ const updateSequence = async (req, res, next) => {
   let { target_pipe, left_pipe } = req.body;
 
   try {
-    let nexts = await client.query(
-      `SELECT * FROM stringing WHERE pipe in (${target_pipe}, ${left_pipe})`
+    nexts = await client.query(
+      `SELECT * FROM stringing WHERE pipe in ('${target_pipe}', '${left_pipe}')`
     );
 
     nexts = nexts.rows;
@@ -104,23 +109,22 @@ const updateSequence = async (req, res, next) => {
     await client.query(`
       update stringing
       set next = case
-      when pipe = ${left_pipe} then ${target_pipe}
-      when next = ${target_pipe} then ${temp_next}
+      when pipe = '${left_pipe}' then '${target_pipe}'
+      when next = '${target_pipe}' then '${temp_next}'
       end
-      where next in (${target_pipe} , ${curr_next})
+      where next in ('${target_pipe}' , '${curr_next}')
       ${!target_pipe || !curr_next ? 'or next is null' : ''};
 
     `);
 
-    await client.query(`delete from stringing where pipe=${target_pipe};`);
+    await client.query(`delete from stringing where pipe='${target_pipe}';`);
 
     let firstPipe = await client.query('SELECT * from first_pipe;');
     firstPipe = firstPipe.rows[0].id;
 
     await client.query(
-      `insert into stringing(pipe, next) values(${target_pipe}, ${
-        !left_pipe ? firstPipe : !curr_next ? null : curr_next
-      });`
+      `insert into stringing(pipe, next) values('${target_pipe}', $1);`,
+      [!left_pipe ? firstPipe : !curr_next ? null : curr_next]
     );
 
     if (firstPipe == target_pipe) updateFirstPipe(temp_next); //first pipe is being moved
@@ -165,14 +169,19 @@ const deleteFromSequence = async (req, res, next) => {
 
 const lengthofSequence = async (req, res, next) => {
   let { sequence } = req.body;
+  var offset = 1;
+  var placeholders = sequence
+    .map(function (name, i) {
+      return '$' + (i + offset);
+    })
+    .join(',');
 
   if (!sequence || sequence.length == 0)
     return res.status(200).send({ length: 0 });
   try {
     let length = await client.query(
-      `SELECT SUM(pipe_length) as length from pipes where pipe_id in (${sequence.join(
-        ','
-      )})`
+      `SELECT SUM(pipe_length) as length from pipes where pipe_id in (${placeholders})`,
+      sequence
     );
     length = length.rows[0];
 

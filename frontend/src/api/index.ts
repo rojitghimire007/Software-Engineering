@@ -75,6 +75,10 @@ export default {
   getSequenceLength: (sequence: Array<any>) =>
     authPost(API.getSequenceLength, { sequence }),
 
+  // Cutting
+
+  getCuttingEligiblePipes: () => authGet(API.getCuttingEligiblePipes, ''),
+
   // Fittings
   getFittings: () => {
     return authGet(API.getFittings, '');

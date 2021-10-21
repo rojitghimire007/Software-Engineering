@@ -14,6 +14,9 @@ const {
 } = require('./PipeContoller');
 
 const { addFittings, getFittings } = require('./FittingContoller');
+
+const { cutPipe, getCuttingEligiblePipes } = require('./PipeCutting');
+
 const {
   getStringing,
   getStrungPipesInfo,
@@ -22,7 +25,7 @@ const {
   lengthofSequence,
   getStriningEligiblePipes,
 } = require('./PipeStringing');
-const { cutPipe } = require('./PipeCutting');
+//const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
   //user routes
@@ -40,6 +43,8 @@ const SetRoutes = (app) => {
   app.get('/getOptions', getOptions);
   app.put('/pipes/:pipeID', editPipe);
 
+  //cutting routes
+  app.get('/pipes/cuttable', getCuttingEligiblePipes);
   //cutting
   app.post('/pipes/cut', cutPipe);
 
