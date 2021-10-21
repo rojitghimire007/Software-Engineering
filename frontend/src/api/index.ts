@@ -70,6 +70,8 @@ export default {
     });
   },
 
+  deleteFromSequence: (pipe: string) => authDelete(API.stringing + `/${pipe}`),
+
   getSequenceLength: (sequence: Array<any>) =>
     authPost(API.getSequenceLength, { sequence }),
 

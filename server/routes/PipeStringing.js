@@ -16,6 +16,8 @@ const getStringing = async (req, res, next) => {
   try {
     let first_pipe = await client.query(`SELECT * FROM first_pipe;`);
 
+    if (first_pipe.rows.length == 0) return res.status(200).send([]);
+
     first_pipe = first_pipe.rows[0];
 
     let data = await client.query(
@@ -131,6 +133,36 @@ const updateSequence = async (req, res, next) => {
   }
 };
 
+const deleteFromSequence = async (req, res, next) => {
+  let { pipe } = req.params;
+
+  try {
+    let firstPipe = await client.query('SELECT * from first_pipe;');
+    firstPipe = firstPipe.rows[0].id;
+
+    let current = await client.query(
+      `SELECT * FROM stringing where pipe = ${pipe}`
+    );
+    current = current.rows[0];
+
+    if (pipe == firstPipe) {
+      if (current.next)
+        client.query(`UPDATE first_pipe set id = ${current.next};`);
+      else client.query('delete from first_pipe;');
+    }
+
+    await client.query(`
+    delete from stringing where pipe = ${pipe};
+    update stringing set next = ${current.next} where next = ${pipe};
+    `);
+
+    res.status(200).send({ success: true });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 const lengthofSequence = async (req, res, next) => {
   let { sequence } = req.body;
 
@@ -177,4 +209,5 @@ module.exports = {
   updateSequence,
   lengthofSequence,
   getStriningEligiblePipes,
+  deleteFromSequence,
 };
