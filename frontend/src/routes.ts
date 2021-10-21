@@ -1,7 +1,7 @@
 import React, { ComponentType } from 'react';
 import ShowPipes from 'views/pipes/ShowPipes';
 import ShowFittings from 'views/fittings/ShowFittings';
-import NewStrungPipes from 'views/stringing/NewStrungPipes';
+import NewStrungPipes from 'views/stringing/StrungPipes';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 const StrungPipes = React.lazy(() => import('views/stringing/StrungPipes'));
