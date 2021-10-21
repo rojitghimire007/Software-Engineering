@@ -40,6 +40,8 @@ export default {
 
   // Stringing calls
 
+  getStriningEligiblePipes: () => authGet(API.getStriningEligiblePipes, ''),
+
   getStringing: () => authGet(API.stringing, ''),
 
   appendToString: (data: { pipe_id: string | number }) =>

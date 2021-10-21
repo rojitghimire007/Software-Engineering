@@ -20,6 +20,7 @@ const API = {
   stringing: `${URL}/string`,
   getStrungPipesInfo: `${URL}/pipes/info/`,
   getSequenceLength: `${URL}/pipes/length/`,
+  getStriningEligiblePipes: `${URL}/string/eligible`,
 };
 
 export { URL, API };
