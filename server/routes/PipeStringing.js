@@ -186,7 +186,7 @@ const lengthofSequence = async (req, res, next) => {
 const getStriningEligiblePipes = async (req, res, next) => {
   try {
     let ans = await client.query(
-      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' and iscut = false and not exists(select 1 from stringing where stringing.pipe = pipes.pipe_id);`
+      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' except all select pipe from cut_pipes except all select pipe from stringing;`
     );
     ans = ans.rows;
 
