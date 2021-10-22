@@ -23,8 +23,19 @@ const useStyles = makeStyles ((theme) => ({
       height: '24px',
       width: '150px',
       position: 'relative',
+      fontFamily: "'Teko', serif",
+      fontSize: '16px',
       zIndex: 3,
       top: 'auto',
+      left: '200px',
+    },
+    eligiblePipe: {
+      fontSize: '24px !important',
+      
+
+      '& option': {
+        fontSize: '16px !important',
+      },
     },
     pipe: {
       border: '0 3px 3px 3px solid ' + `${ColorScheme.secondaryDark}`,
@@ -94,6 +105,7 @@ const useStyles = makeStyles ((theme) => ({
       paddingTop: '10px !important',
       paddingBottom: '10px !important',
       paddingLeft: '10px !important',
+      paddingRight: '10px !important',
       
       '&:hover' : {
         borderColor: `${ColorScheme.secondary}`,

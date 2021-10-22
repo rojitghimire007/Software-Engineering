@@ -170,6 +170,10 @@ const NewStrungPipes = () => {
       });
   };
 
+  //////////////////////////////
+  //            NEW
+  //////////////////////////////
+
   // Going to need another method to update stations before refresh
   // Like for actual pipes!
   const createStations = (item: any, index: number) => {
@@ -187,24 +191,38 @@ const NewStrungPipes = () => {
   // const[available,getAvailable] = useState<Array<any>>([]);
   // const[available,getAvailable] = useState<{[index: string | number]: any}>({});
   // const[available,getAvailable] = useState<Array<any>>([]);
-  const [available,getAvailable] = useState<{ [index: number]: any }>({});
+  // const[available,getAvailable] = useState<Array<any>>([]);
+  // const [available,getAvailable] = useState<{ [index: number]: any }>({});
   
-  // const [have, getAvailable] = useState<Array<number>>([]);
-  const have = [""];
+  // const [eligible, setEligible] = useState<Array<number>>([]);
+  const [eligible, setEligible] = useState<dataType[]>([]);
+  // const [eligible, setEligible] = useState<{
+  //   [index: number | string]: number;
+  // }>({});
   
   // API call to get available pipes
   useEffect(() =>{
     api
       .getStriningEligiblePipes()
       .then((res) => {
-        getAvailable(
-          res.reduce((result: any, entry: any) => {
-            result[entry.id] = entry;
-            return result;
-          }, {})
-        );
+        // getAvailable(
+        //   res.reduce((result: any, entry: any) => {
+        //     // console.log(res);
+        //     result[entry.pipe_id] = entry;
+        //     console.log('eligible pipe details');
+        //     console.log(result);
+        //     return result;
+        //   }, {})
+        // );
+        setEligible(res);
+        // console.log('eligible pipe array')
+        // console.log(res);
       })
-  }, [have]);
+  }, []);
+
+  //////////////////////////////
+  //            OLD
+  //////////////////////////////
 
   if (!loading)
     return (
@@ -279,6 +297,10 @@ const NewStrungPipes = () => {
                       );
                     })}
                     {provided.placeholder}
+
+                    {/* ////////////////////////////// */}
+                    {/* //            NEW              */}
+                    {/* ////////////////////////////// */}
                     <div className={classes.pipeAdd}>
                       <div>
                         <span>
@@ -289,17 +311,19 @@ const NewStrungPipes = () => {
                         {/* <label htmlFor="Available Pipes">
                           Choose pipe:
                         </label> */}
-                        {have.map((pipe, index) => {
-                          // <option>{pipe}</option>
-                          <div>
-                            {/* {available[index].pipe_id} */}
-                            {/* {console.log(available[index].pipe_id)} */}
-                            {/* {console.log(available.pipe_id)} */}
-                            {/* {console.log(available)} */}
-                            {/* {console.log(available[index])} */}
-                          </div>
-                          // console.log(pipe.pipe_id)
-                        })}       
+                        {/* {eligible.map((pipe, index) => { */}
+                        <select name="Available Pipes" className={classes.eligiblePipe}>
+                          {eligible.map((item, index) => {
+                            return(
+                                
+                              <option>
+                                {/* {console.log('in the mapping')} */}
+                                {console.log(item.pipe_id)}
+                                {item.pipe_id}
+                              </option>
+                            )
+                          })}       
+                        </select>
                       </div>
                     </div>
                   </div>
