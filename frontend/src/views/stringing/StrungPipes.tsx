@@ -46,16 +46,27 @@ const reorder = (
 const grid = 50;
 
 const NewStrungPipes = () => {
-  const [sequence, setSequence] = useState<Array<number>>([]);
-  const [window, setWindow] = useState(-1); //careful sliding left when window = 0
-  const [pipeDetails, setPipeDetails] = useState<{ [index: number]: any }>({});
-
+  
+  const [sequence, setSequence] = useState<Array<number>>([]); // correct order of pipe ids
+  
+  const [window, setWindow] = useState(-1); //careful sliding left when window = 0 ; "view slider"
+                                            // right now set to left most index of view (0, rn)
+  
+  const [pipeDetails, setPipeDetails] = useState<{ [index: number]: any }>({}); // details of pipes in view (what's displayed)
+                                                                                // ONLY for THIS window
+  
   const [loading, setLoading] = useState(true);
+
+  // pipe id + station (pairs them)
   const [stations, setStations] = useState<{
     [index: number | string]: number;
   }>({});
-  const [initialLength, setInitialLength] = useState<number>(-1);
-  const classes = useStyles();
+  const [initialLength, setInitialLength] = useState<number>(-1); // window = 0; length = 0
+                                                                  // based on total length BEFORE first pipe of window
+  
+  
+  
+  const classes = useStyles(); 
 
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     // some basic styles to make the items look a bit nicer
@@ -169,11 +180,11 @@ const NewStrungPipes = () => {
           </Typography>
         </Toolbar>
         {/* <Toolbar className={classes.title}> */}
-        <div className={classes.center}>
+        {/* <div className={classes.center}>
           <Button variant="contained" color="secondary">
             Refresh
           </Button>
-        </div>
+        </div> */}
         {/*</Toolbar>*/}
 
         <main>
