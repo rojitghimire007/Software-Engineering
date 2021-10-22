@@ -170,6 +170,20 @@ const NewStrungPipes = () => {
       });
   };
 
+  // Going to need another method to update stations before refresh
+  // Like for actual pipes!
+  const createStations = (item: any, index: number) => {
+
+    // let Length = pipeDetails[item].length;
+
+    return(
+      <div className={classes.station}>
+        Station = {Math.floor(stations[item] / 100)} +{' '}
+              {stations[item] % 100}
+      </div>
+    )
+  };
+
   if (!loading)
     return (
       <div className={classes.body}>
@@ -189,6 +203,7 @@ const NewStrungPipes = () => {
 
         <main>
           <div>
+            <div>Hey Man</div>
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable" direction="horizontal">
                 {(provided, snapshot) => (
@@ -200,7 +215,14 @@ const NewStrungPipes = () => {
                   >
                     {sequence.map((item, index) => {
                       return (
-                        <>
+                        <div>
+                          {/* <div className={classes.station}>
+                            Station = {Math.floor(stations[item] / 100)} +{' '}
+                                  {stations[item] % 100}
+                          </div> */}
+
+                          {createStations(item, index)}
+
                           {/* <div>{`${item.station} + ${item.id}`}</div> */}
                           <Draggable
                             key={`${item}`}
@@ -237,10 +259,11 @@ const NewStrungPipes = () => {
                               </div>
                             )}
                           </Draggable>
-                        </>
+                        </div>
                       );
                     })}
                     {provided.placeholder}
+                    <div className={classes.pipe}>Pipe Placeholder</div>
                   </div>
                 )}
               </Droppable>

@@ -16,48 +16,73 @@ const useStyles = makeStyles ((theme) => ({
       justifyContent: 'center',
       alignItems: 'center',
     },
+    station: {
+      border: '3px solid' + ColorScheme.primaryDark,
+      boxSizing: 'border-box',
+      padding: '3px',
+      height: '24px',
+      width: '150px',
+      position: 'relative',
+      zIndex: 3,
+      top: 'auto',
+    },
     pipe: {
-      border: '3px solid ' + `${ColorScheme.primaryDark}`,
+      border: '0 3px 3px 3px solid ' + `${ColorScheme.secondaryDark}`,
       borderRadius: '15px',
       transition: '0.4s',
       fontFamily: "'Teko', serif",
-      backgroundColor: ColorScheme.primary,
-      color: ColorScheme.onPrimary,
+      backgroundColor: ColorScheme.secondary,
+      color: ColorScheme.onSecondary,
       boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
       zIndex: 999,
       paddingTop: '10px !important',
       paddingBottom: '10px !important',
+      paddingLeft: '10px !important',
       
       '&:hover' : {
-        borderColor: `${ColorScheme.primary}`,
-        backgroundColor: ColorScheme.primaryLight,
+        borderColor: `${ColorScheme.secondary}`,
+        backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
         transform: 'scale(1.03)',
       },
+
+      // pipe number
+      '& :first-child': {
+        paddingLeft: '50% !important',
+        // paddingBottom: '5px !important', // makes text more pronounced
+        fontFamily: "'Bebas Neue', serif",
+        fontStyle: 'italic',
+        fontSize: '32px',
+      },
       
-      '& div' : {
-
-        //header
-        '& span' : {
-          fontSize: '32px',
-          // margin: '0 auto',
-          padding: '50px',
+      '& > div': {
+        
+        '& div' : {
+          width: '100% !important',
+          
+          //header
+          '& span' : {
+            fontSize: '32px',
+            width: '100% !important',
+            // margin: '0 auto',
+            padding: '50px',
+          },
+          
+          //information
+          fontSize: '24px',
+          textAlign: "left",
+          border: 'none',
+          margin: '0 5px',
+          backgroundColor: 'rgba(0,0,0,0)',
+          color: 'inherit',
+          padding: '0',
+          transition: 'none',
+          //transition: 'color 0.06s', // synced it?????
+          // likely not, keeping it for now
         },
-
-        //information
-        fontSize: '24px',
-        textAlign: "left",
-        border: 'none',
-        margin: '0 5px',
-        backgroundColor: 'rgba(0,0,0,0)',
-        color: 'inherit',
-        padding: '0',
-        transition: 'none',
-        //transition: 'color 0.06s', // synced it?????
-                                     // likely not, keeping it for now
       },
     },
-    station: {
+    stationOld: {
       transformOrigin: '1 1',
       transform: 'translate(2rem, 3rem) rotate(-90deg) ',
       // background: 'none',
