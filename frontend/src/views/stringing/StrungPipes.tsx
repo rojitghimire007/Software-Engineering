@@ -184,6 +184,28 @@ const NewStrungPipes = () => {
     )
   };
 
+  // const[available,getAvailable] = useState<Array<any>>([]);
+  // const[available,getAvailable] = useState<{[index: string | number]: any}>({});
+  // const[available,getAvailable] = useState<Array<any>>([]);
+  const [available,getAvailable] = useState<{ [index: number]: any }>({});
+  
+  // const [have, getAvailable] = useState<Array<number>>([]);
+  const have = [""];
+  
+  // API call to get available pipes
+  useEffect(() =>{
+    api
+      .getStriningEligiblePipes()
+      .then((res) => {
+        getAvailable(
+          res.reduce((result: any, entry: any) => {
+            result[entry.id] = entry;
+            return result;
+          }, {})
+        );
+      })
+  }, [have]);
+
   if (!loading)
     return (
       <div className={classes.body}>
@@ -203,7 +225,6 @@ const NewStrungPipes = () => {
 
         <main>
           <div>
-            <div>Hey Man</div>
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable" direction="horizontal">
                 {(provided, snapshot) => (
@@ -216,11 +237,6 @@ const NewStrungPipes = () => {
                     {sequence.map((item, index) => {
                       return (
                         <div>
-                          {/* <div className={classes.station}>
-                            Station = {Math.floor(stations[item] / 100)} +{' '}
-                                  {stations[item] % 100}
-                          </div> */}
-
                           {createStations(item, index)}
 
                           {/* <div>{`${item.station} + ${item.id}`}</div> */}
@@ -263,7 +279,29 @@ const NewStrungPipes = () => {
                       );
                     })}
                     {provided.placeholder}
-                    <div className={classes.pipe}>Pipe Placeholder</div>
+                    <div className={classes.pipeAdd}>
+                      <div>
+                        <span>
+                          Add Pipe Placeholder
+                        </span>
+                      </div>
+                      <div>
+                        {/* <label htmlFor="Available Pipes">
+                          Choose pipe:
+                        </label> */}
+                        {have.map((pipe, index) => {
+                          // <option>{pipe}</option>
+                          <div>
+                            {/* {available[index].pipe_id} */}
+                            {/* {console.log(available[index].pipe_id)} */}
+                            {/* {console.log(available.pipe_id)} */}
+                            {/* {console.log(available)} */}
+                            {/* {console.log(available[index])} */}
+                          </div>
+                          // console.log(pipe.pipe_id)
+                        })}       
+                      </div>
+                    </div>
                   </div>
                 )}
               </Droppable>

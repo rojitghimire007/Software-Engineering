@@ -82,6 +82,57 @@ const useStyles = makeStyles ((theme) => ({
         },
       },
     },
+    pipeAdd: {
+      border: '3px dashed ' + `${ColorScheme.secondaryDark}`,
+      borderRadius: '15px',
+      transition: '0.4s',
+      fontFamily: "'Teko', serif",
+      backgroundColor: ColorScheme.secondaryLight,
+      color: ColorScheme.onSecondary,
+      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
+      position: 'sticky',
+      paddingTop: '10px !important',
+      paddingBottom: '10px !important',
+      paddingLeft: '10px !important',
+      
+      '&:hover' : {
+        borderColor: `${ColorScheme.secondary}`,
+        backgroundColor: ColorScheme.secondaryLight,
+        color: ColorScheme.onSecondary,
+        transform: 'scale(1.01)',
+      },
+
+      // pipe number
+      '& :first-child': {
+        // paddingLeft: '50% !important',
+        // paddingBottom: '5px !important', // makes text more pronounced
+        fontFamily: "'Bebas Neue', serif",
+        fontStyle: 'italic',
+        fontSize: '32px',
+      },
+      
+      '& > div': {
+        
+        '& :first-child' : {
+          width: '100% !important',
+          
+          //header
+          '& span' : {
+            fontSize: '32px',
+            width: '100% !important',
+            // margin: '0 auto',
+            padding: '50px',
+
+          },
+          
+        },
+        // options
+        '& > label': {
+          fontFamily: 'Teko, serif !important',
+          fontSize: '20px !important',
+        },
+      },
+    },
     stationOld: {
       transformOrigin: '1 1',
       transform: 'translate(2rem, 3rem) rotate(-90deg) ',
