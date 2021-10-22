@@ -9,7 +9,6 @@ const useStyles = makeStyles ((theme) => ({
       borderRadius: '50%',
       padding: '8px',
       marginRight: '8px',
-      /* background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')}; */
       width: '40px',
       height: '40px',
       display: 'flex',
@@ -21,7 +20,7 @@ const useStyles = makeStyles ((theme) => ({
       boxSizing: 'border-box',
       padding: '3px',
       height: '24px',
-      width: '150px',
+      width: '100px',
       position: 'relative',
       fontFamily: "'Teko', serif",
       fontSize: '16px',
@@ -31,39 +30,80 @@ const useStyles = makeStyles ((theme) => ({
     },
     eligiblePipe: {
       fontSize: '24px !important',
+      color: ColorScheme.onSecondary,
       
-
+      
       '& option': {
         fontSize: '16px !important',
       },
     },
-    pipe: {
-      border: '0 3px 3px 3px solid ' + `${ColorScheme.secondaryDark}`,
-      borderRadius: '15px',
-      transition: '0.4s',
-      fontFamily: "'Teko', serif",
-      backgroundColor: ColorScheme.secondary,
-      color: ColorScheme.onSecondary,
-      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
-      zIndex: 999,
-      paddingTop: '10px !important',
-      paddingBottom: '10px !important',
-      paddingLeft: '10px !important',
-      
+    
+    
+    //  || PIPES
+
+    pipeContainer: {
+      display: 'flex',
+      rowGap: 0,
+      columnGap: 0,
+
       '&:hover' : {
         borderColor: `${ColorScheme.secondary}`,
         backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
         transform: 'scale(1.03)',
       },
+    },
+    
+    pipeStart: {
+      width:'80px',
+      height:'170px',
+      backgroundColor: ColorScheme.secondary,
+      color: 'white',
+      borderRadius: '50%',
+      border: '3px solid black',
+      zIndex: 997,
+    },
+
+    pipe: {
+      // border: 'solid ' + `${ColorScheme.secondaryDark}`,
+      // borderWidth: '3px 0px 3px 0px',
+      // borderColor: 'black',
+      // borderRadius: '15px',
+      borderTop: '3px solid black',
+      borderBottom: '3px solid black',
+      transition: '0.4s',
+      fontFamily: "'Teko', serif",
+      backgroundColor: ColorScheme.secondary,
+      color: ColorScheme.onSecondary,
+      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
+      zIndex: 998,
+      paddingTop: '10px !important',
+      paddingBottom: '10px !important',
+      paddingLeft: '10px !important',
+      paddingRight: '10px !important',
+      width: '200%',
+      position: 'relative',
+      left: '-15px',
+      
+      // '&:hover' : {
+      //   borderColor: `${ColorScheme.secondary}`,
+      //   backgroundColor: ColorScheme.secondaryLight,
+      //   color: ColorScheme.onSecondary,
+      //   transform: 'scale(1.03)',
+      // },
 
       // pipe number
       '& :first-child': {
-        paddingLeft: '50% !important',
+        // paddingLeft: '25% !important',
         // paddingBottom: '5px !important', // makes text more pronounced
         fontFamily: "'Bebas Neue', serif",
         fontStyle: 'italic',
+        textDecoration:'underline',
         fontSize: '32px',
+
+        '& :hover': {
+          color: ColorScheme.secondaryDark,
+        }
       },
       
       '& > div': {
@@ -74,7 +114,7 @@ const useStyles = makeStyles ((theme) => ({
           //header
           '& span' : {
             fontSize: '32px',
-            width: '100% !important',
+            width: '50% !important',
             // margin: '0 auto',
             padding: '50px',
           },
@@ -92,6 +132,32 @@ const useStyles = makeStyles ((theme) => ({
           // likely not, keeping it for now
         },
       },
+
+      '& div:after': {
+        // borderRadius: '50% !important',
+        // backgroundColor: 'black !important',
+        // width: '50px !important',
+        // height: '50px !important',
+      },
+    },
+
+    pipeEnd: {
+      width:'80px',
+      height:'170px',
+      backgroundColor: ColorScheme.secondaryDark,
+      color: 'white',
+      borderRadius: '50%',
+      border: '10px solid black',
+      // borderImage: `linear-gradient(to right, 
+      //               ${ColorScheme.secondary},  
+      //               ${ColorScheme.secondaryDark})`,
+      // backgroundColor: `linear-gradient(to right, 
+      //               ${ColorScheme.secondaryDark},  
+      //               ${ColorScheme.onSecondary})`,
+      position: 'relative',
+      left: '-35px',
+
+      zIndex: 999,
     },
     pipeAdd: {
       border: '3px dashed ' + `${ColorScheme.secondaryDark}`,
@@ -106,6 +172,7 @@ const useStyles = makeStyles ((theme) => ({
       paddingBottom: '10px !important',
       paddingLeft: '10px !important',
       paddingRight: '10px !important',
+      marginTop: '20px !important',
       
       '&:hover' : {
         borderColor: `${ColorScheme.secondary}`,
@@ -127,22 +194,23 @@ const useStyles = makeStyles ((theme) => ({
         
         '& :first-child' : {
           width: '100% !important',
+          background: ColorScheme.secondaryLight,
           
           //header
-          '& span' : {
-            fontSize: '32px',
-            width: '100% !important',
-            // margin: '0 auto',
-            padding: '50px',
+          // '& span' : {
+          //   fontSize: '32px',
+          //   width: '100% !important',
+          //   // margin: '0 auto',
+          //   padding: '50px',
 
-          },
+          // },
           
         },
         // options
-        '& > label': {
-          fontFamily: 'Teko, serif !important',
-          fontSize: '20px !important',
-        },
+        // '& > label': {
+        //   fontFamily: 'Teko, serif !important',
+        //   fontSize: '20px !important',
+        // },
       },
     },
     stationOld: {

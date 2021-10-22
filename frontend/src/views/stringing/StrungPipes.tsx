@@ -18,6 +18,11 @@ import {
   Container,
   CardActionArea,
 } from '@material-ui/core';
+import {
+  Select,
+  MenuItem,
+  FormControl
+} from '@mui/material'
 import { typography } from '@mui/system';
 
 import useStyles from '../../style/StringingStyles';
@@ -73,7 +78,7 @@ const NewStrungPipes = () => {
     userSelect: 'none',
     paddingLeft: grid * 2,
     paddingRight: grid * 2,
-    margin: `0 ${grid}px 0 10px`,
+    // margin: `0 ${grid}px 0 10px`,
 
     // change background colour if dragging
     // drag colors not changing yet
@@ -264,33 +269,41 @@ const NewStrungPipes = () => {
                             index={index}
                           >
                             {(provided, snapshot) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                style={getItemStyle(
-                                  snapshot.isDragging,
-                                  provided.draggableProps.style
-                                )}
-                                className={classes.pipe}
-                              >
-                                {/* ID */}
-                                <div>
-                                  <span>{item}</span>
+                              // <div className={classes.pipeContainer}>
+
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={getItemStyle(
+                                    snapshot.isDragging,
+                                    provided.draggableProps.style
+                                    )}
+                                  className={classes.pipeContainer}
+                                >
+                                  <div className={classes.pipeStart}/>
+                                  <div className={classes.pipe}>
+                                    {/* ID */}
+                                    <div>
+                                      <span>{item}</span>
+                                    </div>
+
+                                    {/* Information Below */}
+                                    <div>Heat No = {pipeDetails[item].heat_no}</div>
+                                    <div>
+                                      Wall = {pipeDetails[item].wall_thickness}
+                                    </div>
+                                    <div>Grade = {pipeDetails[item].grade}</div>
+                                    <div>Length = {pipeDetails[item].length}</div>
+                                    <div>
+                                      Station = {Math.floor(stations[item] / 100)} +{' '}
+                                      {stations[item] % 100}
+                                    </div>
+                                  </div>
+                                  <div className={classes.pipeEnd}/>
                                 </div>
 
-                                {/* Information Below */}
-                                <div>Heat No = {pipeDetails[item].heat_no}</div>
-                                <div>
-                                  Wall = {pipeDetails[item].wall_thickness}
-                                </div>
-                                <div>Grade = {pipeDetails[item].grade}</div>
-                                <div>Length = {pipeDetails[item].length}</div>
-                                <div>
-                                  Station = {Math.floor(stations[item] / 100)} +{' '}
-                                  {stations[item] % 100}
-                                </div>
-                              </div>
+                              // {/* </div> */}
                             )}
                           </Draggable>
                         </div>
@@ -312,18 +325,29 @@ const NewStrungPipes = () => {
                           Choose pipe:
                         </label> */}
                         {/* {eligible.map((pipe, index) => { */}
-                        <select name="Available Pipes" className={classes.eligiblePipe}>
-                          {eligible.map((item, index) => {
-                            return(
-                                
-                              <option>
-                                {/* {console.log('in the mapping')} */}
-                                {console.log(item.pipe_id)}
-                                {item.pipe_id}
-                              </option>
-                            )
-                          })}       
-                        </select>
+                        <FormControl>
+                          {/* <select name="Available Pipes" className={classes.eligiblePipe}> */}
+                          <Select 
+                            id="Available Pipes" 
+                            className={classes.eligiblePipe}
+                            label="Choose pipe"
+                          >
+                            
+                            {eligible.map((item, index) => {
+                              return(
+                                // <option>
+                                //   {/* {console.log('in the mapping')} */}
+                                //   {console.log(item.pipe_id)}
+                                //   {item.pipe_id}
+                                // </option>
+                                <MenuItem value={item.pipe_id}>
+                                  {item.pipe_id}
+                                </MenuItem>
+                              )
+                            })}       
+                          </Select>
+                          {/* </select> */}
+                        </FormControl>
                       </div>
                     </div>
                   </div>
