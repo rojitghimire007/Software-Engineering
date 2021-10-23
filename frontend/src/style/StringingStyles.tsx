@@ -166,7 +166,7 @@ const useStyles = makeStyles ((theme) => ({
       fontFamily: "'Teko', serif",
       backgroundColor: ColorScheme.secondaryLight,
       color: ColorScheme.onSecondary,
-      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
+      // boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
       position: 'sticky',
       paddingTop: '10px !important',
       paddingBottom: '10px !important',
