@@ -249,17 +249,17 @@ const ShowPipes = () => {
   const classes = useStyles();
 
   return (
-    <>
-      <div className={classes.wrapper}>
-        {console.log(date)}
-        <div>
-          <CssBaseline />
-          <Toolbar className={classes.title}>
-            <Typography variant="h4" className={classes.titleContent}>
-              Pipe Inventory
-            </Typography>
-          </Toolbar>
-        </div>
+    <div className={classes.wrapper}>
+      {console.log(date)}
+      <div>
+        <CssBaseline />
+        <Toolbar className={classes.title}>
+          <Typography variant="h4" className={classes.titleContent}>
+            Pipe Inventory
+          </Typography>
+        </Toolbar>
+      </div>
+      <main>
         <div className={classes.stickyActions}>
           <MaterialTable
             icons={tableIcons}
@@ -465,9 +465,10 @@ const ShowPipes = () => {
             ]}
           />
         </div>
-      </div>
-      <Footer />
-    </>
+        <Footer />
+      </main>
+    </div>
+
   );
 };
 export default ShowPipes;

@@ -149,7 +149,7 @@ const Login = () => {
                     align="center"
                     className={classes.headerText}
                   >
-                    Log In
+                    Login
                   </Typography>
                 </CardContent>
 

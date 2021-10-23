@@ -7,9 +7,9 @@ const Footer = () => {
             <div className="footer">
                 <div className="footer-heading footer-1">
                     <h2>Honor Guard Inspections</h2>
-                        <p>555-555-555</p>
-                        <p>Address</p>
-                        <p>City, State, Zip</p>                    
+                    <p>555-555-555</p>
+                    <p>Address</p>
+                    <p>City, State, Zip</p>
                 </div>
                 <div className="footer-heading footer-2">
                     <h2>About Us </h2>
@@ -29,12 +29,12 @@ const Footer = () => {
                     <input type="submit" value="Sign Up" id="footer-email-btn"></input>
                 </div>
             </div>
-                
-                <div className="row">
-                    <div className="col-sm">
-                        &copy;{new Date().getFullYear()} Honor Guard Inspections | All Rights Reserved | Terms of Service | Privacy
-                    </div>
+
+            <div className="row">
+                <div className="col-sm">
+                    &copy;{new Date().getFullYear()} Honor Guard Inspections | All Rights Reserved | Terms of Service | Privacy
                 </div>
+            </div>
         </div>
     )
 }

@@ -13,6 +13,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: ColorScheme.secondaryLight,
     textAlign: 'center',
   },
+  
+  
   title: {
     backgroundColor: ColorScheme.primary,
     backgroundImage: `linear-gradient(to right, ${ColorScheme.primaryDark}, ${ColorScheme.primary}, ${ColorScheme.primaryLight})`,
@@ -30,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: ColorScheme.onPrimary,
     fontFamily: 'Bebas Neue',
-    fontSize: '5rem',
+    fontSize: '5vw',//5rem',
     letterSpacing: '.5rem',
     wordWrap: 'break-word',
     textShadow: '0 0 black, 0 2px black, 3px 2px black, 0 1px black',
@@ -42,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: '100% 100%',
     backgroundRepeat: 'no-repeat',       
     backgroundColor: ColorScheme.background,
-    height: '100vh',
-    padding: '10px',
+    //height: '100vh',
+    //padding: '10px',
   },
   toolbar: {
     backgroundColor: '#ffeff0',
@@ -67,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
     //   },
     // },
   },
+  
   table: {
     // '&.MtableHeader-header-19': {
     //   fontSize: '32px !important',
@@ -81,12 +84,13 @@ const useStyles = makeStyles((theme) => ({
       // tableLayout: 'auto !important',
       emptyCells: 'show !important',
       borderCollapse: 'collapse !important',
+    
       
       // Table Headers
       '& thead': {
         '& th': {
           border: '2px solid #000',
-          boxSizing: 'border-box !important',
+          boxSizing: 'content-box !important',
           verticalAlign: 'middle',
           // width: '20px !important',
           // overflow: 'hidden',
@@ -99,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
           backgroundColor: `${ColorScheme.primaryLight}`,
           color: `${ColorScheme.onPrimary}`,
           fontSize: '125%',
+          padding: '0 0 0 4px !important',
           
           '&:first-child': {
             backgroundColor: `${ColorScheme.primaryDark}`,
@@ -158,12 +163,14 @@ const useStyles = makeStyles((theme) => ({
       
       // Table Rows
       '& tbody': {
-        
+        boxSizing: 'content-box !important',
 
         '& td': {
           border: '2px solid #000',
           boxSizing: 'border-box !important',
           verticalAlign: 'middle',
+          padding: '0 0 0 4px !important',
+          //box-sizing: 'content-box !important',
 
           '&:first-child': {
             backgroundColor: `${ColorScheme.secondaryLight}`,
@@ -178,6 +185,11 @@ const useStyles = makeStyles((theme) => ({
       '& tfoot': {
         
       },
+  
+        "& .MuiIconButton-root": {
+          padding: '0',
+        }
+      
     },
   },
 }));

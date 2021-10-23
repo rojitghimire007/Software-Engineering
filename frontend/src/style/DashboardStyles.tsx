@@ -47,7 +47,7 @@ const useStyles = makeStyles ((theme) => ({
     },
     cardTitle: {
         flexGrow: 1,
-        fontSize: '2.2em',
+        fontSize: '3.6vw',//'2.2em',
         fontFamily: 'Teko',
         backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
@@ -75,7 +75,7 @@ const useStyles = makeStyles ((theme) => ({
         textAlign: 'center',
         color: ColorScheme.onPrimary,
         fontFamily: 'Bebas Neue',
-        fontSize: '5rem',
+        fontSize: '6vw',
         letterSpacing: '.5rem',
         wordWrap: 'break-word',
         textShadow: '0 0 black, 0 2px black, 3px 2px black, 0 1px black',
