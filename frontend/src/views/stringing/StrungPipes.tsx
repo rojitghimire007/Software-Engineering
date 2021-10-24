@@ -21,9 +21,12 @@ import {
 import {
   Select,
   MenuItem,
-  FormControl
+  FormControl,
+  IconButton,
+  collapseClasses
 } from '@mui/material'
 import { typography } from '@mui/system';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import useStyles from '../../style/StringingStyles';
 import useUpdateEffect from 'utils/useUpdateEffect';
@@ -76,8 +79,8 @@ const NewStrungPipes = () => {
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
-    paddingLeft: grid * 2,
-    paddingRight: grid * 2,
+    // paddingLeft: grid * 2,
+    // paddingRight: grid * 2,
     // margin: `0 ${grid}px 0 10px`,
 
     // change background colour if dragging
@@ -193,35 +196,27 @@ const NewStrungPipes = () => {
     )
   };
 
-  // const[available,getAvailable] = useState<Array<any>>([]);
-  // const[available,getAvailable] = useState<{[index: string | number]: any}>({});
-  // const[available,getAvailable] = useState<Array<any>>([]);
-  // const[available,getAvailable] = useState<Array<any>>([]);
-  // const [available,getAvailable] = useState<{ [index: number]: any }>({});
-  
-  // const [eligible, setEligible] = useState<Array<number>>([]);
+  const createLength = (length: number) => {
+    let numRendered = Math.floor(length / 10);
+    const toRender = { 
+      paddingRight: (numRendered * 100) + 'px', 
+      // backgroundColor: 'yellow',
+      margin: 0
+
+    };
+    return (
+      <div style={toRender} className={classes.pipePadder}></div>
+    );
+  };
+
   const [eligible, setEligible] = useState<dataType[]>([]);
-  // const [eligible, setEligible] = useState<{
-  //   [index: number | string]: number;
-  // }>({});
   
   // API call to get available pipes
   useEffect(() =>{
     api
       .getStriningEligiblePipes()
       .then((res) => {
-        // getAvailable(
-        //   res.reduce((result: any, entry: any) => {
-        //     // console.log(res);
-        //     result[entry.pipe_id] = entry;
-        //     console.log('eligible pipe details');
-        //     console.log(result);
-        //     return result;
-        //   }, {})
-        // );
         setEligible(res);
-        // console.log('eligible pipe array')
-        // console.log(res);
       })
   }, []);
 
@@ -269,8 +264,6 @@ const NewStrungPipes = () => {
                             index={index}
                           >
                             {(provided, snapshot) => (
-                              // <div className={classes.pipeContainer}>
-
                                 <div
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
@@ -300,10 +293,9 @@ const NewStrungPipes = () => {
                                       {stations[item] % 100}
                                     </div>
                                   </div>
+                                  {createLength(pipeDetails[item].length)}
                                   <div className={classes.pipeEnd}/>
                                 </div>
-
-                              // {/* </div> */}
                             )}
                           </Draggable>
                         </div>
@@ -344,8 +336,16 @@ const NewStrungPipes = () => {
                                   {item.pipe_id}
                                 </MenuItem>
                               )
-                            })}       
+                            })}
                           </Select>
+                          <IconButton 
+                            aria-label="add to string" 
+                            onClick={() => {
+                              alert('Pipe Added');
+                            }}
+                          >
+                            <AddCircleOutlineIcon />
+                          </IconButton>       
                           {/* </select> */}
                         </FormControl>
                       </div>

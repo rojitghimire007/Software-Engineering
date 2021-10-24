@@ -56,12 +56,24 @@ const useStyles = makeStyles ((theme) => ({
     
     pipeStart: {
       width:'80px',
-      height:'170px',
+      height:'200px',
       backgroundColor: ColorScheme.secondary,
       color: 'white',
       borderRadius: '50%',
       border: '3px solid black',
       zIndex: 997,
+      marginLeft: '15px',
+      position: 'relative',
+      left: '10px'
+    },
+
+    pipePadder: {
+      borderTop: '3px solid black',
+      borderBottom: '3px solid black',
+      transition: '0.4s',
+      backgroundColor: ColorScheme.secondary,
+      color: ColorScheme.onSecondary,
+      zIndex: 998,
     },
 
     pipe: {
@@ -81,9 +93,10 @@ const useStyles = makeStyles ((theme) => ({
       paddingBottom: '10px !important',
       paddingLeft: '10px !important',
       paddingRight: '10px !important',
+      
       width: '200%',
       position: 'relative',
-      left: '-15px',
+      // left: '-15px',
       
       // '&:hover' : {
       //   borderColor: `${ColorScheme.secondary}`,
@@ -143,7 +156,7 @@ const useStyles = makeStyles ((theme) => ({
 
     pipeEnd: {
       width:'80px',
-      height:'170px',
+      height:'200px',
       backgroundColor: ColorScheme.secondaryDark,
       color: 'white',
       borderRadius: '50%',
@@ -155,7 +168,7 @@ const useStyles = makeStyles ((theme) => ({
       //               ${ColorScheme.secondaryDark},  
       //               ${ColorScheme.onSecondary})`,
       position: 'relative',
-      left: '-35px',
+      left: '-15px',
 
       zIndex: 999,
     },
@@ -173,6 +186,7 @@ const useStyles = makeStyles ((theme) => ({
       paddingLeft: '10px !important',
       paddingRight: '10px !important',
       marginTop: '20px !important',
+      marginLeft: '15px !important',
       
       '&:hover' : {
         borderColor: `${ColorScheme.secondary}`,
