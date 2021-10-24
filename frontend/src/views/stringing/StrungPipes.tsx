@@ -1,4 +1,8 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, 
+                useEffect, 
+                useState, 
+                SyntheticEvent, 
+                MouseEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import api from 'api';
@@ -24,7 +28,8 @@ import {
   MenuItem,
   FormControl,
   IconButton,
-  collapseClasses
+  collapseClasses,
+  Snackbar
 } from '@mui/material'
 import { typography } from '@mui/system';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -182,6 +187,34 @@ const NewStrungPipes = () => {
   //////////////////////////////
   //            NEW
   //////////////////////////////
+
+  // Snackbar stuff
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {setOpen(true);};
+
+  const handleClose = (
+    event: SyntheticEvent | MouseEvent,
+    reason?: string,
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const openSnackbar = (
+    <Button color="secondary" size="small" onClick={handleClose} >
+      UNDO
+    </Button>
+    // <IconButton
+    //   size="small"
+    //   aria-label="close"
+    //   color="inherit"
+    //   onClick={handleClose}
+    // ></IconButton>
+  );
 
   // Going to need another method to update stations before refresh
   // Like for actual pipes!
@@ -345,15 +378,77 @@ const NewStrungPipes = () => {
                             aria-label="add to string" 
                             onClick={() => {
                               addPipe();
+                              handleOpen();
                             }}
                           >
                             <AddCircleOutlineIcon />
-                          </IconButton>       
+                          </IconButton>  
+                          {/* <Snackbar 
+                            open={open}
+                            autoHideDuration={6000}
+                            onClose={handleClose}
+                            message="Pipe Added"
+                            action={openSnackbar}
+                            className={classes.popUp}
+                          />      */}
                         </FormControl>
                       </div>
                     </div>
                   </div>
                 )}
+              </Droppable>
+
+              {/* Transfer List */}
+              <Droppable droppableId="droppable2" direction="horizontal">
+              {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                    {...provided.droppableProps}
+                    className={classes.virtList}
+                  >
+                    {eligible.map((item, index) => {
+                      return(
+                        <div>
+                          <Draggable
+                            key={`${item}`}
+                            draggableId={`${item}`}
+                            index={index}
+                          >
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                style={getItemStyle(
+                                  snapshot.isDragging,
+                                  provided.draggableProps.style
+                                  )}
+                                className={classes.pipeContainer}
+                              >
+                                <div className={classes.pipeStart} />
+
+                                <div className={classes.pipe}>
+                                  <div>
+                                    <span>
+                                      {item.pipe_id}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className={classes.pipeEnd} />
+                              </div>
+                            )}
+                          </Draggable>
+                        </div>
+                      );
+                    })}
+                    {provided.placeholder}
+
+                    <div>(Transfer List)</div>
+
+                  </div>
+              )}
               </Droppable>
             </DragDropContext>
           </div>

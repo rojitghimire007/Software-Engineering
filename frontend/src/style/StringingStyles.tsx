@@ -37,6 +37,15 @@ const useStyles = makeStyles ((theme) => ({
         fontSize: '16px !important',
       },
     },
+
+    popUp: {
+      backgroundColor: ColorScheme.primaryLight + ' !important',
+      transition: '0',
+      
+      '&:hover' : {
+        backgroundColor: ColorScheme.primaryLight + ' !important',
+      },
+    },
     
     
     //  || PIPES
