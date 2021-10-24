@@ -17,6 +17,7 @@ import {
   TextField,
   Container,
   CardActionArea,
+  ListItem,
 } from '@material-ui/core';
 import {
   Select,
@@ -209,6 +210,18 @@ const NewStrungPipes = () => {
     );
   };
 
+  let toAdd = "";
+
+  const updateSelectedPipe = (selected: any) => {
+    toAdd=selected.target.value;
+    console.log('you selected ' + toAdd);
+  };
+
+  const addPipe = (() => {
+    let left_pipe = 
+    console.log('Adding ' + toAdd + ' after ' + sequence[sequence.length -1])
+  });
+
   const [eligible, setEligible] = useState<dataType[]>([]);
   
   // API call to get available pipes
@@ -313,26 +326,16 @@ const NewStrungPipes = () => {
                         </span>
                       </div>
                       <div>
-                        {/* <label htmlFor="Available Pipes">
-                          Choose pipe:
-                        </label> */}
-                        {/* {eligible.map((pipe, index) => { */}
                         <FormControl>
-                          {/* <select name="Available Pipes" className={classes.eligiblePipe}> */}
                           <Select 
-                            id="Available Pipes" 
+                            id="pipe" 
                             className={classes.eligiblePipe}
                             label="Choose pipe"
+                            onChange={updateSelectedPipe} // extraction
                           >
-                            
-                            {eligible.map((item, index) => {
+                            {eligible.map((item) => {
                               return(
-                                // <option>
-                                //   {/* {console.log('in the mapping')} */}
-                                //   {console.log(item.pipe_id)}
-                                //   {item.pipe_id}
-                                // </option>
-                                <MenuItem value={item.pipe_id}>
+                                <MenuItem key={item.pipe_id} value={item.pipe_id}>
                                   {item.pipe_id}
                                 </MenuItem>
                               )
@@ -341,12 +344,11 @@ const NewStrungPipes = () => {
                           <IconButton 
                             aria-label="add to string" 
                             onClick={() => {
-                              alert('Pipe Added');
+                              addPipe();
                             }}
                           >
                             <AddCircleOutlineIcon />
                           </IconButton>       
-                          {/* </select> */}
                         </FormControl>
                       </div>
                     </div>

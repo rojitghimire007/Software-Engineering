@@ -40,12 +40,13 @@ const useStyles = makeStyles ((theme) => ({
     
     
     //  || PIPES
-
+    
     pipeContainer: {
       display: 'flex',
       rowGap: 0,
       columnGap: 0,
-
+      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
+      
       '&:hover' : {
         borderColor: `${ColorScheme.secondary}`,
         backgroundColor: ColorScheme.secondaryLight,
@@ -87,7 +88,6 @@ const useStyles = makeStyles ((theme) => ({
       fontFamily: "'Teko', serif",
       backgroundColor: ColorScheme.secondary,
       color: ColorScheme.onSecondary,
-      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
       zIndex: 998,
       paddingTop: '10px !important',
       paddingBottom: '10px !important',
