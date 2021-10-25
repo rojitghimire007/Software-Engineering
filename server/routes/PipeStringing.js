@@ -104,16 +104,18 @@ const updateSequence = async (req, res, next) => {
       temp_next = nexts[0].next;
     }
 
-    await client.query(`
+    await client.query(
+      `
       update stringing
       set next = case
-      when pipe = '${left_pipe}' then '${target_pipe}'
-      when next = '${target_pipe}' then '${temp_next}'
+      when pipe = $1 then $2
+      when next = $2 then $3
       end
       where next in ('${target_pipe}' , '${curr_next}')
       ${!target_pipe || !curr_next ? 'or next is null' : ''};
-
-    `);
+    `,
+      [left_pipe, target_pipe, temp_next]
+    );
 
     await client.query(`delete from stringing where pipe='${target_pipe}';`);
 
