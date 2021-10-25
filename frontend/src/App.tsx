@@ -4,7 +4,7 @@ import './App.css';
 import { useHistory } from 'react-router-dom';
 import api from 'api';
 import { setLocalStorage } from 'utils/utils';
-import Footer from 'views/Footer';
+//import Footer from 'views/Footer';
 
 // Fonts
 import "@fontsource/fenix";
