@@ -66,7 +66,7 @@ const NewStrungPipes = () => {
   const [window, setWindow] = useState(-1); //careful sliding left when window = 0 ; "view slider"
                                             // right now set to left most index of view (0, rn)
   
-  const [pipeDetails, setPipeDetails] = useState<{ [index: number]: any }>({}); // details of pipes in view (what's displayed)
+  const [pipeDetails, setPipeDetails] = useState<{ [index: number | string]: any }>({}); // details of pipes in view (what's displayed)
                                                                                 // ONLY for THIS window
   
   const [loading, setLoading] = useState(true);
@@ -124,12 +124,12 @@ const NewStrungPipes = () => {
             setInitialLength(Number(res2.length));
           })
           .catch((error) => alert(error.message));
-
-        setPipeDetails(
-          res.reduce((result: any, entry: any) => {
-            result[entry.id] = entry;
-            return result;
-          }, {})
+          
+          setPipeDetails(
+            res.reduce((result: any, entry: any) => {
+              result[entry.id] = entry;
+              return result;
+            }, {})
         );
       })
       .catch((err) => alert(err));
@@ -245,6 +245,7 @@ const NewStrungPipes = () => {
 
   let toAdd = "";
 
+  // From the form
   const updateSelectedPipe = (selected: any) => {
     toAdd=selected.target.value;
     console.log('you selected ' + toAdd);
@@ -265,6 +266,44 @@ const NewStrungPipes = () => {
         setEligible(res);
       })
   }, []);
+  
+  let [newDetails,setNewPipe] = useState<{ [index: number | string]: any }>({});
+  // let [newDetails,setNewPipe] = useState<dataType[]>([]);
+
+  const showNewPipe = ((pipe_id: string) => {
+    // let [newDetails,setNewPipe] = useState<>({});
+    api 
+      .getStrungPipesInfo([pipe_id])
+      .then((res) => {
+        setNewPipe(
+          res.reduce((result: any, entry: any) => {
+            result[entry.id] = entry;
+            
+            return result;
+          }, {})
+        );
+    })
+    return(
+      <div>
+          <div>
+            Heat No = 
+            {(typeof newDetails[pipe_id] != "undefined") ? newDetails[pipe_id].heat_no : ""}
+          </div>
+          <div>
+            Wall = 
+            {(typeof newDetails[pipe_id] != "undefined") ? newDetails[pipe_id].wall_thickness : ""}
+          </div>
+          <div>
+            Grade = 
+            {(typeof newDetails[pipe_id] != "undefined") ? newDetails[pipe_id].grade : ""}
+          </div>
+          <div>
+            Length = 
+            {(typeof newDetails[pipe_id] != "undefined") ? newDetails[pipe_id].length : ""}
+          </div>
+      </div>
+    );
+  });
 
   //////////////////////////////
   //            OLD
@@ -401,6 +440,9 @@ const NewStrungPipes = () => {
               {/* Transfer List */}
               <Droppable droppableId="droppable2" direction="horizontal">
               {(provided, snapshot) => (
+                <div>
+                  {/* <AddCircleOutlineIcon /> */}
+
                   <div
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
@@ -434,6 +476,8 @@ const NewStrungPipes = () => {
                                       {item.pipe_id}
                                     </span>
                                   </div>
+
+                                  {showNewPipe(item.pipe_id)}
                                 </div>
 
                                 <div className={classes.pipeEnd} />
@@ -448,6 +492,7 @@ const NewStrungPipes = () => {
                     <div>(Transfer List)</div>
 
                   </div>
+                </div>
               )}
               </Droppable>
             </DragDropContext>
