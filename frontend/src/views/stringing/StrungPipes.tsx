@@ -1,9 +1,11 @@
-import React, { Component, 
-                useEffect, 
-                useState, 
-                SyntheticEvent, 
-                MouseEvent } from 'react';
-import ReactDOM from 'react-dom';
+import React, {
+  Component,
+  useEffect,
+  useState,
+  SyntheticEvent,
+  MouseEvent,
+} from 'react';
+import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import api from 'api';
 import {
@@ -17,7 +19,6 @@ import {
   CssBaseline,
   Grid,
   Toolbar,
-  Button,
   TextField,
   Container,
   CardActionArea,
@@ -27,10 +28,12 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Button,
   IconButton,
   collapseClasses,
-  Snackbar
-} from '@mui/material'
+  Snackbar,
+} from '@mui/material';
+
 import { typography } from '@mui/system';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
@@ -60,15 +63,16 @@ const reorder = (
 const grid = 50;
 
 const NewStrungPipes = () => {
-  
   const [sequence, setSequence] = useState<Array<number>>([]); // correct order of pipe ids
-  
+
   const [window, setWindow] = useState(-1); //careful sliding left when window = 0 ; "view slider"
-                                            // right now set to left most index of view (0, rn)
-  
-  const [pipeDetails, setPipeDetails] = useState<{ [index: number | string]: any }>({}); // details of pipes in view (what's displayed)
-                                                                                // ONLY for THIS window
-  
+  // right now set to left most index of view (0, rn)
+
+  const [pipeDetails, setPipeDetails] = useState<{
+    [index: number | string]: any;
+  }>({}); // details of pipes in view (what's displayed)
+  // ONLY for THIS window
+
   const [loading, setLoading] = useState(true);
 
   // pipe id + station (pairs them)
@@ -76,11 +80,9 @@ const NewStrungPipes = () => {
     [index: number | string]: number;
   }>({});
   const [initialLength, setInitialLength] = useState<number>(-1); // window = 0; length = 0
-                                                                  // based on total length BEFORE first pipe of window
-  
-  
-  
-  const classes = useStyles(); 
+  // based on total length BEFORE first pipe of window
+
+  const classes = useStyles();
 
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     // some basic styles to make the items look a bit nicer
@@ -109,47 +111,49 @@ const NewStrungPipes = () => {
       .getStringing()
       .then((res) => {
         setSequence(res);
-        setWindow(0);
+        updatePipesOnScreen(0, res);
       })
       .catch((err) => alert(err.message));
   }, []);
 
   useUpdateEffect(() => {
-    api
-      .getStrungPipesInfo(sequence.slice(window, window + 4))
-      .then((res) => {
-        api
-          .getSequenceLength(sequence.slice(0, window))
-          .then((res2) => {
-            setInitialLength(Number(res2.length));
-          })
-          .catch((error) => alert(error.message));
-          
-          setPipeDetails(
-            res.reduce((result: any, entry: any) => {
-              result[entry.id] = entry;
-              return result;
-            }, {})
-        );
-      })
-      .catch((err) => alert(err));
-  }, [window]);
-
-  useUpdateEffect(() => {
-    setLoading(false);
-  }, [pipeDetails]);
-
-  useUpdateEffect(() => {
     let stations: { [index: number | string]: number } = {};
     let total = initialLength;
 
-    for (let i = 0; i < sequence.length; i++) {
-      stations[sequence[i]] = total;
-      total += Number(pipeDetails[sequence[i]].length);
+    for (let i = window; i < window + 4; i++) {
+      if (sequence[i]) {
+        stations[sequence[i]] = total;
+        total += Number(pipeDetails[sequence[i]].length);
+      } else break;
     }
 
     setStations(stations);
   }, [initialLength]);
+
+  const updatePipesOnScreen = async (
+    newWindow: number,
+    tempSequence: any = sequence
+  ) => {
+    try {
+      let res = await api.getStrungPipesInfo(
+        tempSequence.slice(newWindow, newWindow + 4)
+      );
+      let res2 = await api.getSequenceLength(tempSequence.slice(0, newWindow));
+
+      let x = res.reduce((result: any, entry: any) => {
+        result[entry.id] = entry;
+        return result;
+      }, {});
+      unstable_batchedUpdates(() => {
+        setInitialLength(Number(res2.length));
+        setPipeDetails({ ...pipeDetails, ...x });
+        setWindow(newWindow);
+        setLoading(false);
+      });
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
 
   const onDragEnd = (result: any) => {
     // dropped outside the list
@@ -172,35 +176,36 @@ const NewStrungPipes = () => {
 
     let temp = sequence;
     setSequence(items);
-    
+
     if (!left_pipe) left_pipe = null;
-    
+
     return api
-    .updateSequence({ target_pipe, left_pipe })
-    .then((res) => {})
-    .catch((err) => {
-      alert(err.message);
-      setSequence(temp);
-    });
+      .updateSequence({ target_pipe, left_pipe })
+      .then((res) => {})
+      .catch((err) => {
+        alert(err.message);
+        setSequence(temp);
+      });
   };
-  
+
   //////////////////////////////
   //            NEW
   //////////////////////////////
-  const [newDetails,setNewPipe] = useState<{ [index: number | string]: any }>({});
+  const [newDetails, setNewPipe] = useState<{ [index: number | string]: any }>(
+    {}
+  );
   const [eligible, setEligible] = useState<dataType[]>([]);
   const [newPipeAdded, setNewPipeAdded] = useState(false);
-  const [toAdd,setToAdd] = useState("");
-  
+  const [toAdd, setToAdd] = useState('');
+
   // Snackbar stuff
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {setOpen(true);};
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-  const handleClose = (
-    event: SyntheticEvent | MouseEvent,
-    reason?: string,
-  ) => {
+  const handleClose = (event: SyntheticEvent | MouseEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -209,7 +214,7 @@ const NewStrungPipes = () => {
   };
 
   const openSnackbar = (
-    <Button color="secondary" size="small" onClick={handleClose} >
+    <Button color="secondary" size="small" onClick={handleClose}>
       UNDO
     </Button>
     // <IconButton
@@ -223,124 +228,108 @@ const NewStrungPipes = () => {
   // Going to need another method to update stations before refresh
   // Like for actual pipes!
   const createStations = (item: any, index: number) => {
-
     // let Length = pipeDetails[item].length;
 
-    return(
+    return (
       <div className={classes.station}>
-        Station = {Math.floor(stations[item] / 100)} +{' '}
-              {stations[item] % 100}
+        Station = {Math.floor(stations[item] / 100)} + {stations[item] % 100}
       </div>
-    )
+    );
   };
 
   const createLength = (length: number) => {
     let numRendered = Math.floor(length / 10);
-    const toRender = { 
-      paddingRight: (numRendered * 100) + 'px', 
+    const toRender = {
+      paddingRight: numRendered * 100 + 'px',
       // backgroundColor: 'yellow',
-      margin: 0
-
+      margin: 0,
     };
-    return (
-      <div style={toRender} className={classes.pipePadder}></div>
-    );
+    return <div style={toRender} className={classes.pipePadder}></div>;
   };
 
-  
   // API call to get available pipes
-  useEffect(() =>{
-    api
-      .getStriningEligiblePipes()
-      .then((res) => {
-        setEligible(res);
-      })
+  useEffect(() => {
+    api.getStriningEligiblePipes().then((res) => {
+      setEligible(res);
+    });
   }, []);
 
   // Adds the newly added pipe to the array
   useUpdateEffect(() => {
-    const combinedArray = {...pipeDetails, ...newDetails};
+    const combinedArray = { ...pipeDetails, ...newDetails };
 
     setPipeDetails(combinedArray);
     setNewPipeAdded(true);
-  },[newDetails]);
+  }, [newDetails]);
 
   // send new pipe to the server
   // currently, can only trigger this ONCE without refreshing the page
   // because of the dependency in the useUpdateEffect!!!
   useUpdateEffect(() => {
-    if (toAdd.length > 0){
-      console.log(pipeDetails[toAdd].id)
-      console.log("this finally fucking works")
+    if (toAdd.length > 0) {
+      console.log(pipeDetails[toAdd].id);
+      console.log('this finally fucking works');
 
       api
         .appendToString(pipeDetails[toAdd].id)
-        .catch((error) => alert(error.message))
+        .catch((error) => alert(error.message));
+    } else {
+      console.log(pipeDetails[510].heat_no + ' and ' + toAdd);
     }
-    else {
-      console.log(pipeDetails[510].heat_no + " and " + toAdd)
-    }
-    setToAdd("");
-  },[newPipeAdded])
-
+    setToAdd('');
+  }, [newPipeAdded]);
 
   // From the form
   // For when button is pressed!
   const updateSelectedPipe = (selected: any) => {
     setToAdd(selected.target.value);
     // console.log("trying to add...")
-    console.log(toAdd)
+    console.log(toAdd);
     // console.log("sequence...")
     // console.log(sequence)
   };
-  
 
-  const addPipe = (() => {
-    let left_pipe = sequence[sequence.length -1]; // DEFAULT
+  const addPipe = () => {
+    let left_pipe = sequence[sequence.length - 1]; // DEFAULT
 
-    api
-      .getStrungPipesInfo([toAdd])
-      .then((res) => {
-        // api
-        //   .appendToString(res)
-        // console.log(res[0].id);
-        handleNewPipe(res[0].id);
-      })
-  });
-  
+    api.getStrungPipesInfo([toAdd]).then((res) => {
+      // api
+      //   .appendToString(res)
+      // console.log(res[0].id);
+      handleNewPipe(res[0].id);
+    });
+  };
 
-  const handleNewPipe = ((pipe_id: string) => {
-    api 
-      .getStrungPipesInfo([pipe_id])
-      .then((res) => {
-        setNewPipe(
-          res.reduce((result: any, entry: any) => {
-            result[entry.id] = entry;            
-            return result;
-          }, {})
-        );
-    })
+  const handleNewPipe = (pipe_id: string) => {
+    api.getStrungPipesInfo([pipe_id]).then((res) => {
+      setNewPipe(
+        res.reduce((result: any, entry: any) => {
+          result[entry.id] = entry;
+          return result;
+        }, {})
+      );
+    });
     // return(
     //   <div>
     //       <div>
-    //         Heat No = 
+    //         Heat No =
     //         {(typeof newDetails[pipe_id] != "undefined") ? newDetails[pipe_id].heat_no : ""}
     //       </div>
     //       <div>
-    //         Wall = 
+    //         Wall =
     //         {(typeof newDetails[pipe_id] != "undefined") ? newDetails[pipe_id].wall_thickness : ""}
     //       </div>
     //       <div>
-    //         Grade = 
+    //         Grade =
     //         {(typeof newDetails[pipe_id] != "undefined") ? newDetails[pipe_id].grade : ""}
     //       </div>
     //       <div>
-    //         Length = 
+    //         Length =
     //         {(typeof newDetails[pipe_id] != "undefined") ? newDetails[pipe_id].length : ""}
     //       </div>
     //   </div>
     // );
-  });
+  };
 
   //////////////////////////////
   //            OLD
@@ -374,7 +363,11 @@ const NewStrungPipes = () => {
                     {...provided.droppableProps}
                     className={classes.virtList}
                   >
-                    {sequence.map((item, index) => {
+                    {sequence.slice(window, window + 4).map((item, index) => {
+                      {
+                        console.log(item);
+                        console.log(pipeDetails);
+                      }
                       return (
                         <div>
                           {createStations(item, index)}
@@ -391,13 +384,13 @@ const NewStrungPipes = () => {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 style={getItemStyle(
-                                      snapshot.isDragging,
-                                      provided.draggableProps.style
-                                      )}
+                                  snapshot.isDragging,
+                                  provided.draggableProps.style
+                                )}
                                 className={classes.pipeContainer}
                               >
                                 {/* {console.log(item)} */}
-                                <div className={classes.pipeStart}/>
+                                <div className={classes.pipeStart} />
                                 <div className={classes.pipe}>
                                   {/* ID */}
                                   <div>
@@ -405,20 +398,22 @@ const NewStrungPipes = () => {
                                   </div>
 
                                   {/* Information Below */}
-                                  <div>Heat No = {pipeDetails[item].heat_no}</div>
+                                  <div>
+                                    Heat No = {pipeDetails[item].heat_no}
+                                  </div>
                                   <div>
                                     Wall = {pipeDetails[item].wall_thickness}
                                   </div>
                                   <div>Grade = {pipeDetails[item].grade}</div>
                                   <div>Length = {pipeDetails[item].length}</div>
                                   <div>
-                                    Station = {Math.floor(stations[item] / 100)} +{' '}
-                                    {stations[item] % 100}
+                                    Station = {Math.floor(stations[item] / 100)}{' '}
+                                    + {stations[item] % 100}
                                   </div>
-                                  </div>
-                                  {createLength(pipeDetails[item].length)}
-                                  <div className={classes.pipeEnd}/>
                                 </div>
+                                {createLength(pipeDetails[item].length)}
+                                <div className={classes.pipeEnd} />
+                              </div>
                             )}
                           </Draggable>
                         </div>
@@ -431,14 +426,12 @@ const NewStrungPipes = () => {
                     {/* ////////////////////////////// */}
                     <div className={classes.pipeAdd}>
                       <div>
-                        <span>
-                          Add Pipe Placeholder
-                        </span>
+                        <span>Add Pipe Placeholder</span>
                       </div>
                       <div>
                         <FormControl>
-                          <Select 
-                            id="pipe" 
+                          <Select
+                            id="pipe"
                             className={classes.eligiblePipe}
                             label="Choose pipe"
                             onChange={updateSelectedPipe} // extraction
@@ -447,22 +440,25 @@ const NewStrungPipes = () => {
                               None
                             </MenuItem> */}
                             {eligible.map((item) => {
-                              return(
-                                <MenuItem key={item.pipe_id} value={item.pipe_id}>
+                              return (
+                                <MenuItem
+                                  key={item.pipe_id}
+                                  value={item.pipe_id}
+                                >
                                   {item.pipe_id}
                                 </MenuItem>
-                              )
+                              );
                             })}
                           </Select>
-                          <IconButton 
-                            aria-label="add to string" 
+                          <IconButton
+                            aria-label="add to string"
                             onClick={() => {
                               addPipe();
                               handleOpen();
                             }}
                           >
                             <AddCircleOutlineIcon />
-                          </IconButton>  
+                          </IconButton>
                           {/* <Snackbar 
                             open={open}
                             autoHideDuration={6000}
@@ -480,65 +476,79 @@ const NewStrungPipes = () => {
 
               {/* Transfer List */}
               <Droppable droppableId="droppable2" direction="horizontal">
-              {(provided, snapshot) => (
-                <div>
-                  {/* <AddCircleOutlineIcon /> */}
+                {(provided, snapshot) => (
+                  <div>
+                    {/* <AddCircleOutlineIcon /> */}
 
-                  <div
-                    ref={provided.innerRef}
-                    style={getListStyle(snapshot.isDraggingOver)}
-                    {...provided.droppableProps}
-                    className={classes.virtList}
-                  >
-                    {eligible.map((item, index) => {
-                      // return(
-                      //   <div>
-                      //     <Draggable
-                      //       key={`${item}`}
-                      //       draggableId={`${item}`}
-                      //       index={index}
-                      //     >
-                      //       {(provided, snapshot) => (
-                      //         <div
-                      //           ref={provided.innerRef}
-                      //           {...provided.draggableProps}
-                      //           {...provided.dragHandleProps}
-                      //           style={getItemStyle(
-                      //             snapshot.isDragging,
-                      //             provided.draggableProps.style
-                      //             )}
-                      //           className={classes.pipeContainer}
-                      //         >
-                      //           <div className={classes.pipeStart} />
+                    <div
+                      ref={provided.innerRef}
+                      style={getListStyle(snapshot.isDraggingOver)}
+                      {...provided.droppableProps}
+                      className={classes.virtList}
+                    >
+                      {eligible.map((item, index) => {
+                        // return(
+                        //   <div>
+                        //     <Draggable
+                        //       key={`${item}`}
+                        //       draggableId={`${item}`}
+                        //       index={index}
+                        //     >
+                        //       {(provided, snapshot) => (
+                        //         <div
+                        //           ref={provided.innerRef}
+                        //           {...provided.draggableProps}
+                        //           {...provided.dragHandleProps}
+                        //           style={getItemStyle(
+                        //             snapshot.isDragging,
+                        //             provided.draggableProps.style
+                        //             )}
+                        //           className={classes.pipeContainer}
+                        //         >
+                        //           <div className={classes.pipeStart} />
+                        //           <div className={classes.pipe}>
+                        //             <div>
+                        //               <span>
+                        //                 {item.pipe_id}
+                        //               </span>
+                        //             </div>
+                        //             {showNewPipe(item.pipe_id)}
+                        //           </div>
+                        //           <div className={classes.pipeEnd} />
+                        //         </div>
+                        //       )}
+                        //     </Draggable>
+                        //   </div>
+                        // );
+                      })}
+                      {provided.placeholder}
 
-                      //           <div className={classes.pipe}>
-                      //             <div>
-                      //               <span>
-                      //                 {item.pipe_id}
-                      //               </span>
-                      //             </div>
-
-                      //             {showNewPipe(item.pipe_id)}
-                      //           </div>
-
-                      //           <div className={classes.pipeEnd} />
-                      //         </div>
-                      //       )}
-                      //     </Draggable>
-                      //   </div>
-                      // );
-                    })}
-                    {provided.placeholder}
-
-                    {/* <div>(Transfer List)</div> */}
-
+                      {/* <div>(Transfer List)</div> */}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               </Droppable>
             </DragDropContext>
           </div>
         </main>
+        <Button
+          size="medium"
+          color="secondary"
+          variant="contained"
+          disabled={window == 0 ? true : false}
+          onClick={() => updatePipesOnScreen(window - 4)}
+        >
+          Previous
+        </Button>
+        <Button
+          size="medium"
+          color="success"
+          variant="contained"
+          disabled={window + 4 >= sequence.length ? true : false}
+          onClick={() => updatePipesOnScreen(window + 4)}
+        >
+          Next
+        </Button>
       </div>
     );
   else return <></>;
