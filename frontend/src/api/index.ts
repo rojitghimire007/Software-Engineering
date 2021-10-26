@@ -44,8 +44,7 @@ export default {
 
   getStringing: () => authGet(API.stringing, ''),
 
-  appendToString: (data: { pipe_id: string | number }) =>
-    authPost(API.stringing, data),
+  appendToString: (pipe_id: string) => authPost(API.stringing, { pipe_id }),
 
   updateSequence: (data: {
     target_pipe: string | number;
@@ -70,6 +69,11 @@ export default {
     });
   },
 
+  /**
+   *
+   * @param pipe ID of pipe
+   * @returns
+   */
   deleteFromSequence: (pipe: string) => authDelete(API.stringing + `/${pipe}`),
 
   getSequenceLength: (sequence: Array<any>) =>

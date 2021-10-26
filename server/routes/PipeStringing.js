@@ -106,16 +106,18 @@ const updateSequence = async (req, res, next) => {
       temp_next = nexts[0].next;
     }
 
-    await client.query(`
+    await client.query(
+      `
       update stringing
       set next = case
-      when pipe = '${left_pipe}' then '${target_pipe}'
-      when next = '${target_pipe}' then '${temp_next}'
+      when pipe = $1 then $2
+      when next = $2 then $3
       end
       where next in ('${target_pipe}' , '${curr_next}')
       ${!target_pipe || !curr_next ? 'or next is null' : ''};
-
-    `);
+    `,
+      [left_pipe, target_pipe, temp_next]
+    );
 
     await client.query(`delete from stringing where pipe='${target_pipe}';`);
 
@@ -145,20 +147,23 @@ const deleteFromSequence = async (req, res, next) => {
     firstPipe = firstPipe.rows[0].id;
 
     let current = await client.query(
-      `SELECT * FROM stringing where pipe = ${pipe}`
+      `SELECT * FROM stringing where pipe = $1`,
+      [pipe]
     );
     current = current.rows[0];
 
     if (pipe == firstPipe) {
       if (current.next)
-        client.query(`UPDATE first_pipe set id = ${current.next};`);
+        client.query(`UPDATE first_pipe set id = $1;`, [current.next]);
       else client.query('delete from first_pipe;');
     }
 
-    await client.query(`
-    delete from stringing where pipe = ${pipe};
-    update stringing set next = ${current.next} where next = ${pipe};
-    `);
+    await client.query('delete from stringing where pipe = $1;', [pipe]);
+
+    await client.query('update stringing set next = $2 where next = $1;', [
+      pipe,
+      current.next,
+    ]);
 
     res.status(200).send({ success: true });
   } catch (error) {

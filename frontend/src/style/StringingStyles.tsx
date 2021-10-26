@@ -9,55 +9,234 @@ const useStyles = makeStyles ((theme) => ({
       borderRadius: '50%',
       padding: '8px',
       marginRight: '8px',
-      /* background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')}; */
       width: '40px',
       height: '40px',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
     },
-    pipe: {
-      border: '3px solid ' + `${ColorScheme.primaryDark}`,
-      borderRadius: '15px',
-      transition: '0.4s',
+    station: {
+      border: '3px solid' + ColorScheme.primaryDark,
+      boxSizing: 'border-box',
+      padding: '3px',
+      height: '24px',
+      width: '100px',
+      position: 'relative',
       fontFamily: "'Teko', serif",
-      backgroundColor: ColorScheme.primary,
-      color: ColorScheme.onPrimary,
-      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
-      zIndex: 999,
-      paddingTop: '10px !important',
-      paddingBottom: '10px !important',
+      fontSize: '16px',
+      zIndex: 3,
+      top: 'auto',
+      left: '200px',
+    },
+    eligiblePipe: {
+      fontSize: '24px !important',
+      color: ColorScheme.onSecondary,
+      
+      
+      '& option': {
+        fontSize: '16px !important',
+      },
+    },
+
+    popUp: {
+      backgroundColor: ColorScheme.primaryLight + ' !important',
+      transition: '0',
       
       '&:hover' : {
-        borderColor: `${ColorScheme.primary}`,
-        backgroundColor: ColorScheme.primaryLight,
+        backgroundColor: ColorScheme.primaryLight + ' !important',
+      },
+    },
+    
+    
+    //  || PIPES
+    
+    pipeContainer: {
+      display: 'flex',
+      rowGap: 0,
+      columnGap: 0,
+      boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
+      
+      '&:hover' : {
+        borderColor: `${ColorScheme.secondary}`,
+        backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
         transform: 'scale(1.03)',
       },
+    },
+    
+    pipeStart: {
+      width:'80px',
+      height:'200px',
+      backgroundColor: ColorScheme.secondary,
+      color: 'white',
+      borderRadius: '50%',
+      border: '3px solid black',
+      zIndex: 997,
+      marginLeft: '15px',
+      position: 'relative',
+      left: '10px'
+    },
+
+    pipePadder: {
+      borderTop: '3px solid black',
+      borderBottom: '3px solid black',
+      transition: '0.4s',
+      backgroundColor: ColorScheme.secondary,
+      color: ColorScheme.onSecondary,
+      zIndex: 998,
+    },
+
+    pipe: {
+      // border: 'solid ' + `${ColorScheme.secondaryDark}`,
+      // borderWidth: '3px 0px 3px 0px',
+      // borderColor: 'black',
+      // borderRadius: '15px',
+      borderTop: '3px solid black',
+      borderBottom: '3px solid black',
+      transition: '0.4s',
+      fontFamily: "'Teko', serif",
+      backgroundColor: ColorScheme.secondary,
+      color: ColorScheme.onSecondary,
+      zIndex: 998,
+      paddingTop: '10px !important',
+      paddingBottom: '10px !important',
+      paddingLeft: '10px !important',
+      paddingRight: '10px !important',
       
-      '& div' : {
+      width: '200%',
+      position: 'relative',
+      // left: '-15px',
+      
+      // '&:hover' : {
+      //   borderColor: `${ColorScheme.secondary}`,
+      //   backgroundColor: ColorScheme.secondaryLight,
+      //   color: ColorScheme.onSecondary,
+      //   transform: 'scale(1.03)',
+      // },
 
-        //header
-        '& span' : {
-          fontSize: '32px',
-          // margin: '0 auto',
-          padding: '50px',
+      // pipe number
+      '& :first-child': {
+        // paddingLeft: '25% !important',
+        // paddingBottom: '5px !important', // makes text more pronounced
+        fontFamily: "'Bebas Neue', serif",
+        fontStyle: 'italic',
+        textDecoration:'underline',
+        fontSize: '32px',
+
+        '& :hover': {
+          color: ColorScheme.secondaryDark,
+        }
+      },
+      
+      '& > div': {
+        
+        '& div' : {
+          width: '100% !important',
+          
+          //header
+          '& span' : {
+            fontSize: '32px',
+            width: '50% !important',
+            // margin: '0 auto',
+            padding: '50px',
+          },
+          
+          //information
+          fontSize: '24px',
+          textAlign: "left",
+          border: 'none',
+          margin: '0 5px',
+          backgroundColor: 'rgba(0,0,0,0)',
+          color: 'inherit',
+          padding: '0',
+          transition: 'none',
+          //transition: 'color 0.06s', // synced it?????
+          // likely not, keeping it for now
         },
+      },
 
-        //information
-        fontSize: '24px',
-        textAlign: "left",
-        border: 'none',
-        margin: '0 5px',
-        backgroundColor: 'rgba(0,0,0,0)',
-        color: 'inherit',
-        padding: '0',
-        transition: 'none',
-        //transition: 'color 0.06s', // synced it?????
-                                     // likely not, keeping it for now
+      '& div:after': {
+        // borderRadius: '50% !important',
+        // backgroundColor: 'black !important',
+        // width: '50px !important',
+        // height: '50px !important',
       },
     },
-    station: {
+
+    pipeEnd: {
+      width:'80px',
+      height:'200px',
+      backgroundColor: ColorScheme.secondaryDark,
+      color: 'white',
+      borderRadius: '50%',
+      border: '10px solid black',
+      // borderImage: `linear-gradient(to right, 
+      //               ${ColorScheme.secondary},  
+      //               ${ColorScheme.secondaryDark})`,
+      // backgroundColor: `linear-gradient(to right, 
+      //               ${ColorScheme.secondaryDark},  
+      //               ${ColorScheme.onSecondary})`,
+      position: 'relative',
+      left: '-15px',
+
+      zIndex: 999,
+    },
+    pipeAdd: {
+      border: '3px dashed ' + `${ColorScheme.secondaryDark}`,
+      borderRadius: '15px',
+      transition: '0.4s',
+      fontFamily: "'Teko', serif",
+      backgroundColor: ColorScheme.secondaryLight,
+      color: ColorScheme.onSecondary,
+      // boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
+      position: 'sticky',
+      paddingTop: '10px !important',
+      paddingBottom: '10px !important',
+      paddingLeft: '10px !important',
+      paddingRight: '10px !important',
+      marginTop: '20px !important',
+      marginLeft: '15px !important',
+      
+      '&:hover' : {
+        borderColor: `${ColorScheme.secondary}`,
+        backgroundColor: ColorScheme.secondaryLight,
+        color: ColorScheme.onSecondary,
+        transform: 'scale(1.01)',
+      },
+
+      // pipe number
+      '& :first-child': {
+        // paddingLeft: '50% !important',
+        // paddingBottom: '5px !important', // makes text more pronounced
+        fontFamily: "'Bebas Neue', serif",
+        fontStyle: 'italic',
+        fontSize: '32px',
+      },
+      
+      '& > div': {
+        
+        '& :first-child' : {
+          width: '100% !important',
+          background: ColorScheme.secondaryLight,
+          
+          //header
+          // '& span' : {
+          //   fontSize: '32px',
+          //   width: '100% !important',
+          //   // margin: '0 auto',
+          //   padding: '50px',
+
+          // },
+          
+        },
+        // options
+        // '& > label': {
+        //   fontFamily: 'Teko, serif !important',
+        //   fontSize: '20px !important',
+        // },
+      },
+    },
+    stationOld: {
       transformOrigin: '1 1',
       transform: 'translate(2rem, 3rem) rotate(-90deg) ',
       // background: 'none',
