@@ -1,9 +1,28 @@
 const { client } = require('../utils/databaseConnection');
 
 const cutPipe = async (req, res, next) => {
-  const { pipe, cut_length, originalLength } = req.body;
+  const { pipe, cut_length } = req.body;
 
   try {
+    if (!pipe)
+      return res.status(400).send({ message: 'Please enter a valid pipeId' });
+    else {
+      let _ = await client.query('select pipe from stringing where pipe = $1', [
+        pipe,
+      ]);
+
+      if (_.rows.length != 0)
+        return res.status(400).send({
+          message: "Can't cut a pipe that is in the stringing sequence.",
+        });
+    }
+
+    let _ = await client.query(
+      'SELECT pipe_length from pipes where pipe_id = $1',
+      [pipe]
+    );
+    let originalLength = _.rows[0].pipe_length;
+
     let newPipes = null;
     if (new RegExp('[0-9]+[A-Z]').test(pipe)) {
       newPipes = [
@@ -22,9 +41,6 @@ const cutPipe = async (req, res, next) => {
       await client.query(`DELETE FROM pipes WHERE pipe_id = '${pipe}';`);
     //insert into cut pipes
     else await client.query(`INSERT INTO cut_pipes(pipe) values(${pipe})`);
-    //   await client.query(
-    //     `UPDATE pipes set iscut = true where pipe_id = '${pipe}'`
-    //   );
 
     await client.query(
       `
