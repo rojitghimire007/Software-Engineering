@@ -147,20 +147,23 @@ const deleteFromSequence = async (req, res, next) => {
     firstPipe = firstPipe.rows[0].id;
 
     let current = await client.query(
-      `SELECT * FROM stringing where pipe = ${pipe}`
+      `SELECT * FROM stringing where pipe = $1`,
+      [pipe]
     );
     current = current.rows[0];
 
     if (pipe == firstPipe) {
       if (current.next)
-        client.query(`UPDATE first_pipe set id = ${current.next};`);
+        client.query(`UPDATE first_pipe set id = $1;`, [current.next]);
       else client.query('delete from first_pipe;');
     }
 
-    await client.query(`
-    delete from stringing where pipe = ${pipe};
-    update stringing set next = ${current.next} where next = ${pipe};
-    `);
+    await client.query('delete from stringing where pipe = $1;', [pipe]);
+
+    await client.query('update stringing set next = $2 where next = $1;', [
+      pipe,
+      current.next,
+    ]);
 
     res.status(200).send({ success: true });
   } catch (error) {

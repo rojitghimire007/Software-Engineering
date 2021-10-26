@@ -69,6 +69,11 @@ export default {
     });
   },
 
+  /**
+   *
+   * @param pipe ID of pipe
+   * @returns
+   */
   deleteFromSequence: (pipe: string) => authDelete(API.stringing + `/${pipe}`),
 
   getSequenceLength: (sequence: Array<any>) =>
