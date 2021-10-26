@@ -51,12 +51,12 @@ const cutPipe = async (req, res, next) => {
 const getCuttingEligiblePipes = async (req, res, next) => {
   try {
     let ans = await client.query(
-      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' except all select pipe from cut_pipes;`
+      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' except all select pipe from cut_pipes except all select pipe from stringing;`
     );
     ans = ans.rows;
 
     let _ = await client.query(
-      `select max(pipe_id) as pipe_id from pipes where pipe_id ~ '[0-9]+[A-Z]' group by SUBSTR(pipe_id, 0, LENGTH(pipe_id))`
+      `select max(pipe_id) as pipe_id from pipes where pipe_id ~ '[0-9]+[A-Z]' group by SUBSTR(pipe_id, 0, LENGTH(pipe_id)) except all select pipe from stringing;`
     );
     ans = ans.concat(_.rows);
 
