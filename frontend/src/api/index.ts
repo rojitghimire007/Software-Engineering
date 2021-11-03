@@ -83,6 +83,15 @@ export default {
 
   getCuttingEligiblePipes: () => authGet(API.getCuttingEligiblePipes, ''),
 
+  /**
+   *
+   * @param pipe id of pipe to be cut
+   * @param cut_length length of the new cut
+   * @returns
+   */
+  cutPipe: (pipe: string, cut_length: number) =>
+    authPost(API.cutPipe, { pipe, cut_length }),
+
   // Fittings
   getFittings: () => {
     return authGet(API.getFittings, '');

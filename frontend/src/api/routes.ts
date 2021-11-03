@@ -22,6 +22,7 @@ const API = {
   getSequenceLength: `${URL}/pipes/length/`,
   getStriningEligiblePipes: `${URL}/string/eligible`,
   getCuttingEligiblePipes: `${URL}/pipes/cuttable`,
+  cutPipe: `${URL}/pipes/cut`,
 };
 
 export { URL, API };
