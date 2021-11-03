@@ -25,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: ColorScheme.onPrimary,
     fontFamily: 'Bebas Neue',
-    fontSize: '5em',
+    fontSize: '5vw',
+    borderRadius: '0 0 0 0',
+    letterSpacing: '8px',
   },
   cellStyle: {
     //backgroundColor:
@@ -35,7 +37,40 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     padding: '10px',
   },
-
+  stickyActions: {
+    tfoot: {
+      border: '0px !important',
+      borderColor: '0 !important',
+      backgroundColor: 'blue !important',
+    },
+    '& table:first-child': {
+      '& tr': {
+        '& td:first-child, th:first-child': {
+          backgroundColor: '#fffff0',
+          position: 'sticky',
+          left: 0,
+          zIndex: 999,
+        },
+        '& th:first-child': {
+           zIndex: 999,
+        },
+      },
+      '& tr:last-child': {
+        '& td:first-child, th:first-child': {
+          backgroundColor: '#fffff0',
+          boxShadow: '10px 0px black',
+          position: 'sticky',
+          left: 0,
+          zIndex: 999,
+        },
+      },
+    },
+    '& table:not(first-child)': {
+      '& td, th': {
+        border: '1px solid black',
+      },
+    },
+  },
 
 
 }));

@@ -1,7 +1,7 @@
 import React, { createRef, forwardRef, useEffect, useState } from 'react';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MaterialTable, {MTableToolbar} from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import { tableIcons } from 'utils/tableIcons';
 import api from 'api';
 import { unstable_batchedUpdates } from 'react-dom';
@@ -22,8 +22,9 @@ import {
   Container,
   CardActionArea,
 } from '@material-ui/core';
-import useStyles from "../../style/ShowFittingsStyles";
-import ColorScheme from "../../style/ColorScheme";
+import useStyles from '../../style/ShowFittingsStyles';
+import ColorScheme from '../../style/ColorScheme';
+import Footer from 'views/Footer';
 
 interface dataType {
   id: number;
@@ -82,47 +83,49 @@ const ShowFittings = () => {
       .catch((err) => alert(err.message));
   }, []);
 
-const onRowAdd = (newData: dataType) => {
-  return api
-    .addFitting(newData)
-    .then((res) => {
-      setData([...data, newData]);
-      return res;
-    })
-    .catch((err) => alert(err.message));
-};
+  const onRowAdd = (newData: dataType) => {
+    return api
+      .addFitting(newData)
+      .then((res) => {
+        setData([...data, newData]);
+        return res;
+      })
+      .catch((err) => alert(err.message));
+  };
 
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div className={classes.wrapper}>
-    <div>
-      <CssBaseline />
-      <Toolbar className={classes.title}>
-        <Typography variant="h4" className={classes.titleContent}>
-          Fittings Inventory
-        </Typography>
-      </Toolbar>
-    </div>
       <div>
+        <CssBaseline />
+        <Toolbar className={classes.title}>
+          <Typography variant="h4" className={classes.titleContent}>
+            Fittings Inventory
+          </Typography>
+        </Toolbar>
+      </div>
+      <div className={classes.stickyActions}>
         <MaterialTable
           icons={tableIcons}
           title=""
           //removes title toolbar
-          components={{
-            Toolbar: (props) => (
-              <div
-                style={{
-                  height: '0px',
-                }}
-              >
-                <MTableToolbar {...props} />
-              </div>
-            ),
-          }}
+          components={
+            {
+              // Toolbar: (props) => (
+              //   <div
+              //     style={{
+              //       height: '0px',
+              //     }}
+              //   >
+              //     <MTableToolbar {...props} />
+              //   </div>
+              // ),
+            }
+          }
           options={{
             filtering: true,
-            search: false,
+            search: true,
             //headerStyle: {backgroundColor: classes.headerStyle},
             rowStyle: (rowData) => ({
               backgroundColor: rowData.color ? rowData.color : null,
@@ -156,18 +159,21 @@ const onRowAdd = (newData: dataType) => {
           initialFormData={initialFormData}
           editable={{
             onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
-            onRowUpdateCancelled: (rowData) => console.log('Row editing cancelled'),
+            onRowUpdateCancelled: (rowData) =>
+              console.log('Row editing cancelled'),
             onRowAdd: onRowAdd,
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve, reject) => {
+            onRowUpdate: (newData, oldData) => {
+              console.log(newData);
+
+              return new Promise((resolve, reject) => {
                 setTimeout(() => {
                   resolve('Row Updated');
                 }, 1000);
-              }),
+              });
+            },
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
-
                   resolve('Row Deleted');
                 }, 1000);
               }),
@@ -178,14 +184,14 @@ const onRowAdd = (newData: dataType) => {
               tooltip: 'Duplicate Fitting',
               onClick: (event, rowData) => {
                 const materialTable = materialTableRef.current;
-    
+
                 setInitialFormData({
                   ...rowData,
                   id: null,
                   inspector: null,
                   inventory_date: null,
                 });
-    
+
                 (materialTable as any).dataManager.changeRowEditing();
                 (materialTable as any).setState({
                   ...(materialTable as any).dataManager.getRenderState(),
@@ -196,6 +202,7 @@ const onRowAdd = (newData: dataType) => {
           ]}
         />
       </div>
+      <Footer />
     </div>
   );
 };

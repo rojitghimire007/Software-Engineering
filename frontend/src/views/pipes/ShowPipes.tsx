@@ -28,8 +28,10 @@ import {
   Container,
   CardActionArea,
 } from '@material-ui/core';
-import useStyles from '../../style/ShowPipeStyles';
-import ColorScheme from '../../style/ColorScheme';
+import useStyles from 'style/ShowPipeStyles';
+import ColorScheme from 'style/ColorScheme';
+
+import Footer from 'views/Footer';
 
 const classData = require('others/schedule&class.json');
 
@@ -99,50 +101,52 @@ const diameters = {
 const ShowPipes = () => {
   const materialTableRef = createRef();
 
+  let date = new Date();
+
   const [initialFormData, setInitialFormData] = useState({});
   const [data, setData] = useState<dataType[]>([
-    {
-      void: false,
-      color: 'red',
-      date: '01/18/17',
-      inspector: 'Todd DeVille',
-      location: 'Yard',
-      id: 1,
-      coil_no: 414603,
-      heat_no: 643317,
-      diameter: '20"',
-      schedule: 'HX',
-      wall_thickness: 0.5,
-      grade: 'X60',
-      length: '22\' 6-5/8"',
-      coating: 'Bare',
-      coating_color: 'Green',
-      manufacturer: 'Ameriacan Steel Pipe',
-      material_type: 'Steel',
-      po_number: 43526725,
-      comments: 'Hello World',
-    },
-    {
-      void: false,
-      // color: 'green',
-      date: '01/18/17',
-      inspector: 'Todd DeVille',
-      location: 'Yard',
-      id: 1,
-      coil_no: 414603,
-      heat_no: 643317,
-      diameter: '20"',
-      schedule: 'HX',
-      wall_thickness: 0.5,
-      grade: 'X60',
-      length: '22\' 6-5/8"',
-      coating: 'Bare',
-      coating_color: 'Green',
-      manufacturer: 'Ameriacan Steel Pipe',
-      material_type: 'Steel',
-      po_number: 1,
-      comments: 'Hello World',
-    },
+    // {
+    //   void: false,
+    //   color: 'red',
+    //   date: '01/18/17',
+    //   inspector: 'Todd DeVille',
+    //   location: 'Yard',
+    //   id: 1,
+    //   coil_no: 414603,
+    //   heat_no: 643317,
+    //   diameter: '20"',
+    //   schedule: 'HX',
+    //   wall_thickness: 0.5,
+    //   grade: 'X60',
+    //   length: '22\' 6-5/8"',
+    //   coating: 'Bare',
+    //   coating_color: 'Green',
+    //   manufacturer: 'Ameriacan Steel Pipe',
+    //   material_type: 'Steel',
+    //   po_number: 43526725,
+    //   comments: 'Hello World',
+    // },
+    // {
+    //   void: false,
+    //   // color: 'green',
+    //   date: '01/18/17',
+    //   inspector: 'Todd DeVille',
+    //   location: 'Yard',
+    //   id: 1,
+    //   coil_no: 414603,
+    //   heat_no: 643317,
+    //   diameter: '20"',
+    //   schedule: 'HX',
+    //   wall_thickness: 0.5,
+    //   grade: 'X60',
+    //   length: '22\' 6-5/8"',
+    //   coating: 'Bare',
+    //   coating_color: 'Green',
+    //   manufacturer: 'Ameriacan Steel Pipe',
+    //   material_type: 'Steel',
+    //   po_number: 1,
+    //   comments: 'Hello World',
+    // },
   ]);
 
   const [schedules, setSchedules] = useState([]);
@@ -245,233 +249,225 @@ const ShowPipes = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.wrapper}>
-      <div>
-        <CssBaseline />
-        <Toolbar className={classes.title}>
-          <Typography variant="h4" className={classes.titleContent}>
-            Pipe Inventory
-          </Typography>
-        </Toolbar>
-      </div>
-      <div className={classes.table}>
-        <MaterialTable
-          icons={tableIcons}
-          title=""
-          //removes title toolbar
-          options={{
-            filtering: true,
-            search: true,
-            rowStyle: (rowData) => ({
-              backgroundColor: rowData.color ? rowData.color : null,
-              color: rowData.color ? 'white' : 'black',
-            }),
-            tableLayout: 'auto', // idk if this is important
-            columnsButton: true,
-            searchAutoFocus: true,
-            loadingType: 'linear',
-            draggable: true,
-            // rowStyle: classes['row'],
-          }}
-          columns={[
-            { title: 'Void', field: 'void', type: 'boolean' },
-            {
-              title: 'Date',
-              field: 'date',
-              editable: 'never',
-              hidden: true,
-            },
-
-            { title: 'ID', field: 'id', type: 'numeric' },
-            { title: 'Inspector', field: 'inspector', editable: 'never' }, //extract
-
-            { title: 'Location', field: 'location' },
-            { title: 'Coil Number', field: 'coil_no' },
-            { title: 'Heat Number', field: 'heat_no', lookup: heat_numbers },
-            { title: 'Manufacturer', field: 'manufacturer', editable: 'never' },
-
-            //Requires extraction
-            {
-              title: 'Diameter',
-              field: 'diameter',
-              lookup: diameters,
-              editComponent: ({ onRowDataChange, rowData }) => (
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  onChange={(e) => {
-                    onRowDataChange({
-                      ...rowData,
-                      diameter: (e.target.value as string) ?? '',
-                      schedule: '',
-                    });
-                  }}
-                  label="Diameter"
-                  defaultValue={rowData.diameter}
-                >
-                  {Object.keys(diameters).map((value) => (
-                    <MenuItem key={value} value={value}>
-                      {value}
-                    </MenuItem>
-                  ))}
-                </Select>
+    <>
+      <div className={classes.wrapper}>
+        {console.log(date)}
+        <div>
+          <CssBaseline />
+          <Toolbar className={classes.title}>
+            <Typography variant="h4" className={classes.titleContent}>
+              Pipe Inventory
+            </Typography>
+          </Toolbar>
+        </div>
+        <div className={classes.stickyActions}>
+          <MaterialTable
+            icons={tableIcons}
+            //removes title toolbar
+            title=""
+            options={{
+              filtering: true,
+              search: true,
+              // rowStyle: (rowData) => ({
+              //   backgroundColor: rowData.color ? rowData.color : null,
+              //   color: rowData.color ? 'white' : 'black',
+              // }),
+              // tableLayout: 'fixed', // idk if this is important
+              columnsButton: true,
+              loadingType: 'linear',
+              draggable: true,
+              // padding: 'dense',
+              showTextRowsSelected: true,
+              // selection: true,
+              toolbarButtonAlignment: 'left',
+              pageSize: 10,
+              pageSizeOptions: [5, 10, 25, 50],
+              actionsCellStyle: { zIndex: 999 },
+              // headerStyle: {
+              //   textAlign: 'center',
+              // },
+              // rowStyle: {
+              //   fontSize: "1rem",
+              //   marginLeft: '1rem',
+              // },
+              // columnResizable: true,
+              maxBodyHeight: '70vh',
+              minBodyHeight: '35vh',
+              exportButton: true,
+              exportFileName:
+                'Pipe_Data_' +
+                date.getFullYear() +
+                '_' +
+                (date.getMonth() + 1) +
+                '_' +
+                date.getDate(),
+            }}
+            components={{
+              Toolbar: (props) => (
+                <div className={classes.toolbar}>
+                  <MTableToolbar {...props} />
+                </div>
               ),
-            },
-            {
-              title: 'Schedule - Thickness',
-              field: 'schedule',
-              render: (rowData) => (
-                <>
-                  {rowData.schedule} - {rowData.wall_thickness}
-                </>
-              ),
-              editComponent: ({ rowData, onRowDataChange }) => (
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  onChange={(e: SelectChangeEvent) => {
-                    let breakSchedule = e.target.value.split('-');
-                    onRowDataChange({
-                      ...rowData,
-                      schedule: breakSchedule[0].trim(),
-                      wall_thickness: Number(breakSchedule[1].trim()),
-                    });
-                  }}
-                  defaultValue={`${rowData.schedule} - ${rowData.wall_thickness}`}
-                >
-                  {getThickness(rowData.diameter).map((value) => (
-                    <MenuItem key={value} value={value}>
-                      {value}
-                    </MenuItem>
-                  ))}
-                </Select>
-              ),
-            },
-
-            { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
-
-            { title: 'Length', field: 'length' },
-            {
-              title: 'Coaing - Coating Color',
-              field: 'coating',
-              render: (rowData) => (
-                <>
-                  {rowData.coating} - {myCoatings[rowData.coating]}
-                </>
-              ),
-              editComponent: ({ rowData, onRowDataChange }) => (
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  onChange={(e: SelectChangeEvent) => {
-                    onRowDataChange({ ...rowData, coating: e.target.value });
-                  }}
-                  defaultValue={rowData.coating}
-                >
-                  {Object.keys(myCoatings).map((key) => (
-                    <MenuItem key={key} value={key}>
-                      {key} - {myCoatings[key]}
-                    </MenuItem>
-                  ))}
-                </Select>
-              ),
-            },
-            { title: 'Material', field: 'material_type', lookup: materials },
-            { title: 'P.O. Number', field: 'po_number', lookup: po_numbers },
-            { title: 'Smart Label', field: 'smart_label' },
-            { title: 'Comments', field: 'comments' },
-          ]}
-          // components={{
-          //   Toolbar: (props) => (
-          //     <div className={classes.toolbar}>
-          //       <MTableToolbar {...props} />
-          //     </div>
-          //   ),
-          //   Header: (props) => (
-          //     <thead className={classes.header}>
-          //       <MTableHeader {...props} />
-          //     </thead>
-          //   ),
-          //   FilterRow: (props) => {
-          //     return (
-          //       <tr className={classes.filterRow}>
-          //         <MTableFilterRow {...props} />
-          //       </tr>
-          //     );
-          //   },
-          //   Row: (props) => (
-          //     <tbody className={classes.row}>
-          //       <MTableBodyRow {...props} />
-          //     </tbody>
-          //   ),
-          //   EditRow: (props) => (
-          //     <tbody className={classes.row}>
-          //       <MTableEditRow {...props} />
-          //     </tbody>
-          //   ),
-          // }}
-          //   columns={[
-          //     { title: 'Name', field: 'name' },
-          //     { title: 'Surname', field: 'surname' },
-          //     { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-          //     { title: 'Birth Date', field: 'birthYear', type: 'date' },
-          //     {
-          //       title: 'Birth Place',
-          //       field: 'birthCity',
-          //       lookup: { 62: 'Cucq' },
-          //     },
-          //   ]}
-          data={data}
-          tableRef={materialTableRef}
-          initialFormData={initialFormData}
-          editable={{
-            // isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
-            // isEditHidden: rowData => rowData.name === 'x',
-            // isDeletable: rowData => rowData.name === 'b', // only name(b) rows would be deletable,
-            // isDeleteHidden: rowData => rowData.name === 'y',
-            // onBulkUpdate: changes =>
-            //     new Promise((resolve, reject) => {
-            //         setTimeout(() => {
-            //             /* setData([...data, newData]); */
-
-            //             resolve(void);
-            //         }, 1000);
-            //     }),
-            onRowAddCancelled: (rowData) => console.log('Row adding cancelled'),
-            onRowUpdateCancelled: (rowData) =>
-              console.log('Row editing cancelled'),
-            onRowAdd: onRowAdd,
-            onRowUpdate: onRowUpdate,
-            onRowDelete: (oldData) => {
-              return api.deletePipe(oldData.id.toString());
-            },
-          }}
-          actions={[
-            {
-              icon: () => <LibraryAddIcon />,
-              tooltip: 'Duplicate Pipe',
-              onClick: (event, rowData) => {
-                const materialTable = materialTableRef.current;
-
-                setInitialFormData({
-                  ...rowData,
-                  name: null,
-                  id: null,
-                  inspector: null,
-                  coil_no: null,
-                });
-
-                (materialTable as any).dataManager.changeRowEditing();
-                (materialTable as any).setState({
-                  ...(materialTable as any).dataManager.getRenderState(),
-                  showAddRow: true,
-                });
+            }}
+            columns={[
+              { title: 'Void', field: 'void', type: 'boolean' },
+              { title: 'Date', field: 'date', editable: 'never', hidden: true },
+              { title: 'ID', field: 'id' }, //took off type: numeric b/c letters would possibly be added
+              { title: 'Inspector', field: 'inspector', editable: 'never' }, //extract
+              { title: 'Location', field: 'location' },
+              { title: 'Coil', field: 'coil_no' },
+              { title: 'Heat', field: 'heat_no' /*lookup: heat_numbers*/ }, //took out lookup b/c this will be manual input
+              {
+                title: 'Manufacturer',
+                field: 'manufacturer',
+                editable: 'never',
               },
-            },
-          ]}
-        />
+
+              //Requires extraction
+              {
+                title: 'Diameter',
+                field: 'diameter',
+                lookup: diameters,
+                editComponent: ({ onRowDataChange, rowData }) => (
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    onChange={(e) => {
+                      onRowDataChange({
+                        ...rowData,
+                        diameter: (e.target.value as string) ?? '',
+                        schedule: '',
+                      });
+                    }}
+                    label="Diameter"
+                    defaultValue={rowData.diameter}
+                  >
+                    {Object.keys(diameters).map((value) => (
+                      <MenuItem key={value} value={value}>
+                        {value}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                ),
+              },
+              {
+                title: 'Schedule-Thickness',
+                field: 'schedule',
+                render: (rowData) => (
+                  <>
+                    {rowData.schedule} - {rowData.wall_thickness}
+                  </>
+                ),
+                editComponent: ({ rowData, onRowDataChange }) => (
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    onChange={(e: SelectChangeEvent) => {
+                      let breakSchedule = e.target.value.split('-');
+                      onRowDataChange({
+                        ...rowData,
+                        schedule: breakSchedule[0].trim(),
+                        wall_thickness: Number(breakSchedule[1].trim()),
+                      });
+                    }}
+                    defaultValue={`${rowData.schedule} - ${rowData.wall_thickness}`}
+                  >
+                    {getThickness(rowData.diameter).map((value) => (
+                      <MenuItem key={value} value={value}>
+                        {value}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                ),
+              },
+
+              { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
+
+              { title: 'Length', field: 'length' },
+              {
+                title: 'Coating',
+                field: 'coating',
+                render: (rowData) => (
+                  <>
+                    {rowData.coating} - {myCoatings[rowData.coating]}
+                  </>
+                ),
+                editComponent: ({ rowData, onRowDataChange }) => (
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    onChange={(e: SelectChangeEvent) => {
+                      onRowDataChange({ ...rowData, coating: e.target.value });
+                    }}
+                    defaultValue={rowData.coating}
+                  >
+                    {Object.keys(myCoatings).map((key) => (
+                      <MenuItem key={key} value={key}>
+                        {key} - {myCoatings[key]}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                ),
+              },
+              { title: 'Material', field: 'material_type', lookup: materials },
+              { title: 'P.O.', field: 'po_number' /*lookup: po_numbers*/ },
+              { title: 'Smart Label', field: 'smart_label' },
+              { title: 'Comments', field: 'comments' },
+            ]}
+            data={data}
+            tableRef={materialTableRef}
+            initialFormData={initialFormData}
+            editable={{
+              // isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
+              // isEditHidden: rowData => rowData.name === 'x',
+              // isDeletable: rowData => rowData.name === 'b', // only name(b) rows would be deletable,
+              // isDeleteHidden: rowData => rowData.name === 'y',
+              // onBulkUpdate: changes =>
+              //     new Promise((resolve, reject) => {
+              //         setTimeout(() => {
+              //             /* setData([...data, newData]); */
+
+              //             resolve(void);
+              //         }, 1000);
+              //     }),
+              onRowAddCancelled: (rowData) =>
+                console.log('Row adding cancelled'),
+              onRowUpdateCancelled: (rowData) =>
+                console.log('Row editing cancelled'),
+              onRowAdd: onRowAdd,
+              onRowUpdate: onRowUpdate,
+              onRowDelete: (oldData) => {
+                return api.deletePipe(oldData.id.toString());
+              },
+            }}
+            actions={[
+              {
+                icon: () => <LibraryAddIcon />,
+                tooltip: 'Duplicate Pipe',
+                onClick: (event, rowData) => {
+                  const materialTable = materialTableRef.current;
+
+                  setInitialFormData({
+                    ...rowData,
+                    name: null,
+                    id: null,
+                    inspector: null,
+                    coil_no: null,
+                  });
+
+                  (materialTable as any).dataManager.changeRowEditing();
+                  (materialTable as any).setState({
+                    ...(materialTable as any).dataManager.getRenderState(),
+                    showAddRow: true,
+                  });
+                },
+              },
+            ]}
+          />
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 export default ShowPipes;

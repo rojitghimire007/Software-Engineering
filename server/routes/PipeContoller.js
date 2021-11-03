@@ -201,59 +201,6 @@ const updateStrung = async (req, res, next) => {
   }
 };
 
-/*const addToString = async (req, res, next) => {
-  let { pipe_id, new_station, left_of_target, new_station_id, curr_station } =
-    req.body;
-
-  try {
-    //let new_station = false;
-    let pipe_length = await deleteFromString(
-      pipe_id,
-      new_station_id,
-      curr_station
-    );
-    var updated_station_id = 0;
-
-    if (new_station == false) {
-      updateStrung().then(() => {
-        res.status(200).send({ success: true });
-      });
-    } else {
-      if (left_of_target) {
-        let left_pipe = await client.query(
-          `SELECT * from STATIONS where pipe_id = ${left_of_target}`
-        );
-        let left_pipe_station = left_pipe.rows[0]['station'];
-
-        if (left_pipe_station == new_station) {
-          let left_pipe_details = await client.query(
-            `SELECT pipe_length from pipes where pipe_id = ${left_of_target}`
-          );
-
-          updated_station_id =
-            Number(left_pipe.rows[0]['id']) +
-            Number(left_pipe_details.rows[0]['pipe_length']);
-        }
-      }
-      await client.query(
-        `UPDATE STATIONS SET id = id + ${pipe_length} where id >= ${updated_station_id} and station = ${new_station}`
-      );
-
-      await client.query(
-        `INSERT INTO STATIONS(station, id, pipe_id) VALUES(${new_station}, ${updated_station_id}, ${pipe_id})`
-      );
-
-      res.status(200).send({ success: true });
-    }
-
-    //console.log('hello');
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-*/
-
 const deleteFromString = async (pipe_id, curr_id, curr_station) => {
   try {
     await client.query(`DELETE FROM STATIONS WHERE pipe_id = ${pipe_id}`);
