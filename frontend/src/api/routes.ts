@@ -17,6 +17,12 @@ const API = {
   getStringingInfo: `${URL}/stringing`,
   updateStringing: `${URL}/updateStrung`,
   getFittings: `${URL}/fittings`,
+  stringing: `${URL}/string`,
+  getStrungPipesInfo: `${URL}/pipes/info/`,
+  getSequenceLength: `${URL}/pipes/length/`,
+  getStriningEligiblePipes: `${URL}/string/eligible`,
+  getCuttingEligiblePipes: `${URL}/pipes/cuttable`,
+  cutPipe: `${URL}/pipes/cut`,
 };
 
 export { URL, API };
