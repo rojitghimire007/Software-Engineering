@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
     // backgroundColor: ColorScheme.background,
     backgroundImage: `url(${InventoryImg})`,
     backgroundPosition: 'center',
-    backgroundSize: '100% 100%',
+    backgroundSize: '120% 120%',
     backgroundRepeat: 'no-repeat',       
     backgroundColor: ColorScheme.background,
-    height: '100vh',
+    height: '100%',
     padding: '10px',
   },
   toolbar: {

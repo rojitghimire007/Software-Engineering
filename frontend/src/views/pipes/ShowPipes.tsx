@@ -456,7 +456,7 @@ const ShowPipes = () => {
             />
           </div>
         </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
