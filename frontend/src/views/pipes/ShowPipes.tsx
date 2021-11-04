@@ -10,6 +10,9 @@ import MaterialTable, {
 } from 'material-table';
 import { tableIcons } from 'utils/tableIcons';
 import api from 'api';
+import {SketchPicker} from 'react-color';
+import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import Backdrop from '@mui/material/Backdrop';
 import { unstable_batchedUpdates } from 'react-dom';
 import { MenuItem } from '@mui/material';
 import {
@@ -57,6 +60,17 @@ interface dataType {
   comments: string;
 }
 
+var presetColors = [
+  {color:'#000',title:'black'},
+  {color:'#00f',title:'blue'},
+  {color:'#0f0',title:'green'},
+  {color:'#0ff',title:'cyan'},
+  {color:'#f00',title:'red'},
+  {color:'#f0f',title:'pink'},
+  {color:'#ff0',title:'yellow'},
+  {color:'#fff',title:'white'}, //color:'#',title:''
+];
+
 const diameters = {
   '10″': '10″',
   '2 1/2″': '2 1/2″',
@@ -98,11 +112,17 @@ const diameters = {
   '36″': '36″',
 };
 
+// const styles = [
+//   hoverable: {}
+// ]
+
 const ShowPipes = () => {
   const materialTableRef = createRef();
 
   let date = new Date();
 
+  const [colorPicker, setColorPicker] = useState(false);
+  const [color, setColor] = useState<string>('000');
   const [initialFormData, setInitialFormData] = useState({});
   const [data, setData] = useState<dataType[]>([
     // {
@@ -248,10 +268,13 @@ const ShowPipes = () => {
 
   const classes = useStyles();
 
+  const [animationA, setAnimationA] = useState<string>('');
+  const [animationB, setAnimationB] = useState<string>('');
+
   return (
     <>
       <div className={classes.wrapper}>
-        {console.log(date)}
+        {/* {console.log(date)} */}
         <div>
           <CssBaseline />
           <Toolbar className={classes.title}>
@@ -260,6 +283,75 @@ const ShowPipes = () => {
             </Typography>
           </Toolbar>
         </div>
+        { colorPicker ?
+          <Backdrop open={colorPicker} style={{zIndex: 99999}}>
+            <div style={{display: 'fles', flexDirection: 'column'}}>
+                <div style={{color: 'white'}}>Pick a Color</div>
+                <div>
+                  <SketchPicker 
+                    color={color}
+                    style={{marginLeft: 'auto', marginRight: 'auto'}} 
+                    disableAlpha={true}
+                    presetColors={presetColors}
+                    onChange={(colorChosen: any) => setColor(colorChosen.hex)}
+                  />
+                </div>
+                <div style={{display: 'flex'}}>
+                  <div
+                    style={{marginRight: '0', 
+                            marginTop: '3%', 
+                            fontSize: '24px',
+                            fontStyle: 'Fenix serif',
+                            backgroundColor: 'green',
+                            boxShadow: '0 0 0 1px olive',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            padding: '3%',
+                            color: 'white',
+                            transform: `${animationA}`,
+                            transition: '.25s ease-in-out'}}
+                    // className={...styles.hoverable}
+                    onClick={() => {
+                      setColorPicker(!colorPicker)
+                      presetColors = [...presetColors, {color:color, title:'newColor'}]
+                    }}
+                    onMouseOver={() => {setAnimationA('skewX(2deg) scale(.97,.97)')}}
+                    onMouseOut={() => {setAnimationA('')}}
+                  >
+                    Finish
+                  </div>
+                  <div
+                    style={{marginLeft: '31%', 
+                            marginRight: 'auto',
+                            marginTop: '3%', 
+                            fontSize: '24px',
+                            fontStyle: 'Fenix serif',
+                            backgroundColor: 'red',
+                            boxShadow: '0 0 0 3px crimson',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            padding: '3%',
+                            transform: `${animationB}`,
+                            transition: '.25s ease-in-out'}}
+                    // className={...styles.hoverable}
+                    onClick={() => {setColorPicker(!colorPicker)}}
+                    onMouseOver={() => {setAnimationB('skewX(-2deg) scale(.97,.97)')}}
+                    onMouseOut={() => {setAnimationB('')}}
+                  >
+                    Abort
+                  </div>
+                </div>
+            </div>
+          </Backdrop>
+          :
+          <></>
+        }
         <div className={classes.stickyActions}>
           <MaterialTable
             icons={tableIcons}
@@ -462,6 +554,13 @@ const ShowPipes = () => {
                   });
                 },
               },
+              {
+                icon: () => <InvertColorsIcon />,
+                tooltip: 'Edit Pipe Color',
+                onClick: () => {
+                  setColorPicker(!colorPicker)
+                }
+              }
             ]}
           />
         </div>
