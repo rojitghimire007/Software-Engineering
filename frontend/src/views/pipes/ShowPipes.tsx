@@ -10,6 +10,7 @@ import MaterialTable, {
 } from 'material-table';
 import { tableIcons } from 'utils/tableIcons';
 import api from 'api';
+import { SketchPicker } from 'react-color';
 import { unstable_batchedUpdates } from 'react-dom';
 import { MenuItem } from '@mui/material';
 import {
