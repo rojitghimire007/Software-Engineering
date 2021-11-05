@@ -196,12 +196,12 @@ const ShowPipes = () => {
                 res2.grades.reduce((a: any, v: any) => ({ ...a, [v]: v }), {})
               );
               setMyCoatings(res2.coatings);
-              setMaterials(
-                res2.materials.reduce(
-                  (a: any, v: any) => ({ ...a, [v]: v }),
-                  {}
-                )
-              );
+              // setMaterials(
+              //   res2.materials.reduce(
+              //     (a: any, v: any) => ({ ...a, [v]: v }),
+              //     {}
+              //   )
+              // );
               setHeat_numbers(
                 res2.heat_numbers.reduce(
                   (a: any, v: any) => ({ ...a, [v]: v }),

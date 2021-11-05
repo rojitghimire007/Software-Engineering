@@ -1,4 +1,6 @@
+const pipeQueries = require('../sql_queries/pipeQueries');
 const { client } = require('../utils/databaseConnection');
+const { getRandomString } = require('../utils/otherUtils');
 
 const getSchedule = async (schedule, diameter) => {
   try {
@@ -7,11 +9,11 @@ const getSchedule = async (schedule, diameter) => {
     const wallThick = breakSchedule[1].trim();
 
     let schedule_class = await client.query(
-      `SELECT id FROM SCHEDULE_AND_CLASS WHERE (diameter = '${diameter}' AND designation = '${schedule}' AND wall_thickness = ${wallThick})`
+      `SELECT piperefid FROM piperef WHERE (diameter = $1 AND schedule = $2 AND thickness = $3)`,
+      [diameter, schedule, wallThick]
     );
 
-    schedule_class = schedule_class.rows[0].id;
-    return schedule_class;
+    return schedule_class.rows[0].piperefid;
   } catch (err) {
     console.log(err);
   }
@@ -36,39 +38,67 @@ const addPipe = async (req, res, next) => {
   } = req.body;
 
   try {
-    if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
+    // USER AUTHENTICATION
+    // if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
 
-    let user = await client.query(
-      `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
+    // let user = await client.query(
+    //   `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
+    // );
+    // user = user.rows[0].id;
+
+    let pipeRefId = await getSchedule(schedule, diameter);
+
+    let pipeHeat = await client.query(
+      'SELECT * FROM pipeHeat WHERE heatNumber = $1',
+      [heat_no]
     );
-    user = user.rows[0].id;
 
-    let schedule_class = await getSchedule(schedule, diameter);
+    console.log(pipeHeat);
 
-    await client.query({
-      text: 'INSERT INTO pipes(coating_type,coil_number,comments,grade,heat_number,pipe_length,location,material, purchase_order,schedule_class,void,pipe_id, inspector_id, mfg) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14)',
-      values: [
-        coating,
-        coil_no,
-        comments,
-        grade,
-        heat_no,
-        length,
-        location,
-        material_type,
-        po_number,
-        schedule_class,
-        isVoid,
-        id,
-        user,
-        manufacturer,
-      ],
-    });
+    if (pipeHeat.rows.length == 0) {
+      await client.query(pipeQueries.addPipeHeat, [heat_no, manufacturer]);
+      pipeHeat = await client.query(
+        'SELECT * FROM pipeHeat WHERE heatNumber = $1',
+        [heat_no]
+      );
+    } else if (pipeHeat.rows[0].manufacture != manufacturer) {
+      throw {
+        status: 400,
+        message:
+          'Same Heat Number with a different manufacturer exists. Please consult admin to verify correct manufacturer. You can also leave a comment on the pipe.',
+      };
+    }
+    pipeHeat = pipeHeat.rows[0].pipeheatid;
+
+    let sharedRef = getRandomString(30);
+    await client.query(pipeQueries.addPipeSharedInfo, [
+      sharedRef,
+      coating,
+      grade,
+      pipeHeat,
+      pipeRefId,
+      po_number,
+      material_type,
+      'user', // replace this later
+    ]);
+
+    await client.query(pipeQueries.addPipe, [
+      id,
+      sharedRef,
+      length,
+      'user',
+      location,
+      coil_no,
+      comments,
+      isVoid,
+      false,
+      null,
+    ]);
 
     return res.status(201).send({
       success: true,
       message: 'Pipe Added!',
-      user: user,
+      // user: user,
     });
   } catch (error) {
     console.log(error);
@@ -78,9 +108,7 @@ const addPipe = async (req, res, next) => {
 
 const allPipes = (req, res, next) => {
   client
-    .query(
-      "SELECT void, DATE(inventory_date), CONCAT(first_name, ' ', last_name) AS inspector, location, pipe_id as id,  coil_number as coil_no, heat_number as heat_no, diameter, designation as schedule, wall_thickness, grade, pipe_length as length, pipes.coating_type as coating, color as coating_color, mfg as manufacturer, material as material_type, purchase_order as po_number, comments FROM pipes INNER JOIN schedule_and_class ON pipes.schedule_class = schedule_and_class.id INNER JOIN users ON pipes.inspector_id = users.id INNER JOIN pipe_coating ON pipes.coating_type = pipe_coating.coating_type;"
-    )
+    .query(pipeQueries.allPipes)
     .then((response) => {
       return res.status(200).send({ success: true, pipes: response.rows });
     })
@@ -224,36 +252,32 @@ const deleteFromString = async (pipe_id, curr_id, curr_station) => {
 
 const getOptions = async (req, res, next) => {
   try {
-    let grades = await client.query('SELECT grade FROM PIPE_GRADE;');
+    let grades = await client.query('SELECT grade FROM pipeGrade;');
     grades = grades.rows.map((data) => data.grade);
 
-    let materials = await client.query('SELECT material_name FROM material;');
-    materials = materials.rows.map((data) => data.material_name);
+    // let materials = await client.query('SELECT material_name FROM material;');
+    // materials = materials.rows.map((data) => data.material_name);
 
-    let po_numbers = await client.query('SELECT id FROM purchase_orders;');
-    po_numbers = po_numbers.rows.map((data) => data.id);
+    let po_numbers = await client.query('SELECT poNumber FROM purchasenumber;');
+    po_numbers = po_numbers.rows.map((data) => data.ponumber);
 
-    let heat_numbers = await client.query(
-      'SELECT heat_number FROM pipe_heat_numbers;'
-    );
+    let heat_numbers = await client.query('SELECT heatnumber FROM pipeheat;');
 
-    heat_numbers = heat_numbers.rows.map((data) => data.heat_number);
+    heat_numbers = heat_numbers.rows.map((data) => data.heatnumber);
 
-    let coatings = await client.query(
-      'SELECT coating_type, color FROM pipe_coating;'
-    );
+    let coatings = await client.query('SELECT coat, color FROM pipecoat;');
     // let coating_color = await client.query('SELECT color FROM pipe_coating;');
 
     let coating_return = {};
     coatings.rows.forEach((data) => {
-      coating_return[data.coating_type] = data.color;
+      coating_return[data.coat] = data.color;
     });
 
     res.status(200).send({
       success: true,
       grades,
       coatings: coating_return,
-      materials,
+      // materials,
       po_numbers,
       heat_numbers,
     });
@@ -272,4 +296,6 @@ module.exports = {
   getStringingInfo,
   getOptions,
   editPipe,
+  getCoat,
+  postCoat
 };
