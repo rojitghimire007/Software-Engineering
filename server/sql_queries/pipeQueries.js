@@ -8,6 +8,8 @@ const pipeQueries = {
     'INSERT INTO purchase_number(poNumber, manufacture) VALUES($1, $2)',
   addPipe:
     'INSERT INTO pipe(id, pipeSharedId, plength, updatedBy, plocation, coilNumber, comment, isVoid, isUsed, parent) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+  allPipes:
+    'select id, diameter, schedule, grade, isvoid as void, updatedon as date, updatedby as inspector, plocation as location, coilnumber as coil_no, heatnumber as heat_no, thickness as wall_thickness, plength as length, coat as coating, color as coating_color, manufacture as manufacturer, materialtype as material_type, ponumber as po_number, comment as comments from pipe join pipesharedinfo using (pipeSharedId) join pipeheat using (pipeheatid) join piperef using (piperefid) join pipecoat using(coat);',
 };
 
 module.exports = pipeQueries;
