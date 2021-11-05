@@ -13,20 +13,9 @@ const Footer = () => {
                 </div>
                 <div className="footer-heading footer-2">
                     <h2>About Us </h2>
-                    <a href="#">Jobs</a>
-                    <a href="#">Support</a>
+                    {/* <a href="#">Jobs</a> */}
+                    <a href="#">Technical Support</a>
                     <a href="#">Email Us</a>
-                </div>
-                <div className="footer-heading footer-3">
-                    <h2>Social Media</h2>
-                    <a href="#">Facebook</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">YouTube</a>
-                </div>
-                <div className="footer-email-form">
-                    <h2>Join our newsletter</h2>
-                    <input type="email" placeholder="Enter your email address" id="footer-email"></input>
-                    <input type="submit" value="Sign Up" id="footer-email-btn"></input>
                 </div>
             </div>
                 
