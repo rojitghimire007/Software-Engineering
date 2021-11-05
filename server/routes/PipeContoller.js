@@ -1,4 +1,6 @@
+const pipeQueries = require('../sql_queries/pipeQueries');
 const { client } = require('../utils/databaseConnection');
+const { getRandomString } = require('../utils/otherUtils');
 
 const getSchedule = async (schedule, diameter) => {
   try {
@@ -7,11 +9,11 @@ const getSchedule = async (schedule, diameter) => {
     const wallThick = breakSchedule[1].trim();
 
     let schedule_class = await client.query(
-      `SELECT id FROM SCHEDULE_AND_CLASS WHERE (diameter = '${diameter}' AND designation = '${schedule}' AND wall_thickness = ${wallThick})`
+      `SELECT piperefid FROM piperef WHERE (diameter = $1 AND schedule = $2 AND thickness = $3)`,
+      [diameter, schedule, wallThick]
     );
 
-    schedule_class = schedule_class.rows[0].id;
-    return schedule_class;
+    return schedule_class.rows[0].piperefid;
   } catch (err) {
     console.log(err);
   }
@@ -36,39 +38,67 @@ const addPipe = async (req, res, next) => {
   } = req.body;
 
   try {
-    if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
+    // USER AUTHENTICATION
+    // if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
 
-    let user = await client.query(
-      `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
+    // let user = await client.query(
+    //   `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
+    // );
+    // user = user.rows[0].id;
+
+    let pipeRefId = await getSchedule(schedule, diameter);
+
+    let pipeHeat = await client.query(
+      'SELECT * FROM pipeHeat WHERE heatNumber = $1',
+      [heat_no]
     );
-    user = user.rows[0].id;
 
-    let schedule_class = await getSchedule(schedule, diameter);
+    console.log(pipeHeat);
 
-    await client.query({
-      text: 'INSERT INTO pipes(coating_type,coil_number,comments,grade,heat_number,pipe_length,location,material, purchase_order,schedule_class,void,pipe_id, inspector_id, mfg) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14)',
-      values: [
-        coating,
-        coil_no,
-        comments,
-        grade,
-        heat_no,
-        length,
-        location,
-        material_type,
-        po_number,
-        schedule_class,
-        isVoid,
-        id,
-        user,
-        manufacturer,
-      ],
-    });
+    if (pipeHeat.rows.length == 0) {
+      await client.query(pipeQueries.addPipeHeat, [heat_no, manufacturer]);
+      pipeHeat = await client.query(
+        'SELECT * FROM pipeHeat WHERE heatNumber = $1',
+        [heat_no]
+      );
+    } else if (pipeHeat.rows[0].manufacture != manufacturer) {
+      throw {
+        status: 400,
+        message:
+          'Same Heat Number with a different manufacturer exists. Please consult admin to verify correct manufacturer. You can also leave a comment on the pipe.',
+      };
+    }
+    pipeHeat = pipeHeat.rows[0].pipeheatid;
+
+    let sharedRef = getRandomString(30);
+    await client.query(pipeQueries.addPipeSharedInfo, [
+      sharedRef,
+      coating,
+      grade,
+      pipeHeat,
+      pipeRefId,
+      po_number,
+      material_type,
+      'user', // replace this later
+    ]);
+
+    await client.query(pipeQueries.addPipe, [
+      id,
+      sharedRef,
+      length,
+      'user',
+      location,
+      coil_no,
+      comments,
+      isVoid,
+      false,
+      null,
+    ]);
 
     return res.status(201).send({
       success: true,
       message: 'Pipe Added!',
-      user: user,
+      // user: user,
     });
   } catch (error) {
     console.log(error);
