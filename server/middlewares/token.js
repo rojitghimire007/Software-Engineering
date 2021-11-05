@@ -11,9 +11,11 @@ const TokenMiddleWare = (app) => {
     if (!token || token == 'null') req.userEmail = null;
     else {
       let verification = await validateToken({ token });
-
       if (verification.success) {
         req.userEmail = verification.decoded.email;
+        if(verification.decoded.dbname){
+          req.dbname = verification.decoded.dbname;
+        }
       } else {
         req.userEmail = null;
         next('Token not verified');

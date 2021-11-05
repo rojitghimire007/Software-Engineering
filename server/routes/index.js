@@ -1,4 +1,4 @@
-const { login, signup, auth } = require('./UserController');
+const { login, signup, auth, selectProject} = require('./UserController');
 const { getScheduleAndThickness } = require('./OtherDataContoller');
 
 const {
@@ -32,6 +32,7 @@ const SetRoutes = (app) => {
   //user routes
   app.post('/signup', signup);
   app.post('/login', login);
+  app.post('/projects', selectProject);
   app.post('/auth', auth);
 
   // pipe routes

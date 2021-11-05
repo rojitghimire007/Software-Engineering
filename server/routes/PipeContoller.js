@@ -296,4 +296,6 @@ module.exports = {
   getStringingInfo,
   getOptions,
   editPipe,
+  getCoat,
+  postCoat
 };
