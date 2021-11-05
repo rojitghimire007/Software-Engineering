@@ -181,14 +181,14 @@ master_pool.on('error', (err, _c2) => {
 
 // Tests:
 // ----------Creating project database------------
-create_database({
-  projectnumber:2,
-  pname:'project2',
-  company: 'Org2',
-  worknumber: 2,
-  plocation: 'test',
-  dbname: 'project2' 
-}) //dbname should always be in lowercase as it represents database name
+// create_database({
+//   projectnumber:2,
+//   pname:'project2',
+//   company: 'Org2',
+//   worknumber: 2,
+//   plocation: 'test',
+//   dbname: 'project2' 
+// }) //dbname should always be in lowercase as it represents database name
 
 // -----------------Retriving connection pool for existing projects-----------
 // const runNow = async () => {
