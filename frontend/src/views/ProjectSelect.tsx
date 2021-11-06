@@ -21,9 +21,9 @@ const ProjectSelect = () => {
     const [selected, setSelected] = useState('');
     const [errored, setErrored] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [projectDetails, setProjectDetails] = useState<{
+    const [projectDetails, setProjectDetails] = useState<Array<{
         [index: number | string]: any;
-      }>({})
+      }>>([])
 
     useEffect(() => {
         api
@@ -85,17 +85,17 @@ const ProjectSelect = () => {
                 <div className={classes.title}>Choose A Project</div>
 
                 <div className={classes.list}>
-                    {projects.map((item) => {
+                    {projectDetails.map((item : any) => {
                         return (
                             <div 
                                 className={classes.item}
                                 onClick={() => {setSelected(item.name); setErrored(false)}}
                             >
                                 <span style={{margin: '3px 3px'}}>
-                                    {item.name}, last accessed {item.accessed}
+                                    {item.pname}, {item.plocation}
                                 </span>
 
-                                {selected === item.name ? 
+                                {selected === item.pname ? 
                                     <div style={{display: 'inline-block'}}>(chosen)</div>
                                     : null
                                 }
@@ -105,18 +105,11 @@ const ProjectSelect = () => {
                 </div>
 
                 <div className={classes.bottom}>
-                    {/* <span>Choose A Project</span> */}
                     <div 
                         className={classes.btn}
                         onClick={() => logIn()}
                     >
                         ENTER
-                    </div>
-                    <div 
-                        className={classes.btn}
-                        onClick={()=>{console.log(projectDetails)}}
-                    >
-                        REFRESH CONSOLE
                     </div>
                 </div>
             </div>

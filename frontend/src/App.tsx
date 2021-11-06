@@ -27,7 +27,7 @@ function App() {
       .auth()
       .then((res) => {
         if (window.location.pathname === '/login' && res.success) {
-          history.push('/');
+          // history.push('/');
         } else if (!res.success) {
           // logoutAndRedirect();
           setLocalStorage('pipeline_token', '');
