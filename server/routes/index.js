@@ -1,5 +1,5 @@
-const { login, signup, auth, selectProject} = require('./UserController');
-const { getScheduleAndThickness } = require('./OtherDataContoller');
+const { login, signup, auth, selectProject, getAssociatedProjects, usersInProject} = require('./UserController');
+const { postProject, addUserToProject, getAllUsers } = require('./AdminController');
 
 const {
   addPipe,
@@ -29,10 +29,17 @@ const {
 //const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
+  //admin
+  app.post('/create/project', postProject);
+  app.post('/create/project/user', addUserToProject);
+  app.get('/allusers', getAllUsers);
+
   //user routes
   app.post('/signup', signup);
   app.post('/login', login);
-  app.post('/projects', selectProject);
+  app.get('/list/project', getAssociatedProjects);
+  app.post('/select/project', selectProject);
+  app.get('/list/user', usersInProject);
   app.post('/auth', auth);
 
   // pipe routes
@@ -63,8 +70,6 @@ const SetRoutes = (app) => {
   app.post('/fittings', addFittings);
   app.get('/fittings', getFittings);
 
-  // otherdata
-  app.get('/scheduleAndThickness', getScheduleAndThickness);
 };
 
 module.exports = { SetRoutes };
