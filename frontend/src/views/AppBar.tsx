@@ -11,6 +11,8 @@ import 'style/AppBarStyles.css';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { withRouter, useHistory } from 'react-router-dom';
+
 
 
 const options = [
@@ -23,7 +25,8 @@ const options = [
 ];
 const ITEM_HEIGHT = 48;
 
-function MenuAppBar() {
+const MenuAppBar = (props: { history: any; }) => {
+    
     const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorE2);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -31,15 +34,9 @@ function MenuAppBar() {
     };
     const handleClose1 = () => {
         setAnchorE2(null);
-    }; 
-    
-
-    /*const [auth, setAuth] = React.useState(true);*/
+    };
+        
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-    /*const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAuth(event.target.checked);
-    };*/
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -49,11 +46,15 @@ function MenuAppBar() {
         setAnchorEl(null);
     };
 
+    //For app bar buttons
+    const history = useHistory();
+    const handleButtonsClick = (pageURL: string) => {
+        history.push(pageURL);
+    };
+
     return (
         <Box sx={{ flexGrow: 1 }}>
-
             <AppBar position="static">
-                
                 <Toolbar className="app-container">
                     <IconButton
                         id="long-button"
@@ -69,8 +70,8 @@ function MenuAppBar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    
-                    <Menu 
+
+                    <Menu
                         id="long-menu"
                         MenuListProps={{
                             'aria-labelledby': 'long-button',
@@ -90,52 +91,54 @@ function MenuAppBar() {
                                 {option}
                             </MenuItem>
                         ))}
-                    </Menu> 
+                    </Menu>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 
                     </Typography>
-                    <Button> Home </Button>
-                    <Button> About </Button>
-                    <Button> Services </Button>
-                    <Button> Training </Button>
-                    <Button> Careers </Button>
-                    <Button> Contact Us </Button>
+                    {/*menu items from app bar*/}
+                    <div className = "headerOptions">
+                        <Button onClick={() => handleButtonsClick('/dashboard')}> Home </Button>
+                        <Button onClick={() => handleButtonsClick('/about')}> About </Button>
+                        <Button onClick={() => handleButtonsClick('/dashboard')}> Services </Button>
+                        <Button onClick={() => handleButtonsClick('/dashboard')}> Training </Button>
+                        <Button onClick={() => handleButtonsClick('/dashboard')}> Careers </Button>
+                        <Button onClick={() => handleButtonsClick('/contact')}> Contact Us </Button>
+                    </div>
                     
-                    
-                        <div>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleMenu}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={handleClose}>My account</MenuItem>
-                                <MenuItem onClick={handleClose}>Logout</MenuItem>
-                            </Menu>
-                        </div>
+                    <div>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                            <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        </Menu>
+                    </div>
                 </Toolbar>
             </AppBar>
         </Box>
     );
 }
-export default MenuAppBar
+export default withRouter(MenuAppBar)
