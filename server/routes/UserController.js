@@ -37,14 +37,18 @@ const login = async (req, res, next) => {
           message: 'The email or password you entered is incorrect!',
         });
 
-      let token = await jwt.sign({ email: user.email, uname: user.uname }, JWTConfig, {
-        expiresIn,
-      });
+      let token = await jwt.sign(
+        { email: user.email, uname: user.uname },
+        JWTConfig,
+        {
+          expiresIn,
+        }
+      );
 
       return res.status(200).send({
         success: true,
         message: 'User Logged In!',
-        token: token
+        token: token,
       });
     });
   } catch (err) {
@@ -67,9 +71,9 @@ const signup = async (req, res, next) => {
 
       if (existingUsers.rows.length !== 0)
         throw { status: 405, message: 'User already exists!' };
-    } catch (error) { }
+    } catch (error) {}
 
-    let randomNumber = getRandomString(5, '0123456789') ;
+    let randomNumber = getRandomString(5, '0123456789');
     let uname = fname.toLowerCase().trim().replace(' ', '') + randomNumber;
 
     // Hash the password and do the rest in the callback function
@@ -105,7 +109,6 @@ const signup = async (req, res, next) => {
 
 const getAssociatedProjects = async (req, res, next) => {
   try {
-
     let query = {
       text: `SELECT pname, project_number FROM user_project INNER JOIN projects USING (project_number) WHERE user_project.uname=$1`,
       values: [req.uname],
@@ -120,57 +123,62 @@ const getAssociatedProjects = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: [...projects]
+      data: [...projects],
     });
-
   } catch (error) {
     next(error);
   }
-}
+};
 
 //use when adding users to a project
 const usersInProject = async (req, res, next) => {
   try {
     const query = {
       text: `SELECT uname FROM projects INNER JOIN user_project USING(project_number) WHERE dbname=$1`,
-      values: [req.dbname]
-    }
+      values: [req.dbname],
+    };
 
     const result = await query_resolver(default_pool, query);
 
     return res.status(200).json({
       success: true,
-      data: [...result]
+      data: [...result],
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 const selectProject = async (req, res, next) => {
   try {
+    if (!req.userEmail)
+      throw { status: 401, message: 'Unauthorized user! Please login first.' };
+
     const { project_number } = req.body;
 
     const query = {
       text: `SELECT dbname FROM projects WHERE project_number=$1`,
-      values: [project_number]
+      values: [project_number],
     };
 
     const result = await query_resolver(default_pool, query);
     const dbname = result[0].dbname;
-    let token = await jwt.sign({ email: req.userEmail, uname: req.uname, dbname }, JWTConfig, {
-      expiresIn,
-    });
-    
+    let token = await jwt.sign(
+      { email: req.userEmail, uname: req.uname, dbname },
+      JWTConfig,
+      {
+        expiresIn,
+      }
+    );
+
     return res.status(200).json({
       success: true,
-      token
+      token,
     });
-
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 /**
  * Authenticate user session (if logged in) after closing tab/browser
@@ -199,7 +207,7 @@ const auth = async (req, res, next) => {
 
       if (existingUsers.rows.length == 0)
         throw { status: 401, message: 'User not authorized!' };
-    } catch (error) { }
+    } catch (error) {}
 
     return res
       .status(200)
@@ -208,4 +216,11 @@ const auth = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { login, signup, auth, selectProject, getAssociatedProjects, usersInProject };
+module.exports = {
+  login,
+  signup,
+  auth,
+  selectProject,
+  getAssociatedProjects,
+  usersInProject,
+};
