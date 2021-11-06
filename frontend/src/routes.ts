@@ -2,6 +2,8 @@ import React, { ComponentType } from 'react';
 import ShowPipes from 'views/pipes/ShowPipes';
 import ShowFittings from 'views/fittings/ShowFittings';
 import NewStrungPipes from 'views/stringing/StrungPipes';
+import ProjectsPage from 'views/ProjectsPage';
+import ProjectSelect from 'views/ProjectSelect';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -13,6 +15,8 @@ const routes: {
   component: ComponentType<any>;
   exact: boolean;
 }[] = [
+  { path: '/projects', exact: true, name: 'Projects', component: ProjectsPage },
+  { path: '/project-select', exact: true, name: 'Project Select', component: ProjectSelect },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
   { path: '/login', exact: true, name: 'Login', component: Login },
   { path: '/pipes', exact: true, name: 'Show', component: ShowPipes },

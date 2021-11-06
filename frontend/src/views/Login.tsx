@@ -19,7 +19,8 @@ import {
   TextField,
   Container,
   ThemeProvider, 
-  createMuiTheme
+  createMuiTheme,
+  // Backdrop,
 } from '@material-ui/core';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -31,6 +32,14 @@ import {
   IconButton,
   createTheme,
   Paper,
+  Backdrop,
+  Dialog,
+  Stack,
+  Menu,
+  MenuItem,
+  Fade,
+  Divider,
+  Checkbox,
 } from '@mui/material';
 
 import useStyles from '../style/LoginStyles'; // new styling
@@ -39,6 +48,7 @@ import Footer from 'views/Footer';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [renderProjects, setRenderProjects] = useState(false);
   const history = useHistory();
 
   const updateFields = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,18 +62,18 @@ const Login = () => {
     }
   };
 
-  const loginUser = (e: React.FormEvent) => {
-    e.preventDefault();
-    //api call
+  // const loginUser = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   //api call
 
-    api
-      .login(email, password)
-      .then((res) => {
-        setLocalStorage('pipeline_token', res.token);
-        history.push('/');
-      })
-      .catch((err) => alert(err.message));
-  };
+  //   api
+  //     .login(email, password)
+  //     .then((res) => {
+  //       setLocalStorage('pipeline_token', res.token);
+  //       history.push('/');
+  //     })
+  //     .catch((err) => alert(err.message));
+  // };
 
   const classes = useStyles(); // For Styling
 
@@ -120,6 +130,24 @@ const Login = () => {
 
   return (
     <>
+        {/* <Backdrop open={renderProjects}>
+                <Card style={{backgroundColor: 'red'}}>
+                  <Menu 
+                    open={renderProjects}
+                    TransitionComponent={Fade}
+                  >
+                    <CardContent style={{backgroundColor: 'red'}}>
+                      PLEASE SELECT A PROJECT
+                    </CardContent>
+                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 1<Checkbox/></MenuItem><Divider/>
+                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 2<Checkbox/></MenuItem><Divider/>
+                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 3<Checkbox/></MenuItem><Divider/>
+                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 4<Checkbox/></MenuItem><Divider/>
+                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 5<Checkbox/></MenuItem>
+                  </Menu>
+                </Card>
+        </Backdrop> */}
+
       <CssBaseline />
 
       <AppBar position="relative">
@@ -214,7 +242,7 @@ const Login = () => {
                       variant="contained"
                       color="primary"
                       className={classes.buttonPrimary}
-                      onClick={loginUser}
+                      onClick={() => {setRenderProjects(!renderProjects); console.log(renderProjects)}}
                     >
                       Login
                     </Button>

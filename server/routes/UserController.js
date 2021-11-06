@@ -1,4 +1,5 @@
-const { client } = require('../utils/databaseConnection');
+const { default_pool, query_resolver } = require('../utils/dbHandler');
+const { getRandomString } = require('../utils/randomGenerator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SaltRounds, JWTConfig, JWTExpiresIn: expiresIn } = require('../config');
@@ -10,9 +11,7 @@ const login = async (req, res, next) => {
 
     email = email.trim();
 
-    // Check if the user  exists
-
-    let user = await client.query({
+    let user = await default_pool.query({
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
     });
@@ -25,7 +24,7 @@ const login = async (req, res, next) => {
     else user = user.rows[0];
 
     //password checking
-    bcrypt.compare(password, user.password, async (err, result) => {
+    bcrypt.compare(password, user.pass, async (err, result) => {
       if (err)
         return next({
           status: 500,
@@ -38,14 +37,14 @@ const login = async (req, res, next) => {
           message: 'The email or password you entered is incorrect!',
         });
 
-      let token = await jwt.sign({ email: user.email }, JWTConfig, {
+      let token = await jwt.sign({ email: user.email, uname: user.uname }, JWTConfig, {
         expiresIn,
       });
 
       return res.status(200).send({
         success: true,
         message: 'User Logged In!',
-        token: token,
+        token: token
       });
     });
   } catch (err) {
@@ -55,24 +54,23 @@ const login = async (req, res, next) => {
 
 const signup = async (req, res, next) => {
   try {
-    let { password, email } = req.body;
-
-    first_name = 'Ashish';
-    last_name = 'Dev';
-    role = 'Admin';
+    let { fname, password, email, phone } = req.body;
 
     email = email.trim();
 
     // Check if the user already exists
     try {
-      let existingUsers = await client.query({
+      let existingUsers = await default_pool.query({
         text: 'SELECT * FROM users WHERE email = $1',
         values: [email],
       });
 
       if (existingUsers.rows.length !== 0)
         throw { status: 405, message: 'User already exists!' };
-    } catch (error) {}
+    } catch (error) { }
+
+    let randomNumber = getRandomString(5, '0123456789') ;
+    let uname = fname.toLowerCase().trim().replace(' ', '') + randomNumber;
 
     // Hash the password and do the rest in the callback function
     await bcrypt.hash(password, SaltRounds, async (err, hash) => {
@@ -87,17 +85,14 @@ const signup = async (req, res, next) => {
         password = hash; //Replace with the hashed password
 
         // Save new user
-        let user = await client.query({
-          text: 'INSERT INTO users(email, password, first_name, last_name, role) VALUES($1, $2, $3, $4, $5)',
-          values: [email, password, first_name, last_name, role],
+        let _user = await default_pool.query({
+          text: 'INSERT INTO users(uname, email, pass, fname, phone) VALUES($1, $2, $3, $4, $5)',
+          values: [uname, email, password, fname, phone],
         });
-
-        let token = await jwt.sign({ email }, JWTConfig, { expiresIn });
 
         return res.status(201).send({
           success: true,
           message: 'User Created!',
-          token: token,
         });
       } catch (er) {
         next(er);
@@ -107,6 +102,68 @@ const signup = async (req, res, next) => {
     next(err);
   }
 };
+
+const getAssociatedProjects = async (req, res, next) => {
+  try {
+
+    let query = {
+      text: `SELECT * FROM user_project INNER JOIN projects USING (project_number) WHERE user_project.uname=$1`,
+      values: [req.uname],
+    };
+
+    //TODO: check for admin, if admin show all project
+    // if(isAdmin){
+    //   query = `SELECT * FROM projects`;
+    // }
+
+    const projects = await query_resolver(default_pool, query);
+
+    return res.status(200).json({
+      success: true,
+      data: [...projects]
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+//use when adding users to a project
+const usersInProject = async (req, res, next) => {
+  try {
+    const query = {
+      text: `SELECT uname FROM projects INNER JOIN user_project USING(project_number) WHERE dbname=$1`,
+      values: [req.dbname]
+    }
+
+    const result = await query_resolver(default_pool, query);
+
+    return res.status(200).json({
+      success: true,
+      data: [...result]
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+const selectProject = async (req, res, next) => {
+  try {
+    const { dbname } = req.body;
+
+    let token = await jwt.sign({ email: req.userEmail, uname: req.uname, dbname }, JWTConfig, {
+      expiresIn,
+    });
+
+    return res.status(200).json({
+      success: true,
+      token
+    });
+
+  } catch (error) {
+    next(error)
+  }
+}
 
 /**
  * Authenticate user session (if logged in) after closing tab/browser
@@ -128,14 +185,14 @@ const auth = async (req, res, next) => {
 
     // Retrive corresponding user from db
     try {
-      existingUsers = await client.query({
+      existingUsers = await default_pool.query({
         text: 'SELECT * FROM users WHERE email = $1',
         values: [email],
       });
 
       if (existingUsers.rows.length == 0)
         throw { status: 401, message: 'User not authorized!' };
-    } catch (error) {}
+    } catch (error) { }
 
     return res
       .status(200)
@@ -144,4 +201,4 @@ const auth = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { login, signup, auth };
+module.exports = { login, signup, auth, selectProject, getAssociatedProjects, usersInProject };
