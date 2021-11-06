@@ -1,6 +1,5 @@
-const { client } = require('../utils/databaseConnection');
 const { default_pool, query_resolver } = require('../utils/dbHandler');
-const genRandomString = require('../utils/genRandomString');
+const { getRandomString } = require('../utils/randomGenerator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SaltRounds, JWTConfig, JWTExpiresIn: expiresIn } = require('../config');
@@ -38,22 +37,14 @@ const login = async (req, res, next) => {
           message: 'The email or password you entered is incorrect!',
         });
 
-      let token = await jwt.sign({ email: user.email }, JWTConfig, {
+      let token = await jwt.sign({ email: user.email, uname: user.uname }, JWTConfig, {
         expiresIn,
       });
-
-      const query = {
-        text: `SELECT * FROM user_project INNER JOIN projects ON user_project.projectnumber=projects.projectnumber WHERE user_project.uname=$1`,
-        values: [user.uname],
-      };
-
-      let projects = await query_resolver(default_pool, query);
 
       return res.status(200).send({
         success: true,
         message: 'User Logged In!',
-        token: token,
-        data: projects
+        token: token
       });
     });
   } catch (err) {
@@ -78,11 +69,8 @@ const signup = async (req, res, next) => {
         throw { status: 405, message: 'User already exists!' };
     } catch (error) { }
 
-    /**
-     * TODO: generate random uname = 
-     */
-    let randomNumber = genRandomString();
-    let uname = fname.toLowerCase().replace(' ','') + randomNumber;
+    let randomNumber = getRandomString(5, '0123456789') ;
+    let uname = fname.toLowerCase().trim().replace(' ', '') + randomNumber;
 
     // Hash the password and do the rest in the callback function
     await bcrypt.hash(password, SaltRounds, async (err, hash) => {
@@ -102,12 +90,9 @@ const signup = async (req, res, next) => {
           values: [uname, email, password, fname, phone],
         });
 
-        let token = await jwt.sign({ email }, JWTConfig, { expiresIn });
-
         return res.status(201).send({
           success: true,
           message: 'User Created!',
-          token: token,
         });
       } catch (er) {
         next(er);
@@ -118,11 +103,55 @@ const signup = async (req, res, next) => {
   }
 };
 
+const getAssociatedProjects = async (req, res, next) => {
+  try {
+
+    let query = {
+      text: `SELECT * FROM user_project INNER JOIN projects USING (project_number) WHERE user_project.uname=$1`,
+      values: [req.uname],
+    };
+
+    //TODO: check for admin, if admin show all project
+    // if(isAdmin){
+    //   query = `SELECT * FROM projects`;
+    // }
+
+    const projects = await query_resolver(default_pool, query);
+
+    return res.status(200).json({
+      success: true,
+      data: [...projects]
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+//use when adding users to a project
+const usersInProject = async (req, res, next) => {
+  try {
+    const query = {
+      text: `SELECT uname FROM projects INNER JOIN user_project USING(project_number) WHERE dbname=$1`,
+      values: [req.dbname]
+    }
+
+    const result = await query_resolver(default_pool, query);
+
+    return res.status(200).json({
+      success: true,
+      data: [...result]
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 const selectProject = async (req, res, next) => {
   try {
     const { dbname } = req.body;
 
-    let token = await jwt.sign({ email: req.userEmail, dbname }, JWTConfig, {
+    let token = await jwt.sign({ email: req.userEmail, uname: req.uname, dbname }, JWTConfig, {
       expiresIn,
     });
 
@@ -172,4 +201,4 @@ const auth = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { login, signup, auth, selectProject };
+module.exports = { login, signup, auth, selectProject, getAssociatedProjects, usersInProject };
