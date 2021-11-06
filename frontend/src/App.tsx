@@ -6,6 +6,7 @@ import api from 'api';
 import { setLocalStorage } from 'utils/utils';
 //import Footer from 'views/Footer';
 
+
 // Fonts
 import '@fontsource/fenix';
 import '@fontsource/roboto';
