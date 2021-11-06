@@ -1,6 +1,7 @@
 import { Login } from '@mui/icons-material';
 import React, {useState, useEffect} from 'react';
 import useStyles from 'style/ProjectSelectStyles';
+import api from 'api';
 
 const projects = [
     {name: 'Project A', accessed: 'Nov 04th, 2021'},
@@ -10,12 +11,25 @@ const projects = [
     {name: 'Project E', accessed: 'Feb 07th, 2021'},
 ];
 
+const user = 'test131195';
+
 const ProjectSelect = () => {
     const classes = useStyles('');
     const [selected, setSelected] = useState('');
     const [errored, setErrored] = useState(false);
     const [loading, setLoading] = useState(false);
-    
+    const [projectDetails, setProjectDetails] = useState<{
+        [index: number | string]: any;
+      }>({})
+
+    useEffect(() => {
+        /* api
+            .getAssociatedProjects()
+            .then((res) => {
+                setProjectDetails(res.data)
+            })
+            .catch((err) => alert(err.message)); */
+    },[])
 
     useEffect(() => {
         console.log(selected)
