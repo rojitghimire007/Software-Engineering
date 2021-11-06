@@ -1,19 +1,19 @@
 const pipeQueries = {
   addPipeSharedInfo:
-    'INSERT INTO pipeSharedInfo(pipeSharedId, coat, grade, pipeHeatId, pipeRefId, poNumber, materialType, createdBy ) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
-  addPipeHeat: 'INSERT INTO pipeheat(heatnumber, manufacture) VALUES($1, $2)',
+    'INSERT INTO pipe_shared_info(pipe_shared_id, coat, grade, pipe_heat_id, pipe_ref_id, po_number, material_type, created_by ) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
+  addPipeHeat: 'INSERT INTO pipe_heat(heat_number, manufacture) VALUES($1, $2)',
   addPipeCoat: 'INSERT INTO pipe_coat(coat, color) VALUES($1, $2)',
   addPipeGrade: 'INSERT INTO pipe_grade(grade, strength) VALUES($1, $2)',
   addPurchaseNumber:
-    'INSERT INTO purchase_number(poNumber, manufacture) VALUES($1, $2)',
+    'INSERT INTO purchase_number(po_number, manufacture) VALUES($1, $2)',
   addPipe:
-    'INSERT INTO pipe(id, pipeSharedId, plength, updatedBy, plocation, coilNumber, comment, isVoid, isUsed, parent) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+    'INSERT INTO pipe(id, pipe_shared_id, plength, updated_by, plocation, coil_number, comment, is_void, is_used, parent) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
   allPipes:
-    'select id, diameter, schedule, grade, isvoid as void, updatedon as date, updatedby as inspector, plocation as location, coilnumber as coil_no, heatnumber as heat_no, thickness as wall_thickness, plength as length, coat as coating, color as coating_color, manufacture as manufacturer, materialtype as material_type, ponumber as po_number, comment as comments from pipe join pipesharedinfo using (pipeSharedId) join pipeheat using (pipeheatid) join piperef using (piperefid) join pipecoat using(coat);',
+    'SELECT id, diameter, schedule, grade, is_void AS void, updated_on AS date, updated_by AS inspector, plocation AS location, coil_number AS coil_no, heat_number AS heat_no, thickness AS wall_thickness, plength AS length, coat AS coating, color AS coating_color, manufacture AS manufacturer, material_type, po_number, comment AS comments FROM pipe JOIN pipe_shared_info USING (pipe_shared_id) JOIN pipe_heat USING (pipe_heat_id) JOIN pipe_ref USING (pipe_ref_id) JOIN pipe_coat USING (coat);',
   updatePipe:
-    'UPDATE pipe SET id = $1, plength = $2, updatedBy = $3, plocation = $4, coilNumber = $5, comment = $6, isVoid = $7, updatedon = $8 WHERE id = $9',
+    'UPDATE pipe SET id = $1, plength = $2, updated_by = $3, plocation = $4, coil_number = $5, comment = $6, is_void = $7, updated_on = $8 WHERE id = $9',
   updatePipeSharedInfo:
-    'UPDATE pipesharedinfo SET coat = $1, grade = $2, ponumber = $3, materialtype = $4 where pipesharedid = $5',
+    'UPDATE pipe_shared_info SET coat = $1, grade = $2, po_number = $3, material_type = $4 WHERE pipe_shared_id = $5',
 };
 
 module.exports = pipeQueries;
