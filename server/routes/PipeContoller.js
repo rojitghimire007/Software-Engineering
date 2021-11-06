@@ -1,19 +1,26 @@
 const pipeQueries = require('../sql_queries/pipeQueries');
 const { client } = require('../utils/databaseConnection');
-const { getRandomString } = require('../utils/otherUtils');
+const { connect_project_db, query_resolver } = require('../utils/dbHandler');
+const { getRandomString } = require('../utils/randomGenerator');
 
-const getSchedule = async (schedule, diameter) => {
+const getSchedule = async (connection, schedule, diameter) => {
   try {
     const breakSchedule = schedule.split('-');
     schedule = breakSchedule[0].trim();
     const wallThick = breakSchedule[1].trim();
 
-    let schedule_class = await client.query(
-      `SELECT piperefid FROM piperef WHERE (diameter = $1 AND schedule = $2 AND thickness = $3)`,
-      [diameter, schedule, wallThick]
-    );
+    const query = {
+      text: `SELECT pipe_ref_id FROM pipe_ref WHERE (diameter = $1 AND schedule = $2 AND thickness = $3)`,
+      values: [diameter, schedule, wallThick]
+    };
 
-    return schedule_class.rows[0].piperefid;
+    const schedule_class = await query_resolver(connection, query);
+    // let schedule_class = await client.query(
+    //   `SELECT pipe_ref_id FROM pipe_ref WHERE (diameter = $1 AND schedule = $2 AND thickness = $3)`,
+    //   [diameter, schedule, wallThick]
+    // );
+
+    return schedule_class[0].pipe_ref_id;
   } catch (err) {
     console.log(err);
     throw err;
@@ -47,60 +54,60 @@ const addPipe = async (req, res, next) => {
     // );
     // user = user.rows[0].id;
 
-    let pipeRefId = await getSchedule(schedule, diameter);
+    const connection = await connect_project_db(req.dbname);
 
-    let pipeHeat = await client.query(
-      'SELECT * FROM pipeHeat WHERE heatNumber = $1',
-      [heat_no]
-    );
+    let pipe_ref_id = await getSchedule(connection, schedule, diameter);
 
-    console.log(pipeHeat);
+    const query = {
+      text: 'SELECT * FROM pipe_heat WHERE heat_number = $1',
+      values: [heat_no]
+    }
 
-    if (pipeHeat.rows.length == 0) {
-      await client.query(pipeQueries.addPipeHeat, [heat_no, manufacturer]);
-      pipeHeat = await client.query(
-        'SELECT * FROM pipeHeat WHERE heatNumber = $1',
-        [heat_no]
-      );
-    } else if (pipeHeat.rows[0].manufacture != manufacturer) {
+    let pipe_heat = await query_resolver(connection, query);
+
+    if (pipe_heat.length == 0) {
+      const query1 = {
+        text: pipeQueries.addPipeHeat,
+        values: [heat_no, manufacturer]
+      }
+      await query_resolver(connection, query1)
+
+      const query2 = {
+        text: 'SELECT * FROM pipe_heat WHERE heat_number = $1',
+        values: [heat_no]
+      }
+
+      pipe_heat = await query_resolver(connection, query2);
+
+    } else if (pipe_heat[0].manufacture != manufacturer) {
       throw {
         status: 400,
         message:
           'Same Heat Number with a different manufacturer exists. Please consult admin to verify correct manufacturer. You can also leave a comment on the pipe.',
       };
     }
-    pipeHeat = pipeHeat.rows[0].pipeheatid;
 
-    let sharedRef = getRandomString(30);
-    await client.query(pipeQueries.addPipeSharedInfo, [
-      sharedRef,
-      coating,
-      grade,
-      pipeHeat,
-      pipeRefId,
-      po_number,
-      material_type,
-      'user', // replace this later
-    ]);
+    pipe_heat = pipe_heat[0].pipe_heat_id;
 
-    await client.query(pipeQueries.addPipe, [
-      id,
-      sharedRef,
-      length,
-      'user',
-      location,
-      coil_no,
-      comments,
-      isVoid,
-      false,
-      null,
-    ]);
+    let shared_ref = getRandomString(30);
+    const query3 = {
+      text: pipeQueries.addPipeSharedInfo,
+      values: [shared_ref, coating, grade, pipe_heat, pipe_ref_id, po_number, material_type, req.uname]
+    }
+
+    await query_resolver(connection, query3);
+
+    const query4 = {
+      text: pipeQueries.addPipe,
+      values: [id, shared_ref, length, req.uname, location, coil_no, comments, isVoid, false, null]
+    }
+    await query_resolver(connection, query4);
 
     return res.status(201).send({
       success: true,
       message: 'Pipe Added!',
-      // user: user,
     });
+
   } catch (error) {
     console.log(error);
     next({ status: 500, message: 'Something went wrong!' });
@@ -150,7 +157,7 @@ const updatePipeSchedule = async (schedule, diameter, pipeSharedId) => {
     let pipeRefId = await getSchedule(schedule, diameter);
 
     await client.query(
-      'UPDATE pipesharedinfo set piperefid = $1 where pipesharedid = $2',
+      'UPDATE pipe_shared_info SET pipe_ref_id = $1 WHERE pipe_shared_id = $2',
       [pipeRefId, pipeSharedId]
     );
 
@@ -184,7 +191,7 @@ const editPipe = async (req, res, next) => {
   //handle heat no change after asking todd
 
   try {
-    let _ = await client.query('SELECT pipeSharedId FROM pipe where id = $1', [
+    let _ = await client.query('SELECT pipe_shared_id FROM pipe WHERE id = $1', [
       oldData.id,
     ]);
 
@@ -292,7 +299,7 @@ const deleteFromString = async (pipe_id, curr_id, curr_station) => {
 
 const getOptions = async (req, res, next) => {
   try {
-    let grades = await client.query('SELECT grade FROM pipeGrade;');
+    let grades = await client.query('SELECT grade FROM pipe_grade;');
     grades = grades.rows.map((data) => data.grade);
 
     // let materials = await client.query('SELECT material_name FROM material;');
