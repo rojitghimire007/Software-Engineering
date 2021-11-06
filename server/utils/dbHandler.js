@@ -181,30 +181,6 @@ master_pool.on('error', (err, _c2) => {
   throw err;
 });
 
-// Tests:
-// ----------Creating project database------------
-create_database({
-  project_number: 5,
-  pname:'project5',
-  company: 'Org1',
-  work_number: 5,
-  plocation: 'test',
-  dbname: 'project5' 
-}) //dbname should always be in lowercase as it represents database name
-
-// -----------------Retriving connection pool for existing projects-----------
-// const runNow = async () => {
-//   let conn_proj1 = await promiseHandler(connect_project_db('project1'));
-//   let conn_proj2 = await promiseHandler(connect_project_db('project2'));
-  
-//   console.log(conn_proj1);
-//   console.log("------------------------------");
-//   console.log(conn_proj2);
-// }
-
-// runNow();
-// Note: Error occured in this module should be handled by the caller
-
 module.exports = {
   default_pool: master_pool,
   connect_project_db,
