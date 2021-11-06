@@ -8,15 +8,4 @@ function getRandomString(
   return result;
 }
 
-function getRandomNum(length) {
-  let text = '';
-  const possible = '0123456789';
-
-  for (let i = length; i > 0; --i) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  
-  return text;
-}
-
-module.exports = { getRandomString, getRandomNum };
+module.exports = { getRandomString };
