@@ -1,6 +1,6 @@
 const pipeQueries = require('../sql_queries/pipeQueries');
 const { client } = require('../utils/databaseConnection');
-const { getRandomString } = require('../utils/otherUtils');
+const { getRandomString } = require('../utils/randomGenerator');
 
 const getSchedule = async (schedule, diameter) => {
   try {

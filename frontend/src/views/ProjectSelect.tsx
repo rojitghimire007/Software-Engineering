@@ -23,13 +23,17 @@ const ProjectSelect = () => {
       }>({})
 
     useEffect(() => {
-        /* api
+        api
             .getAssociatedProjects()
             .then((res) => {
-                setProjectDetails(res.data)
+                console.log(res);
+                setProjectDetails(res.data);
+
             })
-            .catch((err) => alert(err.message)); */
+            .catch((err) => alert(err.message));
     },[])
+        
+    useEffect(() => {console.log(projectDetails)}, [projectDetails]);
 
     useEffect(() => {
         console.log(selected)
@@ -100,6 +104,12 @@ const ProjectSelect = () => {
                         onClick={() => logIn()}
                     >
                         ENTER
+                    </div>
+                    <div 
+                        className={classes.btn}
+                        onClick={()=>{console.log(projectDetails)}}
+                    >
+                        REFRESH CONSOLE
                     </div>
                 </div>
             </div>

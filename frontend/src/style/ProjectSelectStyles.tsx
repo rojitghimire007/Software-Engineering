@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme: any) => ({
         margin: '3% 43%',
         width: '50px',
         textAlign: 'center',
+        cursor: 'pointer',
     },
     msg: {
         position: 'fixed',

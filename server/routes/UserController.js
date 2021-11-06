@@ -15,6 +15,7 @@ const login = async (req, res, next) => {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
     });
+    console.log("users")
 
     if (user.rows.length == 0)
       return next({
@@ -40,6 +41,7 @@ const login = async (req, res, next) => {
       let token = await jwt.sign({ email: user.email, uname: user.uname }, JWTConfig, {
         expiresIn,
       });
+
 
       return res.status(200).send({
         success: true,

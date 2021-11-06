@@ -10,6 +10,10 @@ export default {
     return post(API.login, { email, password });
   },
 
+  getAssociatedProjects: () => {
+    return authGet(API.getAssociatedProjects, '');
+  },
+
   getPipes: () => {
     return authGet(API.getPipes, '');
   },

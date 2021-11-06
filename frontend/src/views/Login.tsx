@@ -62,18 +62,18 @@ const Login = () => {
     }
   };
 
-  // const loginUser = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   //api call
+  const loginUser = (e: React.FormEvent) => {
+    e.preventDefault();
+    //api call
 
-  //   api
-  //     .login(email, password)
-  //     .then((res) => {
-  //       setLocalStorage('pipeline_token', res.token);
-  //       history.push('/');
-  //     })
-  //     .catch((err) => alert(err.message));
-  // };
+    api
+      .login(email, password)
+      .then((res) => {
+        setLocalStorage('pipeline_token', res.token);
+        history.push('/');
+      })
+      .catch((err) => alert(err.message));
+  };
 
   const classes = useStyles(); // For Styling
 
@@ -130,24 +130,6 @@ const Login = () => {
 
   return (
     <>
-        {/* <Backdrop open={renderProjects}>
-                <Card style={{backgroundColor: 'red'}}>
-                  <Menu 
-                    open={renderProjects}
-                    TransitionComponent={Fade}
-                  >
-                    <CardContent style={{backgroundColor: 'red'}}>
-                      PLEASE SELECT A PROJECT
-                    </CardContent>
-                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 1<Checkbox/></MenuItem><Divider/>
-                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 2<Checkbox/></MenuItem><Divider/>
-                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 3<Checkbox/></MenuItem><Divider/>
-                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 4<Checkbox/></MenuItem><Divider/>
-                    <MenuItem onClick={() => {setRenderProjects(!renderProjects)}}>Project 5<Checkbox/></MenuItem>
-                  </Menu>
-                </Card>
-        </Backdrop> */}
-
       <CssBaseline />
 
       <AppBar position="relative">
@@ -242,7 +224,7 @@ const Login = () => {
                       variant="contained"
                       color="primary"
                       className={classes.buttonPrimary}
-                      onClick={() => {setRenderProjects(!renderProjects); console.log(renderProjects)}}
+                      onClick={loginUser}
                     >
                       Login
                     </Button>
