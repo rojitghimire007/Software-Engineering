@@ -467,12 +467,9 @@ const ShowPipes = () => {
                 },
               ]}
             />
-          </div>
-
-          <Footer />        
+          </div>       
       </main>
     </div>
-
   );
 };
 export default ShowPipes;

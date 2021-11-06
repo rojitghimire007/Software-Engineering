@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import 'style/AppBarStyles.css';
@@ -33,12 +34,12 @@ function MenuAppBar() {
     }; 
     
 
-    const [auth, setAuth] = React.useState(true);
+    /*const [auth, setAuth] = React.useState(true);*/
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    /*const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAuth(event.target.checked);
-    };
+    };*/
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -93,7 +94,14 @@ function MenuAppBar() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 
                     </Typography>
-                    {auth && (
+                    <Button> Home </Button>
+                    <Button> About </Button>
+                    <Button> Services </Button>
+                    <Button> Training </Button>
+                    <Button> Careers </Button>
+                    <Button> Contact Us </Button>
+                    
+                    
                         <div>
                             <IconButton
                                 size="large"
@@ -125,7 +133,6 @@ function MenuAppBar() {
                                 <MenuItem onClick={handleClose}>Logout</MenuItem>
                             </Menu>
                         </div>
-                    )}
                 </Toolbar>
             </AppBar>
         </Box>
