@@ -12,18 +12,19 @@ const projects = [
 
 const ProjectSelect = () => {
     const classes = useStyles('');
-    const [project, setProject] = useState('');
+    const [selected, setSelected] = useState('');
     const [errored, setErrored] = useState(false);
     const [loading, setLoading] = useState(false);
+    
 
     useEffect(() => {
-        console.log(project)
-    }, [project])
+        console.log(selected)
+    }, [selected])
 
     const logIn = () => {
-        if (project === '') setErrored(true);
+        if (selected === '') setErrored(true);
         else setLoading(true);
-        console.log("logging in to "+project)
+        console.log("logging in to "+selected)
     }
 
     return(
@@ -62,13 +63,13 @@ const ProjectSelect = () => {
                         return (
                             <div 
                                 className={classes.item}
-                                onClick={() => {setProject(item.name); setErrored(false)}}
+                                onClick={() => {setSelected(item.name); setErrored(false)}}
                             >
                                 <span style={{margin: '3px 3px'}}>
                                     {item.name}, last accessed {item.accessed}
                                 </span>
 
-                                {project === item.name ? 
+                                {selected === item.name ? 
                                     <div style={{display: 'inline-block'}}>(chosen)</div>
                                     : null
                                 }
