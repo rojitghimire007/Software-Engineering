@@ -1,132 +1,144 @@
-exports.userRole = `CREATE TABLE user_role(
+const populate_date = require('../data/populate');
+
+exports.user_role = `CREATE TABLE user_role(
   uname TEXT NOT NULL,
-  roleName TEXT NOT NULL,
-  PRIMARY KEY(uname, roleName)
+  role_name TEXT NOT NULL,
+  PRIMARY KEY(uname, role_name)
 )`;
 
-exports.pipeCoat = `CREATE TABLE pipe_coat(
+exports.pipe_coat = `CREATE TABLE pipe_coat(
   coat TEXT NOT NULL,
   color TEXT NOT NULL,
   PRIMARY KEY(coat)
 )`;
 
-exports.pipeHeat = `CREATE TABLE pipe_heat(
-  pipeHeatId SERIAL NOT NULL,
-  heatNumber TEXT NOT NULL,
+exports.pipe_heat = `CREATE TABLE pipe_heat(
+  pipe_heat_id SERIAL NOT NULL,
+  heat_number TEXT NOT NULL,
   manufacture TEXT NOT NULL,
-  filePath TEXT DEFAULT NULL,
-  PRIMARY KEY(pipeHeatId)
+  file_path TEXT DEFAULT NULL,
+  PRIMARY KEY(pipe_heat_id)
 )`;
 
-exports.purchaseNumber = `CREATE TABLE purchase_number(
-  poNumber TEXT NOT NULL,
+exports.purchase_number = `CREATE TABLE purchase_number(
+  po_number TEXT NOT NULL,
   manufacture TEXT,
-  filePath TEXT DEFAULT NULL,
-  PRIMARY KEY(poNumber)
+  file_path TEXT DEFAULT NULL,
+  PRIMARY KEY(po_number)
 )`;
 
-exports.pipeGrade = `CREATE TABLE pipe_grade(
+exports.pipe_grade = `CREATE TABLE pipe_grade(
   grade TEXT NOT NULL,
   strength INT NOT NULL,
   PRIMARY KEY(grade)
 )`;
 
-exports.pipeRef = `CREATE TABLE pipe_ref(
-  pipeRefId SERIAL NOT NULL,
+exports.populate_grade = `INSERT INTO pipe_grade(grade, strength)
+VALUES
+${populate_date.grade}
+`;
+
+exports.pipe_ref = `CREATE TABLE pipe_ref(
+  pipe_ref_id SERIAL NOT NULL,
   diameter TEXT NOT NULL,
   schedule TEXT NOT NULL,
   thickness FLOAT NOT NULL,
-  PRIMARY KEY(pipeRefId)
+  PRIMARY KEY(pipe_ref_id)
 )`;
 
-exports.pipeSharedInfo = `CREATE TABLE pipe_shared_info(
-  pipeSharedId TEXT NOT NULL,
+exports.populate_ref = `INSERT INTO pipe_ref(diameter, schedule, thickness)
+VALUES
+${populate_date.schedule}
+`;
+
+exports.pipe_shared_info = `CREATE TABLE pipe_shared_info(
+  pipe_shared_id TEXT NOT NULL,
   coat TEXT DEFAULT NULL,
   grade TEXT DEFAULT NULL,
-  pipeHeatId INT NOT NULL,
-  pipeRefId INT NOT NULL,
-  poNumber TEXT DEFAULT NULL,
-  materialType TEXT DEFAULT NULL,
-  createdOn DATE DEFAULT CURRENT_DATE,
-  createdBy TEXT NOT NULL,
-  PRIMARY KEY(pipeSharedId),
+  pipe_heat_id INT NOT NULL,
+  pipe_ref_id INT NOT NULL,
+  po_number TEXT DEFAULT NULL,
+  material_type TEXT DEFAULT NULL,
+  created_on DATE DEFAULT CURRENT_DATE,
+  created_by TEXT NOT NULL,
+  PRIMARY KEY(pipe_shared_id),
   FOREIGN KEY(coat) REFERENCES pipe_coat(coat),
   FOREIGN KEY(grade) REFERENCES pipe_grade(grade),
-  FOREIGN KEY(pipeHeatId) REFERENCES pipe_heat(pipeHeatId),
-  FOREIGN KEY(pipeRefId) REFERENCES pipe_ref(pipeRefId),
-  FOREIGN KEY(poNumber) REFERENCES purchase_number(poNumber)
+  FOREIGN KEY(pipe_heat_id) REFERENCES pipe_heat(pipe_heat_id),
+  FOREIGN KEY(pipe_ref_id) REFERENCES pipe_ref(pipe_ref_id),
+  FOREIGN KEY(po_number) REFERENCES purchase_number(po_number)
 )`;
 
 exports.pipe = `CREATE TABLE pipe(
   id TEXT NOT NULL,
-  pipeSharedId TEXT NOT NULL,
+  pipe_shared_id TEXT NOT NULL,
   plength FLOAT,
-  updatedBy TEXT DEFAULT NULL,
-  updatedOn DATE DEFAULT NULL,
+  updated_by TEXT DEFAULT NULL,
+  updated_on DATE DEFAULT NULL,
   plocation TEXT DEFAULT NULL,
-  coilNumber TEXT DEFAULT NULL,
+  coil_number TEXT DEFAULT NULL,
   comment TEXT DEFAULT NULL,
-  isVoid BOOLEAN DEFAULT FALSE,
-  isUsed BOOLEAN DEFAULT FALSE,
+  is_void BOOLEAN DEFAULT FALSE,
+  is_used BOOLEAN DEFAULT FALSE,
   parent TEXT DEFAULT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY(pipeSharedId) REFERENCES pipe_shared_info(pipeSharedId)
+  FOREIGN KEY(pipe_shared_id) REFERENCES pipe_shared_info(pipe_shared_id)
 )`;
 
-exports.fittingHeat = `CREATE TABLE fitting_heat(
-  fittingHeatId SERIAL NOT NULL,
-  heatNumber TEXT NOT NULL,
+exports.fitting_heat = `CREATE TABLE fitting_heat(
+  fitting_heat_id SERIAL NOT NULL,
+  heat_number TEXT NOT NULL,
   manufacture TEXT NOT NULL,
-  filePath TEXT,
-  PRIMARY KEY(fittingHeatId)
+  file_path TEXT,
+  PRIMARY KEY(fitting_heat_id)
 )`;
 
-exports.fittingSharedInfo = `CREATE TABLE fitting_shared_info(
-  fittingSharedId TEXT NOT NULL,
-  fittingHeatId INT NOT NULL,
-  poNumber TEXT DEFAULT NULL,
+exports.fitting_shared_info = `CREATE TABLE fitting_shared_info(
+  fitting_shared_id TEXT NOT NULL,
+  fitting_heat_id INT NOT NULL,
+  po_number TEXT DEFAULT NULL,
   grade TEXT DEFAULT NULL,
   ftype TEXT DEFAULT NULL,
   coat TEXT DEFAULT NULL,
   fdescription TEXT DEFAULT NULL,
-  materialType TEXT DEFAULT NULL,
+  material_type TEXT DEFAULT NULL,
   thickness FLOAT,
-  createdOn DATE DEFAULT CURRENT_DATE,
-  createdBy TEXT NOT NULL,
-  PRIMARY KEY(fittingSharedId),
-  FOREIGN KEY(fittingHeatId) REFERENCES fitting_heat(fittingHeatId),
-  FOREIGN KEY(poNumber) REFERENCES purchase_number(poNumber)
+  created_on DATE DEFAULT CURRENT_DATE,
+  created_by TEXT NOT NULL,
+  PRIMARY KEY(fitting_shared_id),
+  FOREIGN KEY(fitting_heat_id) REFERENCES fitting_heat(fitting_heat_id),
+  FOREIGN KEY(po_number) REFERENCES purchase_number(po_number)
 )`;
 
 exports.fitting = `CREATE TABLE fitting(
   id TEXT NOT NULL,
-  fittingSharedId TEXT NOT NULL,
+  fitting_shared_id TEXT NOT NULL,
   flength FLOAT,
   dimension TEXT,
   style TEXT,
-  updatedBy TEXT DEFAULT NULL,
-  updatedOn DATE DEFAULT NULL,
+  updated_by TEXT DEFAULT NULL,
+  updated_on DATE DEFAULT NULL,
   flocation TEXT,
   comment TEXT,
-  isVoid BOOLEAN DEFAULT FALSE,
-  isUsed BOOLEAN DEFAULT FALSE,
+  is_void BOOLEAN DEFAULT FALSE,
+  is_used BOOLEAN DEFAULT FALSE,
   parent TEXT DEFAULT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY(fittingSharedId) REFERENCES fitting_shared_info(fittingSharedId)
+  FOREIGN KEY(fitting_shared_id) REFERENCES fitting_shared_info(fitting_shared_id)
 )`;
 
 exports.stringing = `CREATE TABLE stringing(
-  itemId TEXT,
-  stationNumber FLOAT NOT NULL,
-  nextItem TEXT,
-  prevItem TEXT,
-  startPipe TEXT NOT NULL,
-  PRIMARY KEY(itemId)
+  item_id TEXT,
+  station_number FLOAT NOT NULL,
+  next_item TEXT,
+  prev_item TEXT,
+  start_pipe TEXT NOT NULL,
+  PRIMARY KEY(item_id)
 )`;
 
 exports.sequences = `CREATE TABLE sequences(
-  startStation FLOAT UNIQUE NOT NULL,
-  itemId TEXT UNIQUE NOT NULL,
-  PRIMARY KEY (startStation),
-  FOREIGN KEY(itemId) REFERENCES stringing(itemId)
+  start_station FLOAT UNIQUE NOT NULL,
+  item_id TEXT UNIQUE NOT NULL,
+  PRIMARY KEY (start_station),
+  FOREIGN KEY(item_id) REFERENCES stringing(item_id)
 )`;

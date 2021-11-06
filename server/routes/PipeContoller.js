@@ -16,6 +16,7 @@ const getSchedule = async (schedule, diameter) => {
     return schedule_class.rows[0].piperefid;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 
@@ -144,45 +145,84 @@ const getStringingInfo = async (req, res, next) => {
   }
 };
 
+const updatePipeSchedule = async (schedule, diameter, pipeSharedId) => {
+  try {
+    let pipeRefId = await getSchedule(schedule, diameter);
+
+    await client.query(
+      'UPDATE pipesharedinfo set piperefid = $1 where pipesharedid = $2',
+      [pipeRefId, pipeSharedId]
+    );
+
+    return;
+  } catch (err) {
+    console.log(err);
+    throw {
+      status: 400,
+      message: 'Invalid Pipe Schedule-class-thickness update.',
+    };
+  }
+};
+
 const editPipe = async (req, res, next) => {
+  let { oldData, newData } = req.body;
+
   let {
     coating,
     coil_no,
     comments,
-    diameter,
     grade,
     heat_no,
     length,
     location,
     material_type,
     po_number,
-    schedule,
     isVoid,
     id,
-  } = req.body;
+  } = newData;
 
-  let schedule_class = await getSchedule(schedule, diameter);
+  //handle heat no change after asking todd
 
   try {
-    let updateInfo = await client.query({
-      text: `UPDATE pipes SET pipe_id = $1, coating_type = $2, coil_number = $3, comments = $4, grade = $5, heat_number = $6, pipe_length = $7, location = $8, material = $9, purchase_order = $10, schedule_class= $11, void = $12 where pipe_id = $13`,
-      values: [
-        id,
-        coating,
-        coil_no,
-        comments,
-        grade,
-        heat_no,
-        length,
-        location,
-        material_type,
-        po_number,
-        schedule_class,
-        isVoid,
-        req.params.pipeID,
-      ],
-    });
-    return res.status(200).send(updateInfo.rows);
+    let _ = await client.query('SELECT pipeSharedId FROM pipe where id = $1', [
+      oldData.id,
+    ]);
+
+    let pipeSharedId = _.rows[0].pipesharedid;
+
+    if (
+      newData.diameter != oldData.diameter ||
+      newData.wall_thickness != oldData.wall_thickness ||
+      newData.schedule != oldData.schedule
+    ) {
+      updatePipeSchedule(
+        `${newData.schedule} - ${newData.wall_thickness}`,
+        newData.diameter,
+        pipeSharedId
+      );
+    }
+
+    await client.query(pipeQueries.updatePipeSharedInfo, [
+      coating,
+      grade,
+      po_number,
+      material_type,
+      pipeSharedId,
+    ]);
+
+    await client.query(pipeQueries.updatePipe, [
+      id,
+      length,
+      'user',
+      location,
+      coil_no,
+      comments,
+      isVoid,
+      new Date().toISOString(),
+      oldData.id,
+    ]);
+
+    return res.status(200).send({ success: true });
   } catch (error) {
     console.log(error);
     next(error);
@@ -296,6 +336,5 @@ module.exports = {
   getStringingInfo,
   getOptions,
   editPipe,
-  getCoat,
-  postCoat
+  updatePipeSchedule,
 };
