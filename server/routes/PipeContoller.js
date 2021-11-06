@@ -292,20 +292,22 @@ const deleteFromString = async (pipe_id, curr_id, curr_station) => {
 
 const getOptions = async (req, res, next) => {
   try {
-    let grades = await client.query('SELECT grade FROM pipeGrade;');
+    let grades = await client.query('SELECT grade FROM pipe_grade;');
     grades = grades.rows.map((data) => data.grade);
 
     // let materials = await client.query('SELECT material_name FROM material;');
     // materials = materials.rows.map((data) => data.material_name);
 
-    let po_numbers = await client.query('SELECT poNumber FROM purchasenumber;');
+    let po_numbers = await client.query(
+      'SELECT po_number FROM purchase_number;'
+    );
     po_numbers = po_numbers.rows.map((data) => data.ponumber);
 
-    let heat_numbers = await client.query('SELECT heatnumber FROM pipeheat;');
+    let heat_numbers = await client.query('SELECT heat_number FROM pipe_heat;');
 
     heat_numbers = heat_numbers.rows.map((data) => data.heatnumber);
 
-    let coatings = await client.query('SELECT coat, color FROM pipecoat;');
+    let coatings = await client.query('SELECT coat, color FROM pipe_coat;');
     // let coating_color = await client.query('SELECT color FROM pipe_coating;');
 
     let coating_return = {};
