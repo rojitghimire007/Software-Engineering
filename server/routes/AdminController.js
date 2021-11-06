@@ -47,6 +47,8 @@ const addUserToProject = async (req, res, next) => {
      */
     const { users } = req.body;
 
+    if(users.length == 0) throw {status: 500, message: 'No user selected to associate with the project!'};
+
     const query = {
       text: `SELECT project_number FROM projects WHERE dbname=$1`,
       values: [req.dbname]
