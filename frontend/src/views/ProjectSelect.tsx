@@ -11,7 +11,7 @@ const projects = [
     {name: 'Project E', accessed: 'Feb 07th, 2021'},
 ];
 
-const user = 'test131195';
+const user = 'test131195'; // testing
 
 const ProjectSelect = () => {
     const classes = useStyles('');
@@ -61,6 +61,7 @@ const ProjectSelect = () => {
                 <div className={classes.loading}>
                     <div className={classes.loadSymb}>
                         HGI
+                        {console.log(classes.loadSymb)}
                     </div>
                     <div>
                         Loading

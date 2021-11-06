@@ -94,13 +94,19 @@ const useStyles = makeStyles((theme: any) => ({
     },
     loadSymb: {
         animationDuration: '3s',
-        animationName: 'spin',
+        animationName: '$spin',
         animationIterationCount: 'infinite',
+        animationTimingFunction: 'linear',
+        zIndex: 999999999,
     },
-    "@keyframes spin": {
-        "0%":       {transform: 'rotateY(0)',},
-        "100%":     {transform: 'rotateY(360)',},
+    '@keyframes spin': {
+        '0%':       {transform: 'rotateY(90)',},
+        '100%':     {transform: 'translateX(50px) rotateY(360)',},
     },
+}));
+
+const useAnimations = makeStyles(()=>({
+
 }));
 
 
