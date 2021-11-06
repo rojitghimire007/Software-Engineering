@@ -7,15 +7,15 @@ const Footer = () => {
             <div className="footer">
                 <div className="footer-heading footer-1">
                     <h2>Honor Guard Inspections</h2>
-                    <p>555-555-555</p>
-                    <p>Address</p>
-                    <p>City, State, Zip</p>
+                    <p>318-355-2938</p>
+                    <p>401 Keystone Road</p>
+                    <p>Monroe, LA 71202</p>
                 </div>
                 <div className="footer-heading footer-2">
                     <h2>About Us </h2>
-                    <a href="#">Jobs</a>
-                    <a href="#">Support</a>
-                    <a href="#">Email Us</a>
+                    <a href="#">Services</a>
+                    <a href="#">Training</a>
+                    <a href="#">Careers</a>
                 </div>
                 <div className="footer-heading footer-3">
                     <h2>Social Media</h2>
