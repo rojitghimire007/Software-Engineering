@@ -109,7 +109,7 @@ const getAssociatedProjects = async (req, res, next) => {
   try {
 
     let query = {
-      text: `SELECT * FROM user_project INNER JOIN projects USING (project_number) WHERE user_project.uname=$1`,
+      text: `SELECT pname, project_number FROM user_project INNER JOIN projects USING (project_number) WHERE user_project.uname=$1`,
       values: [req.uname],
     };
 
@@ -151,12 +151,19 @@ const usersInProject = async (req, res, next) => {
 
 const selectProject = async (req, res, next) => {
   try {
-    const { dbname } = req.body;
+    const { project_number } = req.body;
 
+    const query = {
+      text: `SELECT dbname FROM projects WHERE project_number=$1`,
+      values: [project_number]
+    };
+
+    const result = await query_resolver(default_pool, query);
+    const dbname = result[0].dbname;
     let token = await jwt.sign({ email: req.userEmail, uname: req.uname, dbname }, JWTConfig, {
       expiresIn,
     });
-
+    
     return res.status(200).json({
       success: true,
       token
