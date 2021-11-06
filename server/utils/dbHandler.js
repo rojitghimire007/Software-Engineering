@@ -104,7 +104,7 @@ const query_resolver = async (connection, sql_query) => {
 
     return [...results.rows];
   } catch (error) {
-    console.log("Error(109)", error);
+    console.log("Error(107)", error);
     throw error;
   }
 };
@@ -115,21 +115,23 @@ const query_resolver = async (connection, sql_query) => {
  */
 const create_tables = async (db_connection) => {
   try {
-    await query_resolver(db_connection, dbScripts.userRole);
-    await query_resolver(db_connection, dbScripts.pipeCoat);
-    await query_resolver(db_connection, dbScripts.pipeHeat);
-    await query_resolver(db_connection, dbScripts.purchaseNumber);
-    await query_resolver(db_connection, dbScripts.pipeGrade);
-    await query_resolver(db_connection, dbScripts.pipeRef);
-    await query_resolver(db_connection, dbScripts.pipeSharedInfo);
+    await query_resolver(db_connection, dbScripts.user_role);
+    await query_resolver(db_connection, dbScripts.pipe_coat);
+    await query_resolver(db_connection, dbScripts.pipe_heat);
+    await query_resolver(db_connection, dbScripts.purchase_number);
+    await query_resolver(db_connection, dbScripts.pipe_grade);
+    await query_resolver(db_connection, dbScripts.pipe_ref);
+    await query_resolver(db_connection, dbScripts.pipe_shared_info);
     await query_resolver(db_connection, dbScripts.pipe);
-    await query_resolver(db_connection, dbScripts.fittingHeat);
-    await query_resolver(db_connection, dbScripts.fittingSharedInfo);
+    await query_resolver(db_connection, dbScripts.fitting_heat);
+    await query_resolver(db_connection, dbScripts.fitting_shared_info);
     await query_resolver(db_connection, dbScripts.fitting);
     await query_resolver(db_connection, dbScripts.stringing);
     await query_resolver(db_connection, dbScripts.sequences);
+    await query_resolver(db_connection, dbScripts.populate_grade);
+    await query_resolver(db_connection, dbScripts.populate_ref);
   } catch (error) {
-    console.log("Error(132", error);
+    console.log("Error(133)", error);
     throw error;
   }
 }
@@ -146,12 +148,12 @@ const create_database = async (project) => {
     }
 
     //register the new database in the projects table
-    const sDate = project.startDate ? project.s_date / 1000.0 : null; // change millisecond to second to make postgre compatible
-    const eDate = project.endDate ? project.e_date / 1000.0 : null;
+    const sDate = project.start_date ? project.s_date / 1000.0 : null; // change millisecond to second to make postgre compatible
+    const eDate = project.end_date ? project.e_date / 1000.0 : null;
 
     let sql_query = {
-      text: 'INSERT INTO projects(projectnumber, pname, company, worknumber, plocation, startdate, enddate, dbname) VALUES ($1, $2, $3, $4, $5, to_timestamp($6), to_timestamp($7), $8)',
-      values: [project.projectnumber, project.pname, project.company, project.workNumber, project.plocation, sDate, eDate, project.dbname],
+      text: 'INSERT INTO projects(project_number, pname, company, work_number, plocation, start_date, end_date, dbname) VALUES ($1, $2, $3, $4, $5, to_timestamp($6), to_timestamp($7), $8)',
+      values: [project.project_number, project.pname, project.company, project.work_number, project.plocation, sDate, eDate, project.dbname],
     }
 
     await query_resolver(master_pool, sql_query);
@@ -181,14 +183,14 @@ master_pool.on('error', (err, _c2) => {
 
 // Tests:
 // ----------Creating project database------------
-// create_database({
-//   projectnumber:2,
-//   pname:'project2',
-//   company: 'Org2',
-//   worknumber: 2,
-//   plocation: 'test',
-//   dbname: 'project2' 
-// }) //dbname should always be in lowercase as it represents database name
+create_database({
+  project_number: 5,
+  pname:'project5',
+  company: 'Org1',
+  work_number: 5,
+  plocation: 'test',
+  dbname: 'project5' 
+}) //dbname should always be in lowercase as it represents database name
 
 // -----------------Retriving connection pool for existing projects-----------
 // const runNow = async () => {
