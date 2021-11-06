@@ -50,6 +50,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [renderProjects, setRenderProjects] = useState(false);
   const history = useHistory();
+  const link = '/project-select';
 
   const updateFields = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.type) {
@@ -70,7 +71,7 @@ const Login = () => {
       .login(email, password)
       .then((res) => {
         setLocalStorage('pipeline_token', res.token);
-        history.push('/');
+        history.push(link);
       })
       .catch((err) => alert(err.message));
   };

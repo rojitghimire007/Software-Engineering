@@ -1,4 +1,5 @@
 import { Login } from '@mui/icons-material';
+import { useHistory } from 'react-router';
 import React, {useState, useEffect} from 'react';
 import useStyles from 'style/ProjectSelectStyles';
 import api from 'api';
@@ -15,6 +16,8 @@ const user = 'test131195'; // testing
 
 const ProjectSelect = () => {
     const classes = useStyles('');
+    const history = useHistory();
+    const link = 'dashboard';
     const [selected, setSelected] = useState('');
     const [errored, setErrored] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -28,7 +31,6 @@ const ProjectSelect = () => {
             .then((res) => {
                 console.log(res);
                 setProjectDetails(res.data);
-
             })
             .catch((err) => alert(err.message));
     },[])
@@ -41,7 +43,12 @@ const ProjectSelect = () => {
 
     const logIn = () => {
         if (selected === '') setErrored(true);
-        else setLoading(true);
+        else {
+            // setLoading(true);
+            // while (loading?) {
+                history.push(link);
+            // }
+        };
         console.log("logging in to "+selected)
     }
 
