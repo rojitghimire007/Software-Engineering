@@ -31,13 +31,13 @@ function App() {
         } else if (!res.success) {
           // logoutAndRedirect();
           setLocalStorage('pipeline_token', '');
-          // history.push('/login');
+          history.push('/login');
         }
         setReady(true);
       })
       .catch((err) => {
         // logoutAndRedirect();
-        // history.push('/login');
+        history.push('/login');
         setReady(true);
       });
   }, []);

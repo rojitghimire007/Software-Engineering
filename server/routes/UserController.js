@@ -15,7 +15,7 @@ const login = async (req, res, next) => {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
     });
-    console.log("users")
+    console.log('users');
 
     if (user.rows.length == 0)
       return next({
@@ -45,7 +45,6 @@ const login = async (req, res, next) => {
           expiresIn,
         }
       );
-
 
       return res.status(200).send({
         success: true,
@@ -197,19 +196,26 @@ const auth = async (req, res, next) => {
     if (!tokenAnalysis.success)
       throw { message: tokenAnalysis.message, status: 401 };
 
-    let { email } = tokenAnalysis.decoded;
+    let { email, dbname } = tokenAnalysis.decoded;
     let existingUsers = null;
 
     // Retrive corresponding user from db
-    try {
-      existingUsers = await default_pool.query({
-        text: 'SELECT * FROM users WHERE email = $1',
-        values: [email],
-      });
 
-      if (existingUsers.rows.length == 0)
-        throw { status: 401, message: 'User not authorized!' };
-    } catch (error) {}
+    existingUsers = await default_pool.query({
+      text: 'SELECT * FROM users WHERE email = $1',
+      values: [email],
+    });
+
+    if (existingUsers.rows.length == 0)
+      throw { status: 401, message: 'User not authorized!' };
+
+    let project = await default_pool.query(
+      'SELECT * FROM projects WHERE dbname = $1',
+      [dbname]
+    );
+
+    if (project.rows.length == 0)
+      throw { status: 401, message: 'Project Selection Required!' };
 
     return res
       .status(200)
