@@ -12,16 +12,35 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { withRouter, useHistory } from 'react-router-dom';
+import { Backdrop } from '@material-ui/core';
 
 
 
 const options = [
-    'Material Inventory',
-    'Welding',
-    'Stringing',
-    'Bending',
-    'Coating',
-    'Other',
+    {   main: 'Material Inventory', 
+        subItems: ['/pipes', '/fittings'], 
+        default: '/dashboard',
+    },
+    {   main: 'Welding', 
+        subItems: [''], 
+        default: '',
+    },
+    {   main: 'Stringing', 
+        subItems: [''], 
+        default: '/pipes/strung',
+    },
+    {   main: 'Bending', 
+        subItems: [''], 
+        default: '',
+    },
+    {   main: 'Coating', 
+        subItems: [''], 
+        default: '',
+    },
+    {   main: 'Other', 
+        subItems: [''], 
+        default: '',
+    },
 ];
 const ITEM_HEIGHT = 48;
 
@@ -87,8 +106,8 @@ const MenuAppBar = (props: { history: any; }) => {
                         }}
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose1}>
-                                {option}
+                            <MenuItem key={option.main} selected={option.main === 'Pyxis'} onClick={() => {history.push(option.default)}}>
+                                {option.main}
                             </MenuItem>
                         ))}
                     </Menu>

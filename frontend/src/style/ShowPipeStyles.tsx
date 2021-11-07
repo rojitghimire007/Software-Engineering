@@ -8,7 +8,7 @@ import DragHandleSVG from 'svgs/solid/bars.svg';
 
 //.MuiIcon-root
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   header: {
     backgroundColor: ColorScheme.secondaryLight,
     textAlign: 'center',
