@@ -1,5 +1,5 @@
 import React from "react";
-import useStyles from 'style/FooterStyles1'
+import useStyles from 'style/FooterStyles'
 
 
 
