@@ -12,17 +12,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { withRouter, useHistory } from 'react-router-dom';
+import SideBar from './SideBar';
 
 
 
-const options = [
-    'Material Inventory',
-    'Welding',
-    'Stringing',
-    'Bending',
-    'Coating',
-    'Other',
-];
+
 const ITEM_HEIGHT = 48;
 
 const MenuAppBar = (props: { history: any; }) => {
@@ -56,42 +50,8 @@ const MenuAppBar = (props: { history: any; }) => {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar className="app-container">
-                    <IconButton
-                        id="long-button"
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="more"
-                        aria-controls="long-menu"
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    <SideBar />
 
-                    <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                            'aria-labelledby': 'long-button',
-                        }}
-                        anchorEl={anchorE2}
-                        open={open}
-                        onClose={handleClose1}
-                        PaperProps={{
-                            style: {
-                                maxHeight: ITEM_HEIGHT * 4.5,
-                                width: '20ch',
-                            },
-                        }}
-                    >
-                        {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose1}>
-                                {option}
-                            </MenuItem>
-                        ))}
-                    </Menu>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 
                     </Typography>
