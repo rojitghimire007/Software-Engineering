@@ -47,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
     },
     cardTitle: {
         flexGrow: 1,
-        fontSize: '3.6vw',//'2.2em',
+        // fontSize: '3.6vw',//'2.2em',
+        fontSize: '1.4em',//'2.2em',
         fontFamily: 'Teko',
         backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
@@ -165,23 +166,26 @@ const useStyles = makeStyles((theme) => ({
     },
     dividerIcon: {
         color: ColorScheme.onPrimary + '!important',
-        margin: '0 auto !important',
+        // margin: '0 auto !important',
 
         // gets rid of label placeholder space
         '& .MuiChip-label': {
-            padding: 0 + ' !important',
+            // padding: 0 + ' !important',
+            paddingTop: '3px !important',
         },
 
         // icon in divider selector
         '& .MuiChip-icon': {
-            height: '2rem',
-            width: '2rem',
-            padding: '0 12px !important',
+            height: '2.5rem !important',
+            width: '2.5rem !important',
+            // padding: '0 0 !important',
+            paddingLeft: '20% !important'
         },
 
         '&.MuiChip-root': {
             backgroundColor: ColorScheme.primary,
             color: ColorScheme.onPrimary,
+            padding: '0 !important'
         },
     },
     accordionPrimary: {

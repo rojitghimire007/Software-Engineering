@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: `${ColorScheme.primaryDark}`,
             position: 'sticky',
             left: '0',
-            zIndex: 999 + ' !important',
+            zIndex: 99999999 + ' !important',
           },
         },
         '& th': {

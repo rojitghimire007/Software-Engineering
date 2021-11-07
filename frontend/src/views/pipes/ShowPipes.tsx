@@ -33,7 +33,6 @@ import {
 } from '@material-ui/core';
 import useStyles from 'style/ShowPipeStyles';
 import ColorScheme from 'style/ColorScheme';
-
 import Footer from 'views/Footer';
 import MenuAppBar from 'views/AppBar';
 
@@ -285,6 +284,7 @@ const ShowPipes = () => {
       <div className={classes.wrapper}>
         {/* {console.log(date)} */}
         <div>
+          <MenuAppBar />
           <CssBaseline />
           <Toolbar className={classes.title}>
             <Typography variant="h4" className={classes.titleContent}>
@@ -292,6 +292,7 @@ const ShowPipes = () => {
             </Typography>
           </Toolbar>
         </div>
+
         {colorPicker ? (
           <Backdrop open={colorPicker} style={{ zIndex: 99999 }}>
             <div style={{ display: 'fles', flexDirection: 'column' }}>
@@ -378,6 +379,7 @@ const ShowPipes = () => {
         ) : (
           <></>
         )}
+
         <div className={classes.stickyActions}>
           <MaterialTable
             icons={tableIcons}
@@ -435,17 +437,9 @@ const ShowPipes = () => {
               { title: 'Location', field: 'location' },
               { title: 'Coil', field: 'coil_no' },
               { title: 'Heat', field: 'heat_no' /*lookup: heat_numbers*/ }, //took out lookup b/c this will be manual input
-              {
-                title: 'Manufacturer',
-                field: 'manufacturer',
-                editable: 'never',
+              { title: 'Manufacturer', field: 'manufacturer', editable: 'never',
               },
-
-              //Requires extraction
-              {
-                title: 'Diameter',
-                field: 'diameter',
-                lookup: diameters,
+              { title: 'Diameter', field: 'diameter', lookup: diameters,
                 editComponent: ({ onRowDataChange, rowData }) => (
                   <Select
                     labelId="demo-simple-select-standard-label"
@@ -468,47 +462,64 @@ const ShowPipes = () => {
                   </Select>
                 ),
               },
-              {
-                title: 'Schedule-Thickness',
-                field: 'schedule',
-                render: (rowData) => (
-                  <>
-                    {rowData.schedule} - {rowData.wall_thickness}
-                  </>
-                ),
-                editComponent: ({ rowData, onRowDataChange }) => (
-                  <Select
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    onChange={(e: SelectChangeEvent) => {
-                      let breakSchedule = e.target.value.split('-');
-                      onRowDataChange({
-                        ...rowData,
-                        schedule: breakSchedule[0].trim(),
-                        wall_thickness: Number(breakSchedule[1].trim()),
-                      });
-                    }}
-                    defaultValue={`${rowData.schedule} - ${rowData.wall_thickness}`}
-                  >
-                    {getThickness(rowData.diameter).map((value) => (
-                      <MenuItem key={value} value={value}>
-                        {value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-    // <div className={classes.wrapper}>
-    //   {console.log(date)}
-    //   <div>
-    //     <MenuAppBar />
-    //     <CssBaseline />
-    //     <Toolbar className={classes.title}>
-    //       <Typography variant="h4" className={classes.titleContent}>
-    //         Pipe Inventory
-    //       </Typography>
-    //     </Toolbar>
-    //   </div>
-    //   <main>
-        
+              { title: 'Schedule-Thickness', field: 'schedule',
+                // render: (rowData) => (
+                //   <>
+                //     {rowData.schedule} - {rowData.wall_thickness}
+                //   </>
+                // ),
+                // editComponent: ({ rowData, onRowDataChange }) => (
+                //   <Select
+                //     labelId="demo-simple-select-standard-label"
+                //     id="demo-simple-select-standard"
+                //     onChange={(e: SelectChangeEvent) => {
+                //       let breakSchedule = e.target.value.split('-');
+                //       onRowDataChange({
+                //         ...rowData,
+                //         schedule: breakSchedule[0].trim(),
+                //         wall_thickness: Number(breakSchedule[1].trim()),
+                //       });
+                //     }}
+                //     defaultValue={`${rowData.schedule} - ${rowData.wall_thickness}`}
+                //   >
+                //     {getThickness(rowData.diameter).map((value) => (
+                //       <MenuItem key={value} value={value}>
+                //         {value}
+                //       </MenuItem>
+                //     ))}
+                //   </Select> 
+                // )
+              },
+              { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
+              { title: 'Length', field: 'length' },
+              { title: 'Coating', field: 'coating',
+                  // render: (rowData) => (
+                  //   <>
+                  //     {rowData.coating} - {myCoatings[rowData.coating]}
+                  //   </>
+                  // ),
+                  // editComponent: ({ rowData, onRowDataChange }) => (
+                  //   <Select
+                  //     labelId="demo-simple-select-standard-label"
+                  //     id="demo-simple-select-standard"
+                  //     onChange={(e: SelectChangeEvent) => {
+                  //       onRowDataChange({ ...rowData, coating: e.target.value });
+                  //     }}
+                  //     defaultValue={rowData.coating}
+                  //   >
+                  //     {Object.keys(myCoatings).map((key) => (
+                  //       <MenuItem key={key} value={key}>
+                  //         {key} - {myCoatings[key]}
+                  //       </MenuItem>
+                  //     ))}
+                  //   </Select>
+                  // ),
+                },
+                { title: 'Material', field: 'material_type', lookup: materials },
+                { title: 'P.O.', field: 'po_number' /*lookup: po_numbers*/ },
+                { title: 'Smart Label', field: 'smart_label' },
+                { title: 'Comments', field: 'comments' },
+              ]}
     //       <div className={classes.stickyActions}>
     //         <MaterialTable
     //           icons={tableIcons}
@@ -556,8 +567,6 @@ const ShowPipes = () => {
     //               <div className={classes.toolbar}>
     //                 <MTableToolbar {...props} />
     //               </div>
-                ),
-              }]}
     
               data={data}
               tableRef={materialTableRef}

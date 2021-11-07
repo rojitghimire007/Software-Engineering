@@ -64,9 +64,9 @@
     align-items: center;
 }      
    
-span {
+/* span {
     margin-left: 16px;
-}
+} */
 .headerOptions {
     display: flex;
 }
