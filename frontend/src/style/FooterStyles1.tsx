@@ -1,11 +1,11 @@
 import { makeStyles } from "@material-ui/core"
-import { borderColor, borderRadius, flexbox, fontSize } from "@mui/system";
+import { borderColor, borderRadius, flexbox, fontFamily} from "@mui/system";
 import ColorScheme from "./ColorScheme";
 
 const useStyles = makeStyles((theme) => ({
-   // *: {
+   // "& *" :{
     /* padding: 0, */
-    //margin: '0',
+    //margin: 0,
     /* box-sizing: border-box, */
     //fontFamily: Roboto, Helvetica, sans-serif,
 //},
@@ -28,7 +28,7 @@ footerContainer: {
 },
 
 footer: {
-    width: '60%',
+    width: '80%',
     height: '10vh',
     /* width: 85%,
     height: 15vh, */
@@ -56,8 +56,8 @@ footerHeading: {
     fontSize: '1.2vw',
 },
 
-//footerHeading a: {
-   /* color: '#000',
+"& footerHeading a": {
+    color: '#000',
     textDecoration: 'none',
     marginBottom: '0.25rem',
     /*marginBottom: 0.2rem,*/
@@ -66,7 +66,7 @@ footerHeading: {
     /* &:hover {
         fontStyle: italic,
     } */
-//}
+},
 //footerReading a:hover: {
     //fontStyle: 'italic',
     //color: '#fff',
@@ -84,10 +84,10 @@ colSm: {
     flexShrink: 1,
 },
 
-list: {
-    fontSize: '5vh',
-    textAlign: 'left',
-},
+//list: {
+   // fontSize: '5vh',
+    //textAlign: 'left',
+//},
 
 }))
 

@@ -7,12 +7,11 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import 'style/AppBarStyles.css';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { withRouter, useHistory } from 'react-router-dom';
-
+import useStyles from 'style/AppBarStyles1';
 
 
 const options = [
@@ -47,6 +46,7 @@ const MenuAppBar = (props: { history: any; }) => {
     };
 
     //For app bar buttons
+    const classes = useStyles();
     const history = useHistory();
     const handleButtonsClick = (pageURL: string) => {
         history.push(pageURL);
@@ -55,7 +55,7 @@ const MenuAppBar = (props: { history: any; }) => {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
-                <Toolbar className="app-container">
+                <Toolbar className={classes.appContainer}>
                     <IconButton
                         id="long-button"
                         size="large"

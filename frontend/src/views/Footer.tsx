@@ -1,8 +1,10 @@
 import React from "react";
 import useStyles from 'style/FooterStyles1'
 
-const classes = useStyles();
+
+
 const Footer = () => {
+    const classes = useStyles();
     return (
         <div className={classes.footerContainer}>
             <div className={classes.footer}>
