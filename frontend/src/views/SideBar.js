@@ -1,7 +1,7 @@
 import React from 'react';
 import { Drawer, Divider, IconButton } from '@material-ui/core';
 import { List, ListItem, ListItemText } from '@material-ui/core';
-import ReorderIcon from '@material-ui/icons/Reorder';
+import ReorderIcon from '@mui/icons-material/Reorder';
 import { Link } from 'react-router-dom';
 
 const styles = {
