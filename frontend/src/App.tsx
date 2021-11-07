@@ -7,12 +7,11 @@ import { setLocalStorage } from 'utils/utils';
 //import Footer from 'views/Footer';
 
 // Fonts
-import "@fontsource/fenix";
-import "@fontsource/roboto";
-import "@fontsource/bebas-neue";
-import "@fontsource/teko";
-import "@fontsource/alfa-slab-one";
-
+import '@fontsource/fenix';
+import '@fontsource/roboto';
+import '@fontsource/bebas-neue';
+import '@fontsource/teko';
+import '@fontsource/alfa-slab-one';
 
 const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
@@ -50,9 +49,11 @@ function App() {
   );
 
   return (
-    <><React.Suspense fallback={loading}>
-      <>{ready && <TheLayout />}</>
-    </React.Suspense></>
+    <>
+      <React.Suspense fallback={loading}>
+        <>{ready && <TheLayout />}</>
+      </React.Suspense>
+    </>
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />

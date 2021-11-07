@@ -1,3 +1,4 @@
+const pipeStringingQueries = require('../sql_queries/pipeStringingQueries');
 const { client } = require('../utils/databaseConnection');
 
 const updateFirstPipe = async (pipe_id) => {
@@ -14,27 +15,36 @@ const updateFirstPipe = async (pipe_id) => {
 
 const getStringing = async (req, res, next) => {
   try {
-    let first_pipe = await client.query(`SELECT * FROM first_pipe;`);
+    let _ = await client.query(pipeStringingQueries.getSequences);
+    let firstPipes = _.rows.map((data) => data.itemid);
 
-    if (first_pipe.rows.length == 0) return res.status(200).send([]);
+    let ans = [];
+    for (let i = 0; i < firstPipes.length; i++) {
+      _ = client.query(pipeStringingQueries.getOneSequence, firstPipes[i]);
+      ans.push(_.rows);
+    }
 
-    first_pipe = first_pipe.rows[0];
+    // let first_pipe = await client.query(`SELECT * FROM first_pipe;`);
 
-    let data = await client.query(
-      `with recursive walk as (
-            select s1.pipe::varchar(20), s1.next::varchar(20), array[pipe]::varchar(20)[] as path from stringing s1
-            where s1.pipe = '${first_pipe.id}'
-            
-            union all
-            
-            select s2.pipe::varchar(20), s2.next::varchar(20), (w.path || s2.pipe)::varchar(20)[] from stringing s2
-            join walk w
-            on w.next = s2.pipe
-        )
-        select path from walk where next is null;`
-    );
+    // if (first_pipe.rows.length == 0) return res.status(200).send([]);
 
-    res.status(200).send(data.rows[0].path);
+    // first_pipe = first_pipe.rows[0];
+
+    // let data = await client.query(
+    //   `with recursive walk as (
+    //         select s1.pipe::varchar(20), s1.next::varchar(20), array[pipe]::varchar(20)[] as path from stringing s1
+    //         where s1.pipe = '${first_pipe.id}'
+
+    //         union all
+
+    //         select s2.pipe::varchar(20), s2.next::varchar(20), (w.path || s2.pipe)::varchar(20)[] from stringing s2
+    //         join walk w
+    //         on w.next = s2.pipe
+    //     )
+    //     select path from walk where next is null;`
+    // );
+
+    res.status(200).send(ans);
   } catch (error) {
     next(error);
   }

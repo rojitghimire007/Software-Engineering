@@ -19,7 +19,8 @@ import {
   TextField,
   Container,
   ThemeProvider, 
-  createMuiTheme
+  createMuiTheme,
+  // Backdrop,
 } from '@material-ui/core';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -31,6 +32,14 @@ import {
   IconButton,
   createTheme,
   Paper,
+  Backdrop,
+  Dialog,
+  Stack,
+  Menu,
+  MenuItem,
+  Fade,
+  Divider,
+  Checkbox,
 } from '@mui/material';
 
 import useStyles from '../style/LoginStyles'; // new styling
@@ -39,7 +48,9 @@ import Footer from 'views/Footer';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [renderProjects, setRenderProjects] = useState(false);
   const history = useHistory();
+  const link = '/project-select';
 
   const updateFields = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.type) {
@@ -60,7 +71,7 @@ const Login = () => {
       .login(email, password)
       .then((res) => {
         setLocalStorage('pipeline_token', res.token);
-        history.push('/');
+        history.push(link);
       })
       .catch((err) => alert(err.message));
   };

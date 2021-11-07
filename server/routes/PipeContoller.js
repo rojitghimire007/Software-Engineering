@@ -1,19 +1,29 @@
+const pipeQueries = require('../sql_queries/pipeQueries');
 const { client } = require('../utils/databaseConnection');
+const { connect_project_db, query_resolver } = require('../utils/dbHandler');
+const { getRandomString } = require('../utils/randomGenerator');
 
-const getSchedule = async (schedule, diameter) => {
+const getSchedule = async (connection, schedule, diameter) => {
   try {
     const breakSchedule = schedule.split('-');
     schedule = breakSchedule[0].trim();
     const wallThick = breakSchedule[1].trim();
 
-    let schedule_class = await client.query(
-      `SELECT id FROM SCHEDULE_AND_CLASS WHERE (diameter = '${diameter}' AND designation = '${schedule}' AND wall_thickness = ${wallThick})`
-    );
+    const query = {
+      text: `SELECT pipe_ref_id FROM pipe_ref WHERE (diameter = $1 AND schedule = $2 AND thickness = $3)`,
+      values: [diameter, schedule, wallThick]
+    };
 
-    schedule_class = schedule_class.rows[0].id;
-    return schedule_class;
+    const schedule_class = await query_resolver(connection, query);
+    // let schedule_class = await client.query(
+    //   `SELECT pipe_ref_id FROM pipe_ref WHERE (diameter = $1 AND schedule = $2 AND thickness = $3)`,
+    //   [diameter, schedule, wallThick]
+    // );
+
+    return schedule_class[0].pipe_ref_id;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 
@@ -36,40 +46,68 @@ const addPipe = async (req, res, next) => {
   } = req.body;
 
   try {
-    if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
+    // USER AUTHENTICATION
+    // if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
 
-    let user = await client.query(
-      `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
-    );
-    user = user.rows[0].id;
+    // let user = await client.query(
+    //   `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
+    // );
+    // user = user.rows[0].id;
 
-    let schedule_class = await getSchedule(schedule, diameter);
+    const connection = await connect_project_db(req.dbname);
 
-    await client.query({
-      text: 'INSERT INTO pipes(coating_type,coil_number,comments,grade,heat_number,pipe_length,location,material, purchase_order,schedule_class,void,pipe_id, inspector_id, mfg) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, $13, $14)',
-      values: [
-        coating,
-        coil_no,
-        comments,
-        grade,
-        heat_no,
-        length,
-        location,
-        material_type,
-        po_number,
-        schedule_class,
-        isVoid,
-        id,
-        user,
-        manufacturer,
-      ],
-    });
+    let pipe_ref_id = await getSchedule(connection, schedule, diameter);
+
+    const query = {
+      text: 'SELECT * FROM pipe_heat WHERE heat_number = $1',
+      values: [heat_no]
+    }
+
+    let pipe_heat = await query_resolver(connection, query);
+
+    if (pipe_heat.length == 0) {
+      const query1 = {
+        text: pipeQueries.addPipeHeat,
+        values: [heat_no, manufacturer]
+      }
+      await query_resolver(connection, query1)
+
+      const query2 = {
+        text: 'SELECT * FROM pipe_heat WHERE heat_number = $1',
+        values: [heat_no]
+      }
+
+      pipe_heat = await query_resolver(connection, query2);
+
+    } else if (pipe_heat[0].manufacture != manufacturer) {
+      throw {
+        status: 400,
+        message:
+          'Same Heat Number with a different manufacturer exists. Please consult admin to verify correct manufacturer. You can also leave a comment on the pipe.',
+      };
+    }
+
+    pipe_heat = pipe_heat[0].pipe_heat_id;
+
+    let shared_ref = getRandomString(30);
+    const query3 = {
+      text: pipeQueries.addPipeSharedInfo,
+      values: [shared_ref, coating, grade, pipe_heat, pipe_ref_id, po_number, material_type, req.uname]
+    }
+
+    await query_resolver(connection, query3);
+
+    const query4 = {
+      text: pipeQueries.addPipe,
+      values: [id, shared_ref, length, req.uname, location, coil_no, comments, isVoid, false, null]
+    }
+    await query_resolver(connection, query4);
 
     return res.status(201).send({
       success: true,
       message: 'Pipe Added!',
-      user: user,
     });
+
   } catch (error) {
     console.log(error);
     next({ status: 500, message: 'Something went wrong!' });
@@ -78,9 +116,7 @@ const addPipe = async (req, res, next) => {
 
 const allPipes = (req, res, next) => {
   client
-    .query(
-      "SELECT void, DATE(inventory_date), CONCAT(first_name, ' ', last_name) AS inspector, location, pipe_id as id,  coil_number as coil_no, heat_number as heat_no, diameter, designation as schedule, wall_thickness, grade, pipe_length as length, pipes.coating_type as coating, color as coating_color, mfg as manufacturer, material as material_type, purchase_order as po_number, comments FROM pipes INNER JOIN schedule_and_class ON pipes.schedule_class = schedule_and_class.id INNER JOIN users ON pipes.inspector_id = users.id INNER JOIN pipe_coating ON pipes.coating_type = pipe_coating.coating_type;"
-    )
+    .query(pipeQueries.allPipes)
     .then((response) => {
       return res.status(200).send({ success: true, pipes: response.rows });
     })
@@ -116,45 +152,84 @@ const getStringingInfo = async (req, res, next) => {
   }
 };
 
+const updatePipeSchedule = async (schedule, diameter, pipeSharedId) => {
+  try {
+    let pipeRefId = await getSchedule(schedule, diameter);
+
+    await client.query(
+      'UPDATE pipe_shared_info SET pipe_ref_id = $1 WHERE pipe_shared_id = $2',
+      [pipeRefId, pipeSharedId]
+    );
+
+    return;
+  } catch (err) {
+    console.log(err);
+    throw {
+      status: 400,
+      message: 'Invalid Pipe Schedule-class-thickness update.',
+    };
+  }
+};
+
 const editPipe = async (req, res, next) => {
+  let { oldData, newData } = req.body;
+
   let {
     coating,
     coil_no,
     comments,
-    diameter,
     grade,
     heat_no,
     length,
     location,
     material_type,
     po_number,
-    schedule,
     isVoid,
     id,
-  } = req.body;
+  } = newData;
 
-  let schedule_class = await getSchedule(schedule, diameter);
+  //handle heat no change after asking todd
 
   try {
-    let updateInfo = await client.query({
-      text: `UPDATE pipes SET pipe_id = $1, coating_type = $2, coil_number = $3, comments = $4, grade = $5, heat_number = $6, pipe_length = $7, location = $8, material = $9, purchase_order = $10, schedule_class= $11, void = $12 where pipe_id = $13`,
-      values: [
-        id,
-        coating,
-        coil_no,
-        comments,
-        grade,
-        heat_no,
-        length,
-        location,
-        material_type,
-        po_number,
-        schedule_class,
-        isVoid,
-        req.params.pipeID,
-      ],
-    });
-    return res.status(200).send(updateInfo.rows);
+    let _ = await client.query('SELECT pipe_shared_id FROM pipe WHERE id = $1', [
+      oldData.id,
+    ]);
+
+    let pipeSharedId = _.rows[0].pipesharedid;
+
+    if (
+      newData.diameter != oldData.diameter ||
+      newData.wall_thickness != oldData.wall_thickness ||
+      newData.schedule != oldData.schedule
+    ) {
+      updatePipeSchedule(
+        `${newData.schedule} - ${newData.wall_thickness}`,
+        newData.diameter,
+        pipeSharedId
+      );
+    }
+
+    await client.query(pipeQueries.updatePipeSharedInfo, [
+      coating,
+      grade,
+      po_number,
+      material_type,
+      pipeSharedId,
+    ]);
+
+    await client.query(pipeQueries.updatePipe, [
+      id,
+      length,
+      'user',
+      location,
+      coil_no,
+      comments,
+      isVoid,
+      new Date().toISOString(),
+      oldData.id,
+    ]);
+
+    return res.status(200).send({ success: true });
   } catch (error) {
     console.log(error);
     next(error);
@@ -224,36 +299,34 @@ const deleteFromString = async (pipe_id, curr_id, curr_station) => {
 
 const getOptions = async (req, res, next) => {
   try {
-    let grades = await client.query('SELECT grade FROM PIPE_GRADE;');
+    let grades = await client.query('SELECT grade FROM pipe_grade;');
     grades = grades.rows.map((data) => data.grade);
 
-    let materials = await client.query('SELECT material_name FROM material;');
-    materials = materials.rows.map((data) => data.material_name);
+    // let materials = await client.query('SELECT material_name FROM material;');
+    // materials = materials.rows.map((data) => data.material_name);
 
-    let po_numbers = await client.query('SELECT id FROM purchase_orders;');
-    po_numbers = po_numbers.rows.map((data) => data.id);
-
-    let heat_numbers = await client.query(
-      'SELECT heat_number FROM pipe_heat_numbers;'
+    let po_numbers = await client.query(
+      'SELECT po_number FROM purchase_number;'
     );
+    po_numbers = po_numbers.rows.map((data) => data.ponumber);
 
-    heat_numbers = heat_numbers.rows.map((data) => data.heat_number);
+    let heat_numbers = await client.query('SELECT heat_number FROM pipe_heat;');
 
-    let coatings = await client.query(
-      'SELECT coating_type, color FROM pipe_coating;'
-    );
+    heat_numbers = heat_numbers.rows.map((data) => data.heatnumber);
+
+    let coatings = await client.query('SELECT coat, color FROM pipe_coat;');
     // let coating_color = await client.query('SELECT color FROM pipe_coating;');
 
     let coating_return = {};
     coatings.rows.forEach((data) => {
-      coating_return[data.coating_type] = data.color;
+      coating_return[data.coat] = data.color;
     });
 
     res.status(200).send({
       success: true,
       grades,
       coatings: coating_return,
-      materials,
+      // materials,
       po_numbers,
       heat_numbers,
     });
@@ -272,4 +345,5 @@ module.exports = {
   getStringingInfo,
   getOptions,
   editPipe,
+  updatePipeSchedule,
 };
