@@ -1,17 +1,18 @@
 import React from "react";
-import 'style/FooterStyles.css';
+import useStyles from 'style/FooterStyles1'
 
+const classes = useStyles();
 const Footer = () => {
     return (
-        <div className="footer-container">
-            <div className="footer">
-                <div className="footer-heading footer-1">
+        <div className={classes.footerContainer}>
+            <div className={classes.footer}>
+                <div className={classes.footerHeading}>
                     <h2>Honor Guard Inspections</h2>
                     <p>318-355-2938</p>
                     <p>401 Keystone Road</p>
                     <p>Monroe, LA 71202</p>
                 </div>
-                <div className="footer-heading footer-2">
+                <div className={classes.footerHeading}>
                     <h2>About Us: </h2>
                     <a href="#">Services</a>
                     <a href="#">Training</a>
@@ -30,8 +31,8 @@ const Footer = () => {
                  </div>*/}
             </div>
 
-            <div className="row">
-                <div className="col-sm">
+            <div /*className={classes.row}*/>
+                <div className={classes.colSm}>
                     &copy;{new Date().getFullYear()} Honor Guard Inspections | All Rights Reserved | Terms of Service | Privacy
                 </div>
             </div>
