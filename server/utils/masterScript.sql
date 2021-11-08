@@ -15,10 +15,15 @@ CREATE TABLE projects
   project_number TEXT NOT NULL,
   pname TEXT NOT NULL,
   company TEXT,
+  company_address TEXT,
+  company_phone TEXT,
+  company_email TEXT,
   work_number TEXT UNIQUE,
+  work_site_phone TEXT,
   plocation TEXT,
   start_date DATE,
   end_date DATE,
+  notes TEXT,
   dbname TEXT UNIQUE NOT NULL,
   PRIMARY KEY(project_number)
 );
