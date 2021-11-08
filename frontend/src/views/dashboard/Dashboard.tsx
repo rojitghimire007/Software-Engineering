@@ -191,13 +191,13 @@ const Dashboard = () => {
       <div className={classes.divPad}></div>
 
       {/* <CssBaseline /> */}
-      {/* <AppBar position="relative" className={classes.title}>
+      <AppBar position="relative" className={classes.title}>
         <Toolbar>
           <Typography variant="h3" className={classes.titleContent}>
             Honor Guard Inspections
           </Typography>
         </Toolbar>
-      </AppBar> */}
+      </AppBar>
       {/* className={classes.page} */}
       <main >
         <Container maxWidth="lg" >
