@@ -13,7 +13,7 @@ import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { withRouter, useHistory } from 'react-router-dom';
 import { Backdrop } from '@material-ui/core';
-
+import SideBar from 'views/SideBar';
 
 
 const options = [
@@ -42,6 +42,7 @@ const options = [
         default: '',
     },
 ];
+
 const ITEM_HEIGHT = 48;
 
 const MenuAppBar = (props: { history: any; }) => {
@@ -75,20 +76,7 @@ const MenuAppBar = (props: { history: any; }) => {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar className="app-container">
-                    <IconButton
-                        id="long-button"
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="more"
-                        aria-controls="long-menu"
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    <SideBar links={options}/>
 
                     <Menu
                         id="long-menu"
