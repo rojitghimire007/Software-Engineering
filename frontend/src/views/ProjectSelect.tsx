@@ -21,10 +21,10 @@ const ProjectSelect = () => {
   useEffect(() => {
     api
       .getAssociatedProjects()
-      .then((res) => {
+      .then((res: any) => {
         setProjectDetails(res.data);
       })
-      .catch((err) => alert(err.message));
+      .catch((err: any) => alert(err.message));
   }, []);
 
   const logIn = () => {
@@ -32,12 +32,12 @@ const ProjectSelect = () => {
     else {
       api
         .selectProject(projectDetails[parseInt(selected)].project_number)
-        .then((res) => {
+        .then((res: any) => {
           setLocalStorage('pipeline_token', res.token);
 
           history.push('/');
         })
-        .catch((err) => alert(err.message));
+        .catch((err: any) => alert(err.message));
       // setLoading(true);
       // while (loading?) {
       //   history.push(link);
@@ -104,14 +104,14 @@ const ProjectSelect = () => {
           <div className={classes.btn} onClick={() => logIn()}>
             ENTER
           </div>
-          <div
+          {/* <div
             className={classes.btn}
             onClick={() => {
               console.log(projectDetails);
             }}
           >
             REFRESH CONSOLE
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
