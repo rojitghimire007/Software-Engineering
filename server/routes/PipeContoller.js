@@ -117,7 +117,6 @@ const addPipe = async (req, res, next) => {
         comments,
         isVoid,
         false,
-        null,
       ],
     };
     await query_resolver(connection, query4);

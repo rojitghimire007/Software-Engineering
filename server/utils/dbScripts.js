@@ -80,6 +80,7 @@ exports.pipe = `CREATE TABLE pipe(
   comment TEXT DEFAULT NULL,
   is_void BOOLEAN DEFAULT FALSE,
   is_used BOOLEAN DEFAULT FALSE,
+  is_cut BOOLEAN DEFAULT FALSE,
   parent TEXT DEFAULT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(pipe_shared_id) REFERENCES pipe_shared_info(pipe_shared_id)
