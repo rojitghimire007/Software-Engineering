@@ -437,7 +437,7 @@ const ShowPipes = () => {
               {
                 title: 'Manufacturer',
                 field: 'manufacturer',
-                editable: 'never',
+                // editable: 'never',
               },
 
               //Requires extraction
@@ -526,8 +526,8 @@ const ShowPipes = () => {
                   </Select>
                 ),
               },
-              { title: 'Material', field: 'material_type', lookup: materials },
-              { title: 'P.O.', field: 'po_number' /*lookup: po_numbers*/ },
+              { title: 'Material', field: 'material_type' },
+              { title: 'P.O.', field: 'po_number', lookup: po_numbers },
               { title: 'Smart Label', field: 'smart_label' },
               { title: 'Comments', field: 'comments' },
             ]}
