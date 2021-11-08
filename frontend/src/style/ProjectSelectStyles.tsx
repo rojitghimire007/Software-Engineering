@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme: any) => ({
         boxShadow: '7px 7px',
         
     },
+    selectedItem: {
+        background: 'lightGreen !important' // selected, overriden when not important
+    },
     item: {
         // width: '100%',
         // padding: '6px 0 6px 3px',
@@ -39,7 +42,7 @@ const useStyles = makeStyles((theme: any) => ({
         border: '1px solid black',
         borderRadius: '3px',
         background: 'white',
-        transition: '.5s ease-in-out',
+        transition: '.4s ease-in-out',
         
         '&:hover':{ 
             transform: 'scale(1.01)',
