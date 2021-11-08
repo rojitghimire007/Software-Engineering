@@ -11,7 +11,7 @@ const getSchedule = async (connection, schedule, diameter) => {
 
     const query = {
       text: `SELECT pipe_ref_id FROM pipe_ref WHERE (diameter = $1 AND schedule = $2 AND thickness = $3)`,
-      values: [diameter, schedule, wallThick]
+      values: [diameter, schedule, wallThick],
     };
 
     const schedule_class = await query_resolver(connection, query);
@@ -60,25 +60,24 @@ const addPipe = async (req, res, next) => {
 
     const query = {
       text: 'SELECT * FROM pipe_heat WHERE heat_number = $1',
-      values: [heat_no]
-    }
+      values: [heat_no],
+    };
 
     let pipe_heat = await query_resolver(connection, query);
 
     if (pipe_heat.length == 0) {
       const query1 = {
         text: pipeQueries.addPipeHeat,
-        values: [heat_no, manufacturer]
-      }
-      await query_resolver(connection, query1)
+        values: [heat_no, manufacturer],
+      };
+      await query_resolver(connection, query1);
 
       const query2 = {
         text: 'SELECT * FROM pipe_heat WHERE heat_number = $1',
-        values: [heat_no]
-      }
+        values: [heat_no],
+      };
 
       pipe_heat = await query_resolver(connection, query2);
-
     } else if (pipe_heat[0].manufacture != manufacturer) {
       throw {
         status: 400,
@@ -92,38 +91,58 @@ const addPipe = async (req, res, next) => {
     let shared_ref = getRandomString(30);
     const query3 = {
       text: pipeQueries.addPipeSharedInfo,
-      values: [shared_ref, coating, grade, pipe_heat, pipe_ref_id, po_number, material_type, req.uname]
-    }
+      values: [
+        shared_ref,
+        coating,
+        grade,
+        pipe_heat,
+        pipe_ref_id,
+        po_number,
+        material_type,
+        req.uname,
+      ],
+    };
 
     await query_resolver(connection, query3);
 
     const query4 = {
       text: pipeQueries.addPipe,
-      values: [id, shared_ref, length, req.uname, location, coil_no, comments, isVoid, false, null]
-    }
+      values: [
+        id,
+        shared_ref,
+        length,
+        req.uname,
+        location,
+        coil_no,
+        comments,
+        isVoid,
+        false,
+        null,
+      ],
+    };
     await query_resolver(connection, query4);
 
     return res.status(201).send({
       success: true,
       message: 'Pipe Added!',
     });
-
   } catch (error) {
     console.log(error);
     next({ status: 500, message: 'Something went wrong!' });
   }
 };
 
-const allPipes = (req, res, next) => {
-  client
-    .query(pipeQueries.allPipes)
-    .then((response) => {
-      return res.status(200).send({ success: true, pipes: response.rows });
-    })
-    .catch((err) => {
-      console.log(err);
-      next({ status: 500, message: 'Something went wrong!' });
+const allPipes = async (req, res, next) => {
+  const connection = await connect_project_db(req.dbname);
+  try {
+    let pipes = await query_resolver(connection, {
+      text: pipeQueries.allPipes,
     });
+    return res.status(200).send({ success: true, pipes });
+  } catch (error) {
+    console.log(error);
+    next({ status: 500, message: 'Something went wrong!' });
+  }
 };
 
 const deletePipe = async (req, res, next) => {
@@ -152,14 +171,19 @@ const getStringingInfo = async (req, res, next) => {
   }
 };
 
-const updatePipeSchedule = async (schedule, diameter, pipeSharedId) => {
+const updatePipeSchedule = async (
+  schedule,
+  diameter,
+  pipeSharedId,
+  connection
+) => {
   try {
-    let pipeRefId = await getSchedule(schedule, diameter);
+    let pipeRefId = await getSchedule(connection, schedule, diameter);
 
-    await client.query(
-      'UPDATE pipe_shared_info SET pipe_ref_id = $1 WHERE pipe_shared_id = $2',
-      [pipeRefId, pipeSharedId]
-    );
+    await query_resolver(connection, {
+      text: 'UPDATE pipe_shared_info SET pipe_ref_id = $1 WHERE pipe_shared_id = $2',
+      values: [pipeRefId, pipeSharedId],
+    });
 
     return;
   } catch (err) {
@@ -191,11 +215,14 @@ const editPipe = async (req, res, next) => {
   //handle heat no change after asking todd
 
   try {
-    let _ = await client.query('SELECT pipe_shared_id FROM pipe WHERE id = $1', [
-      oldData.id,
-    ]);
+    const connection = await connect_project_db(req.dbname);
 
-    let pipeSharedId = _.rows[0].pipesharedid;
+    let _ = await query_resolver(connection, {
+      text: 'SELECT pipe_shared_id FROM pipe WHERE id = $1',
+      values: [oldData.id],
+    });
+
+    let pipeSharedId = _[0].pipesharedid;
 
     if (
       newData.diameter != oldData.diameter ||
@@ -205,29 +232,30 @@ const editPipe = async (req, res, next) => {
       updatePipeSchedule(
         `${newData.schedule} - ${newData.wall_thickness}`,
         newData.diameter,
-        pipeSharedId
+        pipeSharedId,
+        connection
       );
     }
 
-    await client.query(pipeQueries.updatePipeSharedInfo, [
-      coating,
-      grade,
-      po_number,
-      material_type,
-      pipeSharedId,
-    ]);
+    await query_resolver(connection, {
+      text: pipeQueries.updatePipeSharedInfo,
+      values: [coating, grade, po_number, material_type, pipeSharedId],
+    });
 
-    await client.query(pipeQueries.updatePipe, [
-      id,
-      length,
-      'user',
-      location,
-      coil_no,
-      comments,
-      isVoid,
-      new Date().toISOString(),
-      oldData.id,
-    ]);
+    await query_resolver(connection, {
+      text: pipeQueries.updatePipe,
+      values: [
+        id,
+        length,
+        'user',
+        location,
+        coil_no,
+        comments,
+        isVoid,
+        new Date().toISOString(),
+        oldData.id,
+      ],
+    });
 
     return res.status(200).send({ success: true });
   } catch (error) {
@@ -299,26 +327,34 @@ const deleteFromString = async (pipe_id, curr_id, curr_station) => {
 
 const getOptions = async (req, res, next) => {
   try {
-    let grades = await client.query('SELECT grade FROM pipe_grade;');
-    grades = grades.rows.map((data) => data.grade);
+    const connection = await connect_project_db(req.dbname);
+
+    let grades = await query_resolver(connection, {
+      text: 'SELECT grade from pipe_grade;',
+    });
+    grades = grades.map((data) => data.grade);
 
     // let materials = await client.query('SELECT material_name FROM material;');
     // materials = materials.rows.map((data) => data.material_name);
 
-    let po_numbers = await client.query(
-      'SELECT po_number FROM purchase_number;'
-    );
-    po_numbers = po_numbers.rows.map((data) => data.ponumber);
+    let po_numbers = await query_resolver(connection, {
+      text: 'SELECT po_number FROM purchase_number;',
+    });
 
-    let heat_numbers = await client.query('SELECT heat_number FROM pipe_heat;');
+    po_numbers = po_numbers.map((data) => data.ponumber);
 
-    heat_numbers = heat_numbers.rows.map((data) => data.heatnumber);
+    let heat_numbers = await query_resolver(connection, {
+      text: 'SELECT heat_number FROM pipe_heat;',
+    });
 
-    let coatings = await client.query('SELECT coat, color FROM pipe_coat;');
-    // let coating_color = await client.query('SELECT color FROM pipe_coating;');
+    heat_numbers = heat_numbers.map((data) => data.heatnumber);
+
+    let coatings = await query_resolver(connection, {
+      text: 'SELECT coat, color FROM pipe_coat;',
+    });
 
     let coating_return = {};
-    coatings.rows.forEach((data) => {
+    coatings.forEach((data) => {
       coating_return[data.coat] = data.color;
     });
 
