@@ -1,12 +1,42 @@
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core';
+import ColorScheme from './ColorScheme';
+import BackgroundImage from '../img/backgroundB.jpg'
 
 const useStyles = makeStyles((theme: any) => ({
     page:{
         minWidth: '100vw',
         minHeight: '100vh',
+        width:'100vw',
+        height:'100vh',
         position: 'fixed',
-        backgroundColor: 'yellow',
+        background: `url(${BackgroundImage}) rgba(0, 0, 0, 4)`,
+        backgroundBlendMode: 'multiply',
+        backgroundSize: '100vw 100vh',
+        // backgroundSize: 'cover',
+        backgroundColor: `${ColorScheme.background}`,
+    },
+    titleTop: {
+        backgroundColor: `${ColorScheme.primary}`,
+        alignItems: 'center',
+        paddingTop: '5px',
+        borderRadius: '8px 8px 8px 8px',
+        borderStyle: 'ridge',
+        borderColor: `${ColorScheme.primaryDark}`,
+        backgroundImage: `linear-gradient(to right, ${ColorScheme.primaryDark}, ${ColorScheme.primaryLight})`,
+    },
+    titleTopContent: {
+        // margin: '0 auto',
+        textAlign: 'center',
+        color: ColorScheme.onPrimary,
+        fontFamily: 'Bebas Neue',
+        fontSize: '6vw',
+        letterSpacing: '.5rem',
+        wordWrap: 'break-word',
+        textShadow: '0 0 black, 0 2px black, 3px 2px black, 0 1px black',
+        // borderRadius: '0 0 0 0',
+        // fontSize: '5vw',
+        // letterSpacing: '8px',
     },
     container: {
         width: '50%',
@@ -14,22 +44,25 @@ const useStyles = makeStyles((theme: any) => ({
         // border: '2px dashed blue',
     },
     title: {
-        boxShadow: '7px 7px',
+        boxShadow: `3px 4px 5px ${ColorScheme.onSecondary}`,
         alignText: 'center',
-        fontSize: '24px',
+        fontFamily: 'Fenix, serif',
+        fontSize: '32px',
         padding: '1%',
         borderRadius: '15px 15px 0 0',
-        backgroundColor: 'pink',
+        backgroundColor: `${ColorScheme.primary}`,
+        color: `${ColorScheme.onPrimary}`,
         border: '1px solid black',
     },
     list: {
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: '7px 7px',
+        boxShadow: '3px 4px 5px',
         
     },
     selectedItem: {
-        background: 'lightGreen !important' // selected, overriden when not important
+        background: `${ColorScheme.secondaryLight} !important`, // selected, overriden when not important
+        color: `${ColorScheme.onPrimary} !important`,
     },
     item: {
         // width: '100%',
@@ -37,39 +70,46 @@ const useStyles = makeStyles((theme: any) => ({
         paddingTop: '6px',
         // paddingLeft: '6px',
         paddingBottom: '6px',
+        fontFamily: 'Fenix, serif',
         fontSize: '16px',
-        boxShadow: '0 0 0 1px pink',
+        boxShadow: `0 0 0 1px ${ColorScheme.secondaryLight}`,
+        margin: '1px 0',
         border: '1px solid black',
         borderRadius: '3px',
-        background: 'white',
+        background: `${ColorScheme.primaryLight}`,
         transition: '.4s ease-in-out',
         
         '&:hover':{ 
             transform: 'scale(1.01)',
-            background: 'lightGrey',
+            background: `${ColorScheme.secondary}`,
+            color: `${ColorScheme.onPrimary}`,
             cursor: 'pointer',
         }
     },
     bottom: {
-        boxShadow: '7px 7px',
+        boxShadow: '3px 4px 5px',
         fontSize: '14px',
         padding: '.50%',
         borderRadius: '0 0 15px 15px',
-        backgroundColor: 'pink',
+        backgroundColor: `${ColorScheme.primary}`,
         border: '1px solid black',
         '& span': {
             opacity: 0,
         }
     },
     btn: {
-        backgroundColor: 'green',
+        backgroundColor: `${ColorScheme.secondaryDark}`,
         borderRadius: '6px',
-        boxShadow: '0 0 0 3px red',
+        boxShadow: `0 0 2px 3px ${ColorScheme.secondaryLight}`,
         color: 'white',
         margin: '3% 43%',
-        width: '50px',
+        width: '150px',
+        height: '40px',
         textAlign: 'center',
+        justifyContent: 'center',
         cursor: 'pointer',
+        fontFamily: 'Fenix, serif',
+        fontSize: '32px',
     },
     msg: {
         position: 'fixed',

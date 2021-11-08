@@ -37,9 +37,12 @@ const ColorScheme = {
     primary: '#81977B', // default hue: 700
     primaryLight: '#B9C6B6',
     primaryDark: '#687D62',
-    secondary: '#937B99', // default hue: 400
-    secondaryLight: '#BDAEC0',
-    secondaryDark: '#79627F',
+    // secondary: '#937B99', // default hue: 400
+    // secondaryLight: '#BDAEC0',
+    // secondaryDark: '#79627F',
+    secondary: '#727B7C', // default hue: 400
+    secondaryLight: '#3F4B4C',
+    secondaryDark: '#3D4640',
     background: '#cfd8dc',
     surface: '#000000',
     error: '#B00020',

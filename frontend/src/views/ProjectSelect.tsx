@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import useStyles from 'style/ProjectSelectStyles';
 import api from 'api';
 import { setLocalStorage } from 'utils/utils';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 
 const ProjectSelect = () => {
   const classes = useStyles('');
@@ -49,6 +50,15 @@ const ProjectSelect = () => {
 
   return (
     <div className={classes.page}>
+
+      <AppBar position="relative" className={classes.titleTop}>
+        <Toolbar>
+          <Typography variant="h3" className={classes.titleTopContent}>
+            Honor Guard Inspections
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
       {errored ? (
         <div className={classes.msg}>
           Please select a project from the list.
