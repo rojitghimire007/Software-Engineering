@@ -2,10 +2,15 @@ import { makeStyles } from "@material-ui/core";
 import { borderColor, borderRadius, flexbox, fontSize } from "@mui/system";
 import ColorScheme from "./ColorScheme";
 import HueSelector from "./HueSelector";
+import BackgroundImage from '../img/backgroundB.jpg'
 
 import PipelineImg from 'img/pipeline-1.jpg';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
+    container: {
+        minHeight: "100vh",
+        maxWidth: '100vw',
+    },
     dropDown: {
         // Dropdown background
         '&.MuiAccordion-root': {
@@ -18,15 +23,33 @@ const useStyles = makeStyles((theme) => ({
     },
     page: {
         minHeight: "100vh",
+        maxWidth: '100vw',
+        width: '100%',
+        position: 'absolute',
+        top: 0,
+        // zIndex: 5
     },
     background: {
-        backgroundImage: `url(${PipelineImg})`,
-        backgroundPosition: 'center',
-        backgroundSize: '100% 100%',
-        transition: 'none',
+        position: 'sticky',
+        backgroundImage: `url(${BackgroundImage})`,
         backgroundRepeat: 'no-repeat',
-        backgroundColor: ColorScheme.background,
+        backgroundSize: '100% 100%',
+        boxShadow: '1px 1px',
+        // height: '115vh',
+        margin: 0,
+        height: '111vh',
+        maxHeight: '110vh',
+        maxWidth: '100vw',
+        top: 0,
         backgroundOrigin: 'content-box',
+        // backgroundClip: 'content-box',
+        // backgroundSize: 'contain',
+        // zIndex: 1,
+        // display: 'inline-block',
+        // backgroundPosition: 'center center',
+        // backgroundColor: ColorScheme.background,
+        // top: 0,
+        // left: 0,
     },
     cardContent: {
         // flexGrow: 1,
@@ -49,9 +72,10 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         // fontSize: '3.6vw',//'2.2em',
         fontSize: '1.4em',//'2.2em',
+        letterSpacing: '.02em',
         fontFamily: 'Teko',
         backgroundColor: ColorScheme.secondaryLight,
-        color: ColorScheme.onSecondary,
+        color: ColorScheme.onPrimary,
 
         transition: 'all 0.4s',
 
@@ -62,22 +86,8 @@ const useStyles = makeStyles((theme) => ({
     title: {
         backgroundColor: ColorScheme.primary,
         alignItems: 'center',
-        width: '90vw',
         paddingTop: '5px',
         borderRadius: '8px 8px 8px 8px',
-        // borderWidth: '0 4px 4px 0',
-        borderStyle: 'ridge',
-        borderColor: ColorScheme.primaryDark,
-        backgroundImage: `linear-gradient(to right, ${ColorScheme.primary}, ${ColorScheme.primaryLight})`,
-        margin: '0 auto',
-    },
-    titleNav: {
-        backgroundColor: ColorScheme.primary,
-        alignItems: 'center',
-        width: '5vw',
-        //paddingTop: '5px',
-        //borderRadius: '8px 8px 8px 8px',
-        // borderWidth: '0 4px 4px 0',
         borderStyle: 'ridge',
         borderColor: ColorScheme.primaryDark,
         backgroundImage: `linear-gradient(to right, ${ColorScheme.primary}, ${ColorScheme.primaryLight})`,
@@ -143,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
             fontFamily: 'Bebas Neue',
             fontSize: '1.4rem',
             textDecoration: 'none',
-            color: ColorScheme.onSecondary,
+            color: ColorScheme.onPrimary,
 
             '& :hover': {
                 color: ColorScheme.primary,
@@ -226,83 +236,10 @@ const useStyles = makeStyles((theme) => ({
         },
         // margin: 30,
     },
-    //navbar
-    menuButton: { marginRight: 'theme.spacing(2)', },
-    /*navbar: {
-        backgroundColor: '#060b26',
-        height: '80px',
-        display: 'flex',
-        justifyContent: 'start',
-        alignItems: 'center',
-    },
-    menuBars: {
-        marginLeft: '2rem',
-        fontSize: '2rem',
-        background: 'none',
-    },
-    /*navMenu: {
-        backgroundColor: '#060b26',
-        width: '250px',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        position: 'fixed',
-        top: '0',
-        left: '-100%',
-        transition: '850ms',
-    },
-    /*.navMenu.active: {
-        left: '0',
-        transition: '350ms',
-        },
-    navText: {
-        display: 'flex',
-        justifyContent: 'start',
-        alignItems: 'center',
-        padding: '8px 0px 8px 16px',
-        height: '60px',
-    },
-    /*nav-text a {
-        text-decoration: 'none',
-        //color: '',
-        fontSize: '18px',
-        width: '95%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 16px',
-        borderRadius: '4px',
-    },
-    nav-text a:hover {
-        //backgroundColor: '',
-
-    },
-    navMenuItems: {
-        width: '100%',
-    },
-        
-    navBarToggle: {
-        //backgroundColor: '',
-        width: '100%',
-        height: '80px',
-        display: 'flex',
-        justifyContent: 'start',
-        alignItems: 'center',
-    },
-    span: {
-        marginLeft: '16px',
-    },*/
 
     listButton: { backgroundColor: 'grey', },
     menuItem: { padding: '1rem 1.5rem 1.5rem', },
     cardGrid: { padding: '20px 0' },
-    divPad: { padding: '5px', },
-
-    // Deprecated
-    textField: {},
-    wrapper: {},
-    card: {},
-    accordionSecondary: {},
 }));
 
 export default useStyles;
