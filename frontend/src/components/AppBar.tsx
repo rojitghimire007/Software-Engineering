@@ -13,7 +13,7 @@ import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { withRouter, useHistory } from 'react-router-dom';
 import { Backdrop } from '@material-ui/core';
-import SideBar from 'views/SideBar';
+import SideBar from 'components/SideBar';
 
 
 const options = [

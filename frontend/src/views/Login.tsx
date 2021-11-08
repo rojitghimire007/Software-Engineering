@@ -43,7 +43,7 @@ import {
 } from '@mui/material';
 
 import useStyles from '../style/LoginStyles'; // new styling
-import Footer from 'views/Footer';
+import Footer from '../components/Footer';
 
 const Login = () => {
   const [email, setEmail] = useState('');

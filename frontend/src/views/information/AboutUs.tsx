@@ -1,6 +1,6 @@
 import { Backdrop } from "@material-ui/core";
 import React from "react";
-import AppBar from "./AppBar";
+import AppBar from "../../components/AppBar";
 import { SketchPicker } from 'react-color';
 
 const AboutUs = () => {
