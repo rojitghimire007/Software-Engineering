@@ -139,8 +139,9 @@ const useStyles = makeStyles((theme) => ({
 
         // Link Styles
         '& div.MuiListItemButton-root, a': {
+            marginTop: '2%',
             fontFamily: 'Bebas Neue',
-            fontSize: '2.25rem',
+            fontSize: '1.4rem',
             textDecoration: 'none',
             color: ColorScheme.onSecondary,
 
@@ -155,6 +156,8 @@ const useStyles = makeStyles((theme) => ({
     },
     divider: {
         borderColor: ColorScheme.primaryDark,
+        height: '100% !important',
+        backgroundColor: 'rgba(0,0,0,0)',
 
         // the lines on the dropdown by the icon
         '&.MuiDivider-root::before': {
@@ -185,7 +188,7 @@ const useStyles = makeStyles((theme) => ({
         '&.MuiChip-root': {
             backgroundColor: ColorScheme.primary,
             color: ColorScheme.onPrimary,
-            padding: '0 !important'
+            padding: '0 !important',
         },
     },
     accordionPrimary: {
