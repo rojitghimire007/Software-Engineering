@@ -132,16 +132,17 @@ const addPipe = async (req, res, next) => {
   }
 };
 
-const allPipes = (req, res, next) => {
-  client
-    .query(pipeQueries.allPipes)
-    .then((response) => {
-      return res.status(200).send({ success: true, pipes: response.rows });
-    })
-    .catch((err) => {
-      console.log(err);
-      next({ status: 500, message: 'Something went wrong!' });
+const allPipes = async (req, res, next) => {
+  const connection = await connect_project_db(req.dbname);
+  try {
+    let pipes = await query_resolver(connection, {
+      text: pipeQueries.allPipes,
     });
+    return res.status(200).send({ success: true, pipes });
+  } catch (error) {
+    console.log(error);
+    next({ status: 500, message: 'Something went wrong!' });
+  }
 };
 
 const deletePipe = async (req, res, next) => {
@@ -170,14 +171,19 @@ const getStringingInfo = async (req, res, next) => {
   }
 };
 
-const updatePipeSchedule = async (schedule, diameter, pipeSharedId) => {
+const updatePipeSchedule = async (
+  schedule,
+  diameter,
+  pipeSharedId,
+  connection
+) => {
   try {
-    let pipeRefId = await getSchedule(schedule, diameter);
+    let pipeRefId = await getSchedule(connection, schedule, diameter);
 
-    await client.query(
-      'UPDATE pipe_shared_info SET pipe_ref_id = $1 WHERE pipe_shared_id = $2',
-      [pipeRefId, pipeSharedId]
-    );
+    await query_resolver(connection, {
+      text: 'UPDATE pipe_shared_info SET pipe_ref_id = $1 WHERE pipe_shared_id = $2',
+      values: [pipeRefId, pipeSharedId],
+    });
 
     return;
   } catch (err) {
@@ -209,12 +215,14 @@ const editPipe = async (req, res, next) => {
   //handle heat no change after asking todd
 
   try {
-    let _ = await client.query(
-      'SELECT pipe_shared_id FROM pipe WHERE id = $1',
-      [oldData.id]
-    );
+    const connection = await connect_project_db(req.dbname);
 
-    let pipeSharedId = _.rows[0].pipesharedid;
+    let _ = await query_resolver(connection, {
+      text: 'SELECT pipe_shared_id FROM pipe WHERE id = $1',
+      values: [oldData.id],
+    });
+
+    let pipeSharedId = _[0].pipesharedid;
 
     if (
       newData.diameter != oldData.diameter ||
@@ -224,29 +232,30 @@ const editPipe = async (req, res, next) => {
       updatePipeSchedule(
         `${newData.schedule} - ${newData.wall_thickness}`,
         newData.diameter,
-        pipeSharedId
+        pipeSharedId,
+        connection
       );
     }
 
-    await client.query(pipeQueries.updatePipeSharedInfo, [
-      coating,
-      grade,
-      po_number,
-      material_type,
-      pipeSharedId,
-    ]);
+    await query_resolver(connection, {
+      text: pipeQueries.updatePipeSharedInfo,
+      values: [coating, grade, po_number, material_type, pipeSharedId],
+    });
 
-    await client.query(pipeQueries.updatePipe, [
-      id,
-      length,
-      'user',
-      location,
-      coil_no,
-      comments,
-      isVoid,
-      new Date().toISOString(),
-      oldData.id,
-    ]);
+    await query_resolver(connection, {
+      text: pipeQueries.updatePipe,
+      values: [
+        id,
+        length,
+        'user',
+        location,
+        coil_no,
+        comments,
+        isVoid,
+        new Date().toISOString(),
+        oldData.id,
+      ],
+    });
 
     return res.status(200).send({ success: true });
   } catch (error) {
