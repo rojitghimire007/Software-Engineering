@@ -269,7 +269,7 @@ const Dashboard = () => {
               </Grid>
             ))}
           </Grid>
-          <Footer />
+          {/* <Footer /> */}
         </Container>
       </main>
     </div>
