@@ -33,8 +33,8 @@ import {
 } from '@material-ui/core';
 import useStyles from 'style/ShowPipeStyles';
 import ColorScheme from 'style/ColorScheme';
-import Footer from 'views/Footer';
-import MenuAppBar from 'views/AppBar';
+import Footer from '../../components/Footer';
+import MenuAppBar from '../../components/AppBar';
 
 const classData = require('others/schedule&class.json');
 

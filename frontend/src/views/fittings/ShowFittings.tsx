@@ -24,7 +24,7 @@ import {
 } from '@material-ui/core';
 import useStyles from '../../style/ShowFittingsStyles';
 import ColorScheme from '../../style/ColorScheme';
-import Footer from 'views/Footer';
+import Footer from '../../components/Footer';
 
 interface dataType {
   id: number;

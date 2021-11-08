@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
@@ -24,7 +23,6 @@ import {
   CardActionArea,
   Backdrop,
 } from '@material-ui/core';
-
 import {
   Accordion,
   AccordionSummary,
@@ -41,12 +39,12 @@ import {
   LinearProgress,
 } from '@mui/material';
 
-import Footer from 'views/Footer';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArchitectureOutlinedIcon from '@mui/icons-material/ArchitectureOutlined';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MenuIcon from '@mui/icons-material/Menu';
 
-// import 'style/Dashboard.css';
 import useStyles from '../../style/DashboardStyles'; // new styling
 
 import inventoryImg from 'img/inventory.jpg';
@@ -55,9 +53,10 @@ import stringingImg from 'img/stringing.jpg';
 import bendingImg from 'img/bending.jpg';
 import coatingImg from 'img/coating.jpg';
 import otherImg from 'img/pipeline-3.jpg';
-import MenuIcon from '@mui/icons-material/Menu';
 import { isTemplateExpression } from 'typescript';
-import MenuAppBar from 'views/AppBar';
+
+import MenuAppBar from '../../components/AppBar';
+import Footer from '../../components/Footer';
 
 // type links = {
 //   parent: string,

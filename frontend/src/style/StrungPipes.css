@@ -1,33 +1,33 @@
 .task {
-  border: 2px solid lightgrey;
+  /* border: 2px solid lightgrey;
   border-radius: 50%;
   padding: 8px;
-  margin-right: 8px;
+  margin-right: 8px; */
   /* background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')}; */
-  width: 40px;
+  /* width: 40px;
   height: 40px;
 
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 .task:focus {
-  outline: none;
-  border-color: red;
+  /* outline: none;
+  border-color: red; */
 }
 .task.dragging {
-  background-color: lightgreen;
-}
+/*   background-color: lightgreen;
+ */}
 
 #pipeRepList {
-  padding: 8px;
+  /* padding: 8px;
   transition: background-color 0.2s ease;
   flex-grow: 1;
 
-  display: flex;
+  display: flex; */
 }
 
 #pipeRepList.isDraggingOver {
-  background-color: skyblue;
-}
+/*   background-color: skyblue;
+ */}

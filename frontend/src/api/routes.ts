@@ -8,6 +8,7 @@ const API = {
   login: `${URL}/login`,
   signup: `${URL}/signup`,
   getAssociatedProjects: `${URL}/list/project`,
+  selectProject: `${URL}/select/project`,
 
   // pipes
   getPipes: `${URL}/pipes`,

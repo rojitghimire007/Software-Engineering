@@ -2,10 +2,10 @@ import React, { ComponentType } from 'react';
 import ShowPipes from 'views/pipes/ShowPipes';
 import ShowFittings from 'views/fittings/ShowFittings';
 import NewStrungPipes from 'views/stringing/StrungPipes';
-import ProjectsPage from 'views/ProjectsPage';
+import ProjectsPage from 'views/administrative/ProjectsPage';
 import ProjectSelect from 'views/ProjectSelect';
-import AboutUs from 'views/AboutUs';
-import ContactUs from 'views/ContactUs';
+import AboutUs from 'views/information/AboutUs';
+import ContactUs from 'views/information/ContactUs';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));

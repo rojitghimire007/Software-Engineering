@@ -14,6 +14,10 @@ export default {
     return authGet(API.getAssociatedProjects, '');
   },
 
+  selectProject: (project_number: any) => {
+    return authPost(API.selectProject, { project_number });
+  },
+
   getPipes: () => {
     return authGet(API.getPipes, '');
   },
