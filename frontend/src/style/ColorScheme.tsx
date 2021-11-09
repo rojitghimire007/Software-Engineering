@@ -18,12 +18,31 @@ interface ColorScheme {
 };
 
 const ColorScheme = {
-    primary: '#0288d1', // default hue: 700
-    primaryLight: '#5eb8ff',
-    primaryDark: '#005b9f',
-    secondary: '#9e9e9e', // default hue: 400
-    secondaryLight: '#cfcfcf',
-    secondaryDark: '#707070',
+    // primary: '#0288d1', // default hue: 700
+    // primaryLight: '#5eb8ff',
+    // primaryDark: '#005b9f',
+    // secondary: '#9e9e9e', // default hue: 400
+    // secondaryLight: '#cfcfcf',
+    // secondaryDark: '#707070',
+    // background: '#cfd8dc',
+    // surface: '#000000',
+    // error: '#B00020',
+    // onPrimary: '#ffffff',
+    // onSecondary: '#000000',
+    // onBackground: '#000000',
+    // onSurface: '#000000',
+    // onError: '#FFFFFF',
+    
+    // new scheme
+    primary: '#81977B', // default hue: 700
+    primaryLight: '#B9C6B6',
+    primaryDark: '#687D62',
+    // secondary: '#937B99', // default hue: 400
+    // secondaryLight: '#BDAEC0',
+    // secondaryDark: '#79627F',
+    secondary: '#727B7C', // default hue: 400
+    secondaryLight: '#3F4B4C',
+    secondaryDark: '#3D4640',
     background: '#cfd8dc',
     surface: '#000000',
     error: '#B00020',

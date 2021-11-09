@@ -6,6 +6,7 @@ import api from 'api';
 import { setLocalStorage } from 'utils/utils';
 //import Footer from 'views/Footer';
 
+
 // Fonts
 import '@fontsource/fenix';
 import '@fontsource/roboto';
@@ -27,7 +28,7 @@ function App() {
       .auth()
       .then((res) => {
         if (window.location.pathname === '/login' && res.success) {
-          history.push('/');
+          // history.push('/');
         } else if (!res.success) {
           // logoutAndRedirect();
           setLocalStorage('pipeline_token', '');

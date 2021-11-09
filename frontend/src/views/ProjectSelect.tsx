@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react';
 import useStyles from 'style/ProjectSelectStyles';
 import api from 'api';
 import { setLocalStorage } from 'utils/utils';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 
 const ProjectSelect = () => {
   const classes = useStyles('');
   const history = useHistory();
   const link = 'dashboard';
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState([-1,'']);
   const [errored, setErrored] = useState(false);
   const [loading, setLoading] = useState(false);
   const [projectDetails, setProjectDetails] = useState<
@@ -21,23 +22,24 @@ const ProjectSelect = () => {
   useEffect(() => {
     api
       .getAssociatedProjects()
-      .then((res) => {
+      .then((res: any) => {
         setProjectDetails(res.data);
       })
-      .catch((err) => alert(err.message));
+      .catch((err: any) => alert(err.message));
   }, []);
 
   const logIn = () => {
-    if (selected === '') setErrored(true);
+    if (selected === [-1,'']) setErrored(true);
     else {
       api
-        .selectProject(projectDetails[parseInt(selected)].project_number)
-        .then((res) => {
+        // .selectProject(projectDetails[parseInt(selected)].project_number)
+        .selectProject(projectDetails[parseInt(selected[0].toString())].project_number)
+        .then((res: any) => {
           setLocalStorage('pipeline_token', res.token);
 
           history.push('/');
         })
-        .catch((err) => alert(err.message));
+        .catch((err: any) => alert(err.message));
       // setLoading(true);
       // while (loading?) {
       //   history.push(link);
@@ -48,6 +50,15 @@ const ProjectSelect = () => {
 
   return (
     <div className={classes.page}>
+
+      <AppBar position="relative" className={classes.titleTop}>
+        <Toolbar>
+          <Typography variant="h3" className={classes.titleTopContent}>
+            Honor Guard Inspections
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
       {errored ? (
         <div className={classes.msg}>
           Please select a project from the list.
@@ -78,23 +89,45 @@ const ProjectSelect = () => {
         <div className={classes.list}>
           {projectDetails.map((item, index) => {
             return (
-              <div
-                className={classes.item}
-                onClick={(e) => {
-                  setSelected(e.currentTarget.id);
-                  setErrored(false);
-                }}
-                key={index}
-                id={`${index}`}
-              >
-                <span style={{ margin: '3px 3px' }}>
-                  {item.pname}, last accessed {item.accessed}
-                </span>
-
-                {selected === item.name ? (
-                  <div style={{ display: 'inline-block' }}>(chosen)</div>
-                ) : null}
-              </div>
+              <>
+                {selected[1].toString() === item.pname?
+                  <div
+                    className={`${classes.selectedItem} ${classes.item}`}
+                    onClick={(e) => {
+                      setSelected([e.currentTarget.id,item.pname]);
+                      setErrored(false);
+                    }}
+                    /* onClick={() => {
+                      setSelected(item.pname);
+                      setErrored(false);
+                    }} */
+                    key={index}
+                    id={`${index}`}
+                  >
+                    <span style={{ margin: '3px 3px' }}>
+                      {item.pname}{/* , last accessed {item.accessed} */}
+                    </span>
+                  </div>
+                :
+                  <div
+                  className={classes.item}
+                  onClick={(e) => {
+                    setSelected([e.currentTarget.id,item.pname]);
+                    setErrored(false);
+                  }}
+                  /* onClick={() => {
+                    setSelected(item.pname);
+                    setErrored(false);
+                  }} */
+                  key={index}
+                  id={`${index}`}
+                  >
+                    <span style={{ margin: '3px 3px' }}>
+                      {item.pname}{/* , last accessed {item.accessed} */}
+                    </span>
+                  </div>
+                }
+              </>
             );
           })}
         </div>
@@ -104,14 +137,14 @@ const ProjectSelect = () => {
           <div className={classes.btn} onClick={() => logIn()}>
             ENTER
           </div>
-          <div
+          {/* <div
             className={classes.btn}
             onClick={() => {
               console.log(projectDetails);
             }}
           >
             REFRESH CONSOLE
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -1,10 +1,19 @@
 import React, { useState, useEffect} from 'react'
 
+//////////////
+// imported //
+//////////////
+import PipeCutter from '../components/PipeCutter'
+import Pipe from '../components/Pipe'
+
+//////////////
+
 const TESTING = () => {
     return (
-        <div>
-            <input type="text"/>
-        </div>
+        <>
+        <PipeCutter/>
+        <Pipe length={50} height={50}/>
+        </>
     )
 }
 

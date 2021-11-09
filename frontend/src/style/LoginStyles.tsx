@@ -9,7 +9,7 @@ const useStyles = makeStyles ((theme) => ({
     buttonPrimary: {
         margin: "20px",
         // backgroundColor: "#9de0ad",
-        fontSize: '30px',
+        fontSize: '2.196vw',//'30px',
 
         '&.MuiButtonBase-root' : {
             fontFamily: 'Bebas Neue',
@@ -20,7 +20,7 @@ const useStyles = makeStyles ((theme) => ({
     buttonSecondary: {
         margin: "20px",
         backgroundColor: '#e5fcc2',
-        fontSize: '30px',
+        fontSize: '2.196vw',//'30px',
 
         '&.MuiButtonBase-root' : {
             fontFamily: 'Bebas Neue',
@@ -34,7 +34,8 @@ const useStyles = makeStyles ((theme) => ({
         color: "#e5fcc2",
         padding: '0 30px',
         fontFamily: 'Bebas Neue',
-        fontSize: '72px',
+        fontSize: '5.27vw', //'72px',
+        letterSpacing: '0.2em',
     },
     page: {
         minHeight: "100vh",
@@ -66,7 +67,8 @@ const useStyles = makeStyles ((theme) => ({
         color: "#e5fcc2",
         fontFamily: "alfa-slab-one",
         fontWeight: 400,
-        fontSize: '5em',
+        fontSize: '5.2vw',//'5em',
+        letterSpacing: '0.05em',
         
         '&.MuiTypography-root' : {
             fontStyle: 'bold',

@@ -8,11 +8,13 @@ import DragHandleSVG from 'svgs/solid/bars.svg';
 
 //.MuiIcon-root
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   header: {
     backgroundColor: ColorScheme.secondaryLight,
     textAlign: 'center',
   },
+  
+  
   title: {
     backgroundColor: ColorScheme.primary,
     backgroundImage: `linear-gradient(to right, ${ColorScheme.primaryDark}, ${ColorScheme.primary}, ${ColorScheme.primaryLight})`,
@@ -34,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Bebas Neue',
     fontSize: '3vw',
     letterSpacing: '1.5vw',
+    // fontSize: '5vw',//5rem',
+    // letterSpacing: '.5rem',
     wordWrap: 'break-word',
     textShadow: '0 0 black, 0 2px black, 3px 2px black, 0 1px black',
   },
@@ -46,6 +50,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: ColorScheme.background,
     height: '100%',
     padding: '10px',
+    //height: '100vh',
+    //padding: '10px',
   },
   toolbar: {
     backgroundColor: '#ffeff0',
@@ -69,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
     //   },
     // },
   },
+  
   table: {
     // '&.MtableHeader-header-19': {
     //   fontSize: '32px !important',
@@ -76,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
     // },
     // marginBottom: '1.5vh !important',
   },
+
   stickyActions: {
     border: '2px solid #000 !important',
     marginBottom: '10px',
@@ -89,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
       // tableLayout: 'auto !important',
       emptyCells: 'show !important',
       borderCollapse: 'collapse !important',
+    
       
       // Table Headers
       '& thead': {
@@ -100,12 +109,12 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: `${ColorScheme.primaryDark}`,
             position: 'sticky',
             left: '0',
-            zIndex: 999 + ' !important',
+            zIndex: 99999999 + ' !important',
           },
         },
         '& th': {
           border: '2px solid #000',
-          boxSizing: 'border-box !important',
+          boxSizing: 'content-box !important',
           verticalAlign: 'middle',
           // width: '20px !important',
           // overflow: 'hidden',
@@ -118,6 +127,7 @@ const useStyles = makeStyles((theme) => ({
           backgroundColor: `${ColorScheme.primaryLight}`,
           color: `${ColorScheme.onPrimary}`,
           fontSize: '125%',
+          padding: '0 0 0 4px !important',
           
 
           '& > div':{
@@ -174,17 +184,29 @@ const useStyles = makeStyles((theme) => ({
         
         
         '& > tr': {
-          '& td:first-child': {
-            backgroundColor: `${ColorScheme.secondaryLight} !important`,
-            position: 'sticky',
-            left: '0',
-            zIndex: 0 + ' !important',
-          },
-          '& td': {
-            border: '2px solid #000',
-            boxSizing: 'border-box !important',
-            verticalAlign: 'middle',
-          },
+          // '& td:first-child': {
+          //   backgroundColor: `${ColorScheme.secondaryLight} !important`,
+          // boxSizing: 'content-box !important',
+
+        '& td': {
+          border: '2px solid #000',
+          boxSizing: 'border-box !important',
+          verticalAlign: 'middle',
+          padding: '0 0 0 4px !important',
+          //box-sizing: 'content-box !important',
+
+            '&:first-child': {
+              backgroundColor: `${ColorScheme.secondaryLight}`,
+              position: 'sticky !important',
+              left: '0',
+              zIndex: 9,
+              // zIndex: 0 + ' !important',
+            },
+            // '& td': {
+            //   border: '2px solid #000',
+            //   boxSizing: 'border-box !important',
+            //   verticalAlign: 'middle',
+            // },
         },
       },
 
@@ -192,7 +214,13 @@ const useStyles = makeStyles((theme) => ({
       '& tfoot': {
         
       },
+  
+      "& .MuiIconButton-root": {
+        padding: '0',
+      },
+      
     },
-  },
-}));
+  },}
+}))
+
 export default useStyles;
