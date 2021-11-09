@@ -106,7 +106,7 @@ const MenuAppBar = (props: { history: any; }) => {
                     <div className = "headerOptions">
                         <Button onClick={() => handleButtonsClick('/dashboard')}> Home </Button>
                         <Button onClick={() => handleButtonsClick('/about')}> About </Button>
-                        <Button onClick={() => handleButtonsClick('/dashboard')}> Services </Button>
+                        <Button onClick={() => handleButtonsClick('/services')}> Services </Button>
                         <Button onClick={() => handleButtonsClick('/dashboard')}> Training </Button>
                         <Button onClick={() => handleButtonsClick('/dashboard')}> Careers </Button>
                         <Button onClick={() => handleButtonsClick('/contact')}> Contact Us </Button>

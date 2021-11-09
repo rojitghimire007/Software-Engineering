@@ -13,8 +13,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: ColorScheme.secondaryLight,
     textAlign: 'center',
   },
-  
-  
+    
   title: {
     backgroundColor: ColorScheme.primary,
     backgroundImage: `linear-gradient(to right, ${ColorScheme.primaryDark}, ${ColorScheme.primary}, ${ColorScheme.primaryLight})`,

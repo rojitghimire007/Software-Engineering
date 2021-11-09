@@ -41,6 +41,7 @@ const useStyles = makeStyles(() => ({
         maxHeight: '110vh',
         maxWidth: '100vw',
         top: 0,
+        bottom: 0,
         backgroundOrigin: 'content-box',
         // backgroundClip: 'content-box',
         // backgroundSize: 'contain',

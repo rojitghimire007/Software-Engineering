@@ -1,8 +1,10 @@
 import React from "react";
+import AppBar from "../../components/AppBar";
 
 const ContactUs = () => {
     return (
         <>
+        <AppBar></AppBar>
             <div>
                  <h2>Office Hours</h2>
                  <p> Monday - Friday</p>
