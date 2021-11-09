@@ -1,0 +1,111 @@
+* {
+    box-sizing: border-box;
+}
+.container {
+    display: flex;
+    background-color: pink;
+    width: fit-content;
+    border: 2px solid black;
+}
+.btn {
+    border-radius: 15%;
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.content {
+    text-align: center;
+    padding: 10%;
+}
+.leftItem {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    background-color: rgba(127, 255, 212, 0.548);
+    border: 1px solid black;
+    /* z-index: 1; */
+}
+.centerItem {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: aquamarine;
+    border: 2px solid black;
+    /* z-index: 2; */
+}
+.rightItem {
+    width: 25px;
+    height: 25px;
+    background-color: rgba(127, 255, 212, 0.548);
+    border: 1px solid black;
+    font-size: 12px;
+    /* z-index: 3; */
+}
+.slide1 {
+    animation-name: s1;
+    animation-duration: 2s;
+    transform-origin: left;
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    background-color: rgba(127, 255, 212, 0.548);
+    border: 1px solid black;
+}
+.slide2 {
+    animation-name: s2;
+    animation-duration: 2s;
+    transform-origin: left;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: aquamarine;
+    border: 2px solid black;
+}
+.slide3 {
+    animation-name: s3;
+    animation-duration: 2s;
+    transform-origin: left;
+    width: 25px;
+    height: 25px;
+    background-color: rgba(127, 255, 212, 0.548);
+    border: 1px solid black;
+    font-size: 12px;
+}
+@keyframes s1 {
+    from    {transform: 
+                translateX(0px) 
+                translateY(0px) ;
+            }
+    to      {transform: 
+                scale(1)   
+                translateX(75px) 
+                translateY(0px) ;
+            }
+}
+@keyframes s2 {
+    from    {transform: 
+                scale(1)   
+                translateX(0px) 
+                translateY(0px) ;
+            }
+    to      {transform: 
+                scale(.5) 
+                translateX(-50px) 
+                translateY(-25px) ;
+            }
+}
+@keyframes s3 {
+    from    {transform: 
+                scale(1)   
+                translateX(0px) 
+                translateY(0px) ;
+            }
+    to      {transform: 
+                scale(2)   
+                translateX(-25px) 
+                translateY(0px) ;
+            }
+}
