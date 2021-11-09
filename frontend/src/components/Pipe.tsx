@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     pipeContainer: {
         width: (item: any) => {return `${item.length * 10}px`},
         height: (item: any) => {return `${item.height * 3}px`},
-        border: '2px dashed white',
+        // border: '2px dashed white',
     },
     pipe: {
         

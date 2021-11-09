@@ -11,8 +11,8 @@ import Pipe from '../components/Pipe'
 const TESTING = () => {
     return (
         <>
-        <PipeCutter/>
-        <Pipe length={50} height={50}/>
+            <PipeCutter/>
+            <Pipe length={50} height={50}/>
         </>
     )
 }
