@@ -86,6 +86,20 @@ const addPipe = async (req, res, next) => {
       };
     }
 
+    if(po_number){
+      const purchase = await query_resolver(connection,  {
+        text: `SELECT po_number FROM purchase_number WHERE po_number=$1`,
+        values: [po_number]
+      });
+  
+      if(purchase.length === 0){
+        await query_resolver(connection, {
+          text: `INSERT INTO purchase_number(po_number, manufacture) VALUES ($1, $2)`,
+          values: [po_number, manufacturer]
+        });
+      }
+    }
+
     pipe_heat = pipe_heat[0].pipe_heat_id;
 
     let shared_ref = getRandomString(30);
