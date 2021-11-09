@@ -3,6 +3,7 @@ import ShowPipes from 'views/pipes/ShowPipes';
 import ShowFittings from 'views/fittings/ShowFittings';
 import NewStrungPipes from 'views/stringing/StrungPipes';
 import ProjectsPage from 'views/administrative/ProjectsPage';
+import CreateProject from 'views/administrative/CreateProject';
 import ProjectSelect from 'views/ProjectSelect';
 import AboutUs from 'views/information/AboutUs';
 import ContactUs from 'views/information/ContactUs';
@@ -32,6 +33,7 @@ const routes: {
   //   component: NewStrungPipes,
   // },
   { path: '/fittings', exact: true, name: 'Fittings', component: ShowFittings },
+  { path: '/create-project', exact: true, name: 'Create Project', component: CreateProject },
 ];
 
 export default routes;
