@@ -13,7 +13,7 @@ const {
   editPipe,
 } = require('./PipeContoller');
 
-const { addFittings, getFittings } = require('./FittingContoller');
+const { addFittings, getFittings, editFitting } = require('./FittingContoller');
 
 const { cutPipe, getCuttingEligiblePipes } = require('./PipeCutting');
 
@@ -69,6 +69,7 @@ const SetRoutes = (app) => {
   // fittings routes
   app.post('/fittings', addFittings);
   app.get('/fittings', getFittings);
+  app.put('/fittings', editFitting);
 
 };
 
