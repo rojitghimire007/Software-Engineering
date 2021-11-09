@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Slider } from '@mui/material'
+import { Slider, Input } from '@mui/material'
 
 function PipeCutter() {
 
@@ -61,6 +61,7 @@ function PipeCutter() {
                 <div/>
                 <div/>
                 {!cutted ?
+                    <>
                     <Slider
                         value={typeof value === 'number' ? value : 0}
                         onChange={(e: Event, newValue: number | number[]) => {setValue(newValue)}}
@@ -72,11 +73,17 @@ function PipeCutter() {
                         }
                         valueLabelDisplay="auto"
                     />
+                    <Input
+                        value={value}
+                        // onChange={(e: Event, newValue: number | number[]) => {setValue(newValue)}}
+                        inputProps={{min: 0, max: 100, type: 'number'}}
+                    />
+                    </>
                 : null}
                 <div>Cut at length {value}%?</div>
                 <button
                     // onClick={() => !cutted? setCutted(!cutted) : resetCut()}
-                    onClick={() => setCutted(!cutted)}
+                    onClick={() => {setCutted(!cutted)}}
                 >
                     CUT ME
                 </button>
