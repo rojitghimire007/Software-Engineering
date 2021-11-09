@@ -55,15 +55,30 @@ const addUserToProject = async (req, res, next) => {
     }
 
     const result = await query_resolver(default_pool, query);
-    
+
+    let usersInProj = await query_resolver(default_pool, {
+      text:`SELECT uname from user_project WHERE project_number=$1`,
+      values:[result[0].project_number]
+    });
+
+    usersInProj = new Set(usersInProj.map(user => user.uname));
+    let difference = users.filter(x => !usersInProj.has(x));
+
+    if(difference.length === 0){
+      return res.status(200).json({
+        success: true,
+        message: "Mentioned user(s) already in the project!"
+      });
+    }
+ 
     const { project_number } = result[0];
-    let valueList = users.map(ele => {
+    let valueList = difference.map(ele => {
       return `('${ele.trim()}', '${project_number.trim()}')`
     });
 
     const vals = valueList.join(', ').trim();
 
-    const inQuery = `INSERT INTO user_project VALUES ${vals}`
+    const inQuery = `INSERT INTO user_project(uname, project_number) VALUES ${vals}`
 
     await query_resolver(default_pool, inQuery);
 
