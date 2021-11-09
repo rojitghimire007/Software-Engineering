@@ -1,7 +1,7 @@
 const stringingQueries = {
   getSequences: 'SELECT item_id from sequences order by start_station asc',
   getOneSequence:
-    'SELECT item_id, station_number from stringing where start_pipe = $1 order by station_number asc',
+    'SELECT item_id, station_number, plength , flength  from stringing left join pipe on pipe.id = substring(item_id , 3) left join fitting on fitting.id = substring(item_id , 3) where start_pipe = $1 order by station_number asc',
   getStriningEligiblePipes1:
     'SELECT id FROM pipe WHERE parent is null except all select substring(item_id , 3) from stringing',
   getStriningEligiblePipes2:
