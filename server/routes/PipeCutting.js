@@ -1,82 +1,88 @@
-const { client } = require('../utils/databaseConnection');
+const { query_resolver, connect_project_db } = require("../utils/dbHandler");
+
 
 const cutPipe = async (req, res, next) => {
-  const { pipe, cut_length } = req.body;
+  const { id, cutLength } = req.body;
 
   try {
-    if (!pipe)
-      return res.status(400).send({ message: 'Please enter a valid pipeId' });
-    else {
-      let _ = await client.query('select pipe from stringing where pipe = $1', [
-        pipe,
-      ]);
+    const connection = await connect_project_db(req.dbname);
 
-      if (_.rows.length != 0)
-        return res.status(400).send({
-          message: "Can't cut a pipe that is in the stringing sequence.",
-        });
+    let selected_pipe = await query_resolver(connection, {
+      text: `SELECT plength, parent, is_void, is_used, is_cut, pipe_shared_id, plocation FROM pipe WHERE id=$1`,
+      values: [id]
+    });
+
+    if (selected_pipe.length === 0) {
+      throw { status: 500, message: 'Invalid pipe id!' }
     }
 
-    let _ = await client.query(
-      'SELECT pipe_length from pipes where pipe_id = $1',
-      [pipe]
-    );
-    let originalLength = _.rows[0].pipe_length;
+    if (cutLength >= selected_pipe[0].plength) {
+      throw { status: 401, message: "Invalid cut length!" }
+    }
 
-    let newPipes = null;
-    if (new RegExp('[0-9]+[A-Z]').test(pipe)) {
-      newPipes = [
-        pipe,
-        pipe.slice(0, -1) +
-          String.fromCharCode(pipe.charCodeAt(pipe.length - 1) + 1),
-      ];
-    } else newPipes = [pipe + 'A', pipe + 'B'];
+    if (selected_pipe[0].parent) {
+      const newPipeId = selected_pipe[0].parent + String.fromCharCode(id.charCodeAt(id.length - 1) + 1);
 
-    await client.query(
-      `CREATE TEMPORARY TABLE temp_pipe_table AS SELECT * FROM pipes WHERE pipe_id = '${pipe}';
-      `
-    );
+      await query_resolver(connection, {
+        text: `INSERT INTO pipe(id, pipe_shared_id, plength, updated_by, updated_on, plocation, parent) VALUES ($1, $2, $3, $4, to_timestamp($5), $6, $7)`,
+        values: [newPipeId, selected_pipe[0].pipe_shared_id, selected_pipe[0].plength - cutLength, req.uname, Math.floor(Date.now() / 1000), selected_pipe[0].plocation, selected_pipe[0].parent]
+      });
 
-    if (newPipes[0] == pipe)
-      await client.query(`DELETE FROM pipes WHERE pipe_id = '${pipe}';`);
-    //insert into cut pipes
-    else await client.query(`INSERT INTO cut_pipes(pipe) values(${pipe})`);
+      await query_resolver(connection, {
+        text: `UPDATE pipe SET plength=$1, updated_by=$2, updated_on=to_timestamp($3) WHERE id=$4`,
+        values: [cutLength, req.uname, Math.floor(Date.now() / 1000), id]
+      });
 
-    await client.query(
-      `
-      UPDATE temp_pipe_table SET pipe_id = '${
-        newPipes[0]
-      }', pipe_length = ${cut_length}, coil_number = null;
-      
-      INSERT INTO pipes SELECT * from temp_pipe_table;
-      UPDATE temp_pipe_table SET pipe_id = '${newPipes[1]}', pipe_length = ${
-        originalLength - cut_length
-      };
-      INSERT INTO pipes SELECT * from temp_pipe_table;
-      DROP TABLE temp_pipe_table;   
-      `
-    );
+      return res.status(200).json({
+        success: true,
+        message: 'Pipe Successfully Cut!'
+      });
 
-    res.status(200).send({ success: true });
+    } else {
+      const newPipeIds = [
+        { id: `${id}A`, len: cutLength },
+        { id: `${id}B`, len: selected_pipe[0].plength - cutLength }
+      ]
+
+      for (let i = 0; i < 2; i++) {
+        await query_resolver(connection, {
+          text: `INSERT INTO pipe(id, pipe_shared_id, plength, updated_by, updated_on, plocation, parent) VALUES ($1, $2, $3, $4, to_timestamp($5), $6, $7)`,
+          values: [newPipeIds[i].id, selected_pipe[0].pipe_shared_id, newPipeIds[i].len, req.uname, Math.floor(Date.now() / 1000), selected_pipe[0].plocation, id]
+        });
+      }
+    }
+    await query_resolver(connection, {
+      text: `UPDATE pipe SET is_cut=$1, updated_by=$2, updated_on=to_timestamp($3) WHERE id=$4`,
+      values: [true, req.uname, Math.floor(Date.now() / 1000), id]
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Pipe Successfully Cut!'
+    });
+
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
 
 const getCuttingEligiblePipes = async (req, res, next) => {
   try {
-    let ans = await client.query(
-      `select pipe_id from pipes where pipe_id !~ '[0-9]+[A-Z]' except all select pipe from cut_pipes except all select pipe from stringing;`
-    );
-    ans = ans.rows;
+    const connection = await connect_project_db(req.dbname);
+    let allPipeExceptString = await query_resolver(connection, {
+      text: `SELECT id FROM pipe WHERE id !~ '[0-9]+[A-Z]' AND is_void!=TRUE AND is_cut!=TRUE EXCEPT ALL SELECT SUBSTRING(item_id, 3) AS id FROM stringing WHERE SUBSTR(item_id, 0, 3)='p_'`
+    });
 
-    let _ = await client.query(
-      `select max(pipe_id) as pipe_id from pipes where pipe_id ~ '[0-9]+[A-Z]' group by SUBSTR(pipe_id, 0, LENGTH(pipe_id)) except all select pipe from stringing;`
-    );
-    ans = ans.concat(_.rows);
+    let cutMaxPipeExceptString = await query_resolver(connection, {
+      text: `SELECT  MAX(id) as id FROM pipe WHERE id ~ '[0-9]+[A-Z]' AND is_void!=TRUE AND is_cut!=TRUE GROUP BY SUBSTR(id, 0, LENGTH(id)) EXCEPT ALL SELECT SUBSTRING(item_id, 3) AS id FROM stringing WHERE SUBSTR(item_id, 0, 3)='p_'`
+    });
 
-    res.status(200).send(ans);
+    const result = allPipeExceptString.concat(cutMaxPipeExceptString);
+
+    return res.status(200).json({
+      success: true,
+      data: [...result]
+    });
   } catch (error) {
     console.log(error);
     next(error);
