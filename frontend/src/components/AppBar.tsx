@@ -13,6 +13,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { withRouter, useHistory } from 'react-router-dom';
 import { Backdrop } from '@material-ui/core';
 import SideBar from 'components/SideBar';
+import useStyles from 'style/AppBarStyles';
 
 
 const options = [
@@ -66,7 +67,7 @@ const MenuAppBar = (props: { history: any; }) => {
     };
 
     //For app bar buttons
-    //const classes = useStyles();
+    const classes = useStyles();
     const history = useHistory();
     const handleButtonsClick = (pageURL: string) => {
         history.push(pageURL);
@@ -75,7 +76,7 @@ const MenuAppBar = (props: { history: any; }) => {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
-                <Toolbar className="app-container">
+                <Toolbar className={classes.appContainer}>
                     <SideBar links={options}/>
 
                     <Menu
@@ -103,13 +104,13 @@ const MenuAppBar = (props: { history: any; }) => {
 
                     </Typography>
                     {/*menu items from app bar*/}
-                    <div className = "headerOptions">
-                        <Button onClick={() => handleButtonsClick('/dashboard')}> Home </Button>
-                        <Button onClick={() => handleButtonsClick('/about')}> About </Button>
-                        <Button onClick={() => handleButtonsClick('/services')}> Services </Button>
-                        <Button onClick={() => handleButtonsClick('/dashboard')}> Training </Button>
-                        <Button onClick={() => handleButtonsClick('/dashboard')}> Careers </Button>
-                        <Button onClick={() => handleButtonsClick('/contact')}> Contact Us </Button>
+                    <div className={classes.headerOptions}>
+                        <Button className={classes.button} onClick={() => handleButtonsClick('/dashboard')}> Home </Button>
+                        <Button className={classes.button} onClick={() => handleButtonsClick('/about')}> About </Button>
+                        <Button className={classes.button} onClick={() => handleButtonsClick('/services')}> Services </Button>
+                        <Button className={classes.button} onClick={() => handleButtonsClick('/dashboard')}> Training </Button>
+                        <Button className={classes.button} onClick={() => handleButtonsClick('/dashboard')}> Careers </Button>
+                        <Button className={classes.button} onClick={() => handleButtonsClick('/contact')}> Contact Us </Button>
                     </div>
                     
                     <div>

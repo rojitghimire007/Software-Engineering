@@ -8,7 +8,7 @@ import DragHandleSVG from 'svgs/solid/bars.svg';
 
 //.MuiIcon-root
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   header: {
     backgroundColor: ColorScheme.secondaryLight,
     textAlign: 'center',
@@ -191,7 +191,7 @@ const useStyles = makeStyles(() => ({
           border: '2px solid #000',
           boxSizing: 'border-box !important',
           verticalAlign: 'middle',
-          padding: '0 0 0 4px !important',
+          padding: '0 0 0 4px !important',      //This fixed the row height in material table
           //box-sizing: 'content-box !important',
 
             '&:first-child': {
@@ -219,7 +219,8 @@ const useStyles = makeStyles(() => ({
       },
       
     },
-  },}
-}))
+  },
+}
+}));
 
 export default useStyles;
