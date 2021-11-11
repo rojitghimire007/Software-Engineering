@@ -106,12 +106,14 @@ const getStrungPipesInfo = async (req, res, next) => {
 
 const updateSequence = async (req, res, next) => {
   // let { target_pipe, left_pipe } = req.body;
-  let { item, prev_item } = req.body;
+  let { item, prev_item, start_item } = req.body;
 
   try {
     const connection = await connect_project_db(req.dbname);
 
-    await insertIntoString(item, prev_item, connection);
+    await deleteItemFromStringing(item, connection);
+
+    await insertIntoString(item, prev_item, start_item, connection);
     // nexts = await client.query(
     //   `SELECT * FROM stringing WHERE pipe in ('${target_pipe}', '${left_pipe}')`
     // );
@@ -318,33 +320,44 @@ const deleteItemFromStringing = async (item, connection) => {
   }
 };
 
-const insertIntoString = async (item, prev_item, connection) => {
+const insertIntoString = async (item, prev_item, start_item, connection) => {
   let _,
     station_number,
     next_item,
     start_pipe = null;
   let length = 0;
   try {
-    if (new RegExp('p_.*').test(prev_item)) {
-      _ = await query_resolver(connection, {
-        text: 'SELECT station_number, next_item, start_pipe, plength from stringing join pipe on pipe.id = SUBSTRING(stringing.item_id, 3) where id = $1',
-        values: [prev_item.substring(2)],
-      });
+    if (!start_item) {
+      // get the length of prev_item. This is use to calculate the station of the item.
+      if (new RegExp('p_.*').test(prev_item)) {
+        _ = await query_resolver(connection, {
+          text: 'SELECT station_number, next_item, start_pipe, plength from stringing join pipe on pipe.id = SUBSTRING(stringing.item_id, 3) where id = $1',
+          values: [prev_item.substring(2)],
+        });
 
-      length = _[0].plength;
+        length = _[0].plength;
+      } else {
+        _ = await query_resolver(connection, {
+          text: 'SELECT station_number, next_item, start_pipe, flength from stringing join fitting on fitting.id = SUBSTRING(stringing.item_id, 3) where id = $1',
+          values: [prev_item.substring(2)],
+        });
+
+        length = _[0].flength;
+      }
+
+      station_number = _[0].station_number;
+      start_pipe = _[0].start_pipe;
+      next_item = _[0].next_item;
     } else {
       _ = await query_resolver(connection, {
-        text: 'SELECT station_number, next_item, start_pipe, flength from stringing join pipe on pipe.id = SUBSTRING(stringing.item_id, 3) where id = $1',
-        values: [prev_item.substring(2)],
+        text: 'select * from sequences where item_id = $1',
+        values: [start_item],
       });
-
-      length = _[0].flength;
+      station_number = _[0].start_station;
+      next_item = start_item;
+      prev_item = null;
+      start_pipe = item;
     }
-
-    station_number = _[0].station_number;
-    start_pipe = _[0].start_pipe;
-    next_item = _[0].next_item;
-
     // insert the pipe
     await query_resolver(connection, {
       text: stringingQueries.insertIntoStringing,
@@ -352,13 +365,26 @@ const insertIntoString = async (item, prev_item, connection) => {
     });
 
     // point prev pipe to this new pipe
-    await query_resolver(connection, {
-      text: 'update stringing set next_item = $1 where item_id = $2',
-      values: [item, prev_item],
-    });
+    if (!start_item)
+      await query_resolver(connection, {
+        text: 'update stringing set next_item = $1 where item_id = $2',
+        values: [item, prev_item],
+      });
+    // else update sequences
+    else {
+      await query_resolver(connection, {
+        text: 'UPDATE sequences set item_id = $1 where item_id = $2',
+        values: [item, start_item],
+      });
+      await query_resolver(connection, {
+        text: 'UPDATE stringing set start_pipe = $1 where start_pipe = $2',
+        values: [item, start_item],
+      });
+    }
 
     let item_length = 0;
 
+    // get length
     if (new RegExp('p_.*').test(item)) {
       _ = await query_resolver(connection, {
         text: 'SELECT plength from pipe where id = $1',
@@ -374,11 +400,13 @@ const insertIntoString = async (item, prev_item, connection) => {
       item_length = _[0].flength;
     }
 
+    //update stations of following items
     await query_resolver(connection, {
-      text: 'UPDATE stringing set station_number = $1 where station_number > $2 and item_id != $3',
-      values: [station_number + length + item_length, station_number, item],
+      text: 'UPDATE stringing set station_number = station_number + $1 where station_number >= $2 and item_id != $3',
+      values: [item_length, station_number + length, item],
     });
 
+    // point the item to prev_item
     await query_resolver(connection, {
       text: 'update stringing set prev_item = $1 where item_id = $2',
       values: [item, next_item],

@@ -179,13 +179,13 @@ const NewStrungPipes = () => {
 
     if (!left_pipe) left_pipe = null;
 
-    return api
-      .updateSequence({ target_pipe, left_pipe })
-      .then((res) => {})
-      .catch((err) => {
-        alert(err.message);
-        setSequence(temp);
-      });
+    // return api
+    //   .updateSequence({ target_pipe, left_pipe })
+    //   .then((res) => {})
+    //   .catch((err) => {
+    //     alert(err.message);
+    //     setSequence(temp);
+    //   });
   };
 
   //////////////////////////////

@@ -54,35 +54,22 @@ export default {
 
   appendToString: (pipe_id: string) => authPost(API.stringing, { pipe_id }),
 
-  updateSequence: (data: {
-    target_pipe: string | number;
-    left_pipe: string | number;
-  }) => authPut(API.stringing, data),
+  updateSequence: (
+    item: string,
+    prev_item: string | null,
+    start_item: string | null
+  ) => authPut(API.stringing, { item, prev_item, start_item }),
 
   getStrungPipesInfo: (pipes: Array<string | number>) => {
     return authGet(API.getStrungPipesInfo, pipes.join('_'));
   },
 
-  updateStringing: (
-    pipe_id: string,
-    curr_id: string,
-    curr_station: string,
-    left_of_target: string | null
-  ) => {
-    return authPut(API.updateStringing, {
-      pipe_id,
-      curr_id,
-      curr_station,
-      left_of_target,
-    });
-  },
-
   /**
    *
-   * @param pipe ID of pipe
+   * @param item ID of item
    * @returns
    */
-  deleteFromSequence: (pipe: string) => authDelete(API.stringing + `/${pipe}`),
+  deleteFromSequence: (item: string) => authDelete(API.stringing + `/${item}`),
 
   getSequenceLength: (sequence: Array<any>) =>
     authPost(API.getSequenceLength, { sequence }),
