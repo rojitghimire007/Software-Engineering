@@ -8,16 +8,18 @@ import Pipe from '../components/Pipe'
 import DemoA from '../DEMOS/DemoA'
 import DemoI from '../DEMOS/DemoI'
 import RunCarousel from 'DEMOS/ZachDemo/RunCarousel'
+import RunCarousel2 from 'DEMOS/ZachDemo/RunCarousel2'
 //////////////
 
 const TESTING = () => {
     return (
         <>
-        <PipeCutter/>
+        {/* <PipeCutter/>
         <Pipe length={50} height={50}/>
         <DemoA />
-        <DemoI />
+        <DemoI /> */}
         {/* <RunCarousel /> */}
+        <RunCarousel2 />
         </>
     )
 }
