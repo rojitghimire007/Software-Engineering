@@ -9,17 +9,29 @@ import DemoA from '../DEMOS/DemoA'
 import DemoI from '../DEMOS/DemoI'
 import RunCarousel from 'DEMOS/ZachDemo/RunCarousel'
 import RunCarousel2 from 'DEMOS/ZachDemo/RunCarousel2'
+import Pipe2 from 'DEMOS/components/Pipe2'
 //////////////
 
 const TESTING = () => {
     return (
         <>
-        {/* <PipeCutter/>
+        {/* <PipeCutter/> */}
+        {/* <Pipe length={100} height={50}/>
         <Pipe length={50} height={50}/>
-        <DemoA />
-        <DemoI /> */}
+        <Pipe length={25} height={50}/> */}
+        <div style={{border: '5px solid blue', margin: '20px', padding: '20px', width: 'calc(100% - 80px)', display: 'grid',gridAutoFlow: 'column',overflow: 'scroll',gap: '20px',background: 'linear-gradient(to bottom, rgba(0,0,50,.5), rgba(0,0,255,.5)'}}>
+            <Pipe2 length={25} height={50}/>
+            <Pipe2 length={25} height={50}/>
+            <Pipe2 length={25} height={50}/>
+            <Pipe2 length={25} height={50}/>
+            <Pipe2 length={300} height={50}/>
+            <Pipe2 length={100} height={50}/>
+            <Pipe2 length={50} height={50}/>
+        </div>
+        {/* <DemoA /> */}
+        {/* <DemoI /> */}
         {/* <RunCarousel /> */}
-        <RunCarousel2 />
+        {/* <RunCarousel2 /> */}
         </>
     )
 }
