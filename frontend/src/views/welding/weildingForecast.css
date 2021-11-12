@@ -1,0 +1,18 @@
+.pipe-gange {
+  padding: 20px;
+}
+
+.pipe-gange .pipe-row {
+  /* color: white; */
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pipe-gange select {
+  width: 100px;
+}
+
+#single-vbutt table {
+  font-size: 12px;
+}
