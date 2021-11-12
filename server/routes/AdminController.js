@@ -9,19 +9,29 @@ const postProject = async (req, res, next) => {
     const { project_number,
       pname,
       company,
+      company_address,
+      company_phone,
+      company_email,
       work_number,
+      work_site_phone,
       plocation,
+      notes,
       start_date,
       end_date } = req.body;
-
+    
     const dbname = pname.trim().toLowerCase().replace(/[^a-zA-Z0-9]/g, "") + getRandomString(5, '0123456789');
-
+    
     const projObj = {
       project_number: project_number.trim(),
       pname,
       company,
       work_number,
       plocation,
+      company_address: company_address ? company_address: null,
+      company_phone: company_phone ? company_phone: null,
+      company_email: company_email ? company_email: null,
+      work_site_phone: work_site_phone ? work_site_phone: null,
+      notes: notes ? notes: null,
       start_date: start_date ? start_date : null,
       end_date: end_date ? end_date : null,
       dbname
