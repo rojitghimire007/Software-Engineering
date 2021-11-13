@@ -28,6 +28,10 @@ const WeldingForcast = () => {
     numOfRod: '',
     welderArea: '',
   });
+  const [area, setArea] = useState<number>(0);
+  const [area2, setArea2] = useState<number>(0);
+  const [area3, setArea3] = useState<number>(0);
+  const [totalCross, setTotalCross] = useState<number>(0);
 
   console.log('rootOpening: ' + rootOpening);
   const rows = 4;
@@ -37,8 +41,7 @@ const WeldingForcast = () => {
 
   function calculateArea() {
     var area = parseInt(rootOpening) * (12 + parseInt(landThickness));
-    console.log(area);
-    return area;
+    setArea(area);
   }
 
   function calculateArea2() {
@@ -46,8 +49,7 @@ const WeldingForcast = () => {
       (parseFloat(angleOfBevel) / 2) *
       (3.1415 / 180) *
       (12 - parseFloat(landThickness)) ** 2;
-    console.log(area2);
-    return area2;
+    setArea2(area2);
   }
 
   function calculateArea3() {
@@ -55,13 +57,12 @@ const WeldingForcast = () => {
       (parseFloat(angleOfBevel) / 2) * (3.1415 / 180) * 12 -
       parseFloat(landThickness) +
       1.25 * parseFloat(landThickness);
-    console.log(area3);
-    return area3;
+    setArea3(area3);
   }
 
   function totalCrossSectionalArea() {
-    var area4 = calculateArea() + calculateArea2() + calculateArea3();
-    return area4;
+    var area4 = area + area2 + area3;
+    setTotalCross(area4);
   }
 
   const foo = (b: any, c: any) => {
@@ -118,90 +119,102 @@ const WeldingForcast = () => {
         <br></br>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span>
-              Root Opening
-              <input
-                value={rootOpening}
-                id="rootOpening"
-                name="rootOpening"
-                onChange={(e) => setRootOpening(e.target.value)}
-              />
-            </span>
-            <span>
-              Land Thickness
-              <input
-                value={landThickness}
-                id="landThickness"
-                name="landThickness"
-                onChange={(e) => setLandThickness(e.target.value)}
-              />
-            </span>
-            <span>
-              Cap height
-              <input
-                value={capHeight}
-                id="capHeight"
-                name="capHeight"
-                onChange={(e) => setCapHeight(e.target.value)}
-              />
-            </span>
-            <span>
-              Angle Of Bevel
-              <input
-                value={angleOfBevel}
-                id="angleOfBevel"
-                name="angleOfBevel"
-                onChange={(e) => setAngleOfBevel(e.target.value)}
-              />
-            </span>
-            <span>
-              {' '}
-              penetration (e) <input type="text" id="penetration" />
-            </span>
-            <span>
-              Steel Density
-              <input
-                value={steelDensity}
-                id="steelDensity"
-                name="steelDensity"
-                onChange={(e) => setSteelDensity(e.target.value)}
-              />
-            </span>
-            <br></br>
-            <div>Pipe joint details</div>
-            <br></br>
+            {/* div parent for flexbox */}
+            <div>
+              <div>
+                <span>
+                  Root Opening
+                  <input
+                    value={rootOpening}
+                    id="rootOpening"
+                    name="rootOpening"
+                    onChange={(e) => setRootOpening(e.target.value)}
+                  />
+                </span>
+                <span>
+                  Land Thickness
+                  <input
+                    value={landThickness}
+                    id="landThickness"
+                    name="landThickness"
+                    onChange={(e) => setLandThickness(e.target.value)}
+                  />
+                </span>
+                <span>
+                  Cap height
+                  <input
+                    value={capHeight}
+                    id="capHeight"
+                    name="capHeight"
+                    onChange={(e) => setCapHeight(e.target.value)}
+                  />
+                </span>
+                <span>
+                  Angle Of Bevel
+                  <input
+                    value={angleOfBevel}
+                    id="angleOfBevel"
+                    name="angleOfBevel"
+                    onChange={(e) => setAngleOfBevel(e.target.value)}
+                  />
+                </span>
+                <span>
+                  {' '}
+                  penetration (e) <input type="text" id="penetration" />
+                </span>
+                <span>
+                  Steel Density
+                  <input
+                    value={steelDensity}
+                    id="steelDensity"
+                    name="steelDensity"
+                    onChange={(e) => setSteelDensity(e.target.value)}
+                  />
+                </span>
+                <br></br>
+                <div>Pipe joint details</div>
+                <br></br>
 
-            <button
-              onClick={calculateArea}
-              style={{ width: '150px', backgroundColor: '#FFFF2E' }}
-              font-size="125%"
-            >
-              Calculate Area1 Details
-            </button>
-            <br></br>
-            <button
-              onClick={calculateArea2}
-              style={{ width: '150px', backgroundColor: '#FFBF00' }}
-              font-size="115%"
-            >
-              Calculate Area2 Details
-            </button>
-            <br></br>
-            <button
-              onClick={calculateArea3}
-              style={{ width: '150px', backgroundColor: '#228B22' }}
-              font-size="95%"
-            >
-              Calculate area3 Details
-            </button>
-            <br></br>
-            <button
-              onClick={totalCrossSectionalArea}
-              style={{ width: '175px', backgroundColor: '#228B22' }}
-              font-size="95%"
-            >
-              Total Cross Sectional Area
-            </button>
+                <button
+                  onClick={calculateArea}
+                  style={{ width: '150px', backgroundColor: '#FFFF2E' }}
+                  font-size="125%"
+                >
+                  Calculate Area1 Details
+                </button>
+                <br></br>
+                <button
+                  onClick={calculateArea2}
+                  style={{ width: '150px', backgroundColor: '#FFBF00' }}
+                  font-size="115%"
+                >
+                  Calculate Area2 Details
+                </button>
+                <br></br>
+                <button
+                  onClick={calculateArea3}
+                  style={{ width: '150px', backgroundColor: '#228B22' }}
+                  font-size="95%"
+                >
+                  Calculate area3 Details
+                </button>
+                <br></br>
+                <button
+                  onClick={totalCrossSectionalArea}
+                  style={{ width: '175px', backgroundColor: '#228B22' }}
+                  font-size="95%"
+                >
+                  Total Cross Sectional Area
+                </button>
+              </div>
+              {/* div children ends */}
+              {/* right div flexbox */}
+              <div>Area: {area}</div>
+              <div>Area2: {area2}</div>
+              <div>Area3: {area3}</div>
+              <div>Total Cross: {totalCross}</div>
+            </div>
+            {/* div parent ends for flexbox */}
 
             <br></br>
             <br></br>
