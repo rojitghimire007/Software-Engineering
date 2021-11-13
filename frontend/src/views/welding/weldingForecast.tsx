@@ -99,9 +99,7 @@ const WeldingForcast = () => {
       >
         Single V-Butt Welding
         <img src={img1} />
-        <div>
-          <div></div>
-        </div>
+        <div></div>
       </div>{' '}
       {/* end column 1 */}
       <div
