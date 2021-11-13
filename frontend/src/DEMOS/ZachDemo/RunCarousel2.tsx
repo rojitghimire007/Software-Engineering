@@ -1,32 +1,34 @@
 // import * as React from 'react';
 import { Carousel, CarouselItem } from 'react-round-carousel';
-import { makeStyles } from '@mui/material';
+import { makeStyles } from '@material-ui/core';
 import './CarouselDemo2.css'
+import { Card, CardActions, CardContent, CardMedia } from '@material-ui/core'
+import imgTemp from '../../img/pipeline-1.jpg';
 
-// const useStyles = makeStyles({
-//   carousel: {},
-// })
+const useStyles = makeStyles({
+  carousel: {},
+})
 
 // Create an array of Carousel Items
 const items: CarouselItem[] = Array(10)
-  .fill('')
-  .map((_: string, index: number) => ({
-    alt: 'A random Unsplash photo',
-    image: 'https://source.unsplash.com/random/210x210',
-    content: (
-        <>
-            {/* This is where you can render a component to
-                the carsouel item. React elements and HTML elements
-                (should) work.
-            */}
-           <div className="filler">
-            <div className="card">a</div>
-            <div className="card">b</div>
-            <div className="card">c</div>
-           </div>
-        </>
-    )
-  }));
+    .fill('')
+    .map((_: string, index: number) => ({
+        alt: '',
+        image: '',
+        content: (
+            <>
+                {/* This is where you can render a component to
+                    the carsouel item. React elements and HTML elements
+                    (should) work.
+                */}
+            <div className="filler">
+                    <Card className="card">
+                        <CardMedia image={imgTemp} style={{width: '100%'}}/>
+                    </Card>
+            </div>
+            </>
+        )
+}));
 
 const RunCarousel2 = () => {
 	return (
@@ -35,7 +37,8 @@ const RunCarousel2 = () => {
             {/*  DO NOT CHANGE THIS (atm at least) */}
         <div className="root">
             {/* this is the carousel item*/}
-            <Carousel items={items}/>
+            <Carousel items={items} itemWidth={600}/>
+            {console.log(items)}
         </div>
     </div>
 	)

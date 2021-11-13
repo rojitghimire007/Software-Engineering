@@ -4,6 +4,12 @@ import { makeStyles } from '@material-ui/core';
 interface pipeDetails {
     length: number,
     height: number,
+    pid: string,
+    station: number,
+    gap: boolean,
+    heat: string, 
+    thickness: number, 
+    grade: string,
 }
 
 const useStyles = makeStyles({
@@ -63,9 +69,39 @@ const useStyles = makeStyles({
         background: 'linear-gradient(to bottom, rgb(200,200,200), rgb(0,0,0))',
         borderLeft: '3px dashed rgba(200,200,200,.08)'
     },
+    detailsPane: {
+        // border: '3px solid red',
+        height: '90%',
+        weight: '90%',
+        display: 'flex',
+        flexFlow: 'column wrap',
+        justifyContent: 'space-around',
+        alignContent: 'flex-start',
+        alignItems: 'flex-start',
+    },
+    details: {
+        background: 'linear-gradient(to bottom right, rgba(200,200,150,.05), rgba(150,150,150,.05))',
+        // border: '1px solid blue',
+        fontFamily: 'Bebas Neue, serif',
+        fontSize: '1.5em',
+        marginRight: '10px',
+        padding: '0 10px',
+        position: 'relative',
+        left: '75px',
+        top: '10px',
+        textAlign: 'left',
+        color: 'white',
+        zIndex: 10,
+        transition: 'scale .75s ease-in-out',
+        
+        '&:hover': {
+            transform: 'scale(1.01)',
+            background: 'linear-gradient(to bottom right, rgb(200,200,150), rgb(150,150,150))',
+        },
+    },
 })
 
-function Pipe2({length, height}: any) {
+function Pipe2({length, height, pid, station, gap, heat, thickness, grade,}: any) {
     const pipeDetails = {
         length: length,
         height: height,
@@ -73,14 +109,63 @@ function Pipe2({length, height}: any) {
     const classes = useStyles(pipeDetails);
 
     return (
-        <div style={{marginLeft: '20px'}}>
+        <div style={{}}>
             <div className={classes.pipeContainer}>
-                <div className={classes.shadowStart}/>  
-                <div className={classes.pipeStart} >
-                    <div /> {/* Pipe's Hole (see styling) */}
-                </div>
-                <div className={classes.pipe} />
-                <div className={classes.pipeEnd} />
+                {!gap?
+                    <>
+                        <div className={classes.shadowStart} />  
+                        <div className={classes.pipeStart} >
+                            <div /> {/* Pipe's Hole (see styling) */}
+                        </div>
+                        <div className={classes.pipe}>
+                            <div className={classes.detailsPane}>
+                                <div className={classes.details}>
+                                    {pid}
+                                </div>
+                                <div className={classes.details}>
+                                    Station No: {station}
+                                </div>
+                                <div className={classes.details}>
+                                    Heat No: {heat}
+                                </div>
+                                <div className={classes.details}>
+                                    Wall Thickness: {thickness}
+                                </div>
+                                <div className={classes.details}>
+                                    Grade: {grade}
+                                </div>
+                                <div className={classes.details}>
+                                    Placeholder: {`{information}`}
+                                </div>
+                                <div className={classes.details}>
+                                    Placeholder: {`{information}`}
+                                </div>
+                                <div className={classes.details}>
+                                    Placeholder: {`{information}`}
+                                </div>
+                            </div>
+                        </div>
+                        <div className={classes.pipeEnd} />
+                    </>
+                :
+                    // Pipe is a gap pipe
+                    <>
+                        <div className={classes.shadowStart} style={{opacity: '0'}}/>  
+                        <div className={classes.pipeStart}  style={{opacity: '0'}}>
+                            <div /> {/* Pipe's Hole (see styling) */}
+                        </div>
+                        <div 
+                            className={classes.pipe}  
+                            style={{opacity: '0.1', 
+                                    borderRadius: '25px', 
+                                    background: 'linear-gradient(to top left, rgb(225,225,225), rgb(0,0,0))', 
+                                    boxShadow: '-5px 5px', 
+                                    transform: 'skewX(-7deg)',
+                            }}
+                        />
+                        <div className={classes.pipeEnd}  style={{opacity: '0'}}/>
+                    </>
+                }
             </div>
         </div>
     )

@@ -1,11 +1,11 @@
 .comp-container {
-    width: 50vw;
+    max-width: 80vw;
     margin-left: auto;
     margin-right: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid;
+    /* border: 2px solid; */
 }
 
 .root {
@@ -25,16 +25,16 @@
 }
 
 .carousel {
-    /* width: 13.125rem; */
-    width: 6rem; /* optimized for a list with 10 items. */
-    /* height: 13.125rem; */
-    height: 26rem;
+    width: calc(13.125rem * 2);
+    /* width: 16rem; */ /* optimized for a list with 10 items. */
+    height: calc(13.125rem * 2);
+    /* height: 26rem; */
     position: relative;
     margin: 0 auto;
     /* perspective: 62.5rem; */
     /* perspective: 200rem; */ /* may need to mess with this when resizing/positioning */
-    perspective: 5000px;
-    perspective-origin: cneter; /* sets vanishing point. default is center. mess with this for fun, i guess */
+    perspective: calc(62.5rem * 2);
+    perspective-origin: top; /* sets vanishing point. default is center. mess with this for fun, i guess */
 }
 
 .carousel__container {
@@ -51,20 +51,20 @@
 
 .carousel__slide {
     position: absolute;
-    /* width: 11.875rem;
-    height: 11.875rem; */
-    width: 10rem; /* USE THIS TO FINE TUNE THE CARD SIZES */
-    height: 20rem;
-    /* left: 0.625rem;
-    top: 0.625rem; */
-    left: -2.4rem; /* THIS PART WILL DETERMINE THE CENTER OF THE CYLINDER */
-    top: 0.625rem;
+    width: calc(11.875rem * 2);
+    height: calc(11.875rem * 2);
+    /* width: 20rem; USE THIS TO FINE TUNE THE CARD SIZES
+    height: 20rem; */
+    left: calc(0.625rem * 2);
+    top: calc(0.625rem * 2);
+    /* left: -2.4rem; */ /* THIS PART WILL DETERMINE THE CENTER OF THE CYLINDER */
+    /* top: 0.625rem; */
     border: 0.125rem solid;
     transition: transform 1s, opacity 1s;
 }
 
 .carousel__slide img {
-	width: 0;
+    width: auto;
 	height: auto;
 	display: block;
 }
@@ -90,6 +90,7 @@
     align-items: center; */
     /* display: grid;
     grid-template-rows: [first] 100% [second] 100% [last] 100%; */
+    /* margin: 0 15rem; */
 }
 
 .filler {
@@ -114,7 +115,7 @@
 /* Trying out the layering */
 .filler :first-child {
     height: 100%;
-    padding: 10px;
+    /* padding: 10px; */
     /* border: 2px solid blue; */
     grid-column: 1 / 1;
     grid-row: 1 / 1;
@@ -147,9 +148,9 @@
 }
 
 /* testing */
-.filler :first-child:hover {background-color: black;}
-.filler :nth-child(2):hover {background-color: black;}
-.filler :nth-child(3):hover {background-color: black;}
+/* .filler :first-child:hover {background-color: black;} */
+/* .filler :nth-child(2):hover {background-color: black;} */
+/* .filler :nth-child(3):hover {background-color: black;} */
 
 
 /*|| CONTROLS ||*/
