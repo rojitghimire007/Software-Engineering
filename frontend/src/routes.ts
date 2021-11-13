@@ -4,6 +4,7 @@ import ShowFittings from 'views/fittings/ShowFittings';
 import NewStrungPipes from 'views/stringing/StrungPipes';
 import WeldingForcast from 'views/welding/weldingForecast';
 import singleVbutt from 'views/welding/singleVbutt';
+import CreateTable from 'views/welding/createTable';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -36,6 +37,12 @@ const routes: {
     exact: true,
     name: 'Forecast',
     component: WeldingForcast,
+  },
+  {
+    path: '/welding/create-table/:root,:grinding,:hot,:buffing,:second',
+    exact: true,
+    name: 'Create Table',
+    component: CreateTable,
   },
 ];
 

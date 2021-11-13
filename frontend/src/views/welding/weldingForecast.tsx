@@ -594,8 +594,14 @@ const WeldingForcast = () => {
                 </select>
               </div>
             </div>
+            <Link
+              to={`/welding/create-table/${pipeGange.rootPass},${pipeGange.grindingHelpers},${pipeGange.hotPass},${pipeGange.buffingHelpers},${pipeGange.secondPass}`}
+            >
+              <button style={{ width: '250px', height: '30px' }}>Next</button>
+            </Link>
+
             <br></br>
-            <div id="single-vbutt">
+            {/* <div id="single-vbutt">
               {pipeGange.rootPass != 0 && (
                 <>
                   <div>ROOT PASS</div>
@@ -756,7 +762,7 @@ const WeldingForcast = () => {
                   </table>{' '}
                 </>
               )}
-            </div>
+            </div> */}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}></div>
         </div>
