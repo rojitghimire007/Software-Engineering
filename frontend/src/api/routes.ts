@@ -9,6 +9,9 @@ const API = {
   signup: `${URL}/signup`,
   getAssociatedProjects: `${URL}/list/project`,
   selectProject: `${URL}/select/project`,
+  
+  // admin
+  postProjectAdmin: `${URL}/create/project`, // BACKEND url
 
   // pipes
   getPipes: `${URL}/pipes`,
@@ -25,6 +28,10 @@ const API = {
   getStriningEligiblePipes: `${URL}/string/eligible`,
   getCuttingEligiblePipes: `${URL}/pipes/cuttable`,
   cutPipe: `${URL}/pipes/cut`,
+
+
+  //other
+  getItemInfo: `${URL}/items/`,
 };
 
 export { URL, API };

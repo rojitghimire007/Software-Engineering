@@ -58,6 +58,8 @@ import { isTemplateExpression } from 'typescript';
 import MenuAppBar from '../../components/AppBar';
 import Footer from '../../components/Footer';
 
+import RunCarousel2 from 'DEMOS/ZachDemo/RunCarousel2';
+
 // type links = {
 //   parent: string,
 //   link: string,
@@ -201,74 +203,8 @@ const Dashboard = () => {
         {/* className={classes.page} */}
         <main >
           <Container maxWidth="lg" >
-
-            <Grid container spacing={4} className={classes.cardGrid}>
-
-              {/* simply maps each menu item to a new card component. */}
-              {/* Spent like 30 minutes trying to get this styling to work
-                      Without realizing I had commented out the call to generateMenus.
-                    Been working within a function that never gets used. */}
-              {menus.map((menuName, card) => (
-                <Grid item key={card} xs={12} sm={5} md={4}>
-                  <Card className={classes.cardAction}>
-                    <CardMedia
-                      className={classes.cardMedia}
-                      // image="https://source.unsplash.com/random"
-                      // component="img"
-                      // height="140"
-                      image={`${images[card].slice(4, -1)}`}
-                      title={`${images[card].slice(18, -14)} menu`}
-                    />
-                    {/* {console.log(images[card].slice(4, -1))} */}
-                    <CardContent className={classes.cardContent}>
-
-                      {/* Card submenus */}
-                      <Accordion
-                        variant='outlined'
-                        className={classes.dropDown}
-
-                      // Future?:
-                      // For keeping images opaque,
-                      // need to keep state for EACH accordion.
-                      // expanded={open}
-                      // onChange={handleToggle}
-                      >
-
-                        <AccordionSummary expandIcon={<ExpandMoreIcon color="inherit" className={classes.icon} />}>
-                          <Typography className={classes.cardTitle} style={{ fontWeight: 'bold' }}>
-                            {menuName}
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-
-                          <Divider className={classes.divider}>
-                            <Chip
-                              icon={<ArchitectureOutlinedIcon color='action' className={classes.dividerIcon} />}
-                              variant="filled"
-                              size='medium'
-                              clickable={false}
-                              className={classes.dividerIcon}
-                            />
-                          </Divider>
-
-                          <List component="nav">
-                            {generateLinks(menuName)}
-                            <Backdrop
-                              // sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                              open={open}
-                              onClick={handleClose}
-                            >
-                              <CircularProgress color="inherit" />
-                            </Backdrop>
-                          </List>
-
-                        </AccordionDetails>
-                      </Accordion>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+            <RunCarousel2 />
+            
             {/* <Footer /> */}
           </Container>
         </main>
