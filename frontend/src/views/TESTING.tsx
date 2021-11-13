@@ -8,7 +8,7 @@ import Pipe from '../components/Pipe'
 import DemoA from '../DEMOS/DemoA'
 import DemoI from '../DEMOS/DemoI'
 import RunCarousel from 'DEMOS/ZachDemo/RunCarousel'
-import RunCarousel2 from 'DEMOS/ZachDemo/RunCarousel2'
+import RunCarousel2 from 'views/dashboard/Carousel'
 //////////////
 
 const TESTING = () => {
