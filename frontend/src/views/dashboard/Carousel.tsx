@@ -5,8 +5,11 @@ import './Carousel.css'
 import {Card} from '@material-ui/core'
 import { Link } from 'react-router-dom';
 import { CardMedia } from '@mui/material';
-import inventoryImg from 'img/inventory.jpg';
-import stringingImg from 'img/stringing.jpg';
+import inventoryImg from 'img/MaterialInventory.png';
+import stringingImg from 'img/Stringing.png';
+import bendingImg from 'img/Bending.png';
+import coatingImg from 'img/Coating.png';
+import weldingImg from 'img/Welding.png';
 import { StylesContext } from '@material-ui/styles';
 
 
@@ -34,7 +37,7 @@ const links = [
       parent: 'Welding',
       link: '/',
       id: 'welding',
-      image: inventoryImg,
+      image: weldingImg,
     },
     // Stringing
     {
@@ -48,14 +51,14 @@ const links = [
       parent: 'Bending',
       link: '/bending',
       id: 'Bending',
-      image: inventoryImg,
+      image: bendingImg,
     },
     // Coating
     {
       parent: 'Coating',
       link: '/coating',
       id: 'Coating',
-      image: inventoryImg,
+      image: coatingImg,
     },
     // Other
   ];
@@ -70,7 +73,7 @@ const items: CarouselItem[] =
         <>
             <Link to={item.link} style={{width: '100%', height: '100%'}}>
                 <img src={item.image} style={{height: '90%'}}></img>
-                <div style={{height: '10%', backgroundColor: 'lightGray'}}>
+                <div style={{height: '10%', color: 'white', backgroundColor: 'black'}}>
                     {item.id}
                 </div>
             </Link>
