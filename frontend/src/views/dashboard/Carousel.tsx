@@ -30,6 +30,12 @@ const links = [
     },
 
     // Welding
+    {
+      parent: 'Welding',
+      link: '/',
+      id: 'welding',
+      image: inventoryImg,
+    },
     // Stringing
     {
       parent: 'Stringing',
@@ -38,7 +44,19 @@ const links = [
       image: stringingImg,
     },
     // Bending
+    {
+      parent: 'Bending',
+      link: '/bending',
+      id: 'Bending',
+      image: inventoryImg,
+    },
     // Coating
+    {
+      parent: 'Coating',
+      link: '/coating',
+      id: 'Coating',
+      image: inventoryImg,
+    },
     // Other
   ];
 

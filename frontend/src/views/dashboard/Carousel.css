@@ -1,5 +1,7 @@
 .comp-container {
     width: 50vw;
+    background-color: black;
+    opacity: 75%;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -54,7 +56,7 @@
     /* width: 11.875rem;
     height: 11.875rem; */
     width: 10rem; /* USE THIS TO FINE TUNE THE CARD SIZES */
-    height: 20rem;
+    height: 11rem;
     /* left: 0.625rem;
     top: 0.625rem; */
     left: -2.4rem; /* THIS PART WILL DETERMINE THE CENTER OF THE CYLINDER */
