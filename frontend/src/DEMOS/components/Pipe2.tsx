@@ -125,7 +125,7 @@ function Pipe2({length, height, pid, station, gap, heat, thickness, grade,}: any
                                 <div className={classes.details}>
                                     Station No: {station}
                                 </div>
-                                <div className={classes.details}>
+                                {/* <div className={classes.details}>
                                     Heat No: {heat}
                                 </div>
                                 <div className={classes.details}>
@@ -142,7 +142,7 @@ function Pipe2({length, height, pid, station, gap, heat, thickness, grade,}: any
                                 </div>
                                 <div className={classes.details}>
                                     Placeholder: {`{information}`}
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className={classes.pipeEnd} />

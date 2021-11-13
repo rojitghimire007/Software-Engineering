@@ -60,6 +60,23 @@ export default {
     start_item: string | null
   ) => authPut(API.stringing, { item, prev_item, start_item }),
 
+  postProjectAdmin: (
+    project_number: string,
+    pname: string,
+    company: string,
+    company_address: string,
+    company_phone: string,
+    company_email: string,
+    work_number: string,
+    work_site_phone: string,
+    plocation: string,
+    notes: string,
+    start_date: string,
+    end_date: string
+  ) => authPost(API.postProjectAdmin, 
+    {project_number, pname,  company, company_address, company_phone, company_email, work_number, work_site_phone, plocation,  notes, start_date, end_date}
+  ),
+
   getStrungPipesInfo: (pipes: Array<string | number>) => {
     return authGet(API.getStrungPipesInfo, pipes.join('_'));
   },

@@ -10,28 +10,13 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import api from 'api';
 import {
   Typography,
-  AppBar,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  CardHeader,
   CssBaseline,
-  Grid,
   Toolbar,
   //   TextField,
-  Container,
-  CardActionArea,
-  ListItem,
+  makeStyles
 } from '@material-ui/core';
 import {
-  Select,
-  MenuItem,
-  FormControl,
   Button,
-  IconButton,
-  collapseClasses,
-  Snackbar,
   Autocomplete,
   TextField,
 } from '@mui/material';
@@ -43,6 +28,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import useStyles from '../../style/StringingStyles';
 import useUpdateEffect from 'utils/useUpdateEffect';
 import Gap from './Gap';
+import Pipe from '../../DEMOS/components/Pipe2'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
@@ -54,6 +41,26 @@ type dataType = {
   flength?: number;
   start?: number;
 };
+
+const styleRules = makeStyles({
+  pipeWrapper: {
+    width: '100%',
+  },
+  deleteContainer: {
+    height: '20vh',
+    width: '80vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'rgb(130,0,100)',
+    margin: '0 auto',
+  },
+  deleteIcon: {
+    position: 'relative',
+    transform: 'scale(2.5)',
+    transition: ''
+  },
+});
 
 // a little function to help us with reordering the result
 const reorder = (
@@ -96,6 +103,7 @@ const StrungItems = () => {
   const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
+  const styles = styleRules();
 
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     // some basic styles to make the items look a bit nicer
@@ -330,13 +338,6 @@ const StrungItems = () => {
             Pipe Stringing
           </Typography>
         </Toolbar>
-        {/* <Toolbar className={classes.title}> */}
-        {/* <div className={classes.center}>
-            <Button variant="contained" color="secondary">
-              Refresh
-            </Button>
-          </div> */}
-        {/*</Toolbar>*/}
 
         <main>
           <div>
@@ -367,7 +368,6 @@ const StrungItems = () => {
                                   {...provided.dragHandleProps}
                                   style={{ margin: '0 50px' }}
                                 >
-                                  {/* {console.log(`Gap: ${index +  + 1}`)} */}
                                   <div
                                     style={{ border: 'dotted 1px black' }}
                                     id="mydiv"
@@ -394,20 +394,25 @@ const StrungItems = () => {
                                     snapshot.isDragging,
                                     provided.draggableProps.style
                                   )}
-                                  className={classes.pipeContainer}
+                                  // className={classes.pipeContainer}
                                 >
-                                  {/* {console.log(`Pipe: ${index}`)}
-                                  {console.log(`Pipe: ${item.item_id}`)} */}
 
-                                  <div className={classes.pipeStart} />
-
-                                  <div className={classes.pipe}>
+                                  {/* <div className={classes.pipe}>
                                     <div>{item.item_id}</div>
                                     <div>{item.station_number}</div>
                                     <div>{item.plength || item.flength}</div>
                                     <div>{item.overlap ? 'Overlap' : 'NO'}</div>
-                                  </div>
-                                  <div className={classes.pipeEnd} />
+                                  </div> */}
+                                  <Pipe 
+                                    length={50}
+                                    height={50}
+                                    pid={item.item_id}
+                                    station={item.station_number}
+                                    // gap={item.}
+                                    // heat=
+                                    // thickness=
+                                    // grade=
+                                  />
                                 </div>
                               )}
                             </Draggable>
@@ -417,56 +422,67 @@ const StrungItems = () => {
                   </div>
                 )}
               </Droppable>
-              <Button
-                size="medium"
-                color="secondary"
-                variant="contained"
-                disabled={
-                  tempSequence.length == 0 && window == 0 ? true : false
-                }
-                onClick={() => {
-                  if (tempSequence.length > 0) {
-                    let arr = [...tempSequence];
+              <div style={{display: 'flex', justifyContent: 'space-between',}}>
+                <Button
+                  size="large"
+                  color="secondary"
+                  variant="contained"
+                  disabled={
+                    tempSequence.length == 0 && window == 0 ? true : false
+                  }
+                  onClick={() => {
+                    if (tempSequence.length > 0) {
+                      let arr = [...tempSequence];
 
-                    unstable_batchedUpdates(() => {
-                      setSequence(arr);
-                      setTempSequence([]);
-                      setWindow(arr.length - 4);
-                    });
-                  } else setWindow(window - 1);
-                }}
-              >
-                Previous
-              </Button>
-              <Button
-                size="medium"
-                color="success"
-                variant="contained"
-                disabled={window + 4 >= sequence.length ? true : false}
-                onClick={() => setWindow(window + 1)}
-              >
-                Next
-              </Button>
-              <div>
+                      unstable_batchedUpdates(() => {
+                        setSequence(arr);
+                        setTempSequence([]);
+                        setWindow(arr.length - 4);
+                      });
+                    } else setWindow(window - 1);
+                  }}
+                  style={{justifySelf: 'flex-start', margin: '2vh 3vw'}}
+                >
+                  Previous
+                </Button>
+                <Button
+                  size="large"
+                  color="success"
+                  variant="contained"
+                  disabled={window + 4 >= sequence.length ? true : false}
+                  onClick={() => setWindow(window + 1)}
+                  style={{justifySelf: 'flex-end', margin: '2vh 6vw'}}
+                >
+                  Next
+                </Button>
+              </div>
+              <div style={{display: "flex", justifyContent: 'flex-start',}}>
                 <TextField
                   value={goTo}
                   onChange={(e) => setGoTo(e.currentTarget.value)}
+                  style={{marginLeft: '2vw', marginBottom: '2vh', alignSelf: 'center'}}
                 />
-                <Button onClick={(e) => goToStation(parseInt(goTo))}>GO</Button>
+                <Button 
+                  size="large" 
+                  color="success" 
+                  variant="contained" 
+                  onClick={(e) => goToStation(parseInt(goTo))}
+                  placeholder="Go to Station"
+                  style={{height: '50%', marginLeft: '2vw', position: 'relative', top: '0.5vh'}}
+                >
+                  GO
+                </Button>
               </div>
               <Droppable droppableId="delete" direction="horizontal">
                 {(provided, snapshot) => (
                   <div
-                    ref={provided.innerRef}
-                    // style={getListStyle(snapshot.isDraggingOver)}
-                    {...provided.droppableProps}
-                    // className={classes.virtList}
-                    style={{
-                      height: '20vh',
-                      width: '30vw',
-                      backgroundColor: 'red',
-                    }}
+                  ref={provided.innerRef}
+                  // style={getListStyle(snapshot.isDraggingOver)}
+                  {...provided.droppableProps}
+                  // className={classes.virtList}
+                  className={styles.deleteContainer}
                   >
+                    <DeleteForeverIcon className={styles.deleteIcon}/>
                     {provided.placeholder}
                   </div>
                 )}
