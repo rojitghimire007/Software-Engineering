@@ -19,7 +19,7 @@ import {
   CssBaseline,
   Grid,
   Toolbar,
-  TextField,
+  //   TextField,
   Container,
   CardActionArea,
   ListItem,
@@ -32,7 +32,10 @@ import {
   IconButton,
   collapseClasses,
   Snackbar,
+  Autocomplete,
+  TextField,
 } from '@mui/material';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 
 import { typography } from '@mui/system';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -77,6 +80,10 @@ const remove = (list: Array<dataType>, index: number) => {
   return result;
 };
 
+const filterOptions = createFilterOptions({
+  matchFrom: 'start',
+});
+
 const grid = 50;
 
 const StrungItems = () => {
@@ -86,19 +93,7 @@ const StrungItems = () => {
   const [window, setWindow] = useState(-1); //careful sliding left when window = 0 ; "view slider"
   // right now set to left most index of view (0, rn)
 
-  const [pipeDetails, setPipeDetails] = useState<{
-    [index: number | string]: any;
-  }>({}); // details of pipes in view (what's displayed)
-  // ONLY for THIS window
-
   const [loading, setLoading] = useState(true);
-
-  // pipe id + station (pairs them)
-  const [stations, setStations] = useState<{
-    [index: number | string]: number;
-  }>({});
-  const [initialLength, setInitialLength] = useState<number>(-1); // window = 0; length = 0
-  // based on total length BEFORE first pipe of window
 
   const classes = useStyles();
 
@@ -194,43 +189,22 @@ const StrungItems = () => {
       .catch((err) => alert(err.message));
   }, []);
 
-  const updatePipesOnScreen = async (
-    newWindow: number,
-    tempSequence: any = sequence
-  ) => {
-    try {
-      let res = await api.getStrungPipesInfo(
-        tempSequence.slice(newWindow, newWindow + 4)
-      );
-      let res2 = await api.getSequenceLength(tempSequence.slice(0, newWindow));
-
-      let x = res.reduce((result: any, entry: any) => {
-        result[entry.id] = entry;
-        return result;
-      }, {});
-      unstable_batchedUpdates(() => {
-        setInitialLength(Number(res2.length));
-        setPipeDetails({ ...pipeDetails, ...x });
-        setWindow(newWindow);
-        setLoading(false);
-      });
-    } catch (err: any) {
-      alert(err.message);
-    }
-  };
+  useEffect(() => {
+    api
+      .getStriningEligiblePipes()
+      .then((res) => {
+        setEligible(res);
+      })
+      .catch((err) => alert(err.message));
+  }, []);
 
   const onDragEnd = (result: any) => {
     console.table(result);
 
     // dropped outside the list
-    if (
-      !result.destination ||
-      result.source.index == result.destination.index
-    ) {
+    if (!result.destination) {
       return;
-    }
-
-    if (result.destination.droppableId === 'delete') {
+    } else if (result.destination.droppableId === 'delete') {
       console.log(' Will Delete ');
       return api
         .deleteFromSequence(sequence[window + result.source.index].item_id)
@@ -238,7 +212,7 @@ const StrungItems = () => {
           setSequence(remove(sequence, window + result.source.index));
         })
         .catch((err) => alert(err.message));
-    }
+    } else if (result.source.index == result.destination.index) return;
 
     let target_pipe = result.draggableId;
 
@@ -321,13 +295,27 @@ const StrungItems = () => {
   //////////////////////////////
   //            NEW
   //////////////////////////////
-  const [newDetails, setNewPipe] = useState<{ [index: number | string]: any }>(
-    {}
-  );
+
   const [eligible, setEligible] = useState<dataType[]>([]);
-  const [newPipeAdded, setNewPipeAdded] = useState(false);
-  const [toAdd, setToAdd] = useState('');
   const [goTo, setGoTo] = useState('');
+  const [newItem, setNewItem] = useState<string>('');
+  const [newItemDetails, setNewItemDetails] = useState<null | {
+    item_id: string;
+    length: number;
+  }>(null);
+  const [inputValue, setInputValue] = React.useState('');
+
+  const getItemDetails = (item: string) => {
+    api
+      .getItemInfo(item)
+      .then((res) => {
+        setNewItemDetails({
+          item_id: res.id,
+          length: res.length,
+        });
+      })
+      .catch((error) => alert(error.message));
+  };
 
   //////////////////////////////
   //            OLD
@@ -416,6 +404,8 @@ const StrungItems = () => {
                                   <div className={classes.pipe}>
                                     <div>{item.item_id}</div>
                                     <div>{item.station_number}</div>
+                                    <div>{item.plength || item.flength}</div>
+                                    <div>{item.overlap ? 'Overlap' : 'NO'}</div>
                                   </div>
                                   <div className={classes.pipeEnd} />
                                 </div>
@@ -473,10 +463,89 @@ const StrungItems = () => {
                     // className={classes.virtList}
                     style={{
                       height: '20vh',
-                      width: '20vh',
+                      width: '30vw',
                       backgroundColor: 'red',
                     }}
                   >
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={eligible}
+                sx={{ width: 300 }}
+                value={newItem}
+                onChange={(event: any, newValue: any) => {
+                  setNewItem(newValue);
+                }}
+                inputValue={inputValue}
+                onInputChange={(event, newInputValue) => {
+                  setInputValue(newInputValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Add Item" />
+                )}
+                filterOptions={filterOptions}
+              />
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  getItemDetails(newItem);
+                  setInputValue('');
+                  setNewItem('');
+                }}
+              >
+                Select
+              </Button>
+
+              <Droppable droppableId="hold" direction="horizontal">
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    // style={getListStyle(snapshot.isDraggingOver)}
+                    {...provided.droppableProps}
+                    // className={classes.virtList}
+                    style={{
+                      height: '20vh',
+                      width: '30vw',
+                      backgroundColor: 'gray',
+                    }}
+                  >
+                    {newItemDetails ? (
+                      <Draggable
+                        key={`${newItemDetails.item_id}`}
+                        draggableId={`${newItemDetails.item_id}`}
+                        index={0}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                            className={classes.pipeContainer}
+                          >
+                            {/* {console.log(`Pipe: ${index}`)}
+                                  {console.log(`Pipe: ${item.item_id}`)} */}
+
+                            <div className={classes.pipeStart} />
+
+                            <div className={classes.pipe}>
+                              <div>{newItemDetails.item_id}</div>
+                              <div>{newItemDetails.length}</div>
+                            </div>
+                            <div className={classes.pipeEnd} />
+                          </div>
+                        )}
+                      </Draggable>
+                    ) : null}
+
                     {provided.placeholder}
                   </div>
                 )}

@@ -246,8 +246,19 @@ const getStriningEligiblePipes = async (req, res, next) => {
     //   `select min(pipe_id) as pipe_id from pipes where pipe_id ~ '[0-9]+[A-Z]' and not exists(select 1 from stringing where stringing.pipe = pipes.pipe_id) group by SUBSTR(pipe_id, 0, LENGTH(pipe_id))`
     // );
     ans = ans.concat(_);
+    _ = await query_resolver(connection, {
+      text: stringingQueries.getStriningEligibleFittings1,
+    });
 
-    res.status(200).send(ans);
+    ans = ans.concat(_);
+
+    _ = await query_resolver(connection, {
+      text: stringingQueries.getStriningEligibleFittings2,
+    });
+
+    ans = ans.concat(_);
+
+    res.status(200).send(ans.map((item) => item.id));
   } catch (error) {
     console.log(error);
     next(error);
@@ -282,18 +293,24 @@ const deleteItemFromStringing = async (item, connection) => {
     let { station_number, next_item, prev_item } = _[0];
 
     if (!prev_item) {
-      await query_resolver(connection, {
-        text: `
+      if (next_item) {
+        await query_resolver(connection, {
+          text: `
           Update sequences set item_id = $1 where item_id = $2;
         `,
-        values: [next_item, item],
-      });
-      await query_resolver(connection, {
-        text: `
-          Update stringing set start_pipe = $1 where start_pipe = $2;
-        `,
-        values: [next_item, item],
-      });
+          values: [next_item, item],
+        });
+        await query_resolver(connection, {
+          text: `
+            Update stringing set start_pipe = $1 where start_pipe = $2;
+          `,
+          values: [next_item, item],
+        });
+      } else
+        await query_resolver(connection, {
+          text: 'DELETE FROM sequences where item_id = $1',
+          values: [item],
+        });
     }
 
     await query_resolver(connection, {
@@ -439,22 +456,28 @@ const createNewSequence = async (req, res, next) => {
   }
 };
 
-const updateStringing = async (req, res, next) => {
+const getItemInfo = async (req, res, next) => {
   // item needs to be p_ or f_
-  let { left_item, item } = req.body;
+  let { item } = req.params;
+
   try {
     const connection = await connect_project_db(req.dbname);
+    let _ = null;
 
-    let _ = query_resolver(connection, {
-      text: 'SELECT * FROM STRINGING WHERE item_id = $1',
-      values: [item],
-    });
+    // If fitting
+    if (new RegExp('F_.*').test(item)) {
+      _ = await query_resolver(connection, {
+        text: pipeQueries.onePipe,
+        values: [item.substring(2)],
+      });
+    } else {
+      _ = await query_resolver(connection, {
+        text: pipeQueries.onePipe,
+        values: [item],
+      });
+    }
 
-    // if(_.length > 0){
-
-    // }
-
-    // if
+    return res.status(200).send(_[0]);
   } catch (error) {
     next(error);
   }
@@ -468,4 +491,5 @@ module.exports = {
   getStriningEligiblePipes,
   deleteFromSequence,
   createNewSequence,
+  getItemInfo,
 };

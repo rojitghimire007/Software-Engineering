@@ -37,6 +37,7 @@ const {
   getStriningEligiblePipes,
   deleteFromSequence,
   createNewSequence,
+  getItemInfo,
 } = require('./Stringing');
 //const { cutPipe } = require('./PipeCutting');
 
@@ -78,6 +79,9 @@ const SetRoutes = (app) => {
   app.delete('/string/:item', deleteFromSequence);
   app.get('/pipes/info/:pipes', getStrungPipesInfo);
   app.post('/pipes/length', lengthofSequence);
+
+  //other
+  app.get('/items/:item', getItemInfo);
 
   // fittings routes
   app.post('/fittings', addFittings);
