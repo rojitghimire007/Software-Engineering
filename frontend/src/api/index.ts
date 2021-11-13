@@ -95,4 +95,8 @@ export default {
   addFitting: (data: any) => {
     return authPost(API.getFittings, data);
   },
+
+  getItemInfo: (item: string) => {
+    return authGet(API.getItemInfo, item);
+  },
 };
