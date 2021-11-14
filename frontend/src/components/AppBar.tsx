@@ -17,28 +17,41 @@ import useStyles from 'style/AppBarStyles';
 
 
 const options = [
-    {   main: 'Material Inventory', 
-        subItems: ['/pipes', '/fittings'], 
+    {
+        main: 'Material Inventory',
         default: '/dashboard',
+        subItems: [{
+            main: 'Pipes',
+            default: '/pipes',
+        },
+        {
+            main: 'Fittings',
+            default: '/fittings'
+        }],
     },
-    {   main: 'Welding', 
-        subItems: [''], 
+    {
+        main: 'Welding',
+        subItems: [''],
         default: '',
     },
-    {   main: 'Stringing', 
-        subItems: [''], 
+    {
+        main: 'Stringing',
+        subItems: [''],
         default: '/pipes/strung',
     },
-    {   main: 'Bending', 
-        subItems: [''], 
+    {
+        main: 'Bending',
+        subItems: [''],
         default: '',
     },
-    {   main: 'Coating', 
-        subItems: [''], 
+    {
+        main: 'Coating',
+        subItems: [''],
         default: '',
     },
-    {   main: 'Other', 
-        subItems: [''], 
+    {
+        main: 'Other',
+        subItems: [''],
         default: '',
     },
 ];
@@ -46,7 +59,7 @@ const options = [
 const ITEM_HEIGHT = 48;
 
 const MenuAppBar = (props: { history: any; }) => {
-    
+
     const [anchorE2, setAnchorE2] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorE2);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -55,7 +68,7 @@ const MenuAppBar = (props: { history: any; }) => {
     const handleClose1 = () => {
         setAnchorE2(null);
     };
-        
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -73,13 +86,15 @@ const MenuAppBar = (props: { history: any; }) => {
         history.push(pageURL);
     };
 
+    
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar className={classes.appContainer}>
-                    <SideBar links={options}/>
+                    <SideBar links={options} />
 
                     <Menu
+
                         id="long-menu"
                         MenuListProps={{
                             'aria-labelledby': 'long-button',
@@ -95,7 +110,7 @@ const MenuAppBar = (props: { history: any; }) => {
                         }}
                     >
                         {options.map((option) => (
-                            <MenuItem key={option.main} selected={option.main === 'Pyxis'} onClick={() => {history.push(option.default)}}>
+                            <MenuItem key={option.main} selected={option.main === 'Pyxis'} onClick={() => { history.push(option.default) }}>
                                 {option.main}
                             </MenuItem>
                         ))}
@@ -112,7 +127,7 @@ const MenuAppBar = (props: { history: any; }) => {
                         <Button className={classes.button} onClick={() => handleButtonsClick('/dashboard')}> Careers </Button>
                         <Button className={classes.button} onClick={() => handleButtonsClick('/contact')}> Contact Us </Button>
                     </div>
-                    
+
                     <div>
                         <IconButton
                             size="large"
