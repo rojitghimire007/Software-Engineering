@@ -1,6 +1,5 @@
 const { query_resolver, connect_project_db } = require("../utils/dbHandler");
 
-
 const cutPipe = async (req, res, next) => {
   const { id, cutLength } = req.body;
 
