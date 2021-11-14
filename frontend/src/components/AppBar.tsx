@@ -85,8 +85,13 @@ const MenuAppBar = (props: { history: any; }) => {
     const handleButtonsClick = (pageURL: string) => {
         history.push(pageURL);
     };
+    //logout
+    function logOut()
+    {
+        localStorage.clear();
+        history.push('/login')
+    }
 
-    
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -94,7 +99,6 @@ const MenuAppBar = (props: { history: any; }) => {
                     <SideBar links={options} />
 
                     <Menu
-
                         id="long-menu"
                         MenuListProps={{
                             'aria-labelledby': 'long-button',
@@ -156,7 +160,7 @@ const MenuAppBar = (props: { history: any; }) => {
                         >
                             <MenuItem onClick={handleClose}>Profile</MenuItem>
                             <MenuItem onClick={handleClose}>My account</MenuItem>
-                            <MenuItem onClick={handleClose}>Logout</MenuItem>
+                            <MenuItem onClick={logOut}>Logout</MenuItem>
                         </Menu>
                     </div>
                 </Toolbar>

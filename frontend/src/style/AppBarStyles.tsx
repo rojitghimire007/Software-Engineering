@@ -8,9 +8,8 @@ const useStyles = makeStyles((theme) => ({
     button: {
         color: '#fff !important',
     },
-    
+
     headerOptions: {
-        fontColor: '#fff !important',
         display: 'flex',
     },
 }))
