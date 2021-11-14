@@ -52,13 +52,20 @@ const styleRules = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    background: 'rgb(130,0,100)',
+    background: 'rgba(240,240,240,.25)',
     margin: '0 auto',
+    color: 'red',
+
+    '&:hover': {
+      background: 'rgba(255,50,50,1)',
+      color: 'black',
+    },
   },
   deleteIcon: {
     position: 'relative',
-    transform: 'scale(2.5)',
-    transition: ''
+    transform: 'scale(2.75)',
+    opoacity: .75,
+    transition: '',
   },
 });
 
