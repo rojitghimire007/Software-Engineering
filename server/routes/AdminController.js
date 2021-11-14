@@ -72,6 +72,9 @@ const addUserToProject = async (req, res, next) => {
     }
  
     const { project_number } = result[0];
+    /**
+     * TODO: check of duplicates within inputs itself
+     */
     let valueList = difference.map(ele => {
       return `('${ele.trim()}', '${project_number.trim()}')`
     });
