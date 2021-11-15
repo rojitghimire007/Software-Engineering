@@ -14,14 +14,9 @@ const useStyles = makeStyles({
         backgroundColor: 'teal',
     },
     pipeContainer: {
-        // width: (item: any) => {return `${item.length * 10}px`},
-        // height: (item: any) => {return `${item.height * 3}px`},
-        display: 'flex',
-        justifyContent: 'center',
-        width: '100%',
-        // height: '100%',
-        border: '2px dashed blue',
-        paddingLeft: '50px',
+        width: (item: any) => {return `${item.length * 10}px`},
+        height: (item: any) => {return `${item.height * 3}px`},
+        // border: '2px dashed white',
     },
     pipe: {
         
