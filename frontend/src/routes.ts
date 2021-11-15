@@ -43,6 +43,7 @@ const routes: {
   },
   { path: '/about', exact: true, name: 'About', component: AboutUs },
   { path: '/contact', exact: true, name: 'Contact', component: ContactUs },
+  //{ path: '/services', exact: true, name: 'Services', component: Services },
   // {
   //   path: '/pipes/strung/new',
   //   exact: true,
