@@ -1,5 +1,7 @@
 .pipe-gange {
   padding: 20px;
+  display: flex;
+  justify-content: space-around;
 }
 
 .pipe-gange .pipe-row {
@@ -15,4 +17,5 @@
 
 #single-vbutt table {
   font-size: 12px;
+  /* color: #89CFF0; */
 }

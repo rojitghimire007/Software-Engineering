@@ -20,13 +20,88 @@ const CreateTable: React.FC<CreateTable> = (props) => {
   const [buffing, setBuffing] = useState(parseInt(props.match.params.buffing));
   const [second, setSecond] = useState(parseInt(props.match.params.second));
 
+  function valueRootPassDetermine(idx: any) {
+    console.log(idx);
+    if (idx == 0) return 'Top Work';
+    else if (idx == 1) return 'Bottom Work';
+    else if (idx == 2) return 'Top Ditch';
+    else return 'Bottom Ditch';
+  }
   return (
-    <div style={{ backgroundColor: '#89CFF0' }}>
-      {/* <div>Root: {root}</div>
-      <div>Grinding: {grinding}</div>
-      <div>Hot: {hot}</div>
-      <div>Buffing: {buffing}</div>
-      <div>Second: {second}</div> */}
+    <div style={{ backgroundColor: '#89CFF0', height: '2000px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ fontSize: '35px', textAlign: 'center', width: '300px' }}>
+          <div>Pipe Gang </div>
+          <div>Daily Productivity </div>
+          Analyzer
+        </div>
+
+        <div style={{ display: 'flex', marginTop: '50px' }}>
+          <div style={{ marginRight: '30px' }}>
+            <div>
+              <input id="st" name="st" />
+              Start Time{' '}
+            </div>
+            <div>
+              <input id="sw" name="sw" />
+              Start Work{' '}
+            </div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            60
+            <br />
+            Breaks/Lunch
+          </div>
+          <div>
+            {' '}
+            <div>
+              Ending Time <input id="et" name="et" />{' '}
+            </div>
+            <div>
+              Hours worked <input id="hw" name="hw" />{' '}
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginRight: '50px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+          }}
+        >
+          <div>
+            Station number start <input id="startStation" name="startStation" />
+          </div>
+          <div>
+            Station Number End <input id="endingStation" name="endingStation" />
+          </div>
+          <div>
+            Average Pipe Length <input id="avgLength" name="avgLength" />{' '}
+          </div>
+
+          <div>Pipe Gang</div>
+          <div>Firing Lane (mph)</div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+          }}
+        >
+          <div>
+            Actual Wield <input id="actualWeild" name="actualWeild" />{' '}
+          </div>
+          <div>Forcasted Weild's: </div>
+          <div>Daily Productivity %</div>
+        </div>
+      </div>
+
+      <br></br>
+      <br></br>
 
       <div id="single-vbutt">
         {root != 0 && (
@@ -63,18 +138,27 @@ const CreateTable: React.FC<CreateTable> = (props) => {
                         <input
                           type="text"
                           name="currentRange"
-                          // onChange={onRootPassChange}
+                          id={(idx + 1).toString() + 'a'}
+                          // onChange={(e) => setState({})}
                         />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'b'} />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'c'} />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'd'} />
                       </td>
+                      <td>{valueRootPassDetermine(idx)}</td>
+                      <td>{}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
                       {/* <td>{rodBornLength}</td> */}
                     </tr>
                   );
@@ -115,16 +199,16 @@ const CreateTable: React.FC<CreateTable> = (props) => {
                       <td>110-200</td>
                       <td>20-34</td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'e'} />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'f'} />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'g'} />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'h'} />
                       </td>
                     </tr>
                   );
@@ -165,16 +249,16 @@ const CreateTable: React.FC<CreateTable> = (props) => {
                       <td>120-200</td>
                       <td>21-34</td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'i'} />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'j'} />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'k'} />
                       </td>
                       <td>
-                        <input type="text" />
+                        <input type="text" id={idx.toString() + 'l'} />
                       </td>
                     </tr>
                   );

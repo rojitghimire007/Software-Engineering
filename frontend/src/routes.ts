@@ -5,6 +5,7 @@ import NewStrungPipes from 'views/stringing/StrungPipes';
 import WeldingForcast from 'views/welding/weldingForecast';
 import singleVbutt from 'views/welding/singleVbutt';
 import CreateTable from 'views/welding/createTable';
+import WeldingProcedure from 'views/welding/weldingProcedure';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -43,6 +44,12 @@ const routes: {
     exact: true,
     name: 'Create Table',
     component: CreateTable,
+  },
+  {
+    path: '/welding-procedure',
+    exact: true,
+    name: 'Welding Procedure',
+    component: WeldingProcedure,
   },
 ];
 
