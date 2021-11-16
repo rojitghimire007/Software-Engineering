@@ -1,62 +1,72 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react'
+import React, { useState, useEffect, SyntheticEvent, useLayoutEffect } from 'react'
 import { makeStyles } from '@material-ui/core'
 
 const styles = makeStyles({
     container: {
         textTransform: 'uppercase',
         backgroundColor: 'rgba(200,200,200,1)',
-        width: '100%',
+        width: 'calc(100% - 50px)',
         height: '540px',
-        // animation: (specs: any) => { console.log(`$${specs.animateAs} 30000ms ease-in`); return `${specs.animateAs} 30000ms ease-in` },
-        // animation: "slideIn 3000ms ease-in-out",
-        // animation: (animation: any) => {console.log(`${animation.anim} 35000ms ease-in 0s`);/* return "" */return `${animation} 3500ms ease-in 0s`},
     },
-    animation: {
-        color: 'white',
-        animationDuration: ({ length }: any) => `${length}s`,
-        textDecoration: ({ length }: any) => { console.log(`${length}`); return '' },
+    animationA: {
+        animation: '$slideIn .25s ease-in-out 0s',
+    },
+    animationB: {
+        // opacity: '0',
+        animation: '$slideOut .25s ease-in-out 0s',
+        zIndex: -2,
     },
     '@keyframes slideIn': {
-        '0%': { opacity: '0' },
-        '50%': { opacity: '0.5' },
-        '100%': { opacity: '1' },
+        '0%': { opacity: '.5', transform: 'translateX(-1000px)', },
+        '100%': { opacity: '1', transform: 'translateX(0px)', },
     },
     '@keyframes slideOut': {
-        '0%': { opacity: '1', transform: 'translateX(0px)' },
-        '100%': { opacity: '0', transform: 'translateX(-1000px)' },
+        '0%': { opacity: '1', transform: 'translateX(0px)', },
+        '100%': { opacity: '.5', transform: 'translateX(-1000px)', },
     },
 })
 
-const StringingTrack = ({ click, opened, name }: any) => {
-    // const [animation, setAnimation] = useState({ animateAs: "slideIn" });
-    const [animation, setAnimation] = useState("$slideIn");
-    const id = name;
+const StringingTrack = ({ click, opened, name, trackHistory, }: any) => {
+    const classes = styles();
+    const [animationStyle, setAnimationStyle] = useState(classes.container);
 
-    const classes = styles({ anim: "$slideIn", length: '3500ms', iterations: 'infinite', timing: 'ease-in-out' });
+    // console.log("----------")
+    // console.log("opened:  " + opened)
+    // console.log("this:    " + name)
+    // console.log("clickIs: " + click)
+    // console.log("history: " + trackHistory)
 
-    const handleChange = (id: any) => {
-        if (click && opened === id) {
-            // setAnimation({ animateAs: "slideIn" })
-            console.log("triggered: (" + click + ", " + opened + " = " + id + ")")
-        }
-        console.log("change handled")
+    useLayoutEffect(() => {
+
+        if (trackHistory[trackHistory.length - 1] == name)
+            setAnimationStyle(classes.animationB)
+
+        else if (opened != '')
+            setAnimationStyle(classes.animationA)
+    }, [opened, click != false])
+
+    const handleAnimation = (id: any) => {
+
+        // console.log("----------")
+        // console.log("Handling animations for: " + id)
+
+        return (
+            <>
+                <div key={id} className={`${classes.container} ${animationStyle}`}>
+                    {id} track lane goes here
+                </div>
+            </>
+        )
     }
 
     return (
-        <>
-            {name != '' ?
-                <div
-                    className={`${classes.container} ${classes.animation}`}
-                    onChange={() => { handleChange(name) }}
-                    style={{animationName: `${animation}`}}
-                >
-                    {name} Track Item Here
-
-                </div>
+        <div>
+            {opened != '' && click ?
+                <>{handleAnimation(name)}</>
                 :
                 null // Don't Render!
             }
-        </>
+        </div>
     )
 }
 

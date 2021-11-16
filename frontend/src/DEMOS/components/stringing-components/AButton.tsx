@@ -9,11 +9,14 @@ const styles = makeStyles({
         display: 'flex',
         overflow: 'hidden',
         // margin: '150px',
+        perspective: '5000px',
         transition: '.2s ease-in-out',
         // transform: 'rotate(90deg)',
         transformOrigin: 'bottom left',
+        transformStyle: 'preserve-3d',
         userSelect: 'none',
-
+        
+        
         '&:hover': {
             cursor: 'pointer',
             position: 'relative',
