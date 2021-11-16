@@ -37,7 +37,7 @@ const options = [
     {
         main: 'Stringing',
         subItems: [''],
-        default: '/pipes/strung',
+        default: '/pipes/strung/new',
     },
     {
         main: 'Bending',
