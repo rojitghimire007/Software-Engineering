@@ -20,8 +20,68 @@ const CreateTable: React.FC<CreateTable> = (props) => {
   const [buffing, setBuffing] = useState(parseInt(props.match.params.buffing));
   const [second, setSecond] = useState(parseInt(props.match.params.second));
 
+  const [rootPass, setRootPass] = useState<any>({
+    a0: 0,
+    b0: 0,
+    c0: 0,
+    d0: 0,
+    e0: 0,
+    f0: 0,
+    g0: 0,
+    h0: 0,
+    i0: 0,
+    j0: 0,
+    k0: 0,
+    a1: 0,
+    b1: 0,
+    c1: 0,
+    d1: 0,
+    e1: 0,
+    f1: 0,
+    g1: 0,
+    h1: 0,
+    i1: 0,
+    j1: 0,
+    k1: 0,
+    a2: 0,
+    b2: 0,
+    c2: 0,
+    d2: 0,
+    e2: 0,
+    f2: 0,
+    g2: 0,
+    h2: 0,
+    i2: 0,
+    j2: 0,
+    k2: 0,
+    a3: 0,
+    b3: 0,
+    c3: 0,
+    d3: 0,
+    e3: 0,
+    f3: 0,
+    g3: 0,
+    h3: 0,
+    i3: 0,
+    j3: 0,
+    k3: 0,
+  });
+
+  function changeRootPass(e: any) {
+    let newRootPass = { ...rootPass, [e.target.name]: e.target.value };
+    setRootPass(newRootPass);
+  }
+
+  function setRodBurn(idx: any) {
+    let a = parseInt(rootPass['d' + idx]) / parseInt(rootPass['c' + idx]);
+    setRootPass({
+      ...rootPass,
+      ['e' + idx]: a,
+    });
+    return a;
+  }
+
   function valueRootPassDetermine(idx: any) {
-    console.log(idx);
     if (idx == 0) return 'Top Work';
     else if (idx == 1) return 'Bottom Work';
     else if (idx == 2) return 'Top Ditch';
@@ -137,22 +197,36 @@ const CreateTable: React.FC<CreateTable> = (props) => {
                       <td>
                         <input
                           type="text"
-                          name="currentRange"
-                          id={(idx + 1).toString() + 'a'}
-                          // onChange={(e) => setState({})}
+                          name={'a' + idx.toString()}
+                          onChange={changeRootPass}
                         />
                       </td>
                       <td>
-                        <input type="text" id={idx.toString() + 'b'} />
+                        <input
+                          type="text"
+                          name={'b' + idx.toString()}
+                          onChange={changeRootPass}
+                        />
                       </td>
                       <td>
-                        <input type="text" id={idx.toString() + 'c'} />
+                        <input
+                          type="text"
+                          name={'c' + idx.toString()}
+                          onChange={changeRootPass}
+                        />
                       </td>
                       <td>
-                        <input type="text" id={idx.toString() + 'd'} />
+                        <input
+                          type="text"
+                          name={'d' + idx}
+                          onChange={changeRootPass}
+                        />
                       </td>
                       <td>{valueRootPassDetermine(idx)}</td>
-                      <td>{}</td>
+                      <td>
+                        {parseInt(rootPass['d' + idx]) /
+                          parseInt(rootPass['c' + idx])}
+                      </td>
                       <td></td>
                       <td></td>
                       <td></td>
