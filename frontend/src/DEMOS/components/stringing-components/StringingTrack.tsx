@@ -1,5 +1,8 @@
 import React, { useState, useEffect, SyntheticEvent, useLayoutEffect } from 'react'
 import { makeStyles } from '@material-ui/core'
+import AddLane from './DeleteLane'
+import TransferLane from './DeleteLane'
+import DeleteLane from './DeleteLane'
 
 const styles = makeStyles({
     container: {
@@ -45,6 +48,18 @@ const StringingTrack = ({ click, opened, name, trackHistory, }: any) => {
             setAnimationStyle(classes.animationA)
     }, [opened, click != false])
 
+    const renderLane = (id: any) => {
+        if (id === 'add'){
+            return <AddLane />
+        }
+        if (id === 'transfer'){
+            return <TransferLane />
+        }
+        if (id === 'delete'){
+            return <DeleteLane />
+        }
+    }
+
     const handleAnimation = (id: any) => {
 
         // console.log("----------")
@@ -53,7 +68,8 @@ const StringingTrack = ({ click, opened, name, trackHistory, }: any) => {
         return (
             <>
                 <div key={id} className={`${classes.container} ${animationStyle}`}>
-                    {id} track lane goes here
+                    {/* {id} track lane goes here */}
+                    {renderLane(id)}
                 </div>
             </>
         )

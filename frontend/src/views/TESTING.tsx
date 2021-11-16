@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Draggable, Droppable, DragDropContext } from 'react-beautiful-dnd'
 
 //////////////
 // imported //
@@ -41,7 +42,9 @@ const TESTING = () => {
                 <AButton color="rgba(0,0,255,1)" index="2" onClick={() => {console.log("clicked")}}/>
             </div> */}
             {/* <ButtonHolder /> */}
-            <OptionSelect />
+            <DragDropContext onDragEnd={() => console.log("drag over")}>
+                    <OptionSelect />
+            </DragDropContext>
         </>
     )
 }
