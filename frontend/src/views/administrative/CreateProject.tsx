@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import background from 'img/pipeline-2.jpg';
 import { Typography } from "@mui/material";
 import api from "api";
+import { useHistory } from "react-router-dom";
 
 
 
@@ -14,6 +15,8 @@ const CreateProject = () => {
     
     const styling = useStyles();
     
+    let history = useHistory();
+
     const [project_number,setProject_number] = useState('');
     const [pname,setPname] = useState('');
     const [company,setCompany] = useState('');
@@ -24,8 +27,8 @@ const CreateProject = () => {
     const [work_site_phone,setWork_site_phone] = useState('');
     const [plocation,setPlocation] = useState('');
     const [notes,setNotes] = useState('');
-    const [start_date,setStart_date] = useState(0);
-    const [end_date,setEnd_date] = useState(0);
+    const [start_date,setStart_date] = useState('');
+    const [end_date,setEnd_date] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
     const  addProject = () => {
@@ -41,14 +44,14 @@ const CreateProject = () => {
                 work_site_phone,
                 plocation,
                 notes,
-                start_date,
-                end_date
+                new Date(start_date).getTime(),
+                new Date(end_date).getTime()
             )
             .then((res)=> {
                 if (res){console.log("Success!")}
                 if (!res){console.log("Failure :-(")}
             })
-            .catch((err)=> alert(err.message))    
+            .catch((err)=> alert(err.message))  
     }
 
 
@@ -149,35 +152,55 @@ const CreateProject = () => {
                 />
                         
                 <TextField 
-                onChange = {(e) => {setStart_date(+ e.target.value)}} 
+                onChange = {(e) => {setStart_date(e.target.value)}} 
                 id="start-date" 
                 label="Start Date" 
                 variant="outlined" 
                 name = "start_date"
-                type = "number"
-                style = {{paddingBottom: "15px"}}
+                type = "date"
+                InputLabelProps={{ shrink: true, required: true }}
+                style = {{paddingBottom: "15px", width: "210px"}}
                 />
 
                 <TextField 
-                onChange = {(e) => {setEnd_date(+ e.target.value)}} 
+                onChange = {(e) => {setEnd_date(e.target.value)}} 
                 id="end-date" 
-                label="End Date" 
+                label="End Date"
                 variant="outlined" 
                 name = "end_date"
-                type = "number"
-                style = {{paddingBottom: "15px"}}
+                type = "date"
+                InputLabelProps={{ shrink: true, required: true }}
+                style = {{paddingBottom: "15px", width: "210px"}}
                 />
 
                 <TextField 
                 onChange = {(e) => {setNotes(e.target.value)}} 
                 id="notes" 
                 label="Notes" 
+                multiline
+                rows={4}
                 variant="outlined" 
                 name = "notes"
-                style = {{paddingBottom: "15px"}}
+                style = {{paddingBottom: "15px", width: '210px'}}
                 />
                 
-                <Button onClick = {() => {addProject();console.log("Submitted Change")}} variant="contained" style={{backgroundColor: "#81977b", display: 'flex', textAlign: "center"}}>Submit</Button>
+                <Button onClick = {() => {addProject();alert("Project Created")}} 
+                    variant="contained" 
+                    style={{backgroundColor: "#81977b", 
+                    display: 'flex', 
+                    textAlign: "center"}}>
+                    Submit
+                </Button>
+                
+                
+                <Button onClick = {() => {history.push("/project-select")}} 
+                    variant="contained" 
+                    style={{backgroundColor: "#81977b", 
+                    display: 'inline',
+                    marginTop: '10px',
+                    textAlign: "center"}}>
+                    Back
+                </Button>
             </form>
         </div>
     </div>

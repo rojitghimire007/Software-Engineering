@@ -146,10 +146,10 @@ const create_database = async (project) => {
     if (await isDbRegistered(project.dbname)) {
       throw new Error(`Project database already exist for ${project.dbname}.\nPlease choose a different name.`);
     }
-
+    console.log(project)
     //register the new database in the projects table
-    const sDate = project.start_date ? project.s_date / 1000.0 : null; // change millisecond to second to make postgre compatible
-    const eDate = project.end_date ? project.e_date / 1000.0 : null;
+    const sDate = project.start_date ? project.start_date / 1000.0 : null; // change millisecond to second to make postgre compatible
+    const eDate = project.end_date ? project.end_date / 1000.0 : null;
 
     let sql_query = {
       text: 'INSERT INTO projects(project_number, pname, company, work_number, plocation, start_date, end_date, dbname, company_address, company_phone, company_email, work_site_phone, notes) VALUES ($1, $2, $3, $4, $5, to_timestamp($6), to_timestamp($7), $8, $9, $10, $11, $12, $13)',
