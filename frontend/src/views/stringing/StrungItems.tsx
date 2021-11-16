@@ -475,6 +475,7 @@ const StrungItems = () => {
             setNewItem('');
           },
         },
+        newItemDetails: newItemDetails,
       },
       transfer: {
         newItemDetails: newItemDetails,
@@ -553,7 +554,8 @@ const StrungItems = () => {
                                     provided.draggableProps.style
                                   )}
                                 >
-                                  <Pipe pid={item.item_id} />
+                                  {console.log(item)}
+                                  <Pipe plength={item.plength} station={item.station_number} pid={item.item_id} length={100}/>
                                 </div>
                               )}
                             </Draggable>

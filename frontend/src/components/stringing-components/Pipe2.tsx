@@ -16,7 +16,8 @@ const useStyles = makeStyles({
     pipeContainer: {
         display: 'flex',
         justifyContent: 'flex-start',
-        width: '100%',
+        // width: '100%',
+        width: (item: any) => {return `${item.length * 10}px`},
         height: '100%',
     },
     // every other div positioned relative to this one
@@ -101,7 +102,7 @@ const useStyles = makeStyles({
     },
 })
 
-function Pipe2({length, height, pid, station, gap, heat, thickness, grade,}: any) {
+function Pipe2({length, height, pid, plength, station, gap, heat, thickness, grade,}: any) {
     const pipeDetails = {
         length: length,
         height: height,
@@ -122,9 +123,12 @@ function Pipe2({length, height, pid, station, gap, heat, thickness, grade,}: any
                                 <div className={classes.details}>
                                     {pid}
                                 </div>
-                                {/* <div className={classes.details}>
+                                <div className={classes.details}>
                                     Station No: {station}
-                                </div> */}
+                                </div>
+                                <div className={classes.details}>
+                                    Pipe length: {plength}
+                                </div>
                                 {/* <div className={classes.details}>
                                     Heat No: {heat}
                                 </div>
@@ -133,11 +137,8 @@ function Pipe2({length, height, pid, station, gap, heat, thickness, grade,}: any
                                 </div>
                                 <div className={classes.details}>
                                     Grade: {grade}
-                                </div>
-                                <div className={classes.details}>
-                                    Placeholder: {`{information}`}
-                                </div>
-                                <div className={classes.details}>
+                                </div> */}
+                                {/* <div className={classes.details}>
                                     Placeholder: {`{information}`}
                                 </div>
                                 <div className={classes.details}>

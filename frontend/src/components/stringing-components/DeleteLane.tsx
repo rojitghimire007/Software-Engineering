@@ -7,7 +7,8 @@ const styles = makeStyles({
     container: {
         height: '100%',
         width: '100%',
-        border: '1px solid blue'
+        border: '1px solid red',
+        background: 'rgba(120,0,0,.25)',
     },
     deleteContainer: {
         height: '100%',
@@ -15,7 +16,7 @@ const styles = makeStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'rgba(240,240,240,.25)',
+        background: 'rgba(120,0,0,.25)',
         margin: '0 auto',
         color: 'red',
 

@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core'
 import DeleteForevorIcon from '@mui/icons-material/DeleteForever';
-import { Droppable } from 'react-beautiful-dnd'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
 import Pipe from 'components/stringing-components/Pipe2'
 
 const styles = makeStyles({
     container: {
         height: '100%',
         width: '100%',
-        border: '1px solid blue'
+        border: '1px solid green',
+        background: 'rgba(0,120,0,.25)',
     },
     deleteContainer: {
         height: '100%',
@@ -30,11 +31,11 @@ const styles = makeStyles({
 
 const TransferLane = ({ clck, shwarea, id, props, held }: any) => {
     const properties = { ...props[0].transfer }
-    const newPipe = {...properties.newItemDetails};
+    const newPipe = { ...properties.newItemDetails };
     console.log(newPipe);
 
     const classes = styles();
-    
+
     // const hold = [...held];
     // Future implementation
     // const setHold = () => {
@@ -53,8 +54,17 @@ const TransferLane = ({ clck, shwarea, id, props, held }: any) => {
                             {...provided.droppableProps}
                             className={classes.deleteContainer}
                         >
-
-                            <Pipe />
+                            <Draggable draggableId="transferDrag" index={0}>
+                                {(provided) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                    >
+                                        <Pipe plength={newPipe.plength} station={newPipe.station_number} pid={newPipe.item_id} length={100}/>
+                                    </div>
+                                )}
+                            </Draggable>
                             {provided.placeholder}
                         </div>
                     )}
