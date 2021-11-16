@@ -30,6 +30,10 @@ import useUpdateEffect from 'utils/useUpdateEffect';
 import Gap from './Gap';
 import Pipe from '../../DEMOS/components/Pipe2'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import MyButton from 'components/MyButton';
+import DeleteDnD from 'components/DeleteDnD';
+import TransferDnD from 'components/TransferDnD';
+import StringBtnContainer from 'components/StringBtnContainer';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
@@ -480,22 +484,25 @@ const StrungItems = () => {
                   GO
                 </Button>
               </div>
-              <Droppable droppableId="delete" direction="horizontal">
+              {/* <DeleteDnD />
+              <TransferDnD /> */}
+              <div style={{background: 'pink'}}><StringBtnContainer /></div>
+              {/* <Droppable droppableId="delete" direction="horizontal">
                 {(provided, snapshot) => (
                   <div
-                  ref={provided.innerRef}
-                  // style={getListStyle(snapshot.isDraggingOver)}
-                  {...provided.droppableProps}
-                  // className={classes.virtList}
-                  className={styles.deleteContainer}
+                    ref={provided.innerRef}
+                    // style={getListStyle(snapshot.isDraggingOver)}
+                    {...provided.droppableProps}
+                    // className={classes.virtList}
+                    className={styles.deleteContainer}
                   >
                     <DeleteForeverIcon className={styles.deleteIcon}/>
                     {provided.placeholder}
                   </div>
                 )}
-              </Droppable>
+              </Droppable> */}
 
-              <Autocomplete
+              {/* <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={eligible}
@@ -512,17 +519,17 @@ const StrungItems = () => {
                   <TextField {...params} label="Add Item" />
                 )}
                 filterOptions={filterOptions}
-              />
-              <Button
+              /> */}
+              {/* <Button
                 variant="contained"
                 onClick={(e) => {
                   getItemDetails(newItem);
                   setInputValue('');
                   setNewItem('');
                 }}
-              >
-                Select
-              </Button>
+              > */}
+                {/* Select */}
+              {/* </Button> */}
 
               <Droppable droppableId="hold" direction="horizontal">
                 {(provided, snapshot) => (
