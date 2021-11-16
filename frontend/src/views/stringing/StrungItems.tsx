@@ -13,13 +13,9 @@ import {
   CssBaseline,
   Toolbar,
   //   TextField,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
-import {
-  Button,
-  Autocomplete,
-  TextField,
-} from '@mui/material';
+import { Button, Autocomplete, TextField } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 
 import { typography } from '@mui/system';
@@ -28,14 +24,14 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import useStyles from '../../style/StringingStyles';
 import useUpdateEffect from 'utils/useUpdateEffect';
 import Gap from './Gap';
-import Pipe from '../../components/stringing-components/Pipe2'
+import Pipe from '../../components/stringing-components/Pipe2';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import MyButton from 'components/MyButton';
 import DeleteDnD from 'components/DeleteDnD';
 import TransferDnD from 'components/TransferDnD';
 import StringBtnContainer from 'components/StringBtnContainer';
 
-import OptionSelect from 'components/stringing-components/OptionSelect'
+import OptionSelect from 'components/stringing-components/OptionSelect';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
@@ -70,7 +66,7 @@ const styleRules = makeStyles({
   deleteIcon: {
     position: 'relative',
     transform: 'scale(2.75)',
-    opoacity: .75,
+    opoacity: 0.75,
     transition: '',
   },
 });
@@ -114,7 +110,7 @@ const detectOverlaps = (leftSequence: any, rightSequence: any) => {
   for (let i = 0; i < rightSequence.length; i++) {
     if (
       leftSequence.at(-1).station_number +
-      (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
+        (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
       rightSequence[i].station_number
     )
       rightSequence[i]['overlap'] = true;
@@ -125,7 +121,7 @@ const detectOverlaps = (leftSequence: any, rightSequence: any) => {
     if (
       rightSequence[0].station_number <
       leftSequence[i].station_number +
-      (leftSequence[i].plength || leftSequence[i].flength)
+        (leftSequence[i].plength || leftSequence[i].flength)
     )
       leftSequence[i]['overlap'] = true;
     else break;
@@ -256,12 +252,15 @@ const StrungItems = () => {
   }, [window]);
 
   const addNewItem = (result: any) => {
-    let target_pipe = result.draggableId;
+    let target_pipe: string = result.draggableId;
     let [left_item, start_item] = getLeftAndStartItem(sequence, result);
 
     if (!new RegExp('F_.*').test(target_pipe)) target_pipe = 'p_' + target_pipe;
+    console.log('==========================');
+    console.log(target_pipe);
+
     return api
-      .insertIntoSequence(target_pipe, left_item, start_item)
+      .insertIntoSequence(target_pipe.toLowerCase(), left_item, start_item)
       .then((res) => {
         updateStations(
           sequence,
@@ -283,7 +282,7 @@ const StrungItems = () => {
             item_id: target_pipe,
             station_number: prevItem
               ? prevItem.station_number +
-              (prevItem.flength || prevItem.plength || 0)
+                (prevItem.flength || prevItem.plength || 0)
               : 0,
             ...length,
           })
@@ -359,7 +358,7 @@ const StrungItems = () => {
     } else if (result.destination.droppableId === 'delete') {
       deleteFromSequence(result);
     } else if (
-      result.source.droppableId == 'hold' &&
+      result.source.droppableId == 'add' &&
       result.destination.droppableId === 'droppable'
     )
       addNewItem(result);
@@ -458,17 +457,17 @@ const StrungItems = () => {
           id: 'combo-box-demo',
           options: eligible,
           value: newItem,
-          onChange: (event: any, newValue: any) =>
-            setNewItem(newValue),
+          onChange: (event: any, newValue: any) => setNewItem(newValue),
           inputValue: inputValue,
           onInputChange: (event: any, newInputValue: any) =>
             setInputValue(newInputValue),
-          renderInput: (params: any) =>
-            (<TextField {...params} label="Add Item" />),
+          renderInput: (params: any) => (
+            <TextField {...params} label="Add Item" />
+          ),
           filterOptions: filterOptions,
         },
         button: {
-          variant: "contained",
+          variant: 'contained',
           onClick: (e: any) => {
             getItemDetails(newItem);
             setInputValue('');
@@ -479,7 +478,7 @@ const StrungItems = () => {
       },
       transfer: {
         newItemDetails: newItemDetails,
-      }
+      },
     },
     /* 
     {
@@ -555,7 +554,12 @@ const StrungItems = () => {
                                   )}
                                 >
                                   {console.log(item)}
-                                  <Pipe plength={item.plength} station={item.station_number} pid={item.item_id} length={100}/>
+                                  <Pipe
+                                    plength={item.plength}
+                                    station={item.station_number}
+                                    pid={item.item_id}
+                                    length={100}
+                                  />
                                 </div>
                               )}
                             </Draggable>
@@ -565,7 +569,7 @@ const StrungItems = () => {
                   </div>
                 )}
               </Droppable>
-              <div style={{ display: 'flex', justifyContent: 'space-between', }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button
                   size="large"
                   color="secondary"
@@ -584,15 +588,27 @@ const StrungItems = () => {
                       });
                     } else setWindow(window - 1);
                   }}
-                  style={{fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-start', margin: '2vh 3vw' }}
+                  style={{
+                    fontFamily: 'Fenix, serif',
+                    fontSize: '24px',
+                    justifySelf: 'flex-start',
+                    margin: '2vh 3vw',
+                  }}
                 >
                   Previous
                 </Button>
-                <div style={{ display: "flex", justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center',}}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    justifyItems: 'center',
+                    alignItems: 'center',
+                  }}
+                >
                   <TextField
                     value={goTo}
                     onChange={(e) => setGoTo(e.currentTarget.value)}
-                    style={{ marginLeft: '2vw', /* marginBottom: '2vh' */}}
+                    style={{ marginLeft: '2vw' /* marginBottom: '2vh' */ }}
                   />
                   <Button
                     size="large"
@@ -600,7 +616,13 @@ const StrungItems = () => {
                     variant="contained"
                     onClick={(e) => goToStation(parseInt(goTo))}
                     placeholder="Select Station"
-                    style={{fontFamily: 'Fenix, serif', fontSize: '24px', height: '50%', marginLeft: '2vw', position: 'relative', /* top: '0.5vh' */ }}
+                    style={{
+                      fontFamily: 'Fenix, serif',
+                      fontSize: '24px',
+                      height: '50%',
+                      marginLeft: '2vw',
+                      position: 'relative' /* top: '0.5vh' */,
+                    }}
                   >
                     GO TO Station
                   </Button>
@@ -611,12 +633,17 @@ const StrungItems = () => {
                   variant="contained"
                   disabled={window + 4 >= sequence.length ? true : false}
                   onClick={() => setWindow(window + 1)}
-                  style={{fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-end', margin: '2vh 6vw' }}
+                  style={{
+                    fontFamily: 'Fenix, serif',
+                    fontSize: '24px',
+                    justifySelf: 'flex-end',
+                    margin: '2vh 6vw',
+                  }}
                 >
                   Next
                 </Button>
               </div>
-              <OptionSelect props={DnDProps}/>
+              <OptionSelect props={DnDProps} />
             </DragDropContext>
           </div>
         </main>
