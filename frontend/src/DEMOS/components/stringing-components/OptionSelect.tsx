@@ -6,7 +6,7 @@ const OptionSelect = () => {
     const names = ["delete", "transfer", "add"];
     const [opened, setOpened] = useState('');
     const [click, setClick] = useState(false);
-    const [buttonState, setButtonState] = useState([false,''])
+    const [trackAnimationState, setTrackAnimationState] = useState("slideIn")
 
     // useEffect(() => { console.log(click + " " + opened) }, [click === true])
     // console.log("initial Render: ("+click+", "+opened+")")
@@ -20,12 +20,14 @@ const OptionSelect = () => {
                 click={click}
                 setClick={setClick}
                 setOpened={setOpened}
-
-                buttonState={buttonState}
-                setButtonState={setButtonState}
             />
             <div style={{ position: 'relative', top: '-50px', left: '50px', zIndex: -1 }}>
-                <StringingTrack name={opened} />
+                <StringingTrack
+                    name={opened}
+                    opened={opened}
+                    click={click}
+                    setTrackAnimationState={setTrackAnimationState}
+                />
             </div>
         </div>
     )

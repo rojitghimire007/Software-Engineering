@@ -19,7 +19,7 @@ const styles = makeStyles({
             position: 'relative',
             // transform: 'scaleY(1.1) rotate(80deg)',
             transform: 'scaleX(1.1) rotate(-3deg)',
-            opacity: '.89',
+            opacity: '.80',
             width: '300px',
         },
     },
