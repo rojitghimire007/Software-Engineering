@@ -35,8 +35,9 @@ const postProject = async (req, res, next) => {
       start_date: start_date ? start_date : null,
       end_date: end_date ? end_date : null,
       dbname
-    }
 
+    }
+    
     await create_database(projObj);
 
     return res.status(200).json({
