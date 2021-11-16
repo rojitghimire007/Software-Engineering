@@ -1,19 +1,7 @@
+const fittingQueries = require('../sql_queries/fittingQueries');
 const pipeQueries = require('../sql_queries/pipeQueries');
 const stringingQueries = require('../sql_queries/stringingQueries');
-const { client } = require('../utils/databaseConnection');
 const { connect_project_db, query_resolver } = require('../utils/dbHandler');
-
-const updateFirstPipe = async (pipe_id) => {
-  try {
-    await client.query(
-      `DELETE FROM first_pipe; INSERT INTO first_pipe(id) VALUES('${pipe_id}');`
-    );
-    return true;
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-};
 
 const getStringing = async (req, res, next) => {
   try {
@@ -59,51 +47,6 @@ const getStringing = async (req, res, next) => {
   }
 };
 
-const appendToString = async (req, res, next) => {
-  let { pipe_id } = req.body;
-
-  try {
-    let firstPipe = await client.query('SELECT * from first_pipe;');
-
-    if (firstPipe.rows.length == 0) updateFirstPipe(pipe_id);
-    else
-      await client.query(
-        `update stringing set next = '${pipe_id}' where next is null;`
-      );
-
-    await client.query(
-      `INSERT INTO stringing(pipe, next) VALUES('${pipe_id}', null)`
-    );
-
-    res.status(200).send({ success: true });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Note data must be separated by _
-const getStrungPipesInfo = async (req, res, next) => {
-  let { pipes } = req.params;
-  pipes = pipes.split('_');
-  var offset = 1;
-  var placeholders = pipes
-    .map(function (name, i) {
-      return '$' + (i + offset);
-    })
-    .join(',');
-
-  try {
-    let data = await client.query(
-      `SELECT void, DATE(inventory_date), CONCAT(first_name, ' ', last_name) AS inspector, location, pipe_id as id,  coil_number as coil_no, heat_number as heat_no, diameter, designation as schedule, wall_thickness, grade, pipe_length as length, pipes.coating_type as coating, color as coating_color, mfg as manufacturer, material as material_type, purchase_order as po_number, comments FROM pipes INNER JOIN schedule_and_class ON pipes.schedule_class = schedule_and_class.id INNER JOIN users ON pipes.inspector_id = users.id INNER JOIN pipe_coating ON pipes.coating_type = pipe_coating.coating_type WHERE pipe_id in (${placeholders})`,
-      pipes
-    );
-
-    return res.status(200).send(data.rows);
-  } catch (error) {
-    next(error);
-  }
-};
-
 const updateSequence = async (req, res, next) => {
   // let { target_pipe, left_pipe } = req.body;
   let { item, prev_item, start_item } = req.body;
@@ -113,7 +56,7 @@ const updateSequence = async (req, res, next) => {
 
     await deleteItemFromStringing(item, connection);
 
-    await insertIntoString(item, prev_item, start_item, connection);
+    await insertItemIntoStringing(item, prev_item, start_item, connection);
     // nexts = await client.query(
     //   `SELECT * FROM stringing WHERE pipe in ('${target_pipe}', '${left_pipe}')`
     // );
@@ -201,25 +144,15 @@ const deleteFromSequence = async (req, res, next) => {
   }
 };
 
-const lengthofSequence = async (req, res, next) => {
-  let { sequence } = req.body;
-  var offset = 1;
-  var placeholders = sequence
-    .map(function (name, i) {
-      return '$' + (i + offset);
-    })
-    .join(',');
-
-  if (!sequence || sequence.length == 0)
-    return res.status(200).send({ length: 0 });
+const insertIntoSequence = async (req, res, next) => {
   try {
-    let length = await client.query(
-      `SELECT SUM(pipe_length) as length from pipes where pipe_id in (${placeholders})`,
-      sequence
-    );
-    length = length.rows[0];
+    const connection = await connect_project_db(req.dbname);
 
-    return res.status(200).send(length);
+    let { item, prev_item, start_item } = req.body;
+
+    await insertItemIntoStringing(item, prev_item, start_item, connection);
+
+    return res.status(200).send({ success: true });
   } catch (error) {
     console.log(error);
     next(error);
@@ -337,7 +270,19 @@ const deleteItemFromStringing = async (item, connection) => {
   }
 };
 
-const insertIntoString = async (item, prev_item, start_item, connection) => {
+/**
+ *
+ * @param {*} item The item to be inserted
+ * @param {*} prev_item The thing that needs to be ahead of our item in the updated sequence. Can be null if item is placed at the beginning of the sequence.
+ * @param {*} start_item If the item is placed at the beginning of the sequence, this will be the previous first item in that sequence.
+ * @param {*} connection connection to db
+ */
+const insertItemIntoStringing = async (
+  item,
+  prev_item,
+  start_item,
+  connection
+) => {
   let _,
     station_number,
     next_item,
@@ -456,40 +401,65 @@ const createNewSequence = async (req, res, next) => {
   }
 };
 
+const getOneItemInfo = async (item, connection) => {
+  try {
+    // If fitting
+    if (new RegExp('F_.*').test(item)) {
+      _ = await query_resolver(connection, {
+        text: fittingQueries.oneFitting,
+        values: [item.substring(2)],
+      });
+    } else {
+      _ = await query_resolver(connection, {
+        text: pipeQueries.onePipe,
+        values: [item.substring(2)],
+      });
+    }
+
+    return _[0];
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getItemInfo = async (req, res, next) => {
   // item needs to be p_ or f_
   let { item } = req.params;
 
   try {
     const connection = await connect_project_db(req.dbname);
-    let _ = null;
+    let details = await getOneItemInfo(item, connection);
 
-    // If fitting
-    if (new RegExp('F_.*').test(item)) {
-      _ = await query_resolver(connection, {
-        text: pipeQueries.onePipe,
-        values: [item.substring(2)],
-      });
-    } else {
-      _ = await query_resolver(connection, {
-        text: pipeQueries.onePipe,
-        values: [item],
-      });
-    }
-
-    return res.status(200).send(_[0]);
+    return res.status(200).send(details);
   } catch (error) {
     next(error);
   }
 };
+
+const getStrungItemsInfo = async (req, res, next) => {
+  let items = req.params.items.split('-');
+  let ans = [];
+
+  try {
+    const connection = await connect_project_db(req.dbname);
+    for (item of items) {
+      if (item == 'gap')
+        ans.push({ heat_no: null, wall_thickness: null, grade: null });
+      else ans.push(await getOneItemInfo(item, connection));
+    }
+    res.status(200).send(ans);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getStringing,
-  getStrungPipesInfo,
-  appendToString,
   updateSequence,
-  lengthofSequence,
   getStriningEligiblePipes,
   deleteFromSequence,
   createNewSequence,
   getItemInfo,
+  insertIntoSequence,
+  getStrungItemsInfo,
 };

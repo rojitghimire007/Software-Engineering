@@ -30,14 +30,13 @@ const { cutPipe, getCuttingEligiblePipes } = require('./PipeCutting');
 
 const {
   getStringing,
-  getStrungPipesInfo,
-  appendToString,
   updateSequence,
-  lengthofSequence,
   getStriningEligiblePipes,
   deleteFromSequence,
   createNewSequence,
   getItemInfo,
+  insertIntoSequence,
+  getStrungItemsInfo,
 } = require('./Stringing');
 //const { cutPipe } = require('./PipeCutting');
 
@@ -73,12 +72,11 @@ const SetRoutes = (app) => {
   //stringing
   app.get('/string', getStringing);
   app.get('/string/eligible', getStriningEligiblePipes);
-  app.post('/string', appendToString);
   app.post('/string/sequence', createNewSequence);
   app.put('/string', updateSequence);
+  app.post('/string', insertIntoSequence);
   app.delete('/string/:item', deleteFromSequence);
-  app.get('/pipes/info/:pipes', getStrungPipesInfo);
-  app.post('/pipes/length', lengthofSequence);
+  app.get('/string/details/:items', getStrungItemsInfo);
 
   //other
   app.get('/items/:item', getItemInfo);
