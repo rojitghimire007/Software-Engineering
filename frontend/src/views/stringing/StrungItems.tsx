@@ -555,7 +555,27 @@ const StrungItems = () => {
                                   )}
                                 >
                                   {console.log(item)}
-                                  <Pipe plength={item.plength} station={item.station_number} pid={item.item_id} length={100}/>
+                                  <Pipe
+                                    plength={item.plength}
+                                    station={item.station_number}
+                                    pid={item.item_id}
+                                    length={100}
+                                    grade={currentItemDetails[index]
+                                      ? currentItemDetails[index].grade
+                                      : 'N/A'}
+                                    overlap={currentItemDetails[index] 
+                                      && currentItemDetails[index].overlap
+                                      ? "overlap"
+                                      : 'NO overlap'}
+                                    thickness={currentItemDetails[index]
+                                      && currentItemDetails[index].wall_thickness
+                                      ? currentItemDetails[index].wall_thickness
+                                      : 'N/A'}
+                                    heat={currentItemDetails[index] 
+                                      && currentItemDetails[index].heat_no
+                                      ? currentItemDetails[index].heat_no
+                                      : 'N/A'}
+                                  />
                                 </div>
                               )}
                             </Draggable>
@@ -584,15 +604,15 @@ const StrungItems = () => {
                       });
                     } else setWindow(window - 1);
                   }}
-                  style={{fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-start', margin: '2vh 3vw' }}
+                  style={{ fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-start', margin: '2vh 3vw' }}
                 >
                   Previous
                 </Button>
-                <div style={{ display: "flex", justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center',}}>
+                <div style={{ display: "flex", justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center', }}>
                   <TextField
                     value={goTo}
                     onChange={(e) => setGoTo(e.currentTarget.value)}
-                    style={{ marginLeft: '2vw', /* marginBottom: '2vh' */}}
+                    style={{ marginLeft: '2vw', /* marginBottom: '2vh' */ }}
                   />
                   <Button
                     size="large"
@@ -600,7 +620,7 @@ const StrungItems = () => {
                     variant="contained"
                     onClick={(e) => goToStation(parseInt(goTo))}
                     placeholder="Select Station"
-                    style={{fontFamily: 'Fenix, serif', fontSize: '24px', height: '50%', marginLeft: '2vw', position: 'relative', /* top: '0.5vh' */ }}
+                    style={{ fontFamily: 'Fenix, serif', fontSize: '24px', height: '50%', marginLeft: '2vw', position: 'relative', /* top: '0.5vh' */ }}
                   >
                     GO TO Station
                   </Button>
@@ -611,12 +631,12 @@ const StrungItems = () => {
                   variant="contained"
                   disabled={window + 4 >= sequence.length ? true : false}
                   onClick={() => setWindow(window + 1)}
-                  style={{fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-end', margin: '2vh 6vw' }}
+                  style={{ fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-end', margin: '2vh 6vw' }}
                 >
                   Next
                 </Button>
               </div>
-              <OptionSelect props={DnDProps}/>
+              <OptionSelect props={DnDProps} />
             </DragDropContext>
           </div>
         </main>

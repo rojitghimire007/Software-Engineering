@@ -84,7 +84,7 @@ const useStyles = makeStyles({
         background: 'linear-gradient(to bottom right, rgba(200,200,150,.05), rgba(150,150,150,.05))',
         // border: '1px solid blue',
         fontFamily: 'Bebas Neue, serif',
-        fontSize: '1.5em',
+        fontSize: '1em',
         marginRight: '10px',
         padding: '0 10px',
         position: 'relative',
@@ -97,12 +97,12 @@ const useStyles = makeStyles({
         
         '&:hover': {
             transform: 'scale(1.01)',
-            background: 'linear-gradient(to bottom right, rgb(200,200,150), rgb(150,150,150))',
+            // background: 'linear-gradient(to bottom right, rgb(200,200,150), rgb(150,150,150))',
         },
     },
 })
 
-function Pipe2({length, height, pid, plength, station, gap, heat, thickness, grade,}: any) {
+function Pipe2({length, height, pid, plength, station, gap, heat, thickness, grade, overlap}: any) {
     const pipeDetails = {
         length: length,
         height: height,
@@ -129,7 +129,7 @@ function Pipe2({length, height, pid, plength, station, gap, heat, thickness, gra
                                 <div className={classes.details}>
                                     Pipe length: {plength}
                                 </div>
-                                {/* <div className={classes.details}>
+                                <div className={classes.details}>
                                     Heat No: {heat}
                                 </div>
                                 <div className={classes.details}>
@@ -137,11 +137,11 @@ function Pipe2({length, height, pid, plength, station, gap, heat, thickness, gra
                                 </div>
                                 <div className={classes.details}>
                                     Grade: {grade}
-                                </div> */}
-                                {/* <div className={classes.details}>
-                                    Placeholder: {`{information}`}
+                                </div> 
+                                 <div className={classes.details}>
+                                    {`${overlap}`}
                                 </div>
-                                <div className={classes.details}>
+                                {/* <div className={classes.details}>
                                     Placeholder: {`{information}`}
                                 </div> */}
                             </div>

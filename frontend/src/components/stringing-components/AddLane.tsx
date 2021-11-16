@@ -50,14 +50,15 @@ const AddLane = ({ clck, shwarea, id, props, }: any) => {
                             {...provided.droppableProps}
                             className={classes.deleteContainer}
                         >
-                            <Draggable draggableId="addDrag" index={0}>
+                            <Draggable draggableId={newPipe.item_id} index={0}>
                                 {(provided) => (
                                     <div
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                     >
-                                        {newPipe.item_id ?
+                                        {console.log(newPipe.item_id)}
+                                        {newPipe.item_id != ('' && null) ?
                                             <Pipe plength={newPipe.plength} station={newPipe.station_number} pid={autocompleteProps.inputValue} length={100} />
                                             :
                                             null
