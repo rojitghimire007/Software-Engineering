@@ -59,7 +59,7 @@ const items: CarouselItem[] =
         <>
             <Link to={item.link} style={{width: '100%', height: '100%'}}>
                 <img src={item.image} style={{height: '90%'}}></img>
-                <div style={{height: '10%', color: 'white', backgroundColor: 'black'}}>
+                <div style={{height: '10%', color: 'white', textDecoration: 'none', backgroundColor: 'black'}}>
                     {item.id}
                 </div>
             </Link>

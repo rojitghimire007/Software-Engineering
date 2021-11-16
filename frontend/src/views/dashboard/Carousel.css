@@ -8,6 +8,7 @@
     justify-content: center;
     align-items: center;
     border: 2px solid;
+    border-radius: 10px;
 }
 
 .root {
@@ -216,4 +217,8 @@
 
 .carousel__control--prev:after {
     transform: rotate(45deg);
+}
+
+a{
+    text-decoration: none;
 }
