@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core';
 
 const styles = makeStyles({
@@ -65,31 +65,55 @@ const styles = makeStyles({
     },
 })
 
-const AButton = ({ name, color, index, setClick, setOpened, opened, click }: any) => {
+const AButton = ({ name, color, index, setClick, setOpened, opened, click, buttonState, setButtonState }: any) => {
     const specs = { color: color, name: name, index: index };
     const classes = styles(specs);
 
-    const handleClick = () => {
-        console.log("btn " + name + " clicked!");
-        // var x = 0;
-        if (click) {
-            setClick(false);
+    const handleClick = (/* e: any */ id: any) => {
+        // console.log(name);
+
+        // if (e.name === 'add') {console.log('added')}
+
+
+        // initial state = (0,'')
+
+        // if the button is clicked a second time in a row
+        if (click && opened === id) {
+            setClick(!click);
             setOpened('');
-            if (opened === '') {
-                setClick(true);
-                setOpened(name);
-            }
-        } //swap for new button
-        if (opened === '') {
-            setClick(true);
-            setOpened(name);
+            // console.log("button clicked again: (" + click + ", " + name + ")")
         }
+
+        // if the button is clicked after a different button
+        else if (click && opened != id) {
+            setOpened(name);
+            // console.log("new button clicked: (" + click + ", " + name + ")")
+        }
+        // if this is the first button clicked
+        else if (!click && opened === '') {
+            setClick(!click);
+            setOpened(id);
+            // console.log("very first click: (" + click + ", " + name + ")")
+        }
+        // else
+        //     setClick(!click)
+
     };
+
+    // useEffect(() => {
+    //     if (click){
+    //         setOpened(name);
+    //         console.log("update to: (" + click + ", " + name + ")")
+    //     }
+    //     else
+    //         setOpened('');
+
+    // }, [click, opened])
 
     return (
         <div
             className={classes.container}
-            onClick={() => { handleClick() }}
+            onClick={() => { handleClick(name) }}
         >
             <div className={classes.front} ></div>
             <div className={classes.content}>

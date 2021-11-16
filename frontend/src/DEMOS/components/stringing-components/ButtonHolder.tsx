@@ -1,7 +1,7 @@
 import React from 'react'
 import AButton from './AButton'
 
-const ButtonHolder = ({ names, setClick, opened, setOpened, click }: any) => {
+const ButtonHolder = ({ names, setClick, opened, setOpened, click, buttonState, setButtonState }: any) => {
     return (
         <div style={{
             position: 'relative',
@@ -20,6 +20,8 @@ const ButtonHolder = ({ names, setClick, opened, setOpened, click }: any) => {
                 setOpened={setOpened}
                 opened={opened}
                 click={click}
+                buttonState={buttonState}
+                setButtonState={setButtonState}
             />
             <AButton
                 color="rgba(0,255,0,1)"
@@ -28,6 +30,8 @@ const ButtonHolder = ({ names, setClick, opened, setOpened, click }: any) => {
                 setOpened={setOpened}
                 opened={opened}
                 click={click}
+                buttonState={buttonState}
+                setButtonState={setButtonState}
             />
             <AButton
                 color="rgba(255,0,0,1)"
@@ -36,6 +40,8 @@ const ButtonHolder = ({ names, setClick, opened, setOpened, click }: any) => {
                 setOpened={setOpened}
                 opened={opened}
                 click={click}
+                buttonState={buttonState}
+                setButtonState={setButtonState}
             />
         </div>
     )
