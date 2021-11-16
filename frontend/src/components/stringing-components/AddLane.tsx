@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core'
 import DeleteForevorIcon from '@mui/icons-material/DeleteForever';
 import { Droppable } from 'react-beautiful-dnd'
+import { Autocomplete, Button } from '@mui/material';
 
 const styles = makeStyles({
     container: {
+        height: '100%',
+        width: '100%',
         border: '1px solid blue'
     },
     deleteContainer: {
@@ -16,11 +19,6 @@ const styles = makeStyles({
         background: 'rgba(240,240,240,.25)',
         margin: '0 auto',
         color: 'red',
-
-        '&:hover': {
-            background: 'rgba(255,50,50,1)',
-            color: 'black',
-        },
     },
     deleteIcon: {
         position: 'relative',
@@ -30,24 +28,23 @@ const styles = makeStyles({
     },
 })
 
-const AddLane = ({ clck, shwarea, id }: any) => {
+const AddLane = ({ clck, shwarea, id, props, }: any) => {
+    const properties = { ...props[0].add }
+    const toAdd = [];
+    console.log(props[0].add);
     const classes = styles();
     return (
         <>
-            {/* <div style={{position: 'absolute', top: 0, left: 0, }}>Hello</div> */}
-            {console.log("AddDnD on")}
             <div className={classes.container}>
+                <Autocomplete disablePortal {...properties.autocomplete} />
+                <Button {...properties.button} style={{fontFamily: 'Fenix, serif', fontSize: '24px',position: 'relative', margin: '0 45%',}}>Select</Button>
                 <Droppable droppableId="add" direction="horizontal">
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
-                            // style={getListStyle(snapshot.isDraggingOver)}
                             {...provided.droppableProps}
-                            // className={classes.virtList}
                             className={classes.deleteContainer}
                         >
-                            <DeleteForevorIcon className={classes.deleteIcon} />
-                            <h1 style={{}}>{id}</h1>
                             {provided.placeholder}
                         </div>
                     )}

@@ -496,8 +496,14 @@ const StrungItems = () => {
 
   if (!loading)
     return (
-      <div style={{ maxWidth: '100vw' }}>
+      <div /* className={classes.body} */ style={{ maxWidth: '100vw' }}>
         <CssBaseline />
+        {/* <Toolbar className={classes.title}>
+          <Typography variant="h4" className={classes.titleContent}>
+            Pipe Stringing
+          </Typography>
+        </Toolbar> */}
+
         <main>
           <div>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -553,7 +559,46 @@ const StrungItems = () => {
                                     snapshot.isDragging,
                                     provided.draggableProps.style
                                   )}
+                                // className={classes.pipeContainer}
                                 >
+
+                                  {/* <div className={classes.pipe}>
+                                    <div>{item.item_id}</div>
+                                    <div>{item.station_number}</div>
+                                    <div>{item.plength || item.flength}</div>
+                                    <div>{item.overlap ? 'Overlap' : 'NO'}</div>
+                                  </div> */}
+                                  {/* <Pipe 
+                                    length={50}
+                                    height={50}
+                                    pid={item.item_id}
+                                    station={item.station_number}
+                                    // gap={item.}
+                                    // heat=
+                                    // thickness=
+                                    // grade=
+                                  /> */}
+                                  {/* <div>
+                                      Heat No:{' '}
+                                      {currentItemDetails[index]
+                                        ? currentItemDetails[index].heat_no
+                                        : ''}
+                                    </div>
+                                    <div>
+                                      Grade:{' '}
+                                      {currentItemDetails[index]
+                                        ? currentItemDetails[index].grade
+                                        : ''}
+                                    </div>
+                                    <div>
+                                      Thickness:{' '}
+                                      {currentItemDetails[index]
+                                        ? currentItemDetails[index]
+                                            .wall_thickness
+                                        : ''}
+                                    </div>
+                                  </div>
+                                  <div className={classes.pipeEnd} /> */}
                                   <Pipe pid={item.item_id} />
                                 </div>
                               )}
@@ -615,7 +660,121 @@ const StrungItems = () => {
                   Next
                 </Button>
               </div>
-              <OptionSelect props={DnDProps}/>
+              {/* <DeleteDnD />
+              <TransferDnD /> */}
+              {/* <div style={{background: 'pink'}}><StringBtnContainer /></div> */}
+
+
+
+
+
+              <OptionSelect props={DnDProps}/* style={{ maxWidth: '100vw', zIndex: '9999999999999999 !important', }}  */ />
+
+
+
+
+
+              {/* <Droppable droppableId="delete" direction="horizontal">
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    // style={getListStyle(snapshot.isDraggingOver)}
+                    {...provided.droppableProps}
+                    // className={classes.virtList}
+                    className={styles.deleteContainer}
+                  >
+                    <DeleteForeverIcon className={styles.deleteIcon}/>
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable> */}
+
+              {/* <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={eligible}
+                sx={{ width: 300 }}
+                value={newItem}
+                onChange={(event: any, newValue: any) => {
+                  setNewItem(newValue);
+                }}
+                inputValue={inputValue}
+                onInputChange={(event, newInputValue) => {
+                  setInputValue(newInputValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Add Item" />
+                )}
+                filterOptions={filterOptions}
+              /> */}
+              {/* <Button
+                variant="contained"
+                onClick={(e) => {
+                  getItemDetails(newItem);
+                  setInputValue('');
+                  setNewItem('');
+                }}
+              > */}
+              {/* Select */}
+              {/* </Button> */}
+
+              {/* <Droppable droppableId="hold" direction="horizontal">
+                {(provided, snapshot) => ( */}
+              {/* <div
+                    ref={provided.innerRef}
+                    // style={getListStyle(snapshot.isDraggingOver)}
+                    {...provided.droppableProps}
+                    // className={classes.virtList}
+                    style={{
+                      height: '20vh',
+                      width: '30vw',
+                      backgroundColor: 'gray',
+                    }}
+                  > */}
+              {/* // {newItemDetails.item_id ? ( */}
+              {/* <Draggable
+                        key={`${newItemDetails.item_id}`}
+                        draggableId={`${newItemDetails.item_id}`}
+                        index={0}
+                      > */}
+              {/* // {(provided, snapshot) => ( */}
+              {/* <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                            className={classes.pipeContainer}
+                          > */}
+              {/* {console.log(`Pipe: ${index}`)}
+                                  {console.log(`Pipe: ${item.item_id}`)} */}
+
+              {/* <div className={classes.pipeStart} />
+
+                            <div className={classes.pipe}>
+                              <div>{newItemDetails.item_id}</div>
+                              <div>
+                                {newItemDetails.plength ||
+                                  newItemDetails.flength}
+                              </div>
+                              <div>Heat No: {newItemDetails.heat_no}</div>
+                              <div>Grade: {newItemDetails.grade}</div>
+                              <div>
+                                Thickness: {newItemDetails.wall_thickness}
+                              </div>
+                            </div>
+                            <div className={classes.pipeEnd} />
+                          </div> */}
+              {/*  /* )}
+                      </Draggable>
+                     ) : null}
+
+                    {/* /* {provided.placeholder}
+                        </div> */}
+              {/* )} */}
+              {/* </Droppable> */}
             </DragDropContext>
           </div>
         </main>

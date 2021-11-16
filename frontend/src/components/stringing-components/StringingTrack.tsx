@@ -1,7 +1,7 @@
 import React, { useState, useEffect, SyntheticEvent, useLayoutEffect } from 'react'
 import { makeStyles } from '@material-ui/core'
-import AddLane from './DeleteLane'
-import TransferLane from './DeleteLane'
+import AddLane from './AddLane'
+import TransferLane from './TransferLane'
 import DeleteLane from './DeleteLane'
 
 const styles = makeStyles({
@@ -13,6 +13,7 @@ const styles = makeStyles({
     },
     animationA: {
         animation: '$slideIn .25s ease-in-out 0s',
+        zIndex: -2,
     },
     animationB: {
         // opacity: '0',
@@ -29,7 +30,7 @@ const styles = makeStyles({
     },
 })
 
-const StringingTrack = ({ click, opened, name, trackHistory, }: any) => {
+const StringingTrack = ({ click, opened, name, trackHistory, props, }: any) => {
     const classes = styles();
     const [animationStyle, setAnimationStyle] = useState(classes.container);
 
@@ -50,13 +51,13 @@ const StringingTrack = ({ click, opened, name, trackHistory, }: any) => {
 
     const renderLane = (id: any) => {
         if (id === 'add'){
-            return <AddLane />
+            return <AddLane props={props}/>
         }
-        if (id === 'transfer'){
-            return <TransferLane />
+        else if (id === 'transfer'){
+            return <TransferLane props={props}/>
         }
-        if (id === 'delete'){
-            return <DeleteLane />
+        else if (id === 'delete'){
+            return <DeleteLane props={props}/>
         }
     }
 

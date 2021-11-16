@@ -122,9 +122,9 @@ function Pipe2({length, height, pid, station, gap, heat, thickness, grade,}: any
                                 <div className={classes.details}>
                                     {pid}
                                 </div>
-                                <div className={classes.details}>
+                                {/* <div className={classes.details}>
                                     Station No: {station}
-                                </div>
+                                </div> */}
                                 {/* <div className={classes.details}>
                                     Heat No: {heat}
                                 </div>

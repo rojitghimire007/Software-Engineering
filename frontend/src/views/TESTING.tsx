@@ -10,10 +10,10 @@ import DemoA from '../DEMOS/DemoA'
 import DemoI from '../DEMOS/DemoI'
 import RunCarousel from 'DEMOS/ZachDemo/RunCarousel'
 import RunCarousel2 from 'DEMOS/ZachDemo/RunCarousel2'
-import Pipe2 from 'DEMOS/components/Pipe2'
-import AButton from 'DEMOS/components/stringing-components/AButton'
-import ButtonHolder from 'DEMOS/components/stringing-components/ButtonHolder'
-import OptionSelect from 'DEMOS/components/stringing-components/OptionSelect'
+import Pipe2 from 'components/stringing-components/Pipe2'
+import AButton from 'components/stringing-components/AButton'
+import ButtonHolder from 'components/stringing-components/ButtonHolder'
+import OptionSelect from 'components/stringing-components/OptionSelect'
 //////////////
 
 const TESTING = () => {

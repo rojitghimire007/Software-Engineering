@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core'
 import DeleteForevorIcon from '@mui/icons-material/DeleteForever';
 import { Droppable } from 'react-beautiful-dnd'
+import Pipe from 'components/stringing-components/Pipe2'
 
 const styles = makeStyles({
     container: {
@@ -18,11 +19,6 @@ const styles = makeStyles({
         background: 'rgba(240,240,240,.25)',
         margin: '0 auto',
         color: 'red',
-
-        '&:hover': {
-            background: 'rgba(255,50,50,1)',
-            color: 'black',
-        },
     },
     deleteIcon: {
         position: 'relative',
@@ -32,24 +28,33 @@ const styles = makeStyles({
     },
 })
 
-const DeleteLane = ({ clck, shwarea, id }: any) => {
+const TransferLane = ({ clck, shwarea, id, props, held }: any) => {
+    const properties = { ...props[0].transfer }
+    const newPipe = {...properties.newItemDetails};
+    console.log(newPipe);
+
     const classes = styles();
+    
+    // const hold = [...held];
+    // Future implementation
+    // const setHold = () => {
+    //     if(hold.indexOf(properties.newItemDetails) > -1)
+    //     hold.push(properties.newItemDetails);
+    // }
+
     return (
         <>
-            {/* <div style={{position: 'absolute', top: 0, left: 0, }}>Hello</div> */}
-            {console.log("DeleteDnD on")}
-            <div className={classes.deleteContainer}>
-                <Droppable droppableId="delete" direction="horizontal">
+            {/* {setHold} // Future Stuff*/}
+            <div className={classes.container}>
+                <Droppable droppableId="transfer" direction="horizontal">
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
-                            // style={getListStyle(snapshot.isDraggingOver)}
                             {...provided.droppableProps}
-                            // className={classes.virtList}
-                            // className={classes.deleteContainer}
+                            className={classes.deleteContainer}
                         >
-                            <DeleteForevorIcon className={classes.deleteIcon} />
-                            {id}
+
+                            <Pipe />
                             {provided.placeholder}
                         </div>
                     )}
@@ -59,4 +64,4 @@ const DeleteLane = ({ clck, shwarea, id }: any) => {
     )
 }
 
-export default DeleteLane
+export default TransferLane
