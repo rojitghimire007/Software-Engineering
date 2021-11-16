@@ -246,11 +246,16 @@ const StrungItems = () => {
         updateStations(
           sequence,
           window + result.destination.index,
-          newItemDetails.length
+          newItemDetails.plength || newItemDetails.flength || 0
         );
 
         let prevItem: dataType =
           sequence[window + result.destination.index - 1];
+
+        let length = {};
+        if (new RegExp('F_.*').test(target_pipe))
+          length = { flength: newItemDetails.flength };
+        else length = { plength: newItemDetails.plength };
 
         let prev;
         setSequence(
@@ -260,6 +265,7 @@ const StrungItems = () => {
               ? prevItem.station_number +
                 (prevItem.flength || prevItem.plength || 0)
               : 0,
+            ...length,
           })
         );
         setCurrentItemDetails(
@@ -400,7 +406,8 @@ const StrungItems = () => {
     item_id: string;
     heat_no: string;
     grade: string;
-    length: number;
+    plength?: number;
+    flength?: number;
     wall_thickness: number;
   }>(initialNewItem);
   const [inputValue, setInputValue] = React.useState('');
@@ -409,9 +416,13 @@ const StrungItems = () => {
     api
       .getItemInfo(item)
       .then((res) => {
+        let length = {};
+        if (new RegExp('F_.*').test(item)) length = { flength: res.length };
+        else length = { plength: res.length };
+
         setNewItemDetails({
           item_id: res.id,
-          length: res.length,
+          ...length,
           heat_no: res.heat_no,
           wall_thickness: res.wall_thickness,
           grade: res.grade,
@@ -660,7 +671,15 @@ const StrungItems = () => {
 
                             <div className={classes.pipe}>
                               <div>{newItemDetails.item_id}</div>
-                              <div>{newItemDetails.length}</div>
+                              <div>
+                                {newItemDetails.plength ||
+                                  newItemDetails.flength}
+                              </div>
+                              <div>Heat No: {newItemDetails.heat_no}</div>
+                              <div>Grade: {newItemDetails.grade}</div>
+                              <div>
+                                Thickness: {newItemDetails.wall_thickness}
+                              </div>
                             </div>
                             <div className={classes.pipeEnd} />
                           </div>

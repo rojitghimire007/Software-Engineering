@@ -1,3 +1,4 @@
+const fittingQueries = require('../sql_queries/fittingQueries');
 const pipeQueries = require('../sql_queries/pipeQueries');
 const stringingQueries = require('../sql_queries/stringingQueries');
 const { connect_project_db, query_resolver } = require('../utils/dbHandler');
@@ -405,7 +406,7 @@ const getOneItemInfo = async (item, connection) => {
     // If fitting
     if (new RegExp('F_.*').test(item)) {
       _ = await query_resolver(connection, {
-        text: pipeQueries.onePipe,
+        text: fittingQueries.oneFitting,
         values: [item.substring(2)],
       });
     } else {
