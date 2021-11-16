@@ -24,10 +24,7 @@ const OptionSelect = () => {
                 buttonState={buttonState}
                 setButtonState={setButtonState}
             />
-            <div style={{ position: 'relative', top: '-33px',left: '50px', zIndex: -1 }}>
-                {/*opened === 'add' ? <StringingTrack /* style={{position: 'relative'}} */}
-                {/*opened === 'transfer' ? <StringingTrack></StringingTrack> : null*/}
-                {/*opened === 'delete' ? <StringingTrack></StringingTrack> : null*/}
+            <div style={{ position: 'relative', top: '-50px', left: '50px', zIndex: -1 }}>
                 <StringingTrack name={opened} />
             </div>
         </div>

@@ -12,36 +12,37 @@ const ButtonHolder = ({ names, setClick, opened, setOpened, click, buttonState, 
             gridTemplateColumns: '180px 180px 180px',
             gridTemplateRows: '50px',
             columnGap: '0',
+            background: 'rgba(50,50,50,.5)',
+            backgroundSize: '650px',
+            width: 'fit-Content',
+            overflow: 'hidden',
         }}>
             <AButton
                 color="rgba(0,0,255,1)"
+                textColor={"white"}
                 name={names[2]}
                 setClick={setClick}
                 setOpened={setOpened}
                 opened={opened}
                 click={click}
-                buttonState={buttonState}
-                setButtonState={setButtonState}
             />
             <AButton
-                color="rgba(0,255,0,1)"
+                color="rgba(0,255,100,1)"
+                textColor={"black"}
                 name={names[1]}
                 setClick={setClick}
                 setOpened={setOpened}
                 opened={opened}
                 click={click}
-                buttonState={buttonState}
-                setButtonState={setButtonState}
             />
             <AButton
                 color="rgba(255,0,0,1)"
+                textColor={"white"}
                 name={names[0]}
                 setClick={setClick}
                 setOpened={setOpened}
                 opened={opened}
                 click={click}
-                buttonState={buttonState}
-                setButtonState={setButtonState}
             />
         </div>
     )

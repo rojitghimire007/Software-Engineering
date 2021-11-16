@@ -4,7 +4,7 @@ const StringingTrack = ({ name }: any) => {
     return (
         <>
             {name != '' ?
-                <div style={{ textTransform: 'uppercase', backgroundColor: 'rgba(200,200,200,1)', width: '100%', height: '200px' }}>
+                <div style={{ textTransform: 'uppercase', backgroundColor: 'rgba(200,200,200,1)', width: '100%', height: '540px' }}>
                     {name} Track Item Here
                 </div>
                 :

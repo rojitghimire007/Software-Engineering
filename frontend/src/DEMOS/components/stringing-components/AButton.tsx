@@ -18,7 +18,7 @@ const styles = makeStyles({
             cursor: 'pointer',
             position: 'relative',
             // transform: 'scaleY(1.1) rotate(80deg)',
-            transform: 'scaleX(1.1) rotate(-5deg)',
+            transform: 'scaleX(1.1) rotate(-3deg)',
             opacity: '.89',
             width: '300px',
         },
@@ -45,8 +45,12 @@ const styles = makeStyles({
         borderWidth: '2px 0 0 0',
         borderStyle: 'solid',
         borderColor: 'black',
-        color: 'white',
+        // color: (specs: any) => {return specs.textColor},
+        color: "white",
+        textDecoration: 'underline',
         zIndex: 999,
+        fontFamily: 'Bebas Neue, serif',
+        letterSpacing: '3px',
     },
     back: {
         justifySelf: 'flex-end',
@@ -65,50 +69,29 @@ const styles = makeStyles({
     },
 })
 
-const AButton = ({ name, color, index, setClick, setOpened, opened, click, buttonState, setButtonState }: any) => {
-    const specs = { color: color, name: name, index: index };
+const AButton = ({ name, color, index, setClick, setOpened, opened, click, textColor}: any) => {
+    const specs = { color: color, name: name, index: index, textColor: textColor };
     const classes = styles(specs);
 
     const handleClick = (/* e: any */ id: any) => {
-        // console.log(name);
-
-        // if (e.name === 'add') {console.log('added')}
-
-
-        // initial state = (0,'')
-
         // if the button is clicked a second time in a row
         if (click && opened === id) {
             setClick(!click);
             setOpened('');
-            // console.log("button clicked again: (" + click + ", " + name + ")")
         }
 
         // if the button is clicked after a different button
         else if (click && opened != id) {
             setOpened(name);
-            // console.log("new button clicked: (" + click + ", " + name + ")")
         }
+
         // if this is the first button clicked
         else if (!click && opened === '') {
             setClick(!click);
             setOpened(id);
-            // console.log("very first click: (" + click + ", " + name + ")")
         }
-        // else
-        //     setClick(!click)
 
     };
-
-    // useEffect(() => {
-    //     if (click){
-    //         setOpened(name);
-    //         console.log("update to: (" + click + ", " + name + ")")
-    //     }
-    //     else
-    //         setOpened('');
-
-    // }, [click, opened])
 
     return (
         <div
