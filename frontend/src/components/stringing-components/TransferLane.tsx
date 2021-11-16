@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core'
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core';
 import DeleteForevorIcon from '@mui/icons-material/DeleteForever';
-import { Droppable, Draggable } from 'react-beautiful-dnd'
-import Pipe from 'components/stringing-components/Pipe2'
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import Pipe from 'components/stringing-components/Pipe2';
 
 const styles = makeStyles({
     container: {
@@ -24,13 +24,13 @@ const styles = makeStyles({
     deleteIcon: {
         position: 'relative',
         transform: 'scale(2.75)',
-        opoacity: .75,
+        opoacity: 0.75,
         transition: '',
     },
-})
+});
 
 const TransferLane = ({ clck, shwarea, id, props, held }: any) => {
-    const properties = { ...props[0].transfer }
+    const properties = { ...props[0].transfer };
     const newPipe = { ...properties.newItemDetails };
     console.log(newPipe);
 
@@ -102,7 +102,7 @@ const TransferLane = ({ clck, shwarea, id, props, held }: any) => {
                 </Droppable>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default TransferLane
+export default TransferLane;
