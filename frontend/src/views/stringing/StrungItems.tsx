@@ -321,6 +321,30 @@ const StrungItems = () => {
         // setSequence([...items]);
       });
   };
+  const insertHoldItem = (result: any) => {
+    let target_pipe = result.draggableId;
+    let prevItem: dataType = sequence[window + result.destination.index - 1];
+
+    let items = insertItem(sequence, window + result.destination.index, {
+      ...holdItem,
+      item_id: target_pipe,
+      station_number: prevItem
+        ? prevItem.station_number + (prevItem.flength || prevItem.plength || 0)
+        : 0,
+    });
+
+    let [left_item, start_item] = getLeftAndStartItem(items, result);
+
+    return api
+      .updateSequence(target_pipe, left_item, start_item)
+      .then((res) => {
+        setSequence([...items]);
+      })
+      .catch((err) => {
+        alert(err.message);
+        // setSequence([...items]);
+      });
+  };
 
   const deleteFromSequence = (result: any) => {
     let item: dataType = sequence[window + result.source.index];
@@ -362,8 +386,28 @@ const StrungItems = () => {
       result.destination.droppableId === 'droppable'
     )
       addNewItem(result);
-    else if (result.source.index == result.destination.index) return;
-    else updateSequence(result);
+    else if (
+      result.destination.droppableId == 'hold' &&
+      result.source.droppableId === 'droppable'
+    ) {
+      setHoldItem(sequence[window + result.source.index]);
+      setSequence(remove(sequence, window + result.source.index));
+    } else if (
+      result.source.droppableId == 'hold' &&
+      result.destination.droppableId == 'droppable'
+    ) {
+      setHoldItem({});
+      insertHoldItem(result);
+    } else if (
+      result.source.droppableId != result.destination.droppableId &&
+      result.source.index == result.destination.index
+    )
+      return;
+    else {
+      console.log('--------------------');
+      console.log('Here');
+      updateSequence(result);
+    }
   };
 
   const goToStation = (target: number) => {
@@ -431,6 +475,8 @@ const StrungItems = () => {
   }>(initialNewItem);
   const [inputValue, setInputValue] = React.useState('');
 
+  const [holdItem, setHoldItem] = useState({});
+
   const getItemDetails = (item: string) => {
     api
       .getItemInfo(item)
@@ -477,16 +523,9 @@ const StrungItems = () => {
         newItemDetails: newItemDetails,
       },
       transfer: {
-        newItemDetails: newItemDetails,
+        holdItem: holdItem,
       },
     },
-    /* 
-    {
-      delete: {
-
-      }
-    }, 
-    */
   ];
 
   //////////////////////////////
@@ -553,7 +592,6 @@ const StrungItems = () => {
                                     provided.draggableProps.style
                                   )}
                                 >
-                                  {console.log(item)}
                                   <Pipe
                                     plength={item.plength}
                                     station={item.station_number}

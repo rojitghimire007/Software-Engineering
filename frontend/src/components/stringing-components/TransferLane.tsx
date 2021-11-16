@@ -31,7 +31,7 @@ const styles = makeStyles({
 
 const TransferLane = ({ clck, shwarea, id, props, held }: any) => {
   const properties = { ...props[0].transfer };
-  const newPipe = { ...properties.newItemDetails };
+  const newPipe = { ...properties.holdItem };
   console.log(newPipe);
 
   const classes = styles();
@@ -54,22 +54,24 @@ const TransferLane = ({ clck, shwarea, id, props, held }: any) => {
               {...provided.droppableProps}
               className={classes.deleteContainer}
             >
-              <Draggable draggableId="transferDrag" index={0}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <Pipe
-                      plength={newPipe.plength}
-                      station={newPipe.station_number}
-                      pid={newPipe.item_id}
-                      length={100}
-                    />
-                  </div>
-                )}
-              </Draggable>
+              {newPipe.item_id ? (
+                <Draggable draggableId={newPipe.item_id} index={0}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <Pipe
+                        plength={newPipe.plength}
+                        station={newPipe.station_number}
+                        pid={newPipe.item_id}
+                        length={100}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ) : null}
               {provided.placeholder}
             </div>
           )}
