@@ -6,7 +6,8 @@ import ProjectsPage from 'views/administrative/ProjectsPage';
 import ProjectSelect from 'views/ProjectSelect';
 import AboutUs from 'views/information/AboutUs';
 import ContactUs from 'views/information/ContactUs';
-import TESTING from 'views/TESTING'
+import TESTING from 'views/TESTING';
+import DashboardInventory from 'views/dashboard/submenus/DashboardInventory';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -21,6 +22,7 @@ const routes: {
   { path: '/projects', exact: true, name: 'Projects', component: ProjectsPage },
   { path: '/project-select', exact: true, name: 'Project Select', component: ProjectSelect },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
+  { path: '/dashboard/inventory', exact: true, name: 'Dashboard', component: DashboardInventory },
   { path: '/login', exact: true, name: 'Login', component: Login },
   { path: '/pipes', exact: true, name: 'Show', component: ShowPipes },
   { path: '/pipes/strung', exact: true, name: 'Show', component: NewStrungPipes },
