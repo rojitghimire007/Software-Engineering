@@ -51,16 +51,17 @@ const useStyles = makeStyles ((theme) => ({
     //  || PIPES
     
     pipeContainer: {
-      display: 'flex',
-      rowGap: 0,
-      columnGap: 0,
+      // display: 'flex',
+      // width: '500px !important',
+      // rowGap: 0,
+      // columnGap: 0,
       boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
       
       '&:hover' : {
         borderColor: `${ColorScheme.secondary}`,
         backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
-        transform: 'scale(1.03)',
+        // transform: 'scale(1.03)',
       },
     },
     
@@ -263,7 +264,7 @@ const useStyles = makeStyles ((theme) => ({
     },
     virtList: {
       // margin: '0 12px 0 12px',
-      maxWidth: '100vw'
+      // maxWidth: '100vw'
     },
     pipeDrag: {
       border: '30px dashed ' + `${ColorScheme.secondaryDark}`,

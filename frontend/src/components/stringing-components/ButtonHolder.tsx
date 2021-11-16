@@ -12,9 +12,10 @@ const ButtonHolder = ({ names, setClick, opened, setOpened, click, buttonState, 
             gridTemplateColumns: '180px 180px 180px',
             gridTemplateRows: '50px',
             columnGap: '0',
+            backgroundSize: '50px 100px',
             background: 'rgba(50,50,50,.5)',
-            backgroundSize: '650px',
             width: 'fit-Content',
+            height: 'fit-content',
             overflow: 'hidden',
         }}>
             <AButton

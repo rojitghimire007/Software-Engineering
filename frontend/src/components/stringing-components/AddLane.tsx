@@ -41,8 +41,8 @@ const AddLane = ({ clck, shwarea, id, props, }: any) => {
     return (
         <>
             <div className={classes.container}>
-                <Autocomplete disablePortal {...autocompleteProps} />
-                <Button {...buttonProps} style={{ fontFamily: 'Fenix, serif', fontSize: '24px', position: 'relative', margin: '0 45%', }}>Select</Button>
+                <Autocomplete disablePortal {...autocompleteProps} style={{margin: '10px 10px 0 10px '}}/>
+                <Button {...buttonProps} style={{ fontFamily: 'Fenix, serif', fontSize: '24px', position: 'relative', margin: '10px 45%', }}>Select</Button>
                 <Droppable droppableId="add" direction="horizontal">
                     {(provided, snapshot) => (
                         <div

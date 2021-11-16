@@ -110,7 +110,7 @@ const detectOverlaps = (leftSequence: any, rightSequence: any) => {
   for (let i = 0; i < rightSequence.length; i++) {
     if (
       leftSequence.at(-1).station_number +
-        (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
+      (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
       rightSequence[i].station_number
     )
       rightSequence[i]['overlap'] = true;
@@ -121,7 +121,7 @@ const detectOverlaps = (leftSequence: any, rightSequence: any) => {
     if (
       rightSequence[0].station_number <
       leftSequence[i].station_number +
-        (leftSequence[i].plength || leftSequence[i].flength)
+      (leftSequence[i].plength || leftSequence[i].flength)
     )
       leftSequence[i]['overlap'] = true;
     else break;
@@ -282,7 +282,7 @@ const StrungItems = () => {
             item_id: target_pipe,
             station_number: prevItem
               ? prevItem.station_number +
-                (prevItem.flength || prevItem.plength || 0)
+              (prevItem.flength || prevItem.plength || 0)
               : 0,
             ...length,
           })
@@ -495,8 +495,45 @@ const StrungItems = () => {
 
   if (!loading)
     return (
-      <div style={{ maxWidth: '100vw' }}>
+      <div style={{
+        maxWidth: '100vw',
+        display: 'flex',
+        flexFlow: 'column nowrap',
+        height: '1000px',
+        maxHeight: '100vw',
+        overflow: 'hidden',
+        backgroundSize: 'contain',
+        background: 'linear-gradient( to bottom left, rgba(220,220,220,.7), rgba(20,100,0,.9))',
+      }}>
         <CssBaseline />
+        {/* <Toolbar className={classes.title} > */}
+        {/* <Typography variant="h4" className={classes.titleContent}>
+            Pipe Stringing
+          </Typography> */}
+        {/* </Toolbar> */}
+        <div
+          style={{
+            // display: 'flex',
+            fontSize: '3.2rem',
+            color: 'white',
+            fontFamily: 'Bebas Neue, serif',
+            letterSpacing: '.25rem',
+            textAlign: 'center',
+            width: 'calc(100% - 30px)',
+            boxShadow: '-3px 6px 4px 2px rgba(0,40,0,.8)',
+            background: 'rgba(20,50,20,.6)',
+            margin: '15px 15px 15px 15px',
+          }}
+        >
+          {/* <div
+            style={{
+              borderRadius: '50% 0 0 50%',
+              width: '100%',
+            }}
+          /> */}
+          Pipe Stringing
+          {/* <div/> */}
+        </div>
         <main>
           <div>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -506,7 +543,7 @@ const StrungItems = () => {
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                     {...provided.droppableProps}
-                    className={classes.virtList}
+                  /* className={classes.virtList} */
                   >
                     {sequence
                       .slice(window, window + 4)
@@ -524,7 +561,7 @@ const StrungItems = () => {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={{ margin: '0 50px' }}
+                                  style={{ margin: '0 10px' }}
                                 >
                                   <div
                                     style={{ border: 'dotted 1px black' }}
@@ -548,21 +585,30 @@ const StrungItems = () => {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={getItemStyle(
-                                    snapshot.isDragging,
-                                    provided.draggableProps.style
-                                  )}
+                                  // style={{ maxWidth: '100vw', overflow: 'hidden', }}
+                                  // style={getItemStyle(
+                                  //   snapshot.isDragging,
+                                  //   // provided.draggableProps.style, 
+                                  // )}
+                                  style={{
+                                    width: '400px',
+                                    maxWidth: '100vw',
+                                    position: 'relative',
+                                    left: '-75px',
+                                    marginLeft: '0',
+                                    // overflow: 'scroll',
+                                  }}
                                 >
                                   {console.log(item)}
                                   <Pipe
                                     plength={item.plength}
                                     station={item.station_number}
                                     pid={item.item_id}
-                                    length={100}
+                                    length={75}
                                     grade={currentItemDetails[index]
                                       ? currentItemDetails[index].grade
                                       : 'N/A'}
-                                    overlap={currentItemDetails[index] 
+                                    overlap={currentItemDetails[index]
                                       && currentItemDetails[index].overlap
                                       ? "overlap"
                                       : 'NO overlap'}
@@ -570,7 +616,7 @@ const StrungItems = () => {
                                       && currentItemDetails[index].wall_thickness
                                       ? currentItemDetails[index].wall_thickness
                                       : 'N/A'}
-                                    heat={currentItemDetails[index] 
+                                    heat={currentItemDetails[index]
                                       && currentItemDetails[index].heat_no
                                       ? currentItemDetails[index].heat_no
                                       : 'N/A'}
@@ -635,7 +681,7 @@ const StrungItems = () => {
                   Next
                 </Button>
               </div>
-              <OptionSelect props={DnDProps} />
+              <OptionSelect props={DnDProps} style={{ marginBottom: '0px', }} />
             </DragDropContext>
           </div>
         </main>

@@ -54,7 +54,7 @@ const useStyles = makeStyles({
         // zIndex: 5, // testing
     },
     pipe: {
-        width: (item: any) => {return `${item.length * 5}px`},
+        width: (item: any) => {return `${item.length * 3}px`},
         height: '150px',
         position: 'relative',
         right: '50px',
@@ -93,10 +93,11 @@ const useStyles = makeStyles({
         textAlign: 'left',
         color: 'white',
         zIndex: 10,
-        transition: 'scale .75s ease-in-out',
+        transition: 'scale .75s ease-in-out, color .5s ease-in',
         
         '&:hover': {
             transform: 'scale(1.01)',
+            color: 'rgba(200,244,175,1)',
             // background: 'linear-gradient(to bottom right, rgb(200,200,150), rgb(150,150,150))',
         },
     },

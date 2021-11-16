@@ -23,14 +23,14 @@ const OptionSelect = ({props}: any) => {
             <div
                 style={{
                     /* display: 'flex', */
-                    maxWidth: '100%',
-                    maxHeight: '100%',
+                    maxWidth: '100vw',
+                    // minHeight: '10%',
                     /* border: '3px solid', */
                 }}
             >
                 <ButtonHolder
                     names={names}
-                    style={{ position: 'relative', top: '-10px', left: '0', zIndex: 2,}}
+                    style={{ position: 'relative', top: '-10px', left: '0', zIndex: 2, height: '80%', overflow: 'hidden',}}
                     opened={opened}
                     click={click}
                     setClick={setClick}

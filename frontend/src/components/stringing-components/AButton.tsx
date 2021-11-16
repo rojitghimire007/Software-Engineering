@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core';
 const styles = makeStyles({
     container: {
         width: '200px',
-        height: '50px',
+        height: '60px',
         // border: '5px solid',
         display: 'flex',
         overflow: 'hidden',
