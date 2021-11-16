@@ -4,11 +4,11 @@ import {
   Toolbar,
   Container,
 } from '@material-ui/core';
-import useStyles from '../../style/DashboardStyles'; // new styling
-import Carousel from './Carousel';
+import useStyles from '../../../style/DashboardStyles'; // new styling
+import CarouselInventory from './CarouselInventory';
 
 
-const Dashboard = () => {
+const DashboardInventory = () => {
 
 const classes = useStyles();
 
@@ -29,7 +29,7 @@ const classes = useStyles();
         <main >
           
           <Container maxWidth="lg" >
-            <Carousel />
+            <CarouselInventory />
           </Container>
         </main>
       </div>
@@ -37,4 +37,4 @@ const classes = useStyles();
   );
 };
 
-export default Dashboard;
+export default DashboardInventory;
