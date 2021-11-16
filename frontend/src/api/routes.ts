@@ -28,6 +28,7 @@ const API = {
 
   //other
   getItemInfo: `${URL}/items/`,
+  getStrungItemsInfo: `${URL}/string/details/`,
 };
 
 export { URL, API };

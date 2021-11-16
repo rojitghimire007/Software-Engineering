@@ -60,6 +60,12 @@ export default {
     start_item: string | null
   ) => authPut(API.stringing, { item, prev_item, start_item }),
 
+  insertIntoSequence: (
+    item: string,
+    prev_item: string | null,
+    start_item: string | null
+  ) => authPost(API.stringing, { item, prev_item, start_item }),
+
   getStrungPipesInfo: (pipes: Array<string | number>) => {
     return authGet(API.getStrungPipesInfo, pipes.join('_'));
   },
@@ -97,6 +103,12 @@ export default {
   },
 
   getItemInfo: (item: string) => {
+    item = item.toUpperCase();
+    if (!new RegExp('F_.*').test(item)) item = 'P_' + item;
     return authGet(API.getItemInfo, item);
+  },
+
+  getStrungItemsInfo: (items: Array<string>) => {
+    return authGet(API.getStrungItemsInfo, items.join('-'));
   },
 };

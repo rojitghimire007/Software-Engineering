@@ -63,19 +63,26 @@ const reorder = (
 ): Array<any> => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
+
   result.splice(endIndex, 0, removed);
 
   return result;
 };
 
-const remove = (list: Array<dataType>, index: number) => {
+// Function to remove an array element
+const remove = (list: Array<any>, index: number) => {
   const result = Array.from(list);
-  console.log('==================');
-  console.log(result);
-  console.log(index);
 
   result.splice(index, 1);
-  console.log(result);
+
+  return result;
+};
+
+// Function to insert item in an array
+const insertItem = (list: Array<any>, index: number, item: any) => {
+  const result = Array.from(list);
+
+  result.splice(index, 0, item);
 
   return result;
 };
@@ -84,11 +91,77 @@ const filterOptions = createFilterOptions({
   matchFrom: 'start',
 });
 
+const detectOverlaps = (leftSequence: any, rightSequence: any) => {
+  for (let i = 0; i < rightSequence.length; i++) {
+    if (
+      leftSequence.at(-1).station_number +
+        (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
+      rightSequence[i].station_number
+    )
+      rightSequence[i]['overlap'] = true;
+    else break;
+  }
+
+  for (let i = leftSequence.length - 1; i >= 0; i--) {
+    if (
+      rightSequence[0].station_number <
+      leftSequence[i].station_number +
+        (leftSequence[i].plength || leftSequence[i].flength)
+    )
+      leftSequence[i]['overlap'] = true;
+    else break;
+  }
+};
+
+const createGaps = (leftSequence: any, rightSequence: any) => {
+  let leftEnd =
+    leftSequence.at(-1).station_number +
+    (leftSequence.at(-1).plength || leftSequence.at(-1).flength);
+
+  if (leftEnd < rightSequence[0].station_number) {
+    let gap_length = rightSequence[0].station_number - leftEnd;
+    // let arr = [];
+
+    if (gap_length > 50) {
+      let temp = leftEnd;
+      for (let i = 0; i < 4; i++) {
+        leftSequence.push({ item_id: 'gap', station_number: temp });
+        temp += gap_length / 4;
+      }
+    } else leftSequence.push({ item_id: 'gap', station_number: leftEnd });
+
+    //   leftSequence.push({
+    //     item_id: 'gap',
+    //     start: leftEnd,
+    //     gap_length: rightSequence[0].station_number - leftEnd,
+    //   });
+  }
+};
+
+const updateStations = (
+  sequence: Array<any>,
+  start: number,
+  length: number
+) => {
+  for (let i = start; i < sequence.length; i++) {
+    sequence[i].station_number += length;
+  }
+};
+
 const grid = 50;
+
+const initialNewItem = {
+  item_id: '',
+  heat_no: '',
+  grade: '',
+  length: 0,
+  wall_thickness: 0,
+};
 
 const StrungItems = () => {
   const [sequence, setSequence] = useState<Array<dataType>>([]); // correct order of pipe ids
   const [tempSequence, setTempSequence] = useState<Array<dataType>>([]);
+  const [currentItemDetails, setCurrentItemDetails] = useState<Array<any>>([]);
 
   const [window, setWindow] = useState(-1); //careful sliding left when window = 0 ; "view slider"
   // right now set to left most index of view (0, rn)
@@ -118,53 +191,6 @@ const StrungItems = () => {
     padding: grid,
     overflow: 'auto',
   });
-
-  const detectOverlaps = (leftSequence: any, rightSequence: any) => {
-    for (let i = 0; i < rightSequence.length; i++) {
-      if (
-        leftSequence.at(-1).station_number +
-          (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
-        rightSequence[i].station_number
-      )
-        rightSequence[i]['overlap'] = true;
-      else break;
-    }
-
-    for (let i = leftSequence.length - 1; i >= 0; i--) {
-      if (
-        rightSequence[0].station_number <
-        leftSequence[i].station_number +
-          (leftSequence[i].plength || leftSequence[i].flength)
-      )
-        leftSequence[i]['overlap'] = true;
-      else break;
-    }
-  };
-
-  const createGaps = (leftSequence: any, rightSequence: any) => {
-    let leftEnd =
-      leftSequence.at(-1).station_number +
-      (leftSequence.at(-1).plength || leftSequence.at(-1).flength);
-
-    if (leftEnd < rightSequence[0].station_number) {
-      let gap_length = rightSequence[0].station_number - leftEnd;
-      // let arr = [];
-
-      if (gap_length > 50) {
-        let temp = leftEnd;
-        for (let i = 0; i < 4; i++) {
-          leftSequence.push({ item_id: 'gap', station_number: temp });
-          temp += gap_length / 4;
-        }
-      } else leftSequence.push({ item_id: 'gap', station_number: leftEnd });
-
-      //   leftSequence.push({
-      //     item_id: 'gap',
-      //     start: leftEnd,
-      //     gap_length: rightSequence[0].station_number - leftEnd,
-      //   });
-    }
-  };
 
   useEffect(() => {
     api
@@ -198,22 +224,58 @@ const StrungItems = () => {
       .catch((err) => alert(err.message));
   }, []);
 
-  const onDragEnd = (result: any) => {
-    console.table(result);
+  useUpdateEffect(() => {
+    setCurrentItemDetails([]);
 
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    } else if (result.destination.droppableId === 'delete') {
-      console.log(' Will Delete ');
-      return api
-        .deleteFromSequence(sequence[window + result.source.index].item_id)
-        .then((res) => {
-          setSequence(remove(sequence, window + result.source.index));
-        })
-        .catch((err) => alert(err.message));
-    } else if (result.source.index == result.destination.index) return;
+    api
+      .getStrungItemsInfo(
+        sequence.slice(window, window + 4).map((item) => item.item_id)
+      )
+      .then((res) => setCurrentItemDetails(res))
+      .catch((err) => alert(err.message));
+  }, [window]);
 
+  const addNewItem = (result: any) => {
+    let target_pipe = result.draggableId;
+    let [left_item, start_item] = getLeftAndStartItem(sequence, result);
+
+    if (!new RegExp('F_.*').test(target_pipe)) target_pipe = 'p_' + target_pipe;
+    return api
+      .insertIntoSequence(target_pipe, left_item, start_item)
+      .then((res) => {
+        updateStations(
+          sequence,
+          window + result.destination.index,
+          newItemDetails.length
+        );
+
+        let prevItem: dataType =
+          sequence[window + result.destination.index - 1];
+
+        let prev;
+        setSequence(
+          insertItem(sequence, window + result.destination.index, {
+            item_id: target_pipe,
+            station_number: prevItem
+              ? prevItem.station_number +
+                (prevItem.flength || prevItem.plength || 0)
+              : 0,
+          })
+        );
+        setCurrentItemDetails(
+          insertItem(currentItemDetails, window + result.destination.index, {
+            heat_no: newItemDetails?.heat_no,
+            wall_thickness: newItemDetails?.wall_thickness,
+            grade: newItemDetails?.grade,
+          })
+        );
+        setNewItemDetails(initialNewItem);
+        setEligible(remove(eligible, eligible.indexOf(result.draggableId)));
+      })
+      .catch((err) => alert(err.message));
+  };
+
+  const updateSequence = (result: any) => {
     let target_pipe = result.draggableId;
 
     const items = reorder(
@@ -222,19 +284,10 @@ const StrungItems = () => {
       window + result.destination.index
     );
 
-    console.log(items);
-
-    let left_pipe = items[window + result.destination.index - 1];
-    let start_item = null;
-    if (!left_pipe || left_pipe.item_id == 'gap') {
-      start_item = items[window + result.destination.index + 1].item_id;
-      left_pipe = null;
-    } else left_pipe = left_pipe.item_id;
-
-    console.log(target_pipe, left_pipe);
+    let [left_item, start_item] = getLeftAndStartItem(items, result);
 
     return api
-      .updateSequence(target_pipe, left_pipe, start_item)
+      .updateSequence(target_pipe, left_item, start_item)
       .then((res) => {
         setSequence([...items]);
       })
@@ -242,6 +295,50 @@ const StrungItems = () => {
         alert(err.message);
         // setSequence([...items]);
       });
+  };
+
+  const deleteFromSequence = (result: any) => {
+    let item: dataType = sequence[window + result.source.index];
+    let item_id: string = item.item_id;
+    return api
+      .deleteFromSequence(item_id)
+      .then((res) => {
+        updateStations(
+          sequence,
+          window + result.source.index,
+          -1 * (item.flength || item.plength || 0)
+        );
+        setSequence(remove(sequence, window + result.source.index));
+        if (new RegExp('p_.*').test(item_id)) item_id = item_id.substring(2);
+        setEligible([...eligible, item_id]);
+      })
+      .catch((err) => alert(err.message));
+  };
+
+  const getLeftAndStartItem = (items: Array<any>, result: any) => {
+    let left_item = items[window + result.destination.index - 1];
+    let start_item = null;
+    if (!left_item || left_item.item_id == 'gap') {
+      start_item = items[window + result.destination.index + 1].item_id;
+      left_item = null;
+    } else left_item = left_item.item_id;
+
+    return [left_item, start_item];
+  };
+
+  const onDragEnd = (result: any) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    } else if (result.destination.droppableId === 'delete') {
+      deleteFromSequence(result);
+    } else if (
+      result.source.droppableId == 'hold' &&
+      result.destination.droppableId === 'droppable'
+    )
+      addNewItem(result);
+    else if (result.source.index == result.destination.index) return;
+    else updateSequence(result);
   };
 
   const goToStation = (target: number) => {
@@ -296,13 +393,16 @@ const StrungItems = () => {
   //            NEW
   //////////////////////////////
 
-  const [eligible, setEligible] = useState<dataType[]>([]);
+  const [eligible, setEligible] = useState<string[]>([]);
   const [goTo, setGoTo] = useState('');
   const [newItem, setNewItem] = useState<string>('');
-  const [newItemDetails, setNewItemDetails] = useState<null | {
+  const [newItemDetails, setNewItemDetails] = useState<{
     item_id: string;
+    heat_no: string;
+    grade: string;
     length: number;
-  }>(null);
+    wall_thickness: number;
+  }>(initialNewItem);
   const [inputValue, setInputValue] = React.useState('');
 
   const getItemDetails = (item: string) => {
@@ -312,6 +412,9 @@ const StrungItems = () => {
         setNewItemDetails({
           item_id: res.id,
           length: res.length,
+          heat_no: res.heat_no,
+          wall_thickness: res.wall_thickness,
+          grade: res.grade,
         });
       })
       .catch((error) => alert(error.message));
@@ -406,6 +509,25 @@ const StrungItems = () => {
                                     <div>{item.station_number}</div>
                                     <div>{item.plength || item.flength}</div>
                                     <div>{item.overlap ? 'Overlap' : 'NO'}</div>
+                                    <div>
+                                      Heat No:{' '}
+                                      {currentItemDetails[index]
+                                        ? currentItemDetails[index].heat_no
+                                        : ''}
+                                    </div>
+                                    <div>
+                                      Grade:{' '}
+                                      {currentItemDetails[index]
+                                        ? currentItemDetails[index].grade
+                                        : ''}
+                                    </div>
+                                    <div>
+                                      Thickness:{' '}
+                                      {currentItemDetails[index]
+                                        ? currentItemDetails[index]
+                                            .wall_thickness
+                                        : ''}
+                                    </div>
                                   </div>
                                   <div className={classes.pipeEnd} />
                                 </div>
@@ -514,7 +636,7 @@ const StrungItems = () => {
                       backgroundColor: 'gray',
                     }}
                   >
-                    {newItemDetails ? (
+                    {newItemDetails.item_id ? (
                       <Draggable
                         key={`${newItemDetails.item_id}`}
                         draggableId={`${newItemDetails.item_id}`}
