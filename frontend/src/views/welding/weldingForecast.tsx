@@ -101,6 +101,32 @@ const WeldingForcast = () => {
         Single V-Butt Welding
         <img src={img1} />
         <div
+          id="Circle"
+          style={{
+            width: '155px',
+            height: '155px',
+            backgroundColor: '#808080',
+            borderRadius: '155px',
+            position: 'relative',
+            boxShadow: '0 0 0 35px #cfd1d1',
+          }}
+        >
+          <div style={{ fontSize: '20px' }}>
+            <label>PS</label>
+            <select id="N" name="FLW">
+              <option value="0">0</option>
+              <option value="1">1</option>
+            </select>
+            <div style={{ fontSize: '20px', position: 'relative' }}>
+              <label>WT</label>
+              <select id="N" name="FLW">
+                <option value="0">0</option>
+                <option value="1">1</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div
           style={{ fontSize: '15px', marginTop: '80px', textAlign: 'center' }}
         >
           <div>Menu</div>
