@@ -1,5 +1,16 @@
-const { login, signup, auth, selectProject, getAssociatedProjects, usersInProject} = require('./UserController');
-const { postProject, addUserToProject, getAllUsers } = require('./AdminController');
+const {
+  login,
+  signup,
+  auth,
+  selectProject,
+  getAssociatedProjects,
+  usersInProject,
+} = require('./UserController');
+const {
+  postProject,
+  addUserToProject,
+  getAllUsers,
+} = require('./AdminController');
 
 const {
   addPipe,
@@ -19,13 +30,14 @@ const { cutPipe, getCuttingEligiblePipes } = require('./PipeCutting');
 
 const {
   getStringing,
-  getStrungPipesInfo,
-  appendToString,
   updateSequence,
-  lengthofSequence,
   getStriningEligiblePipes,
   deleteFromSequence,
-} = require('./PipeStringing');
+  createNewSequence,
+  getItemInfo,
+  insertIntoSequence,
+  getStrungItemsInfo,
+} = require('./Stringing');
 //const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
@@ -60,16 +72,21 @@ const SetRoutes = (app) => {
   //stringing
   app.get('/string', getStringing);
   app.get('/string/eligible', getStriningEligiblePipes);
-  app.post('/string', appendToString);
+  app.post('/string/sequence', createNewSequence);
   app.put('/string', updateSequence);
-  app.delete('/string/:pipe', deleteFromSequence);
-  app.get('/pipes/info/:pipes', getStrungPipesInfo);
-  app.post('/pipes/length', lengthofSequence);
+  app.post('/string', insertIntoSequence);
+  app.delete('/string/:item', deleteFromSequence);
+  app.get('/string/details/:items', getStrungItemsInfo);
+
+  //other
+  app.get('/items/:item', getItemInfo);
+
+  //other
+  app.get('/items/:item', getItemInfo);
 
   // fittings routes
   app.post('/fittings', addFittings);
   app.get('/fittings', getFittings);
-
 };
 
 module.exports = { SetRoutes };
