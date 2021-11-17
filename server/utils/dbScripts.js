@@ -149,6 +149,7 @@ exports.bend = `CREATE TABLE bend(
   degree FLOAT NOT NULL,
   bdirection TEXT NOT NULL,
   blength TEXT DEFAULT NULL,
+  bendFrom TEXT DEFAULT NULL,
   bdate DATE DEFAULT CURRENT_DATE,
   created_by TEXT NOT NULL,
   PRIMARY KEY(bend_id)
@@ -158,6 +159,6 @@ exports.pipe_bend = `CREATE TABLE pipe_bend(
   id  TEXT NOT NULL,
   bend_id TEXT NOT NULL,
   PRIMARY KEY (id, bend_id),
-  FOREIGN KEY(id) REFERENCES pipe(id),
+  FOREIGN KEY(id) REFERENCES pipe(id) ON DELETE CASCADE,
   FOREIGN KEY(bend_id) REFERENCES bend(bend_id) ON DELETE CASCADE
 )`;
