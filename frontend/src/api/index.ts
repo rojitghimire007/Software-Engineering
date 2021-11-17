@@ -108,4 +108,21 @@ export default {
   addFitting: (data: any) => {
     return authPost(API.getFittings, data);
   },
+
+  //bend
+  getBend: () => {
+    return authGet(API.bendPipe, '');
+  },
+
+  postBend: (data: any) => {
+    return authPost(API.bendPipe, data);
+  },
+
+  updateBend: (data: any) => {
+    return authPut(API.bendPipe, data);
+  },
+
+  removeBend: (bend_id: string) => { 
+    return authDelete(`${API.bendPipe}/${bend_id}`);
+  }
 };

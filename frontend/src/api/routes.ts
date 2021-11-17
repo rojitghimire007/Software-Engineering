@@ -25,6 +25,8 @@ const API = {
   getStriningEligiblePipes: `${URL}/string/eligible`,
   getCuttingEligiblePipes: `${URL}/pipes/cuttable`,
   cutPipe: `${URL}/pipes/cut`,
+
+  bendPipe: `${URL}/bend`,
 };
 
 export { URL, API };
