@@ -7,6 +7,7 @@ import { setLocalStorage } from 'utils/utils';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import MenuAppBar from 'components/AppBar';
 
+
 const ProjectSelect = () => {
   const classes = useStyles('');
   const history = useHistory();
@@ -138,6 +139,10 @@ const ProjectSelect = () => {
           {/* <span>Choose A Project</span> */}
           <div className={classes.btn} onClick={() => logIn()}>
             ENTER
+          </div>
+
+          <div className={classes.btn} onClick={() => history.push("/create-project")}>
+            CREATE
           </div>
           {/* <div
             className={classes.btn}

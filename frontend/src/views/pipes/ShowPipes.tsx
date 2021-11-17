@@ -437,9 +437,15 @@ const ShowPipes = () => {
               { title: 'Location', field: 'location' },
               { title: 'Coil', field: 'coil_no' },
               { title: 'Heat', field: 'heat_no' /*lookup: heat_numbers*/ }, //took out lookup b/c this will be manual input
-              { title: 'Manufacturer', field: 'manufacturer', editable: 'never',
+              {
+                title: 'Manufacturer',
+                field: 'manufacturer',
+                editable: 'never',
               },
-              { title: 'Diameter', field: 'diameter', lookup: diameters,
+              {
+                title: 'Diameter',
+                field: 'diameter',
+                lookup: diameters,
                 editComponent: ({ onRowDataChange, rowData }) => (
                   <Select
                     labelId="demo-simple-select-standard-label"
@@ -462,10 +468,44 @@ const ShowPipes = () => {
                   </Select>
                 ),
               },
-              { title: 'Schedule-Thickness', field: 'schedule',
+              {
+                title: 'Schedule-Thickness',
+                field: 'schedule',
+                render: (rowData) => (
+                  <>
+                    {rowData.schedule} - {rowData.wall_thickness}
+                  </>
+                ),
+                editComponent: ({ rowData, onRowDataChange }) => (
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    onChange={(e: SelectChangeEvent) => {
+                      let breakSchedule = e.target.value.split('-');
+                      onRowDataChange({
+                        ...rowData,
+                        schedule: breakSchedule[0].trim(),
+                        wall_thickness: Number(breakSchedule[1].trim()),
+                      });
+                    }}
+                    defaultValue={`${rowData.schedule} - ${rowData.wall_thickness}`}
+                  >
+                    {getThickness(rowData.diameter).map((value) => (
+                      <MenuItem key={value} value={value}>
+                        {value}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                ),
+              },
+              { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
+              { title: 'Length', field: 'length' },
+              {
+                title: 'Coating',
+                field: 'coating',
                 // render: (rowData) => (
                 //   <>
-                //     {rowData.schedule} - {rowData.wall_thickness}
+                //     {rowData.coating} - {myCoatings[rowData.coating]}
                 //   </>
                 // ),
                 // editComponent: ({ rowData, onRowDataChange }) => (
@@ -473,149 +513,119 @@ const ShowPipes = () => {
                 //     labelId="demo-simple-select-standard-label"
                 //     id="demo-simple-select-standard"
                 //     onChange={(e: SelectChangeEvent) => {
-                //       let breakSchedule = e.target.value.split('-');
-                //       onRowDataChange({
-                //         ...rowData,
-                //         schedule: breakSchedule[0].trim(),
-                //         wall_thickness: Number(breakSchedule[1].trim()),
-                //       });
+                //       onRowDataChange({ ...rowData, coating: e.target.value });
                 //     }}
-                //     defaultValue={`${rowData.schedule} - ${rowData.wall_thickness}`}
+                //     defaultValue={rowData.coating}
                 //   >
-                //     {getThickness(rowData.diameter).map((value) => (
-                //       <MenuItem key={value} value={value}>
-                //         {value}
+                //     {Object.keys(myCoatings).map((key) => (
+                //       <MenuItem key={key} value={key}>
+                //         {key} - {myCoatings[key]}
                 //       </MenuItem>
                 //     ))}
-                //   </Select> 
-                // )
+                //   </Select>
+                // ),
               },
-              { title: 'Grade', field: 'grade', lookup: grades }, // Extract SMYS as well
-              { title: 'Length', field: 'length' },
-              { title: 'Coating', field: 'coating',
-                  // render: (rowData) => (
-                  //   <>
-                  //     {rowData.coating} - {myCoatings[rowData.coating]}
-                  //   </>
-                  // ),
-                  // editComponent: ({ rowData, onRowDataChange }) => (
-                  //   <Select
-                  //     labelId="demo-simple-select-standard-label"
-                  //     id="demo-simple-select-standard"
-                  //     onChange={(e: SelectChangeEvent) => {
-                  //       onRowDataChange({ ...rowData, coating: e.target.value });
-                  //     }}
-                  //     defaultValue={rowData.coating}
-                  //   >
-                  //     {Object.keys(myCoatings).map((key) => (
-                  //       <MenuItem key={key} value={key}>
-                  //         {key} - {myCoatings[key]}
-                  //       </MenuItem>
-                  //     ))}
-                  //   </Select>
-                  // ),
-                },
-                { title: 'Material', field: 'material_type', lookup: materials },
-                { title: 'P.O.', field: 'po_number' /*lookup: po_numbers*/ },
-                { title: 'Smart Label', field: 'smart_label' },
-                { title: 'Comments', field: 'comments' },
-              ]}
-    //       <div className={classes.stickyActions}>
-    //         <MaterialTable
-    //           icons={tableIcons}
-    //           //removes title toolbar
-    //           title=""
-    //           options={{
-    //             filtering: true,
-    //             search: true,
-    //             // rowStyle: (rowData) => ({
-    //             //   backgroundColor: rowData.color ? rowData.color : null,
-    //             //   color: rowData.color ? 'white' : 'black',
-    //             // }),
-    //             // tableLayout: 'fixed', // idk if this is important
-    //             columnsButton: true,
-    //             loadingType: 'linear',
-    //             draggable: true,
-    //             // padding: 'dense',
-    //             showTextRowsSelected: true,
-    //             // selection: true,
-    //             toolbarButtonAlignment: 'left',
-    //             pageSize: 10,
-    //             pageSizeOptions: [5, 10, 25, 50],
-    //             actionsCellStyle: { zIndex: 999 },
-    //             // headerStyle: {
-    //             //   textAlign: 'center',
-    //             // },
-    //             // rowStyle: {
-    //             //   fontSize: "1rem",
-    //             //   marginLeft: '1rem',
-    //             // },
-    //             // columnResizable: true,
-    //             maxBodyHeight: '70vh',
-    //             minBodyHeight: '35vh',
-    //             exportButton: true,
-    //             exportFileName:
-    //               'Pipe_Data_' +
-    //               date.getFullYear() +
-    //               '_' +
-    //               (date.getMonth() + 1) +
-    //               '_' +
-    //               date.getDate(),
-    //           }}
-    //           components={{
-    //             Toolbar: (props) => (
-    //               <div className={classes.toolbar}>
-    //                 <MTableToolbar {...props} />
-    //               </div>
-    
-              data={data}
-              tableRef={materialTableRef}
-              initialFormData={initialFormData}
-              editable={{
-                // isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
-                // isEditHidden: rowData => rowData.name === 'x',
-                // isDeletable: rowData => rowData.name === 'b', // only name(b) rows would be deletable,
-                // isDeleteHidden: rowData => rowData.name === 'y',
-                // onBulkUpdate: changes =>
-                //     new Promise((resolve, reject) => {
-                //         setTimeout(() => {
-                //             /* setData([...data, newData]); */
+              { title: 'Material', field: 'material_type', lookup: materials },
+              { title: 'P.O.', field: 'po_number' /*lookup: po_numbers*/ },
+              { title: 'Smart Label', field: 'smart_label' },
+              { title: 'Comments', field: 'comments' },
+            ]}
+            //       <div className={classes.stickyActions}>
+            //         <MaterialTable
+            //           icons={tableIcons}
+            //           //removes title toolbar
+            //           title=""
+            //           options={{
+            //             filtering: true,
+            //             search: true,
+            //             // rowStyle: (rowData) => ({
+            //             //   backgroundColor: rowData.color ? rowData.color : null,
+            //             //   color: rowData.color ? 'white' : 'black',
+            //             // }),
+            //             // tableLayout: 'fixed', // idk if this is important
+            //             columnsButton: true,
+            //             loadingType: 'linear',
+            //             draggable: true,
+            //             // padding: 'dense',
+            //             showTextRowsSelected: true,
+            //             // selection: true,
+            //             toolbarButtonAlignment: 'left',
+            //             pageSize: 10,
+            //             pageSizeOptions: [5, 10, 25, 50],
+            //             actionsCellStyle: { zIndex: 999 },
+            //             // headerStyle: {
+            //             //   textAlign: 'center',
+            //             // },
+            //             // rowStyle: {
+            //             //   fontSize: "1rem",
+            //             //   marginLeft: '1rem',
+            //             // },
+            //             // columnResizable: true,
+            //             maxBodyHeight: '70vh',
+            //             minBodyHeight: '35vh',
+            //             exportButton: true,
+            //             exportFileName:
+            //               'Pipe_Data_' +
+            //               date.getFullYear() +
+            //               '_' +
+            //               (date.getMonth() + 1) +
+            //               '_' +
+            //               date.getDate(),
+            //           }}
+            //           components={{
+            //             Toolbar: (props) => (
+            //               <div className={classes.toolbar}>
+            //                 <MTableToolbar {...props} />
+            //               </div>
 
-                //             resolve(void);
-                //         }, 1000);
-                //     }),
-                onRowAddCancelled: (rowData) =>
-                  console.log('Row adding cancelled'),
-                onRowUpdateCancelled: (rowData) =>
-                  console.log('Row editing cancelled'),
-                onRowAdd: onRowAdd,
-                onRowUpdate: onRowUpdate,
-                onRowDelete: (oldData) => {
-                  return api.deletePipe(oldData.id.toString());
-                },
-              }}
-              actions={[
-                {
-                  icon: () => <LibraryAddIcon />,
-                  tooltip: 'Duplicate Pipe',
-                  onClick: (event, rowData) => {
-                    const materialTable = materialTableRef.current;
+            data={data}
+            tableRef={materialTableRef}
+            initialFormData={initialFormData}
+            editable={{
+              // isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
+              // isEditHidden: rowData => rowData.name === 'x',
+              // isDeletable: rowData => rowData.name === 'b', // only name(b) rows would be deletable,
+              // isDeleteHidden: rowData => rowData.name === 'y',
+              // onBulkUpdate: changes =>
+              //     new Promise((resolve, reject) => {
+              //         setTimeout(() => {
+              //             /* setData([...data, newData]); */
 
-                    setInitialFormData({
-                      ...rowData,
-                      name: null,
-                      id: null,
-                      inspector: null,
-                      coil_no: null,
-                    });
+              //             resolve(void);
+              //         }, 1000);
+              //     }),
+              onRowAddCancelled: (rowData) =>
+                console.log('Row adding cancelled'),
+              onRowUpdateCancelled: (rowData) =>
+                console.log('Row editing cancelled'),
+              onRowAdd: onRowAdd,
+              onRowUpdate: onRowUpdate,
+              onRowDelete: (oldData) => {
+                return api.deletePipe(oldData.id.toString());
+              },
+            }}
+            actions={[
+              {
+                icon: () => <LibraryAddIcon />,
+                tooltip: 'Duplicate Pipe',
+                onClick: (event, rowData) => {
+                  const materialTable = materialTableRef.current;
 
-                    (materialTable as any).dataManager.changeRowEditing();
-                    (materialTable as any).setState({
-                      ...(materialTable as any).dataManager.getRenderState(),
-                      showAddRow: true,
-                    });
-                  },
+                  setInitialFormData({
+                    ...rowData,
+                    name: null,
+                    id: null,
+                    inspector: null,
+                    coil_no: null,
+                  });
+
+                  (materialTable as any).dataManager.changeRowEditing();
+                  (materialTable as any).setState({
+                    ...(materialTable as any).dataManager.getRenderState(),
+                    showAddRow: true,
+                  });
                 },
+              },
               {
                 icon: () => <InvertColorsIcon />,
                 tooltip: 'Edit Pipe Color',

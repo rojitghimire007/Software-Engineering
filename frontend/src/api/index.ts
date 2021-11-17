@@ -54,35 +54,47 @@ export default {
 
   appendToString: (pipe_id: string) => authPost(API.stringing, { pipe_id }),
 
-  updateSequence: (data: {
-    target_pipe: string | number;
-    left_pipe: string | number;
-  }) => authPut(API.stringing, data),
+  updateSequence: (
+    item: string,
+    prev_item: string | null,
+    start_item: string | null
+  ) => authPut(API.stringing, { item, prev_item, start_item }),
+
+  
+  // ADMINISTRATION
+
+  postProjectAdmin: (
+    project_number: string,
+    pname: string,
+    company: string,
+    company_address: string,
+    company_phone: string,
+    company_email: string,
+    work_number: string,
+    work_site_phone: string,
+    plocation: string,
+    notes: string,
+    start_date: number,
+    end_date: number
+  ) => authPost(API.postProjectAdmin, 
+    {project_number, pname,  company, company_address, company_phone, company_email, work_number, work_site_phone, plocation,  notes, start_date, end_date}
+  ),
+  insertIntoSequence: (
+    item: string,
+    prev_item: string | null,
+    start_item: string | null
+  ) => authPost(API.stringing, { item, prev_item, start_item }),
 
   getStrungPipesInfo: (pipes: Array<string | number>) => {
     return authGet(API.getStrungPipesInfo, pipes.join('_'));
   },
 
-  updateStringing: (
-    pipe_id: string,
-    curr_id: string,
-    curr_station: string,
-    left_of_target: string | null
-  ) => {
-    return authPut(API.updateStringing, {
-      pipe_id,
-      curr_id,
-      curr_station,
-      left_of_target,
-    });
-  },
-
   /**
    *
-   * @param pipe ID of pipe
+   * @param item ID of item
    * @returns
    */
-  deleteFromSequence: (pipe: string) => authDelete(API.stringing + `/${pipe}`),
+  deleteFromSequence: (item: string) => authDelete(API.stringing + `/${item}`),
 
   getSequenceLength: (sequence: Array<any>) =>
     authPost(API.getSequenceLength, { sequence }),
@@ -107,5 +119,15 @@ export default {
 
   addFitting: (data: any) => {
     return authPost(API.getFittings, data);
+  },
+
+  getItemInfo: (item: string) => {
+    item = item.toUpperCase();
+    if (!new RegExp('F_.*').test(item)) item = 'P_' + item;
+    return authGet(API.getItemInfo, item);
+  },
+
+  getStrungItemsInfo: (items: Array<string>) => {
+    return authGet(API.getStrungItemsInfo, items.join('-'));
   },
 };

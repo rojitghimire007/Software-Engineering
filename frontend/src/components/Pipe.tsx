@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     pipeContainer: {
         width: (item: any) => {return `${item.length * 10}px`},
         height: (item: any) => {return `${item.height * 3}px`},
-        border: '2px dashed white',
+        // border: '2px dashed white',
     },
     pipe: {
         
@@ -26,6 +26,7 @@ const useStyles = makeStyles({
         left: (item: any) => {return `${item.length * 2}px`},
         backgroundColor: 'grey',
         zIndex: 8,
+        justifySelf: 'center',
 
         '&::before': {
             content: '""',
@@ -33,9 +34,25 @@ const useStyles = makeStyles({
             backgroundColor: 'lightGrey',
             zIndex: 12,
             borderRadius: '50%',      
-            width: (item: any) => {return `${item.length * 2}px`},            
-            height: (item: any) => {return `${item.height * 3}px`},
-            right: (item: any) => {return `${item.length * 5}px`},   // positioning         
+            // width: (item: any) => {return `${item.length * 2}px`},            
+            // height: (item: any) => {return `${item.height * 3}px`},
+            width: (item: any) => {return '100px'},            
+            height: (item: any) => {return '150px'},
+            right: (item: any) => {return `${item.length * 5}px`},   // positioning     
+            // right: '50px',   // positioning     
+            
+            // THE PIPE HOLE
+            '&::before': {
+                content: '""',
+                position: 'absolute',
+                backgroundColor: 'darkGrey',
+                zIndex: 13,
+                borderRadius: '50%',
+                border: '3px dashed red', // testing
+                width: (item: any) => {return '900px'},            
+                height: (item: any) => {return '140px'},
+                right: (item: any) => {return '10px'},
+            },
         },
         
         '&::after': {
@@ -44,8 +61,11 @@ const useStyles = makeStyles({
             backgroundColor: 'grey',
             zIndex: 10,
             borderRadius: '50%',
-            width: (item: any) => {return `${item.length * 2}px`},            
-            height: (item: any) => {return `${item.height * 3}px`},
+            // width: (item: any) => {return `${item.length * 2}px`},            
+            // height: (item: any) => {return `${item.height * 3}px`},
+            border: '3px dashed white', // testing
+            width: (item: any) => {return '100px'},            
+            height: (item: any) => {return '150px'},
             left: (item: any) => {return `${item.length * 5}px`}, // positioning             
         },
     },
@@ -59,11 +79,11 @@ function Pipe({length, height}: any) {
     const classes = useStyles(pipeDetails);
 
     return (
-        <body className={classes.wrapper}>
+        // <body className={classes.wrapper}>
             <div className={classes.pipeContainer}>
                 <div className={classes.pipe} ></div>
             </div>
-        </body>
+        // </body>
     )
 }
 
