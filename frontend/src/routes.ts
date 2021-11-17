@@ -11,6 +11,9 @@ import StrungItems from 'views/stringing/StrungItems';
 import CreateProject from 'views/administrative/createProject'
 import DashboardInventory from 'views/dashboard/submenus/DashboardInventory';
 import Services from 'views/information/Services';
+import { tableFooterClasses } from '@mui/material';
+import Footer from 'components/Footer';
+import Privacy from 'views/information/Privacy';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -23,12 +26,7 @@ const routes: {
   exact: boolean;
 }[] = [
   { path: '/projects', exact: true, name: 'Projects', component: ProjectsPage },
-  {
-    path: '/project-select',
-    exact: true,
-    name: 'Project Select',
-    component: ProjectSelect,
-  },
+  { path: '/project-select', exact: true, name: 'Project Select', component: ProjectSelect, },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
   { path: '/dashboard/inventory', exact: true, name: 'Dashboard', component: DashboardInventory },
   { path: '/login', exact: true, name: 'Login', component: Login },
@@ -48,6 +46,7 @@ const routes: {
   { path: '/about', exact: true, name: 'About', component: AboutUs },
   { path: '/contact', exact: true, name: 'Contact', component: ContactUs },
   { path: '/services', exact: true, name: 'Services', component: Services },
+  { path: '/privacy', exact: true, name: 'Privacy', component: Privacy },
   // {
   //   path: '/pipes/strung/new',
   //   exact: true,
