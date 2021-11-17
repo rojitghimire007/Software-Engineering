@@ -2,16 +2,6 @@ const { connect_project_db, query_resolver } = require("../utils/dbHandler");
 const { getRandomString } = require("../utils/randomGenerator");
 
 const bendPipe = async (req, res, next) => {
-  /**
-   * bends:[
-   *  {
-   *    degree:
-   *    bdirection:
-   *    blength:
-   *  }
-   * ],
-   * id: ""
-   */
   const { bends, id } = req.body;
 
   try {
@@ -19,6 +9,13 @@ const bendPipe = async (req, res, next) => {
 
     let bendQueryString = []
     let bendLinkPipeQuery = []
+
+    let pipeCheck = await query_resolver(connection, {
+      text: `SELECT id from pipe where id=$1`,
+      values: [id]
+    });
+
+    if(pipeCheck.length === 0) throw {status: 500, message: 'No such pipe with the id in the database!'}
 
     for (let bend of bends) {
       let bendLen = bend.blength ? bend.blength : null;
@@ -56,7 +53,7 @@ const bendPipe = async (req, res, next) => {
 
 const removeBend = async (req, res, next) => {
   try {
-    const { bend_id } = req.body;
+    const { bend_id } = req.params;
 
     const connection = await connect_project_db(req.dbname);
 
@@ -76,10 +73,18 @@ const removeBend = async (req, res, next) => {
 
 const updateBend = async (req, res, next) => {
   try {
-    const { bend_obj, bend_id } = req.body;
+    const { bend_obj, bend_id, id } = req.body;
     const { degree, bdirection, blength } = bend_obj;
 
     const connection = await connect_project_db(req.dbname);
+
+    const checkDup = await query_resolver(connection, {
+      text: `SELECT id from pipe_bend JOIN bend USING(bend_id) WHERE degree=$1 AND bdirection=$2 AND blength=$3 AND id=$4`,
+      values: [degree, bdirection, blength, id]
+    })
+
+    if(checkDup.length > 0) throw {status: 500, message: 'Bending credential already recorded for the pipe!'}
+
     await query_resolver(connection, {
       text: `UPDATE bend SET degree=$1, bdirection=$2, blength=$3 WHERE bend_id=$4`,
       values: [degree, bdirection, blength, bend_id]
@@ -95,8 +100,26 @@ const updateBend = async (req, res, next) => {
   }
 }
 
+const getBend = async (req, res, next) => {
+  try{
+    const connection = await connect_project_db(req.dbname);
+
+    const query = `SELECT * from pipe_bend JOIN bend USING (bend_id)`;
+
+    const result = await query_resolver(connection, query);
+    
+    return res.status(200).json({
+      success: true,
+      data: [...result]
+    })
+
+  }catch(error) {
+    next(error);
+  }
+}
+
 // const result = await query_resolver(connection, {
 //   text: `select ARRAY_AGG(id || CASE WHEN coil_number is not null THEN ' ' ||  coil_number ELSE '' END) from pipe group by plength`
 // });
 
-module.exports = { bendPipe, removeBend, updateBend };
+module.exports = { bendPipe, removeBend, updateBend, getBend };
