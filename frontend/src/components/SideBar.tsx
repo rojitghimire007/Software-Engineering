@@ -20,7 +20,6 @@ const SideBar = (links: any) => {
 
   //submenu
   const [isSubDrawerOpen, setIsSubDrawerOpen] = useState(false);
-
   const [linkOpen, setLinkOpen] = useState('');
 
   return (
@@ -59,8 +58,9 @@ const SideBar = (links: any) => {
                   <ListItemText primary={link.main} />
                 </ListItem>
               }
-
+              
               {isSubDrawerOpen && linkOpen == link.main && link.subItems[0] != '' ?
+                //maps subitems
                 link.subItems.map((sub: any) => {
                   return (
                     <Link to={sub.default}>
@@ -72,10 +72,7 @@ const SideBar = (links: any) => {
                 })
                 : null
               }
-
             </List>
-
-
           )
         })}
       </Drawer>

@@ -5,12 +5,13 @@ import useStyles from 'style/ProjectSelectStyles';
 import api from 'api';
 import { setLocalStorage } from 'utils/utils';
 import { AppBar, Toolbar, Typography } from '@mui/material';
+import MenuAppBar from 'components/AppBar';
 
 const ProjectSelect = () => {
   const classes = useStyles('');
   const history = useHistory();
   const link = 'dashboard';
-  const [selected, setSelected] = useState([-1,'']);
+  const [selected, setSelected] = useState([-1, '']);
   const [errored, setErrored] = useState(false);
   const [loading, setLoading] = useState(false);
   const [projectDetails, setProjectDetails] = useState<
@@ -29,7 +30,7 @@ const ProjectSelect = () => {
   }, []);
 
   const logIn = () => {
-    if (selected === [-1,'']) setErrored(true);
+    if (selected === [-1, '']) setErrored(true);
     else {
       api
         // .selectProject(projectDetails[parseInt(selected)].project_number)
@@ -51,6 +52,7 @@ const ProjectSelect = () => {
   return (
     <div className={classes.page}>
 
+      <MenuAppBar />
       <AppBar position="relative" className={classes.titleTop}>
         <Toolbar>
           <Typography variant="h3" className={classes.titleTopContent}>
@@ -90,11 +92,11 @@ const ProjectSelect = () => {
           {projectDetails.map((item, index) => {
             return (
               <>
-                {selected[1].toString() === item.pname?
+                {selected[1].toString() === item.pname ?
                   <div
                     className={`${classes.selectedItem} ${classes.item}`}
                     onClick={(e) => {
-                      setSelected([e.currentTarget.id,item.pname]);
+                      setSelected([e.currentTarget.id, item.pname]);
                       setErrored(false);
                     }}
                     /* onClick={() => {
@@ -108,19 +110,19 @@ const ProjectSelect = () => {
                       {item.pname}{/* , last accessed {item.accessed} */}
                     </span>
                   </div>
-                :
+                  :
                   <div
-                  className={classes.item}
-                  onClick={(e) => {
-                    setSelected([e.currentTarget.id,item.pname]);
-                    setErrored(false);
-                  }}
-                  /* onClick={() => {
-                    setSelected(item.pname);
-                    setErrored(false);
-                  }} */
-                  key={index}
-                  id={`${index}`}
+                    className={classes.item}
+                    onClick={(e) => {
+                      setSelected([e.currentTarget.id, item.pname]);
+                      setErrored(false);
+                    }}
+                    /* onClick={() => {
+                      setSelected(item.pname);
+                      setErrored(false);
+                    }} */
+                    key={index}
+                    id={`${index}`}
                   >
                     <span style={{ margin: '3px 3px' }}>
                       {item.pname}{/* , last accessed {item.accessed} */}
