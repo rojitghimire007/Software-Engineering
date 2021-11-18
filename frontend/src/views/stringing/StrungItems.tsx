@@ -47,6 +47,7 @@ import Gap from './Gap';
 import MainLaneControls from './new-stringing-components/MainLaneControls';
 import StationContainer from 'DEMOS/new-stringing-prototype/StationContainer';
 import MainLaneDraggable from './new-stringing-components/MainLaneDraggable';
+import { PersonalVideoRounded } from '@mui/icons-material';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
@@ -454,7 +455,6 @@ const StrungItems = () => {
             setTempSequence([]);
             setWindow(arr.length - 4);
           });
-          console.log("clicked Move Right")
         }
         else {
           setWindow(window - 1);
@@ -467,7 +467,6 @@ const StrungItems = () => {
       disabled: window + 4 >= sequence.length ? true : false,
       onClick: () => {
         setWindow(window + 1);
-        console.log("clicked Move Right")
       },
     },
     add: {
@@ -478,7 +477,6 @@ const StrungItems = () => {
         getItemDetails(newItem);
         setInputValue('');
         setNewItem('');
-        console.log("clicked Search")
       },
     },
     stationInput: {
@@ -504,6 +502,31 @@ const StrungItems = () => {
     'item A', 'item B', 'item C',
     'item A', 'item B', 'item C',
   ]
+  const seq = [...sequence];
+  console.log(seq)
+  const [stationNumbers, setStationNumbers] = useState([
+    0, 1, 2, 3, 4,
+    // seq[0].station_number,
+    // seq[1].station_number,
+    // seq[2].station_number,
+    // seq[3].station_number,
+    // seq[4].station_number,
+  ])
+
+  useEffect(() => {
+    if (sequence.length > 0) {
+      setStationNumbers(
+        [
+          seq[window].station_number,
+          seq[window + 1].station_number,
+          seq[window + 2].station_number,
+          seq[window + 3].station_number,
+          seq[window + 4].station_number,
+        ]
+      )
+    }
+  }, [sequence, window])
+  var tempStations;
 
   if (!loading)
     return (
@@ -513,10 +536,12 @@ const StrungItems = () => {
           <DragDropContext onDragEnd={onDragEnd}>
             <div className={styles.mainTop}>
               <MainLaneControls styles={styles} controls={controlFunctions} />
-              <StationContainer styles={styles} stations={[1, 2, 3, 4, 5]} />
+              <StationContainer styles={styles} stations={stationNumbers} />
             </div>
             <div className={styles.mainBottom}>
-              <div>
+              <div
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
                 <Droppable
                   droppableId="StringingDropZone"
                   direction="horizontal"
@@ -526,63 +551,122 @@ const StrungItems = () => {
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                     >
-                      {sequence
-                        .slice(window, window + 4)
-                        .map((item: dataType, index) => {
-                          if (item.item_id == 'gap') {
-                            return (
-                              <div>
-                                <Draggable
-                                  draggableId={item.item_id}
-                                  key={item.item_id}
-                                  index={index}
+                      {/* {console.log('attempting to map')} */} {/* TEST */}
+                      {/* {console.log(sequence)} */} {/* TEST */}
+                      {sequence.length > 0 ?
+                        sequence
+                          .slice(window, window + 4)
+                          .map((item: dataType, index) => {
+                            /* console.log('mapping' + sequence.slice(window, window + 4)) */ /* Test */
+                            if (item.item_id == 'gap') {
+                              return (
+                                <div
+                                  style={{ display: 'flex', }}
+                                  ref={provided.innerRef}
+                                  {...provided.droppableProps}
                                 >
-                                  {(provided) => (
-                                    <>
-                                      <MainLaneDraggable
-                                        item={item}
-                                        // pipeDetails={currentItemDetails[index]}
-                                        dragDetails={[
-                                          provided.innerRef,
-                                          provided.draggableProps,
-                                          provided.dragHandleProps,
-                                        ]}
-                                      />
-                                    </>
-                                  )}
-                                </Draggable>
-                              </div>
-                            )
-                          }
-                          else {
-                            return (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
+                                  <Draggable
+                                    draggableId={item.item_id}
+                                    key={item.item_id}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        style={{
+                                          display: 'flex',
+                                          ...provided.draggableProps.style
+                                        }}
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                      >
+                                        <MainLaneDraggable
+                                          item={item}
+                                          // pipeDetails={currentItemDetails[index]}
+                                          dragDetails={[
+                                            provided.innerRef,
+                                            provided.draggableProps,
+                                            provided.dragHandleProps,
+                                          ]}
+                                        />
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                </div>
+                              )
+                            }
+                            else {
+                              return (
+                                <div
+                                  style={{ display: 'flex' }}
+                                  ref={provided.innerRef}
+                                  {...provided.droppableProps}
+                                >
+                                  <Draggable
+                                    draggableId={item.item_id}
+                                    key={item.item_id}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        style={{
+                                          display: 'flex'
+                                        }}
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                      >
+                                        {/* {console.log(item)} */}
+                                        <MainLaneDraggable
+                                          item={item}
+                                          // pipeDetails={currentItemDetails[index]}
+                                          dragDetails={[
+                                            provided.innerRef,
+                                            provided.draggableProps,
+                                            provided.dragHandleProps,
+                                          ]}
+                                        />
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                </div>
+                              )
+                            }
+                          })
+                        :
+                        stationNumbers.map((station, index) => {
+                          return (
+                            <div
+                              style={{ display: 'flex' }}
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                            >
+                              <Draggable
+                                draggableId={station.toString()}
+                                key={station.toString()}
+                                index={index}
                               >
-                                <Draggable
-                                  draggableId={item.item_id}
-                                  key={item.item_id}
-                                  index={index}
-                                >
-                                  {(provided) => (
-                                    <>
-                                      {console.log(item)}
-                                      <MainLaneDraggable
-                                        item={item}
-                                        // pipeDetails={currentItemDetails[index]}
-                                        dragDetails={[
-                                          provided.innerRef,
-                                          provided.draggableProps,
-                                          provided.dragHandleProps,
-                                        ]}
-                                      />
-                                    </>
-                                  )}
-                                </Draggable>
-                              </div>
-                            )
-                          }
+                                {(provided) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={{
+                                      display: 'flex'
+                                    }}
+                                  >
+                                    {/* {console.log(item)} */}
+                                    <div
+                                      style={{
+                                        backgroundColor: 'white',
+                                        border: '3px solid'
+                                      }}
+                                    >
+                                      {station} (sequence empty!!!)
+                                    </div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            </div>
+                          )
                         })
                       }
                       {provided.placeholder}

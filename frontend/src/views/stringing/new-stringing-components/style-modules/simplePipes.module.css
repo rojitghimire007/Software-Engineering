@@ -1,23 +1,27 @@
 .pipesContainer {
-    display: grid;
-    /* flex-direction: row; */
+    /* display: grid; */
+    display: flex;
+    flex-direction: row;
     /* min-height: 100%;   */
-    grid-template-columns: 2fr 1fr 2fr 1fr 2fr 1fr 2fr;
+    /* grid-template-columns: 2fr 1fr 2fr 1fr 2fr 1fr 2fr; */
     user-select: none;
     /* justify-content: space-around; */
     /* margin-top: 2.5%; */
 }
 .pipeWrapper {
+    /* display: grid; */
     display: grid;
     grid-template-columns: 1fr 8fr 1fr;
     /* grid-template-rows: 1fr; */
-    /* min-width: 10%;
-    width: 100%; */
+    /* min-width: 10%; */
+    width: 50%;
     height: 80%;
+    margin: 1%;
+    border: 1px solid;
     /* padding: 1.65% 0; */
 }
 .pipeContent {
-    /* height: 100%; */
+    height: 100%;
     /* padding: 28% 0; */
     background-color: lightseagreen;
     /* min-width: max-content; */
@@ -26,6 +30,6 @@
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr; */
 }
 .pipeSide {
-    /* height: 100%; */
+    height: 100%;
     background-color: red;
 }
