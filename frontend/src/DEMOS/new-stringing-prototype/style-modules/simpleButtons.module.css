@@ -1,0 +1,21 @@
+button {
+    transition: all .2s ease-in-out;
+}
+button:hover {
+    transform: scale(0.95);
+    opacity: .97;
+}
+.unstyled {
+    border: 1px solid white;
+    color: black;
+}
+.refresh {
+    border: 1px solid red;
+    background-color: greenyellow;
+    color: black;
+}
+.move {
+    border: 1px solid black;
+    background-color: pink;
+    color: black;
+}

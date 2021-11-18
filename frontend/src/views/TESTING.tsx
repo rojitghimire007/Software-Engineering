@@ -13,9 +13,23 @@ import Pipe2 from 'components/stringing-components/Pipe2'
 import AButton from 'components/stringing-components/AButton'
 import ButtonHolder from 'components/stringing-components/ButtonHolder'
 import OptionSelect from 'components/stringing-components/OptionSelect'
+import StringingLane from '../components/stringing-new/StringingLane'
+import StringingContainer from '../DEMOS/new-stringing-prototype/StringingContainer'
+
+import DraggingFunctions from 'DEMOS/DraggingFunctions'
 //////////////
 
 const TESTING = () => {
+    //////////////
+    // testData //
+    //////////////
+    const pipesToMap = [
+        { name: '1' },
+        { name: '2' },
+        { name: '3' },
+        { name: '4' },
+    ]
+    //////////////
     return (
         <>
             {/* <PipeCutter/> */}
@@ -41,8 +55,17 @@ const TESTING = () => {
                 <AButton color="rgba(0,0,255,1)" index="2" onClick={() => {console.log("clicked")}}/>
             </div> */}
             {/* <ButtonHolder /> */}
-            <DragDropContext onDragEnd={() => console.log("drag over")}>
-                    <OptionSelect />
+            {/* <StringingLane toMap={pipesToMap} /> */}
+            {/* <DragDropContext
+                onDragStart={() => {DraggingFunctions.onDragStart()}}
+                onDragEnd={() => {DraggingFunctions.onDragEnd()}}
+            > */}
+            {/* <OptionSelect /> */}
+            {/* <StringingLane toMap={pipesToMap} /> */}
+            {/* {console.log(pipesToMap)} */}
+            {/* </DragDropContext> */}
+            <DragDropContext onDragEnd={DraggingFunctions.onDragEnd}>
+                <StringingContainer onDragEnd={DraggingFunctions.onDragEnd}/>
             </DragDropContext>
         </>
     )

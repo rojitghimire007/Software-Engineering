@@ -554,7 +554,7 @@ const StrungItems = () => {
                               key={`${item.item_id}${index}`}
                               draggableId={`${item.item_id}${index}`}
                               index={index}
-                              isDragDisabled
+                              // isDragDisabled
                             >
                               {(provided, snapshot) => (
                                 <div
