@@ -51,8 +51,8 @@ const useStyles = makeStyles ((theme) => ({
     //  || PIPES
     
     pipeContainer: {
-      // display: 'flex',
-      // width: '500px !important',
+      display: 'flex',
+      width: '500px !important',
       // rowGap: 0,
       // columnGap: 0,
       boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,

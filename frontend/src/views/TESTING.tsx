@@ -14,7 +14,8 @@ import AButton from 'components/stringing-components/AButton'
 import ButtonHolder from 'components/stringing-components/ButtonHolder'
 import OptionSelect from 'components/stringing-components/OptionSelect'
 import StringingLane from '../components/stringing-new/StringingLane'
-import StringingContainer from '../DEMOS/new-stringing-prototype/StringingContainer'
+import StringingContainer from './stringing/new-stringing-components/StringingContainer'
+import NewCutting from 'DEMOS/new-cutting-prototype/NewCutting'
 
 import DraggingFunctions from 'DEMOS/DraggingFunctions'
 //////////////
@@ -29,6 +30,7 @@ const TESTING = () => {
         { name: '3' },
         { name: '4' },
     ]
+    const dragDropTesting = ['item A', 'item B', 'item C']
     //////////////
     return (
         <>
@@ -64,9 +66,47 @@ const TESTING = () => {
             {/* <StringingLane toMap={pipesToMap} /> */}
             {/* {console.log(pipesToMap)} */}
             {/* </DragDropContext> */}
-            <DragDropContext onDragEnd={DraggingFunctions.onDragEnd}>
+            {/* <DragDropContext onDragEnd={DraggingFunctions.onDragEnd}>
                 <StringingContainer onDragEnd={DraggingFunctions.onDragEnd}/>
-            </DragDropContext>
+            </DragDropContext> */}
+            <NewCutting />
+
+
+
+
+            {/* DnD no collapse POC */}
+            {/* <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr 1fr',
+                }}
+            >
+                {dragDropTesting.map((item: any, index: any) => {
+                    return (
+                        <Droppable droppableId={item + 'drop'}>
+                            {(provided) => (
+                                <div
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                >
+                                    <Draggable draggableId={item} key={item} index={index}>
+                                        {(provided) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                            >
+                                                {item}
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                </div>
+                            )
+                            }
+                        </Droppable>
+                    )
+                })}
+            </div> */}
         </>
     )
 }

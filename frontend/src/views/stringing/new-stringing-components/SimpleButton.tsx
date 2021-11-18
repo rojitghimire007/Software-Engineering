@@ -1,7 +1,8 @@
 import React from 'react'
 import styles from './style-modules/simpleButtons.module.css'
 
-const SimpleButton = ({ btnName, btnStyle, onClick }: any) => {
+const SimpleButton = ({ btnName, btnStyle, buttonProps }: any) => {
+    const buttonInformation = { ...buttonProps };
     const getButtonStyle = (style: any) => {
         if (style === 'refresh') return styles.refresh
         if (style === 'move') return styles.move
@@ -13,7 +14,17 @@ const SimpleButton = ({ btnName, btnStyle, onClick }: any) => {
     return (
         <div>
             {btnName != '' ?
-                <button className={getButtonStyle(btnStyle)}>{btnName}</button>
+                <button
+                    className={getButtonStyle(btnStyle)}
+                    disabled={buttonInformation.disabled}
+                    onClick={buttonInformation.onClick}
+                >
+                    {!buttonInformation.disabled ?
+                        <>{btnName}</>
+                        :
+                        <>DISABLED</>
+                    }
+                </button>
                 :
                 <button>name missing</button>
             }

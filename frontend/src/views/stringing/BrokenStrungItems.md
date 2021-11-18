@@ -13,13 +13,9 @@ import {
   CssBaseline,
   Toolbar,
   //   TextField,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
-import {
-  Button,
-  Autocomplete,
-  TextField,
-} from '@mui/material';
+import { Button, Autocomplete, TextField } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 
 import { typography } from '@mui/system';
@@ -28,14 +24,14 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import useStyles from '../../style/StringingStyles';
 import useUpdateEffect from 'utils/useUpdateEffect';
 import Gap from './Gap';
-import Pipe from '../../components/stringing-components/Pipe2'
+import Pipe from '../../components/stringing-components/Pipe2';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import MyButton from 'components/MyButton';
 import DeleteDnD from 'components/DeleteDnD';
 import TransferDnD from 'components/TransferDnD';
 import StringBtnContainer from 'components/StringBtnContainer';
 
-import OptionSelect from 'components/stringing-components/OptionSelect'
+import OptionSelect from 'components/stringing-components/OptionSelect';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
@@ -70,7 +66,7 @@ const styleRules = makeStyles({
   deleteIcon: {
     position: 'relative',
     transform: 'scale(2.75)',
-    opoacity: .75,
+    opoacity: 0.75,
     transition: '',
   },
 });
@@ -83,7 +79,6 @@ const reorder = (
 ): Array<any> => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
-
   result.splice(endIndex, 0, removed);
 
   return result;
@@ -257,12 +252,15 @@ const StrungItems = () => {
   }, [window]);
 
   const addNewItem = (result: any) => {
-    let target_pipe = result.draggableId;
+    let target_pipe: string = result.draggableId;
     let [left_item, start_item] = getLeftAndStartItem(sequence, result);
 
     if (!new RegExp('F_.*').test(target_pipe)) target_pipe = 'p_' + target_pipe;
+    console.log('==========================');
+    console.log(target_pipe);
+
     return api
-      .insertIntoSequence(target_pipe, left_item, start_item)
+      .insertIntoSequence(target_pipe.toLowerCase(), left_item, start_item)
       .then((res) => {
         updateStations(
           sequence,
@@ -360,7 +358,7 @@ const StrungItems = () => {
     } else if (result.destination.droppableId === 'delete') {
       deleteFromSequence(result);
     } else if (
-      result.source.droppableId == 'hold' &&
+      result.source.droppableId == 'add' &&
       result.destination.droppableId === 'droppable'
     )
       addNewItem(result);
@@ -459,27 +457,28 @@ const StrungItems = () => {
           id: 'combo-box-demo',
           options: eligible,
           value: newItem,
-          onChange: (event: any, newValue: any) =>
-            setNewItem(newValue),
+          onChange: (event: any, newValue: any) => setNewItem(newValue),
           inputValue: inputValue,
           onInputChange: (event: any, newInputValue: any) =>
             setInputValue(newInputValue),
-          renderInput: (params: any) =>
-            (<TextField {...params} label="Add Item" />),
+          renderInput: (params: any) => (
+            <TextField {...params} label="Add Item" />
+          ),
           filterOptions: filterOptions,
         },
         button: {
-          variant: "contained",
+          variant: 'contained',
           onClick: (e: any) => {
             getItemDetails(newItem);
             setInputValue('');
             setNewItem('');
           },
         },
+        newItemDetails: newItemDetails,
       },
       transfer: {
         newItemDetails: newItemDetails,
-      }
+      },
     },
     /* 
     {
@@ -496,14 +495,45 @@ const StrungItems = () => {
 
   if (!loading)
     return (
-      <div /* className={classes.body} */ style={{ maxWidth: '100vw' }}>
+      <div style={{
+        maxWidth: '100vw',
+        display: 'flex',
+        flexFlow: 'column nowrap',
+        height: '1000px',
+        maxHeight: '100vw',
+        overflow: 'hidden',
+        backgroundSize: 'contain',
+        background: 'linear-gradient( to bottom left, rgba(220,220,220,.7), rgba(20,100,0,.9))',
+      }}>
         <CssBaseline />
-        {/* <Toolbar className={classes.title}>
-          <Typography variant="h4" className={classes.titleContent}>
+        {/* <Toolbar className={classes.title} > */}
+        {/* <Typography variant="h4" className={classes.titleContent}>
             Pipe Stringing
-          </Typography>
-        </Toolbar> */}
-
+          </Typography> */}
+        {/* </Toolbar> */}
+        <div
+          style={{
+            // display: 'flex',
+            fontSize: '3.2rem',
+            color: 'white',
+            fontFamily: 'Bebas Neue, serif',
+            letterSpacing: '.25rem',
+            textAlign: 'center',
+            width: 'calc(100% - 30px)',
+            boxShadow: '-3px 6px 4px 2px rgba(0,40,0,.8)',
+            background: 'rgba(20,50,20,.6)',
+            margin: '15px 15px 15px 15px',
+          }}
+        >
+          {/* <div
+            style={{
+              borderRadius: '50% 0 0 50%',
+              width: '100%',
+            }}
+          /> */}
+          Pipe Stringing
+          {/* <div/> */}
+        </div>
         <main>
           <div>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -513,7 +543,7 @@ const StrungItems = () => {
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                     {...provided.droppableProps}
-                    className={classes.virtList}
+                  /* className={classes.virtList} */
                   >
                     {sequence
                       .slice(window, window + 4)
@@ -524,14 +554,14 @@ const StrungItems = () => {
                               key={`${item.item_id}${index}`}
                               draggableId={`${item.item_id}${index}`}
                               index={index}
-                              isDragDisabled
+                              // isDragDisabled
                             >
                               {(provided, snapshot) => (
                                 <div
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={{ margin: '0 50px' }}
+                                  style={{ margin: '0 10px' }}
                                 >
                                   <div
                                     style={{ border: 'dotted 1px black' }}
@@ -555,51 +585,42 @@ const StrungItems = () => {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={getItemStyle(
-                                    snapshot.isDragging,
-                                    provided.draggableProps.style
-                                  )}
-                                // className={classes.pipeContainer}
+                                  // style={{ maxWidth: '100vw', overflow: 'hidden', }}
+                                  // style={getItemStyle(
+                                  //   snapshot.isDragging,
+                                  //   // provided.draggableProps.style, 
+                                  // )}
+                                  style={{
+                                    width: '400px',
+                                    maxWidth: '100vw',
+                                    position: 'relative',
+                                    left: '-75px',
+                                    marginLeft: '0',
+                                    // overflow: 'scroll',
+                                  }}
                                 >
-
-                                  {/* <div className={classes.pipe}>
-                                    <div>{item.item_id}</div>
-                                    <div>{item.station_number}</div>
-                                    <div>{item.plength || item.flength}</div>
-                                    <div>{item.overlap ? 'Overlap' : 'NO'}</div>
-                                  </div> */}
-                                  {/* <Pipe 
-                                    length={50}
-                                    height={50}
-                                    pid={item.item_id}
+                                  {console.log(item)}
+                                  <Pipe
+                                    plength={item.plength}
                                     station={item.station_number}
-                                    // gap={item.}
-                                    // heat=
-                                    // thickness=
-                                    // grade=
-                                  /> */}
-                                  {/* <div>
-                                      Heat No:{' '}
-                                      {currentItemDetails[index]
-                                        ? currentItemDetails[index].heat_no
-                                        : ''}
-                                    </div>
-                                    <div>
-                                      Grade:{' '}
-                                      {currentItemDetails[index]
-                                        ? currentItemDetails[index].grade
-                                        : ''}
-                                    </div>
-                                    <div>
-                                      Thickness:{' '}
-                                      {currentItemDetails[index]
-                                        ? currentItemDetails[index]
-                                            .wall_thickness
-                                        : ''}
-                                    </div>
-                                  </div>
-                                  <div className={classes.pipeEnd} /> */}
-                                  <Pipe pid={item.item_id} />
+                                    pid={item.item_id}
+                                    length={75}
+                                    grade={currentItemDetails[index]
+                                      ? currentItemDetails[index].grade
+                                      : 'N/A'}
+                                    overlap={currentItemDetails[index]
+                                      && currentItemDetails[index].overlap
+                                      ? "overlap"
+                                      : 'NO overlap'}
+                                    thickness={currentItemDetails[index]
+                                      && currentItemDetails[index].wall_thickness
+                                      ? currentItemDetails[index].wall_thickness
+                                      : 'N/A'}
+                                    heat={currentItemDetails[index]
+                                      && currentItemDetails[index].heat_no
+                                      ? currentItemDetails[index].heat_no
+                                      : 'N/A'}
+                                  />
                                 </div>
                               )}
                             </Draggable>
@@ -609,7 +630,7 @@ const StrungItems = () => {
                   </div>
                 )}
               </Droppable>
-              <div style={{ display: 'flex', justifyContent: 'space-between', }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button
                   size="large"
                   color="secondary"
@@ -628,15 +649,15 @@ const StrungItems = () => {
                       });
                     } else setWindow(window - 1);
                   }}
-                  style={{fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-start', margin: '2vh 3vw' }}
+                  style={{ fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-start', margin: '2vh 3vw' }}
                 >
                   Previous
                 </Button>
-                <div style={{ display: "flex", justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center',}}>
+                <div style={{ display: "flex", justifyContent: 'flex-start', justifyItems: 'center', alignItems: 'center', }}>
                   <TextField
                     value={goTo}
                     onChange={(e) => setGoTo(e.currentTarget.value)}
-                    style={{ marginLeft: '2vw', /* marginBottom: '2vh' */}}
+                    style={{ marginLeft: '2vw', /* marginBottom: '2vh' */ }}
                   />
                   <Button
                     size="large"
@@ -644,7 +665,7 @@ const StrungItems = () => {
                     variant="contained"
                     onClick={(e) => goToStation(parseInt(goTo))}
                     placeholder="Select Station"
-                    style={{fontFamily: 'Fenix, serif', fontSize: '24px', height: '50%', marginLeft: '2vw', position: 'relative', /* top: '0.5vh' */ }}
+                    style={{ fontFamily: 'Fenix, serif', fontSize: '24px', height: '50%', marginLeft: '2vw', position: 'relative', /* top: '0.5vh' */ }}
                   >
                     GO TO Station
                   </Button>
@@ -655,126 +676,12 @@ const StrungItems = () => {
                   variant="contained"
                   disabled={window + 4 >= sequence.length ? true : false}
                   onClick={() => setWindow(window + 1)}
-                  style={{fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-end', margin: '2vh 6vw' }}
+                  style={{ fontFamily: 'Fenix, serif', fontSize: '24px', justifySelf: 'flex-end', margin: '2vh 6vw' }}
                 >
                   Next
                 </Button>
               </div>
-              {/* <DeleteDnD />
-              <TransferDnD /> */}
-              {/* <div style={{background: 'pink'}}><StringBtnContainer /></div> */}
-
-
-
-
-
-              <OptionSelect props={DnDProps}/* style={{ maxWidth: '100vw', zIndex: '9999999999999999 !important', }}  */ />
-
-
-
-
-
-              {/* <Droppable droppableId="delete" direction="horizontal">
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    // style={getListStyle(snapshot.isDraggingOver)}
-                    {...provided.droppableProps}
-                    // className={classes.virtList}
-                    className={styles.deleteContainer}
-                  >
-                    <DeleteForeverIcon className={styles.deleteIcon}/>
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable> */}
-
-              {/* <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={eligible}
-                sx={{ width: 300 }}
-                value={newItem}
-                onChange={(event: any, newValue: any) => {
-                  setNewItem(newValue);
-                }}
-                inputValue={inputValue}
-                onInputChange={(event, newInputValue) => {
-                  setInputValue(newInputValue);
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Add Item" />
-                )}
-                filterOptions={filterOptions}
-              /> */}
-              {/* <Button
-                variant="contained"
-                onClick={(e) => {
-                  getItemDetails(newItem);
-                  setInputValue('');
-                  setNewItem('');
-                }}
-              > */}
-              {/* Select */}
-              {/* </Button> */}
-
-              {/* <Droppable droppableId="hold" direction="horizontal">
-                {(provided, snapshot) => ( */}
-              {/* <div
-                    ref={provided.innerRef}
-                    // style={getListStyle(snapshot.isDraggingOver)}
-                    {...provided.droppableProps}
-                    // className={classes.virtList}
-                    style={{
-                      height: '20vh',
-                      width: '30vw',
-                      backgroundColor: 'gray',
-                    }}
-                  > */}
-              {/* // {newItemDetails.item_id ? ( */}
-              {/* <Draggable
-                        key={`${newItemDetails.item_id}`}
-                        draggableId={`${newItemDetails.item_id}`}
-                        index={0}
-                      > */}
-              {/* // {(provided, snapshot) => ( */}
-              {/* <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
-                            )}
-                            className={classes.pipeContainer}
-                          > */}
-              {/* {console.log(`Pipe: ${index}`)}
-                                  {console.log(`Pipe: ${item.item_id}`)} */}
-
-              {/* <div className={classes.pipeStart} />
-
-                            <div className={classes.pipe}>
-                              <div>{newItemDetails.item_id}</div>
-                              <div>
-                                {newItemDetails.plength ||
-                                  newItemDetails.flength}
-                              </div>
-                              <div>Heat No: {newItemDetails.heat_no}</div>
-                              <div>Grade: {newItemDetails.grade}</div>
-                              <div>
-                                Thickness: {newItemDetails.wall_thickness}
-                              </div>
-                            </div>
-                            <div className={classes.pipeEnd} />
-                          </div> */}
-              {/*  /* )}
-                      </Draggable>
-                     ) : null}
-
-                    {/* /* {provided.placeholder}
-                        </div> */}
-              {/* )} */}
-              {/* </Droppable> */}
+              <OptionSelect props={DnDProps} style={{ marginBottom: '0px', }} />
             </DragDropContext>
           </div>
         </main>

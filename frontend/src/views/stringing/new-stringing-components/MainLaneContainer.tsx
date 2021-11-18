@@ -1,7 +1,7 @@
 import React from 'react'
 import MainLaneControls from './MainLaneControls'
-import StationContainer from './StationContainer'
-import MainLaneDraggable from './MainLaneDraggable'
+import StationContainer from '../../../DEMOS/new-stringing-prototype/StationContainer'
+import MainLaneDraggable from '../../../DEMOS/new-stringing-prototype/MainLaneDraggable'
 import { Droppable } from 'react-beautiful-dnd'
 
 
