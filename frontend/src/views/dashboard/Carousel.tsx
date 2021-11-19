@@ -4,6 +4,7 @@ import './Carousel.css'
 import { Link } from 'react-router-dom';
 import Slides from './Links';
 
+
   const links = Slides();
 // Create an array of Carousel Items
 const items: CarouselItem[] = 
@@ -12,12 +13,26 @@ const items: CarouselItem[] =
     image: '',
     content: (
         <>
-            <Link to={item.link} style={{width: '100%', height: '100%'}}>
+          <div style={{height: '100%'}}>
+            <Link to={item.link} style={{width: '100%', height: '33%'}}>
                 <img src={item.image} style={{height: '80%'}}></img>
                 <div style={{height: '20%', color: 'white', textDecoration: 'none', backgroundColor: 'black'}}>
                     {item.id}
                 </div>
             </Link>
+            <Link to={item.link} style={{width: '100%', height: '34%'}}>
+                <img src={item.image} style={{height: '80%'}}></img>
+                <div style={{height: '20%', color: 'white', textDecoration: 'none', backgroundColor: 'black'}}>
+                    {item.id}
+                </div>
+            </Link>
+            <Link to={item.link} style={{width: '100%', height: '33%'}}>
+                <img src={item.image} style={{height: '80%'}}></img>
+                <div style={{height: '20%', color: 'white', textDecoration: 'none', backgroundColor: 'black'}}>
+                    {item.id}
+                </div>
+            </Link>
+          </div>
         </>
     )
 }));
@@ -29,7 +44,7 @@ const RunCarousel = () => {
             {/*  DO NOT CHANGE THIS (atm at least) */}
             <div className="root">
                 {/* this is the carousel item*/}
-                <Carousel items={items} itemWidth={175}/>
+                <Carousel items={items} itemWidth={200}/>
             </div>
         </div>
 	)

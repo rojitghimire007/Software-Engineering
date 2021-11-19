@@ -1,6 +1,7 @@
 .comp-container {
     /* width: 50vw; */
     max-width: 80vw;
+    height: 30rem;
     background-color: black;
     opacity: 100%;
     margin-left: auto;
@@ -15,6 +16,7 @@
 .root {
     flex: 0 0 100%;
     padding-bottom: 3rem;
+    background-color: black;
     overflow: hidden;
 }
 
@@ -36,10 +38,10 @@
     /* width: 13.125rem; */
     width: 6rem; /* optimized for a list with 10 items. */
     /* height: 13.125rem; */
-    height: 15rem;
+    height: 25rem;
     position: relative;
     margin: 0 auto;
-    margin-top: 5rem; /*Changes distance of carousel from top of container */
+    margin-top: 4rem; /*Changes distance of carousel from top of container */
     /* perspective: 62.5rem; */
     /* perspective: 200rem; */ /* may need to mess with this when resizing/positioning */
     /* perspective: calc(62.5rem * 2); */
