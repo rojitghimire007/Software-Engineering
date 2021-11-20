@@ -1,7 +1,7 @@
 import React from 'react'
 import MainLaneControls from './MainLaneControls'
-import StationContainer from '../../../DEMOS/new-stringing-prototype/StationContainer'
-import MainLaneDraggable from '../../../DEMOS/new-stringing-prototype/MainLaneDraggable'
+// import StationContainer from './StationContainer'
+// import MainLaneDraggable from '../../../DEMOS/new-stringing-prototype/MainLaneDraggable'
 import { Droppable } from 'react-beautiful-dnd'
 
 
@@ -22,8 +22,8 @@ const MainLaneContainer = ({ styles, onDragEnd }: any) => {
     return (
         <div>
             <div className={styles.mainTop}>
-                <MainLaneControls styles={styles} />
-                <StationContainer styles={styles} stations={stationData} />
+                {/* <MainLaneControls styles={styles} />
+                <StationContainer styles={styles} stations={stationData} /> */}
             </div>
             <Droppable droppableId="PipesDragMain">
                 {(provided) => (
@@ -32,10 +32,10 @@ const MainLaneContainer = ({ styles, onDragEnd }: any) => {
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
-                        <MainLaneDraggable
+                        {/* <MainLaneDraggable
                             pipes={pipeData}
                             onDragEnd={onDragEnd}
-                        />
+                        /> */}
                         {provided.placeholder}
                     </div>
                 )}

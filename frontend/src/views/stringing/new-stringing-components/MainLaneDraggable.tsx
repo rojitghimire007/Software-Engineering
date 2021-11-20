@@ -1,79 +1,75 @@
 import React from 'react'
 import styles from './style-modules/simplePipes.module.css'
+import { Draggable } from 'react-beautiful-dnd'
+import { style } from '@mui/system'
 
-const createItem = (itemInfo: any, dragProps: any) => {
+const createItem = (itemInfo: any, /* dragProps: any */) => {
     if (itemInfo.item_id && itemInfo.item_id.charAt(0) === 'g') {
         return (
-            <div
-                className={styles.pipeWrapper}
-                // ref={dragProps[0]}
-                // {...dragProps[1]}
-            // {...dragProps[2]}
-            >
-                {/* <div className={styles.pipeSide} {...dragProps[2]}>side A</div> */}
-                <div className={styles.pipeContent} /* {...dragProps[2]} */>
-                    {itemInfo.item_id} (gap)
+            <div className={`${styles.pipeWrapper} ${styles.gap}`}>
+                <div className={`${styles.pipeSide} ${styles.gridSide}`}>side A</div>
+                <div className={styles.gapContent}>
+                    <div></div>
+                    <div style={{ color: 'black', textAlign: 'center' }}>
+                        {itemInfo.item_id}
+                    </div>
+                    <div></div>
                 </div>
-                {/* <div className={styles.pipeSide} {...dragProps[2]}>side B</div> */}
-            </div>
-        )
+                <div className={`${styles.pipeSide} ${styles.gridSide}`}>side B</div>
+            </div>)
     }
     else if (itemInfo.item_id && itemInfo.item_id.charAt(0) === 'f') {
         return (
-            <div
-                className={styles.pipeWrapper}
-                // ref={dragProps[0]}
-                // {...dragProps[1]}
-            >
-                {/* <div className={styles.pipeSide} {...dragProps[2]}>side A</div> */}
-                <div className={styles.pipeContent} /* {...dragProps[2]} */>
-                    <div>
-                        {itemInfo.item_id} (fitting)
-                    </div>
+            <div className={styles.fittingsWrapper}>
+                <div className={`${styles.pipeSide} ${styles.gridSide}`}></div>
+                <div className={styles.fittingsContent}>
+                    <div>Fitting ID: {itemInfo.item_id}</div>
                     <div>Length: {itemInfo.flength}</div>
                 </div>
-                {/* <div className={styles.pipeSide} {...dragProps[2]}>side B</div> */}
+                <div className={`${styles.pipeSide} ${styles.gridSide}`}></div>
             </div>
         )
     }
     else if (itemInfo.item_id && itemInfo.item_id.charAt(0) === 'p') {
         return (
-            <div
-                
-                // ref={dragProps[0]}
-                // {...dragProps[1]}
-            >
-                <div
-                    className={styles.pipeWrapper}
-                >
-                    {/* <div className={styles.pipeSide} {...dragProps[2]}>side A</div> */}
-                    <div className={styles.pipeContent} /* {...dragProps[2]} */>
-                        <div>
-                            {itemInfo.item_id} (pipe)
-                        </div>
-                        <div>
-                            {itemInfo.station_number}
-                        </div>
-                        <div>Length: {itemInfo.plength}</div>
+            <div className={styles.pipeWrapper}>
+                <div className={`${styles.pipeSide} ${styles.left}`}></div>
+                <div className={styles.pipeContent}>
+                    <div>
+                        <div>Pipe ID: &nbsp; {itemInfo.item_id}</div>
+                        <div>Station: &nbsp; {itemInfo.station_number}</div>
+                        <div>Heat:  &nbsp; 123345{itemInfo.heat_no}</div>
+                        <div>Grade:  &nbsp; X65{itemInfo.grade}</div>
+                        <div>Length: &nbsp; {itemInfo.plength}</div>
                     </div>
-                    {/* <div className={styles.pipeSide} {...dragProps[2]}>side B</div> */}
                 </div>
+                <div className={`${styles.pipeSide} ${styles.right}`}></div>
             </div>
         )
     }
-    else return <div>TEMP</div>
+    else return <div style={{ width: '100%' }}>Invalid Item</div>
 }
 
-const MainLaneDraggable = ({ item, pipeDetails, dragDetails, }: any) => {
+const MainLaneDraggable = ({ item, index, dragDetails, }: any) => {
     return (
-        <div
-            className={styles.pipesWrapper}
-            ref={dragDetails[0]}
-            {...dragDetails[1]}
-            {...dragDetails[2]}
+        <Draggable
+            draggableId={item.item_id}
+            index={index}
         >
-            {createItem(item, dragDetails)}
-        </div>
+            {(provided) => (
+                <div
+                    className={styles.pipeContainer}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    // style={{marginTop: '5%'}}
+                    key={item.id + index}
+                >
+                    {createItem(item, /* dragDetails */)}
+                </div>
+            )}
+
+        </Draggable>
     )
 }
 

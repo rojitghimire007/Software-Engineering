@@ -45,7 +45,7 @@ import styles from './new-stringing-components/style-modules/newStringing.module
 import useUpdateEffect from 'utils/useUpdateEffect';
 import Gap from './Gap';
 import MainLaneControls from './new-stringing-components/MainLaneControls';
-import StationContainer from 'DEMOS/new-stringing-prototype/StationContainer';
+import StationContainer from 'views/stringing/new-stringing-components/StationContainer';
 import MainLaneDraggable from './new-stringing-components/MainLaneDraggable';
 import { PersonalVideoRounded } from '@mui/icons-material';
 
@@ -482,7 +482,7 @@ const StrungItems = () => {
     stationInput: {
       onChange: (e: any) => {
         setGoTo(e.currentTarget.value);
-        console.log(e.currentTarget.value)
+        // console.log(e.currentTarget.value)
       }
     },
     search: {
@@ -491,7 +491,7 @@ const StrungItems = () => {
       disabled: false,
       onClick: (e: any) => {
         goToStation(parseInt(goTo));
-        console.log(goTo)
+        // console.log(goTo)
       },
     },
   }]
@@ -503,7 +503,7 @@ const StrungItems = () => {
     'item A', 'item B', 'item C',
   ]
   const seq = [...sequence];
-  console.log(seq)
+  // console.log(seq)
   const [stationNumbers, setStationNumbers] = useState([
     0, 1, 2, 3, 4,
     // seq[0].station_number,
@@ -515,18 +515,20 @@ const StrungItems = () => {
 
   useEffect(() => {
     if (sequence.length > 0) {
-      setStationNumbers(
-        [
-          seq[window].station_number,
-          seq[window + 1].station_number,
-          seq[window + 2].station_number,
-          seq[window + 3].station_number,
-          seq[window + 4].station_number,
-        ]
-      )
+      setStationNumbers(() => (
+        seq[window + 4] != null ? // need to display 5 stations [window ... window + 4]
+          [
+            seq[window].station_number,
+            seq[window + 1].station_number,
+            seq[window + 2].station_number,
+            seq[window + 3].station_number,
+            seq[window + 4].station_number,
+          ]
+          :
+          stationNumbers
+      ))
     }
   }, [sequence, window])
-  var tempStations;
 
   if (!loading)
     return (
@@ -540,14 +542,22 @@ const StrungItems = () => {
             </div>
             <div className={styles.mainBottom}>
               <div
-                style={{ display: 'flex', flexDirection: 'column' }}
+              // style={{ display: 'flex', flexDirection: 'column' }}
               >
                 <Droppable
                   droppableId="StringingDropZone"
                   direction="horizontal"
                 >
-                  {(provided) => (
+                  {(provided, snapshot) => (
                     <div
+                      style={{
+                        minWidth: '100%',
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        // position: 'relative',
+                        width: '100%',
+                        paddingTop: '5%'
+                      }}
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                     >
@@ -557,85 +567,23 @@ const StrungItems = () => {
                         sequence
                           .slice(window, window + 4)
                           .map((item: dataType, index) => {
-                            /* console.log('mapping' + sequence.slice(window, window + 4)) */ /* Test */
-                            if (item.item_id == 'gap') {
-                              return (
-                                <div
-                                  style={{ display: 'flex', }}
-                                  ref={provided.innerRef}
-                                  {...provided.droppableProps}
-                                >
-                                  <Draggable
-                                    draggableId={item.item_id}
-                                    key={item.item_id}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        style={{
-                                          display: 'flex',
-                                          ...provided.draggableProps.style
-                                        }}
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                      >
-                                        <MainLaneDraggable
-                                          item={item}
-                                          // pipeDetails={currentItemDetails[index]}
-                                          dragDetails={[
-                                            provided.innerRef,
-                                            provided.draggableProps,
-                                            provided.dragHandleProps,
-                                          ]}
-                                        />
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                </div>
-                              )
-                            }
-                            else {
-                              return (
-                                <div
-                                  style={{ display: 'flex' }}
-                                  ref={provided.innerRef}
-                                  {...provided.droppableProps}
-                                >
-                                  <Draggable
-                                    draggableId={item.item_id}
-                                    key={item.item_id}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        style={{
-                                          display: 'flex'
-                                        }}
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                      >
-                                        {/* {console.log(item)} */}
-                                        <MainLaneDraggable
-                                          item={item}
-                                          // pipeDetails={currentItemDetails[index]}
-                                          dragDetails={[
-                                            provided.innerRef,
-                                            provided.draggableProps,
-                                            provided.dragHandleProps,
-                                          ]}
-                                        />
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                </div>
-                              )
-                            }
+                            return (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                              >
+                                <MainLaneDraggable
+                                  item={item}
+                                  index={index}
+                                />
+                              </div>
+                            )
                           })
                         :
                         stationNumbers.map((station, index) => {
                           return (
                             <div
-                              style={{ display: 'flex' }}
+                              // style={{ display: 'flex' }}
                               ref={provided.innerRef}
                               {...provided.droppableProps}
                             >
@@ -649,11 +597,7 @@ const StrungItems = () => {
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    style={{
-                                      display: 'flex'
-                                    }}
                                   >
-                                    {/* {console.log(item)} */}
                                     <div
                                       style={{
                                         backgroundColor: 'white',
