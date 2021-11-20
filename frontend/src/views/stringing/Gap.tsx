@@ -1,63 +1,83 @@
+import { Autocomplete, createFilterOptions, TextField } from '@mui/material';
+import api from 'api';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+const filterOptions = createFilterOptions({
+  matchFrom: 'start',
+});
+
 const Gap = ({
-  gap_length,
-  start,
+  station,
   dragIndex,
+  eligible,
+  transformGap,
 }: {
-  gap_length: number;
-  start: number;
+  station: number;
   dragIndex: number;
+  eligible: Array<any>;
+  transformGap: any;
 }) => {
-  const [dummyStations, setDummyStations] = useState<number[]>([]);
+  const [newItem, setNewItem] = useState('');
+  const itemSelected = (item: string) => {
+    api
+      .getItemInfo(item)
+      .then((res) => {
+        let length = {};
+        if (new RegExp('F_.*').test(item)) length = { flength: res.length };
+        else length = { plength: res.length };
 
-  const updateGap = () => {
-    let arr = [];
-    if (gap_length > 50) {
-      let temp = start;
-      for (let i = 0; i < 4; i++) {
-        arr.push(temp);
-        temp += gap_length / 4;
-      }
-    } else arr.push(start);
+        transformGap(dragIndex, station, {
+          item_id: res.id,
+          ...length,
+          heat_no: res.heat_no,
+          wall_thickness: res.wall_thickness,
+          grade: res.grade,
+        });
 
-    setDummyStations([...arr]);
+        setNewItem('');
+      })
+      .catch((error) => alert(error.message));
   };
-  useEffect(() => {
-    updateGap();
-  }, []);
-  useEffect(() => {
-    updateGap();
-  }, [gap_length]);
-
   return (
-    <>
-      {dummyStations.map((item, index) => {
-        return (
-          <Draggable
-            key={`${item}`}
-            draggableId={`${item}`}
-            index={index + dragIndex + 1}
-            isDragDisabled
-          >
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                style={{ margin: '0 50px' }}
-              >
-                {console.log(`Gap: ${index + dragIndex + 1}`)}
-                <div style={{ border: 'dotted 1px black' }} id="mydiv">
-                  Station : {item}
-                </div>
-              </div>
-            )}
-          </Draggable>
-        );
-      })}
-    </>
+    <Draggable
+      key={`${dragIndex}`}
+      draggableId={`${dragIndex}`}
+      index={dragIndex}
+      isDragDisabled
+    >
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={{ margin: '0 50px' }}
+        >
+          <div style={{ border: 'dotted 1px black' }} id="mydiv">
+            Station : {station}
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={eligible}
+              sx={{ width: 300 }}
+              value={newItem}
+              onChange={(event: any, newValue: any) => {
+                setNewItem(newValue);
+                itemSelected(newValue);
+              }}
+              // inputValue={inputValue}
+              // onInputChange={(event, newInputValue) => {
+              //   setInputValue(newInputValue);
+              // }}
+              renderInput={(params) => (
+                <TextField {...params} label="Add Item" />
+              )}
+              filterOptions={filterOptions}
+            />
+          </div>
+        </div>
+      )}
+    </Draggable>
   );
 };
 

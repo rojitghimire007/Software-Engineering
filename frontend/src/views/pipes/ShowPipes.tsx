@@ -1,4 +1,10 @@
-import React, { createRef, forwardRef, useEffect, useState } from 'react';
+import React, {
+  createRef,
+  CSSProperties,
+  forwardRef,
+  useEffect,
+  useState,
+} from 'react';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MaterialTable, {
@@ -14,7 +20,7 @@ import { SketchPicker } from 'react-color';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import Backdrop from '@mui/material/Backdrop';
 import { unstable_batchedUpdates } from 'react-dom';
-import { MenuItem } from '@mui/material';
+import { Autocomplete, MenuItem, TextField } from '@mui/material';
 import {
   Typography,
   AppBar,
@@ -27,7 +33,6 @@ import {
   Grid,
   Toolbar,
   Button,
-  TextField,
   Container,
   CardActionArea,
 } from '@material-ui/core';
@@ -35,6 +40,7 @@ import useStyles from 'style/ShowPipeStyles';
 import ColorScheme from 'style/ColorScheme';
 import Footer from '../../components/Footer';
 import MenuAppBar from '../../components/AppBar';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 
 const classData = require('others/schedule&class.json');
 
@@ -71,50 +77,104 @@ var presetColors = [
   { color: '#fff', title: 'white' }, //color:'#',title:''
 ];
 
-const diameters = {
-  '10″': '10″',
-  '2 1/2″': '2 1/2″',
-  '26″': '26″',
-  '7″': '7″',
-  '46″': '46″',
-  '1″': '1″',
-  '32″': '32″',
-  '8″': '8″',
-  '48″': '48″',
-  '1 1/2″': '1 1/2″',
-  '18″': '18″',
-  '4 1/2″': '4 1/2″',
-  '11″': '11″',
-  '30″': '30″',
-  '34″': '34″',
-  '6″': '6″',
-  '1/4″': '1/4″',
-  '3/8″': '3/8″',
-  '24″': '24″',
-  '9″': '9″',
-  '2″': '2″',
-  '28″': '28″',
-  '14″': '14″',
-  '1 1/4″': '1 1/4″',
-  '3″': '3″',
-  '12″': '12″',
-  '3/4″': '3/4″',
-  '20″': '20″',
-  '16″': '16″',
-  '4″': '4″',
-  '22″': '22″',
-  '54″': '54″',
-  '1/2″': '1/2″',
-  '1/8″': '1/8″',
-  '5″': '5″',
-  '3 1/2″': '3 1/2″',
-  '42″': '42″',
-  '36″': '36″',
-};
+const filterOptions = createFilterOptions({
+  matchFrom: 'start',
+});
+
+const diameters = [
+  '1 1/2″',
+  '1 1/4″',
+  '1/2″',
+  '1/4″',
+  '1/8″',
+  '1″',
+  '2″',
+  '2 1/2″',
+  '3″',
+  '3 1/2″',
+  '3/4″',
+  '3/8″',
+  '4″',
+  '4 1/2″',
+  '5″',
+  '6″',
+  '7″',
+  '8″',
+  '9″',
+
+  '10″',
+  '11″',
+  '12″',
+  '14″',
+  '16″',
+  '18″',
+
+  '20″',
+  '22″',
+  '24″',
+  '26″',
+  '28″',
+
+  '30″',
+  '32″',
+  '34″',
+  '36″',
+
+  '42″',
+  '46″',
+  '48″',
+
+  '54″',
+];
+// const diameters = {
+//   '10″': '10″',
+//   '2 1/2″': '2 1/2″',
+//   '26″': '26″',
+//   '7″': '7″',
+//   '46″': '46″',
+//   '1″': '1″',
+//   '32″': '32″',
+//   '8″': '8″',
+//   '48″': '48″',
+//   '1 1/2″': '1 1/2″',
+//   '18″': '18″',
+//   '4 1/2″': '4 1/2″',
+//   '11″': '11″',
+//   '30″': '30″',
+//   '34″': '34″',
+//   '6″': '6″',
+//   '1/4″': '1/4″',
+//   '3/8″': '3/8″',
+//   '24″': '24″',
+//   '9″': '9″',
+//   '2″': '2″',
+//   '28″': '28″',
+//   '14″': '14″',
+//   '1 1/4″': '1 1/4″',
+//   '3″': '3″',
+//   '12″': '12″',
+//   '3/4″': '3/4″',
+//   '20″': '20″',
+//   '16″': '16″',
+//   '4″': '4″',
+//   '22″': '22″',
+//   '54″': '54″',
+//   '1/2″': '1/2″',
+//   '1/8″': '1/8″',
+//   '5″': '5″',
+//   '3 1/2″': '3 1/2″',
+//   '42″': '42″',
+//   '36″': '36″',
+// };
 
 // const styles = [
 //   hoverable: {}
 // ]
+
+const getRowColor = (rowData: any): CSSProperties => {
+  if (rowData.void) return { backgroundColor: 'red' };
+  else return {};
+};
 
 const ShowPipes = () => {
   const materialTableRef = createRef();
@@ -124,50 +184,7 @@ const ShowPipes = () => {
   const [colorPicker, setColorPicker] = useState(false);
   const [color, setColor] = useState<string>('000');
   const [initialFormData, setInitialFormData] = useState({});
-  const [data, setData] = useState<dataType[]>([
-    // {
-    //   void: false,
-    //   color: 'red',
-    //   date: '01/18/17',
-    //   inspector: 'Todd DeVille',
-    //   location: 'Yard',
-    //   id: 1,
-    //   coil_no: 414603,
-    //   heat_no: 643317,
-    //   diameter: '20"',
-    //   schedule: 'HX',
-    //   wall_thickness: 0.5,
-    //   grade: 'X60',
-    //   length: '22\' 6-5/8"',
-    //   coating: 'Bare',
-    //   coating_color: 'Green',
-    //   manufacturer: 'Ameriacan Steel Pipe',
-    //   material_type: 'Steel',
-    //   po_number: 43526725,
-    //   comments: 'Hello World',
-    // },
-    // {
-    //   void: false,
-    //   // color: 'green',
-    //   date: '01/18/17',
-    //   inspector: 'Todd DeVille',
-    //   location: 'Yard',
-    //   id: 1,
-    //   coil_no: 414603,
-    //   heat_no: 643317,
-    //   diameter: '20"',
-    //   schedule: 'HX',
-    //   wall_thickness: 0.5,
-    //   grade: 'X60',
-    //   length: '22\' 6-5/8"',
-    //   coating: 'Bare',
-    //   coating_color: 'Green',
-    //   manufacturer: 'Ameriacan Steel Pipe',
-    //   material_type: 'Steel',
-    //   po_number: 1,
-    //   comments: 'Hello World',
-    // },
-  ]);
+  const [data, setData] = useState<dataType[]>([]);
 
   const [schedules, setSchedules] = useState([]);
   const [grades, setGrades] = useState({});
@@ -243,6 +260,9 @@ const ShowPipes = () => {
   };
 
   const onRowUpdate = (newData: dataType, oldData: dataType | undefined) => {
+    console.log(oldData);
+    console.log(newData);
+
     return api
       .editPipe(
         {
@@ -388,10 +408,7 @@ const ShowPipes = () => {
             options={{
               filtering: true,
               search: true,
-              // rowStyle: (rowData) => ({
-              //   backgroundColor: rowData.color ? rowData.color : null,
-              //   color: rowData.color ? 'white' : 'black',
-              // }),
+              rowStyle: getRowColor,
               // tableLayout: 'fixed', // idk if this is important
               columnsButton: true,
               loadingType: 'linear',
@@ -445,27 +462,50 @@ const ShowPipes = () => {
               {
                 title: 'Diameter',
                 field: 'diameter',
-                lookup: diameters,
+                render: (rowData) => <>{rowData.diameter}</>,
                 editComponent: ({ onRowDataChange, rowData }) => (
-                  <Select
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    onChange={(e) => {
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={diameters}
+                    sx={{ width: 300 }}
+                    // value={newItem}
+                    // defaultValue={rowData.diameter}
+                    onChange={(event: any, newValue: any) => {
                       onRowDataChange({
                         ...rowData,
-                        diameter: (e.target.value as string) ?? '',
+                        diameter: newValue ?? '',
                         schedule: '',
                       });
                     }}
-                    label="Diameter"
-                    defaultValue={rowData.diameter}
-                  >
-                    {Object.keys(diameters).map((value) => (
-                      <MenuItem key={value} value={value}>
-                        {value}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                    // inputValue={inputValue}
+                    // onInputChange={(event, newInputValue) => {
+                    //   setInputValue(newInputValue);
+                    // }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Add Item" />
+                    )}
+                    filterOptions={filterOptions}
+                  />
+                  // <Select
+                  //   labelId="demo-simple-select-standard-label"
+                  //   id="demo-simple-select-standard"
+                  //   onChange={(e) => {
+                  //     onRowDataChange({
+                  //       ...rowData,
+                  //       diameter: (e.target.value as string) ?? '',
+                  //       schedule: '',
+                  //     });
+                  //   }}
+                  //   label="Diameter"
+                  //   defaultValue={rowData.diameter}
+                  // >
+                  //   {Object.keys(diameters).map((value) => (
+                  //     <MenuItem key={value} value={value}>
+                  //       {value}
+                  //     </MenuItem>
+                  //   ))}
+                  // </Select>
                 ),
               },
               {
@@ -503,27 +543,36 @@ const ShowPipes = () => {
               {
                 title: 'Coating',
                 field: 'coating',
-                // render: (rowData) => (
-                //   <>
-                //     {rowData.coating} - {myCoatings[rowData.coating]}
-                //   </>
-                // ),
-                // editComponent: ({ rowData, onRowDataChange }) => (
-                //   <Select
-                //     labelId="demo-simple-select-standard-label"
-                //     id="demo-simple-select-standard"
-                //     onChange={(e: SelectChangeEvent) => {
-                //       onRowDataChange({ ...rowData, coating: e.target.value });
-                //     }}
-                //     defaultValue={rowData.coating}
-                //   >
-                //     {Object.keys(myCoatings).map((key) => (
-                //       <MenuItem key={key} value={key}>
-                //         {key} - {myCoatings[key]}
-                //       </MenuItem>
-                //     ))}
-                //   </Select>
-                // ),
+                render: (rowData) => (
+                  <span>
+                    {/* {rowData.coating} - {myCoatings[rowData.coating]} */}
+                    {rowData.coating} -{' '}
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        backgroundColor: myCoatings[rowData.coating],
+                        height: '1em',
+                        width: '1em',
+                      }}
+                    ></span>
+                  </span>
+                ),
+                editComponent: ({ rowData, onRowDataChange }) => (
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    onChange={(e: SelectChangeEvent) => {
+                      onRowDataChange({ ...rowData, coating: e.target.value });
+                    }}
+                    defaultValue={rowData.coating}
+                  >
+                    {Object.keys(myCoatings).map((key) => (
+                      <MenuItem key={key} value={key}>
+                        {key} - {myCoatings[key]}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                ),
               },
               { title: 'Material', field: 'material_type', lookup: materials },
               { title: 'P.O.', field: 'po_number' /*lookup: po_numbers*/ },
@@ -606,7 +655,7 @@ const ShowPipes = () => {
             }}
             actions={[
               {
-                icon: () => <LibraryAddIcon />,
+                icon: () => <LibraryAddIcon style={{ color: 'white' }} />,
                 tooltip: 'Duplicate Pipe',
                 onClick: (event, rowData) => {
                   const materialTable = materialTableRef.current;
@@ -627,7 +676,7 @@ const ShowPipes = () => {
                 },
               },
               {
-                icon: () => <InvertColorsIcon />,
+                icon: () => <InvertColorsIcon style={{ color: 'white' }} />,
                 tooltip: 'Edit Pipe Color',
                 onClick: () => {
                   setColorPicker(!colorPicker);

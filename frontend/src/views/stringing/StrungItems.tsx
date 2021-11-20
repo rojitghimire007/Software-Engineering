@@ -192,6 +192,46 @@ const StrungItems = () => {
     overflow: 'auto',
   });
 
+  const transformGap = (index: number, station: number, data: dataType) => {
+    // let length = sequence[window + index + 1].plength || sequence[window + index + 1].flength
+
+    let target_pipe = data.item_id;
+    if (!new RegExp('F_.*').test(target_pipe)) target_pipe = 'p_' + target_pipe;
+
+    sequence[window + index] = {
+      ...data,
+      station_number: station,
+      item_id: target_pipe,
+    };
+
+    let [left_item, start_item] = getLeftAndStartItem(sequence, index);
+
+    if (
+      sequence[window + index + 1] &&
+      station + (data.plength || data.flength || 0) <
+        sequence[window + index + 1].station_number
+    ) {
+      api
+        .createNewSequence(station, target_pipe)
+        .then((res) => {
+          setSequence(
+            insertItem(sequence, window + index + 1, {
+              item_id: 'gap',
+              station_number: station + (data.plength || data.flength || 0),
+            })
+          );
+        })
+        .catch((e) => alert(e.message));
+    } else {
+      api
+        .insertIntoSequence(target_pipe, left_item, start_item)
+        .then((res) => {
+          setSequence([...sequence]);
+        })
+        .catch((err) => alert(err.message));
+    }
+  };
+
   useEffect(() => {
     api
       .getStringing()
@@ -237,7 +277,10 @@ const StrungItems = () => {
 
   const addNewItem = (result: any) => {
     let target_pipe = result.draggableId;
-    let [left_item, start_item] = getLeftAndStartItem(sequence, result);
+    let [left_item, start_item] = getLeftAndStartItem(
+      sequence,
+      result.destination.index
+    );
 
     if (!new RegExp('F_.*').test(target_pipe)) target_pipe = 'p_' + target_pipe;
     return api
@@ -305,27 +348,32 @@ const StrungItems = () => {
 
   const deleteFromSequence = (result: any) => {
     let item: dataType = sequence[window + result.source.index];
-    let item_id: string = item.item_id;
+    let { item_id, station_number } = item;
     return api
       .deleteFromSequence(item_id)
       .then((res) => {
-        updateStations(
-          sequence,
-          window + result.source.index,
-          -1 * (item.flength || item.plength || 0)
-        );
-        setSequence(remove(sequence, window + result.source.index));
+        // updateStations(
+        //   sequence,
+        //   window + result.source.index,
+        //   -1 * (item.flength || item.plength || 0)
+        // );
+        let items = remove(sequence, window + result.source.index);
+        items = insertItem(items, result.source.index, {
+          item_id: 'gap',
+          station_number,
+        });
+        setSequence(items);
         if (new RegExp('p_.*').test(item_id)) item_id = item_id.substring(2);
         setEligible([...eligible, item_id]);
       })
       .catch((err) => alert(err.message));
   };
 
-  const getLeftAndStartItem = (items: Array<any>, result: any) => {
-    let left_item = items[window + result.destination.index - 1];
+  const getLeftAndStartItem = (items: Array<any>, destinationIndex: number) => {
+    let left_item = items[window + destinationIndex - 1];
     let start_item = null;
     if (!left_item || left_item.item_id == 'gap') {
-      start_item = items[window + result.destination.index + 1].item_id;
+      start_item = items[window + destinationIndex + 1].item_id;
       left_item = null;
     } else left_item = left_item.item_id;
 
@@ -343,7 +391,22 @@ const StrungItems = () => {
       result.destination.droppableId === 'droppable'
     )
       addNewItem(result);
-    else if (result.source.index == result.destination.index) return;
+    else if (
+      result.destination.droppableId == 'hold' &&
+      result.source.droppableId === 'droppable'
+    ) {
+      setNewItemDetails({
+        ...sequence[window + result.source.index],
+        ...currentItemDetails[result.source.index],
+      });
+      let { station_number } = sequence[window + result.source.index];
+      let items = remove(sequence, window + result.source.index);
+      items = insertItem(items, result.source.index, {
+        item_id: 'gap',
+        station_number,
+      });
+      setSequence(items);
+    } else if (result.source.index == result.destination.index) return;
     else updateSequence(result);
   };
 
@@ -468,29 +531,12 @@ const StrungItems = () => {
                       .map((item: dataType, index) => {
                         if (item.item_id == 'gap')
                           return (
-                            <Draggable
-                              key={`${item.item_id}${index}`}
-                              draggableId={`${item.item_id}${index}`}
-                              index={index}
-                              isDragDisabled
-                            >
-                              {(provided, snapshot) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  style={{ margin: '0 50px' }}
-                                >
-                                  {/* {console.log(`Gap: ${index +  + 1}`)} */}
-                                  <div
-                                    style={{ border: 'dotted 1px black' }}
-                                    id="mydiv"
-                                  >
-                                    Station : {item.station_number}
-                                  </div>
-                                </div>
-                              )}
-                            </Draggable>
+                            <Gap
+                              station={item.station_number}
+                              dragIndex={index}
+                              eligible={eligible}
+                              transformGap={transformGap}
+                            />
                           );
                         else
                           return (
@@ -510,9 +556,6 @@ const StrungItems = () => {
                                   )}
                                   className={classes.pipeContainer}
                                 >
-                                  {/* {console.log(`Pipe: ${index}`)}
-                                  {console.log(`Pipe: ${item.item_id}`)} */}
-
                                   <div className={classes.pipeStart} />
 
                                   <div className={classes.pipe}>
