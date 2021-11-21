@@ -12,15 +12,14 @@ const createItem = (itemInfo: any, itemFunctions: any, /* dragProps: any */) => 
                     ${styles.gridSide} 
                     ${styles.left}
                 `}></div>
-                {/* <div className={styles.gapContent}> */}
                 <div className={`${styles.pipeContent} ${styles.gapContent}`}>
                     <div></div>
                     <div>
                         <div />
-                        <div style={{ color: 'black', textAlign: 'center' }}>
+                        <div style={{ color: 'black', textAlign: 'center', opacity: `1 !important`, zIndex: 2 }}>
                             {itemInfo.item_id}
                         </div>
-                        <SimpleButton {...itemFunctions[0].add}/* btnName='Add Pipe +' btnStyle='add' *//>
+                        <SimpleButton {...itemFunctions[0].add}/>
                         <div/>
                     </div>
                 </div>
@@ -31,7 +30,7 @@ const createItem = (itemInfo: any, itemFunctions: any, /* dragProps: any */) => 
                 `}></div>
             </div>)
     }
-    else if (itemInfo.item_id && itemInfo.item_id.charAt(0) === ('F')) {
+    else if (itemInfo.item_id && (itemInfo.item_id.charAt(0) === 'F' || itemInfo.item_id.charAt(0) === 'f')) {
         return (
             <div className={styles.pipeWrapper}>
                 <div className={`
@@ -93,7 +92,6 @@ const MainLaneDraggable = ({ item, index, dragDetails, itemFunctions }: any) => 
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    // style={{marginTop: '5%'}}
                     key={item.id + index}
                     // onClick={() => { console.log(item) }}
                 >

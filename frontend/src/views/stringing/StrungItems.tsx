@@ -477,6 +477,7 @@ const StrungItems = () => {
         getItemDetails(newItem);
         setInputValue('');
         setNewItem('');
+        console.log('click');
       },
     },
     stationInput: {

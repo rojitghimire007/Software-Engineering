@@ -28,6 +28,7 @@ button:disabled {
     border: 1px solid black;
     background-color: blue;
     color: white;
+    opacity: 1 !important;
 }
 .delete {
     border: 1px solid black;
