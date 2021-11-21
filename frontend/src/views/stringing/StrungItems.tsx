@@ -41,11 +41,11 @@ import { typography } from '@mui/system';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import useStyles from '../../style/StringingStyles';
-import styles from './new-stringing-components/style-modules/newStringing.module.css'
 import useUpdateEffect from 'utils/useUpdateEffect';
+import styles from './new-stringing-components/style-modules/newStringing.module.css'
 import Gap from './Gap';
 import MainLaneControls from './new-stringing-components/MainLaneControls';
-import StationContainer from 'DEMOS/new-stringing-prototype/StationContainer';
+import StationContainer from 'views/stringing/new-stringing-components/StationContainer';
 import MainLaneDraggable from './new-stringing-components/MainLaneDraggable';
 import { PersonalVideoRounded } from '@mui/icons-material';
 
@@ -214,7 +214,7 @@ const StrungItems = () => {
     if (
       sequence[window + index + 1] &&
       station + (data.plength || data.flength || 0) <
-        sequence[window + index + 1].station_number
+      sequence[window + index + 1].station_number
     ) {
       api
         .createNewSequence(station, target_pipe)
@@ -533,19 +533,20 @@ const StrungItems = () => {
       },
     },
     add: {
-      btnName: 'Add Pipe',
-      btnStyle: 'refresh',
+      btnName: 'Add Pipe +',
+      btnStyle: 'add',
       disabled: false,
       onClick: (e: any) => {
         getItemDetails(newItem);
         setInputValue('');
         setNewItem('');
+        console.log('click');
       },
     },
     stationInput: {
       onChange: (e: any) => {
         setGoTo(e.currentTarget.value);
-        console.log(e.currentTarget.value)
+        // console.log(e.currentTarget.value)
       }
     },
     search: {
@@ -554,7 +555,7 @@ const StrungItems = () => {
       disabled: false,
       onClick: (e: any) => {
         goToStation(parseInt(goTo));
-        console.log(goTo)
+        // console.log(goTo)
       },
     },
   }]
@@ -566,7 +567,7 @@ const StrungItems = () => {
     'item A', 'item B', 'item C',
   ]
   const seq = [...sequence];
-  console.log(seq)
+  // console.log(seq)
   const [stationNumbers, setStationNumbers] = useState([
     0, 1, 2, 3, 4,
     // seq[0].station_number,
@@ -578,379 +579,218 @@ const StrungItems = () => {
 
   useEffect(() => {
     if (sequence.length > 0) {
-      setStationNumbers(
-        [
-          seq[window].station_number,
-          seq[window + 1].station_number,
-          seq[window + 2].station_number,
-          seq[window + 3].station_number,
-          seq[window + 4].station_number,
-        ]
-      )
+      setStationNumbers(() => (
+        seq[window + 4] != null ? // need to display 5 stations [window ... window + 4]
+          [
+            seq[window].station_number,
+            seq[window + 1].station_number,
+            seq[window + 2].station_number,
+            seq[window + 3].station_number,
+            seq[window + 4].station_number,
+          ]
+          :
+          stationNumbers
+      ))
     }
   }, [sequence, window])
-  var tempStations;
 
   if (!loading)
     return (
-<<<<<<< HEAD
       <main className={styles.main}>
         <h1 className={styles.title}>Stringing</h1>
+        <DragDropContext onDragEnd={onDragEnd}>
         <div className={styles.sectionA}>
-          <DragDropContext onDragEnd={onDragEnd}>
             <div className={styles.mainTop}>
               <MainLaneControls styles={styles} controls={controlFunctions} />
               <StationContainer styles={styles} stations={stationNumbers} />
             </div>
-            <div className={styles.mainBottom}>
-              <div
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                <Droppable
-                  droppableId="StringingDropZone"
-                  direction="horizontal"
-                >
-                  {(provided) => (
+        </div>
+            <div>
+              {/* <DragDropContext onDragEnd={onDragEnd}> */}
+                <Droppable droppableId="droppable" direction="horizontal">
+                  {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
+                      style={getListStyle(snapshot.isDraggingOver)}
                       {...provided.droppableProps}
+                      className={classes.virtList}
                     >
-                      {/* {console.log('attempting to map')} */} {/* TEST */}
-                      {/* {console.log(sequence)} */} {/* TEST */}
-                      {sequence.length > 0 ?
-                        sequence
-                          .slice(window, window + 4)
-                          .map((item: dataType, index) => {
-                            /* console.log('mapping' + sequence.slice(window, window + 4)) */ /* Test */
-                            if (item.item_id == 'gap') {
-                              return (
-                                <div
-                                  style={{ display: 'flex', }}
-                                  ref={provided.innerRef}
-                                  {...provided.droppableProps}
-                                >
-                                  <Draggable
-                                    draggableId={item.item_id}
-                                    key={item.item_id}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        style={{
-                                          display: 'flex',
-                                          ...provided.draggableProps.style
-                                        }}
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                      >
-                                        <MainLaneDraggable
-                                          item={item}
-                                          // pipeDetails={currentItemDetails[index]}
-                                          dragDetails={[
-                                            provided.innerRef,
-                                            provided.draggableProps,
-                                            provided.dragHandleProps,
-                                          ]}
-                                        />
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                </div>
-                              )
-                            }
-                            else {
-                              return (
-=======
-      <div className={classes.body}>
-        <CssBaseline />
-        <Toolbar className={classes.title}>
-          <Typography variant="h4" className={classes.titleContent}>
-            Pipe Stringing
-          </Typography>
-        </Toolbar>
-        {/* <Toolbar className={classes.title}> */}
-        {/* <div className={classes.center}>
-            <Button variant="contained" color="secondary">
-              Refresh
-            </Button>
-          </div> */}
-        {/*</Toolbar>*/}
-
-        <main>
-          <div>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable" direction="horizontal">
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    style={getListStyle(snapshot.isDraggingOver)}
-                    {...provided.droppableProps}
-                    className={classes.virtList}
-                  >
-                    {sequence
-                      .slice(window, window + 4)
-                      .map((item: dataType, index) => {
-                        if (item.item_id == 'gap')
-                          return (
-                            <Gap
-                              station={item.station_number}
-                              dragIndex={index}
-                              eligible={eligible}
-                              transformGap={transformGap}
-                            />
-                          );
-                        else
-                          return (
-                            <Draggable
-                              key={`${item.item_id}`}
-                              draggableId={`${item.item_id}`}
-                              index={index}
-                            >
-                              {(provided, snapshot) => (
->>>>>>> 6bf45937557f20c1a6b03fabe4d154694b874515
-                                <div
-                                  style={{ display: 'flex' }}
-                                  ref={provided.innerRef}
-                                  {...provided.droppableProps}
-                                >
-<<<<<<< HEAD
-                                  <Draggable
-                                    draggableId={item.item_id}
-                                    key={item.item_id}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        style={{
-                                          display: 'flex'
-                                        }}
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                      >
-                                        {/* {console.log(item)} */}
-                                        <MainLaneDraggable
-                                          item={item}
-                                          // pipeDetails={currentItemDetails[index]}
-                                          dragDetails={[
-                                            provided.innerRef,
-                                            provided.draggableProps,
-                                            provided.dragHandleProps,
-                                          ]}
-                                        />
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                </div>
-                              )
-                            }
-                          })
-                        :
-                        stationNumbers.map((station, index) => {
-                          return (
-                            <div
-                              style={{ display: 'flex' }}
-                              ref={provided.innerRef}
-                              {...provided.droppableProps}
-                            >
+                      {sequence
+                        .slice(window, window + 4)
+                        .map((item: dataType, index) => {
+                          if (item.item_id == 'gap')
+                            return (
+                              <Gap
+                                station={item.station_number}
+                                dragIndex={index}
+                                eligible={eligible}
+                                transformGap={transformGap}
+                              />
+                            );
+                          else
+                            return (
                               <Draggable
-                                draggableId={station.toString()}
-                                key={station.toString()}
+                                key={`${item.item_id}`}
+                                draggableId={`${item.item_id}`}
                                 index={index}
                               >
-                                {(provided) => (
+                                {(provided, snapshot) => (
                                   <div
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    style={{
-                                      display: 'flex'
-                                    }}
+                                    style={getItemStyle(
+                                      snapshot.isDragging,
+                                      provided.draggableProps.style
+                                    )}
+                                    className={classes.pipeContainer}
                                   >
-                                    {/* {console.log(item)} */}
-                                    <div
-                                      style={{
-                                        backgroundColor: 'white',
-                                        border: '3px solid'
-                                      }}
-                                    >
-                                      {station} (sequence empty!!!)
-=======
-                                  <div className={classes.pipeStart} />
+                                    <div className={classes.pipeStart} />
 
-                                  <div className={classes.pipe}>
-                                    <div>{item.item_id}</div>
-                                    <div>{item.station_number}</div>
-                                    <div>{item.plength || item.flength}</div>
-                                    <div>{item.overlap ? 'Overlap' : 'NO'}</div>
-                                    <div>
-                                      Heat No:{' '}
-                                      {currentItemDetails[index]
-                                        ? currentItemDetails[index].heat_no
-                                        : ''}
-                                    </div>
-                                    <div>
-                                      Grade:{' '}
-                                      {currentItemDetails[index]
-                                        ? currentItemDetails[index].grade
-                                        : ''}
-                                    </div>
-                                    <div>
-                                      Thickness:{' '}
-                                      {currentItemDetails[index]
-                                        ? currentItemDetails[index]
+                                    <div className={classes.pipe}>
+                                      <div>{item.item_id}</div>
+                                      <div>{item.station_number}</div>
+                                      <div>{item.plength || item.flength}</div>
+                                      <div>{item.overlap ? 'Overlap' : 'NO'}</div>
+                                      <div>
+                                        Heat No:{' '}
+                                        {currentItemDetails[index]
+                                          ? currentItemDetails[index].heat_no
+                                          : ''}
+                                      </div>
+                                      <div>
+                                        Grade:{' '}
+                                        {currentItemDetails[index]
+                                          ? currentItemDetails[index].grade
+                                          : ''}
+                                      </div>
+                                      <div>
+                                        Thickness:{' '}
+                                        {currentItemDetails[index]
+                                          ? currentItemDetails[index]
                                             .wall_thickness
-                                        : ''}
->>>>>>> 6bf45937557f20c1a6b03fabe4d154694b874515
+                                          : ''}
+                                      </div>
                                     </div>
+                                    <div className={classes.pipeEnd} />
                                   </div>
                                 )}
                               </Draggable>
-                            </div>
-                          )
-                        })
-                      }
+                            );
+                        })}
                       {provided.placeholder}
                     </div>
                   )}
                 </Droppable>
-              </div>
+                <Droppable droppableId="delete" direction="horizontal">
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      // style={getListStyle(snapshot.isDraggingOver)}
+                      {...provided.droppableProps}
+                      // className={classes.virtList}
+                      style={{
+                        height: '20vh',
+                        width: '30vw',
+                        backgroundColor: 'red',
+                      }}
+                    >
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
 
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={eligible}
+                  sx={{ width: 300 }}
+                  value={newItem}
+                  onChange={(event: any, newValue: any) => {
+                    setNewItem(newValue);
+                  }}
+                  inputValue={inputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Add Item" />
+                  )}
+                  filterOptions={filterOptions}
+                />
+                <Button
+                  variant="contained"
+                  onClick={(e) => {
+                    getItemDetails(newItem);
+                    setInputValue('');
+                    setNewItem('');
+                  }}
+                >
+                  Select
+                </Button>
+
+                <Droppable droppableId="hold" direction="horizontal">
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      // style={getListStyle(snapshot.isDraggingOver)}
+                      {...provided.droppableProps}
+                      // className={classes.virtList}
+                      style={{
+                        height: '20vh',
+                        width: '30vw',
+                        backgroundColor: 'gray',
+                      }}
+                    >
+                      {newItemDetails.item_id ? (
+                        <Draggable
+                          key={`${newItemDetails.item_id}`}
+                          draggableId={`${newItemDetails.item_id}`}
+                          index={0}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                              )}
+                              className={classes.pipeContainer}
+                            >
+                              {/* {console.log(`Pipe: ${index}`)}
+                                  {console.log(`Pipe: ${item.item_id}`)} */}
+
+                              <div className={classes.pipeStart} />
+
+                              <div className={classes.pipe}>
+                                <div>{newItemDetails.item_id}</div>
+                                <div>
+                                  {newItemDetails.plength ||
+                                    newItemDetails.flength}
+                                </div>
+                                <div>Heat No: {newItemDetails.heat_no}</div>
+                                <div>Grade: {newItemDetails.grade}</div>
+                                <div>
+                                  Thickness: {newItemDetails.wall_thickness}
+                                </div>
+                              </div>
+                              <div className={classes.pipeEnd} />
+                            </div>
+                          )}
+                        </Draggable>
+                      ) : null}
+
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
             </div>
-
-
-
-
-
-
-
-
-            {/* REMOVE PIPES HERE */}
-
-
-
-
-
-
-
-
-
-
-            {/* <Button
-              size="medium"
-              color="secondary"
-              variant="contained"
-              disabled={
-                tempSequence.length == 0 && window == 0 ? true : false
-              }
-              onClick={() => {
-                if (tempSequence.length > 0) {
-                  let arr = [...tempSequence];
-
-                  unstable_batchedUpdates(() => {
-                    setSequence(arr);
-                    setTempSequence([]);
-                    setWindow(arr.length - 4);
-                  });
-                } else setWindow(window - 1);
-              }}
-            >
-              Previous
-            </Button> */}
-            {/* <Button
-              size="medium"
-              color="success"
-              variant="contained"
-              disabled={window + 4 >= sequence.length ? true : false}
-              onClick={() => setWindow(window + 1)}
-            >
-              Next
-            </Button> */}
-            {/* <div>
-              <TextField
-                value={goTo}
-                onChange={(e) => setGoTo(e.currentTarget.value)}
-              />
-              <Button onClick={(e) => goToStation(parseInt(goTo))}>GO</Button>
-            </div> */}
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* REMOVED DROPZONE HERE */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={eligible}
-              sx={{ width: 300 }}
-              value={newItem}
-              onChange={(event: any, newValue: any) => {
-                setNewItem(newValue);
-              }}
-              inputValue={inputValue}
-              onInputChange={(event, newInputValue) => {
-                setInputValue(newInputValue);
-              }}
-              renderInput={(params) => (
-                <TextField {...params} label="Add Item" />
-              )}
-              filterOptions={filterOptions}
-            /> */}
-            {/* <Button
-              variant="contained"
-              onClick={(e) => {
-                getItemDetails(newItem);
-                setInputValue('');
-                setNewItem('');
-              }}
-            >
-              Select
-            </Button> */}
-
-
-
-
-
-            {/* REMOVED DROPZONE HERE */}
-
-
-
-
-
-
-
-
-          </DragDropContext>
-        </div>
-      </main >
-    );
-  else return <></>;
+              </DragDropContext>
+          </main>
+          );
+          else return <></>;
 };
 
-export default StrungItems;
+          export default StrungItems;
