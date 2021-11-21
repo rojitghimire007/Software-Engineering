@@ -126,7 +126,7 @@ const MenuAppBar = (props: { history: any; }) => {
                         <Button className={classes.button} onClick={() => handleButtonsClick('/about')}> About </Button>
                         <Button className={classes.button} onClick={() => handleButtonsClick('/services')}> Services </Button>
                         <Button className={classes.button} onClick={() => handleButtonsClick('/training')}> Training </Button>
-                        <Button className={classes.button} onClick={() => handleButtonsClick('/dashboard')}> Careers </Button>
+                        <Button className={classes.button} onClick={() => handleButtonsClick('/careers')}> Careers </Button>
                         <Button className={classes.button} onClick={() => handleButtonsClick('/contact')}> Contact Us </Button>
                     </div>
 

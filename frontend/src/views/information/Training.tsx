@@ -84,6 +84,7 @@ const Training = () => {
                 at the top right to get started.
                 </p>
             </div>
+            <Footer/>
         </>
     )
 }

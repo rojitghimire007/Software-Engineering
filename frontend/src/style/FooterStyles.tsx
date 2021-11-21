@@ -14,10 +14,11 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         display: 'flex',
-        width: '100%',
+        //width: '100%',
+        maxWidth: 'lg',
         position: 'relative',
         bottom: 0,
-        minHeight: '40px !important',
+        minHeight: '20px !important',
         //flexDirection: 'column',
         /* margin-top: 2em, */
         /* position: fixed, */
