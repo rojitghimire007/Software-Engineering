@@ -6,6 +6,7 @@ import ProjectsPage from 'views/administrative/ProjectsPage';
 import ProjectSelect from 'views/ProjectSelect';
 import AboutUs from 'views/information/AboutUs';
 import ContactUs from 'views/information/ContactUs';
+import Training from 'views/information/Training';
 import TESTING from 'views/TESTING';
 import StrungItems from 'views/stringing/StrungItems';
 import CreateProject from 'views/administrative/createProject'
@@ -47,6 +48,8 @@ const routes: {
   { path: '/contact', exact: true, name: 'Contact', component: ContactUs },
   { path: '/services', exact: true, name: 'Services', component: Services },
   { path: '/privacy', exact: true, name: 'Privacy', component: Privacy },
+  { path: '/training', exact: true, name: 'Training', component: Training},
+  
   // {
   //   path: '/pipes/strung/new',
   //   exact: true,

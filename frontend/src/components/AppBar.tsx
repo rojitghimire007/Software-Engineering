@@ -9,9 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { withRouter, useHistory } from 'react-router-dom';
-import { Backdrop } from '@material-ui/core';
 import SideBar from 'components/SideBar';
 import useStyles from 'style/AppBarStyles';
 
@@ -127,7 +125,7 @@ const MenuAppBar = (props: { history: any; }) => {
                         <Button className={classes.button} onClick={() => handleButtonsClick('/dashboard')}> Home </Button>
                         <Button className={classes.button} onClick={() => handleButtonsClick('/about')}> About </Button>
                         <Button className={classes.button} onClick={() => handleButtonsClick('/services')}> Services </Button>
-                        <Button className={classes.button} onClick={() => handleButtonsClick('/dashboard')}> Training </Button>
+                        <Button className={classes.button} onClick={() => handleButtonsClick('/training')}> Training </Button>
                         <Button className={classes.button} onClick={() => handleButtonsClick('/dashboard')}> Careers </Button>
                         <Button className={classes.button} onClick={() => handleButtonsClick('/contact')}> Contact Us </Button>
                     </div>

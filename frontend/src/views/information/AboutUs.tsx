@@ -1,9 +1,7 @@
-import { Backdrop } from "@material-ui/core";
 import React from "react";
 import AppBar from "../../components/AppBar";
-import { SketchPicker } from 'react-color';
 import Footer from "components/Footer";
-import { style } from "@mui/system";
+
 
 const styles = {
     container: {
@@ -26,7 +24,6 @@ const styles = {
 const AboutUs = () => {
     return (
         <>
-
             <AppBar />
             <div style={styles.container}>
                 <div>
