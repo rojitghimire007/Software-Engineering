@@ -1,25 +1,40 @@
 import React from "react";
 import AppBar from "../../components/AppBar";
+import Footer from "components/Footer";
+import { Link } from "react-router-dom";
 
+const styles = {
+    container: {
+        padding: '20px 30px 20px 20px',
+    },
+    header: {
+        marginBottom: '0px',
+    },
+    para: {
+        marginTop: '0px',
+    },
+};
 const ContactUs = () => {
     return (
         <>
-        <AppBar></AppBar>
-            <div>
-                 <h2>Office Hours</h2>
-                 <p> Monday - Friday</p>
-                 <p>7:00a.m. - 4:00p.m.</p>
-            </div>
-             <div>
-                <h3>Honor Guard Inspection</h3>
-                <p>401 Keystone Road</p>
+            <AppBar />
+            <div style={styles.container}>
+                <h2 style={styles.header}>Office Hours</h2>
+                <p style={styles.para}> Monday - Friday</p>
+                <p>7:00a.m. - 4:00p.m.</p>
+
+
+                <h3 style={styles.header}>Honor Guard Inspection</h3>
+                <p style={styles.para}>401 Keystone Road</p>
                 <p>Monroe, LA 71202</p>
-            </div>
-            <div>
+
+
                 <p> Office : 318-355-2938</p>
                 <p>E-mail: 401keystone@gmail.com</p>
             </div>
+        
         </>
+        
     )
 }
 
