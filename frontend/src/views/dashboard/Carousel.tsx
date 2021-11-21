@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Slides from './Links';
 
 
-  const links = Slides();
+const links = Slides();
 // Create an array of Carousel Items
 const items: CarouselItem[] = 
   links.map((item, index) => ({
@@ -16,20 +16,20 @@ const items: CarouselItem[] =
           <div style={{height: '100%'}}>
             <Link to={item.link} style={{width: '100%', height: '33%'}}>
                 <img src={item.image} style={{height: '80%'}}></img>
-                <div style={{height: '20%', color: 'white', textDecoration: 'none', backgroundColor: 'black'}}>
+                <div style={{height: '20%', color: 'white', fontSize: 'small', textDecoration: 'none', backgroundColor: 'black'}}>
                     {item.id}
                 </div>
             </Link>
-            <Link to={item.link} style={{width: '100%', height: '34%'}}>
-                <img src={item.image} style={{height: '80%'}}></img>
-                <div style={{height: '20%', color: 'white', textDecoration: 'none', backgroundColor: 'black'}}>
-                    {item.id}
+            <Link to={item.link2} style={{width: '100%', height: '34%'}}>
+                <img src={item.image2} style={{height: '80%'}}></img>
+                <div style={{height: '20%', color: 'white', fontSize: 'small', textDecoration: 'none', backgroundColor: 'black'}}>
+                    {item.id2}
                 </div>
             </Link>
-            <Link to={item.link} style={{width: '100%', height: '33%'}}>
-                <img src={item.image} style={{height: '80%'}}></img>
-                <div style={{height: '20%', color: 'white', textDecoration: 'none', backgroundColor: 'black'}}>
-                    {item.id}
+            <Link to={item.link3} style={{width: '100%', height: '33%'}}>
+                <img src={item.image3} style={{height: '80%'}}></img>
+                <div style={{height: '20%', color: 'white', fontSize: 'small', textDecoration: 'none', backgroundColor: 'black'}}>
+                    {item.id3}
                 </div>
             </Link>
           </div>

@@ -49,299 +49,276 @@ import lessonsLearned from 'img/lessonsLearned.png';
 
 
 const links = [
-    // Inventory
     {
       parent: 'Material Inventory',
       link: '/dashboard/inventory',
       id: 'Material Inventory',
       image: inventoryImg,
+
+      parent2: 'Welding',
+      link2: '/',
+      id2: 'Welding',
+      image2: weldingImg,
+
+      parent3: 'Stringing',
+      link3: 'pipes/strung/new',
+      id3: 'Stringing',
+      image3: stringingImg,
     },
-    // Welding
-    {
-      parent: 'Welding',
-      link: '/',
-      id: 'Welding',
-      image: weldingImg,
-    },
-    // Stringing
-    {
-      parent: 'Stringing',
-      link: 'pipes/strung/new',
-      id: 'Stringing',
-      image: stringingImg,
-    },
-    // Bending
+    
     {
       parent: 'Bending',
       link: '/bending',
       id: 'Bending',
       image: bendingImg,
+
+      parent2: 'Coating',
+      link2: '/coating',
+      id2: 'Coating',
+      image2: coatingImg,
+
+      parent3: 'WhyPipeline',
+      link3: '',
+      id3: 'Why is a Pipeline Needed',
+      image3: whyPipeline,
     },
-    // Coating
-    {
-      parent: 'Coating',
-      link: '/coating',
-      id: 'Coating',
-      image: coatingImg,
-    },
-    // Other
-    {
-      parent: 'WhyPipeline',
-      link: '',
-      id: 'Why is a Pipeline Needed',
-      image: whyPipeline,
-    },
+
     {
       parent: 'NeedsAnalysis',
       link: '',
       id: 'Needs Analysis and Project Justification',
       image: needsAnalysis,
+
+      parent2: 'ProjectAuthorization',
+      link2: '',
+      id2: 'Project Authorization and Certification',
+      image2: projectAuthorization,
+
+      parent3: 'OverviewOfConstruction',
+      link3: '',
+      id3: 'Overview of Construction',
+      image3: overviewOfConstruction,
     },
-    {
-      parent: 'ProjectAuthorization',
-      link: '',
-      id: 'Project Authorization and Certification',
-      image: projectAuthorization,
-    },
-    {
-      parent: 'OverviewOfConstruction',
-      link: '',
-      id: 'Overview of Construction',
-      image: overviewOfConstruction,
-    },
+
     {
       parent: 'SpecialConstructionTechnique',
       link: '',
       id: 'Special Construction Technique',
       image: specialConstructionTechnique,
+
+      parent2: 'PostConstructionMaintenance',
+      link2: '',
+      id2: 'Post-Construction Maintenance',
+      image2: postConstructionMaintenance,
+
+      parent3: 'Summary',
+      link3: '',
+      id3: 'Summary',
+      image3: summary,
     },
-    {
-      parent: 'PostConstructionMaintenance',
-      link: '',
-      id: 'Post-Construction Maintenance',
-      image: postConstructionMaintenance,
-    },
-    {
-      parent: 'Summary',
-      link: '',
-      id: 'Summary',
-      image: summary,
-    },
+
     {
       parent: 'TechnicalBasis',
       link: '',
       id: 'Technical Basis',
       image: technicalBasis,
+
+      parent2: 'StandardConstructionDrawings',
+      link2: '',
+      id2: 'Standard Construction Drawings',
+      image2: standardConstructionDrawings,
+
+      parent3: 'GuidlinesForParallelConstruction',
+      link3: '',
+      id3: 'Guidlines for Parallel Construction',
+      image3: guidelines,
     },
-    {
-      parent: 'StandardConstructionDrawings',
-      link: '',
-      id: 'Standard Construction Drawings',
-      image: standardConstructionDrawings,
-    },
-    {
-      parent: 'GuidlinesForParallelConstruction',
-      link: '',
-      id: 'Guidlines for Parallel Construction',
-      image: guidelines,
-    },
+
     {
       parent: 'ConstructionBidDocuments',
       link: '',
       id: 'Construction Bid Documents',
       image: constructionBidDocuments,
+
+      parent2: 'ConstructionStanders',
+      link2: '',
+      id2: 'Construction Standers',
+      image2: constructionStanders,
+
+      parent3: 'Schedules',
+      link3: '',
+      id3: 'Schedules',
+      image3: schedules,
     },
-    {
-      parent: 'ConstructionStanders',
-      link: '',
-      id: 'Construction Standers',
-      image: constructionStanders,
-    },
-    {
-      parent: 'Schedules',
-      link: '',
-      id: 'Schedules',
-      image: schedules,
-    },
+
     {
       parent: 'MeetingMinutes',
       link: '',
       id: 'Meeting Minutes',
       image: meetingMinutes,
+
+      parent2: 'ContactPhoneNumbers',
+      link2: '',
+      id2: 'Contact Phone Numbers',
+      image2: contactPhoneNumbers,
+
+      parent3: 'ConstructionTeam',
+      link3: '',
+      id3: 'Construction Team',
+      image3: constructionTeam,
     },
-    {
-      parent: 'ContactPhoneNumbers',
-      link: '',
-      id: 'Contact Phone Numbers',
-      image: contactPhoneNumbers,
-    },
-    {
-      parent: 'ConstructionTeam',
-      link: '',
-      id: 'Construction Team',
-      image: constructionTeam,
-    },
+
     {
       parent: 'ConstructorMobilization',
       link: '',
       id: 'Constructor Mobilization',
       image: constructorMobilization,
+
+      parent2: 'Permits',
+      link2: '',
+      id2: 'Permits',
+      image2: permits,
+
+      parent3: 'Environmental',
+      link3: '',
+      id3: 'Environmental',
+      image3: environmental,
     },
-    {
-      parent: 'Permits',
-      link: '',
-      id: 'Permits',
-      image: permits,
-    },
-    {
-      parent: 'Environmental',
-      link: '',
-      id: 'Environmental',
-      image: environmental,
-    },
+
     {
       parent: 'Clearing',
       link: '',
       id: 'Clearing',
       image: clearing,
+
+      parent2: 'Grading',
+      link2: '',
+      id2: 'Grading',
+      image2: grading,
+
+      parent3: 'AccessRoads',
+      link3: '',
+      id3: 'Access Roads',
+      image3: accessRoads,
     },
-    {
-      parent: 'Grading',
-      link: '',
-      id: 'Grading',
-      image: grading,
-    },
-    {
-      parent: 'AccessRoads',
-      link: '',
-      id: 'Access Roads',
-      image: accessRoads,
-    },
+
     {
         parent: 'gpsSurvey',
         link: '',
         id: 'GPS Survey',
         image: gpsSurvey,
+
+        parent2: 'Trenching',
+        link2: '',
+        id2: 'Trenching',
+        image2: trenching,
+
+        parent3: 'HDD',
+        link3: '',
+        id3: 'HDD',
+        image3: hdd,
     },
-    {
-        parent: 'Trenching',
-        link: '',
-        id: 'Trenching',
-        image: trenching,
-    },
-    {
-        parent: 'HDD',
-        link: '',
-        id: 'HDD',
-        image: hdd,
-    },
+
     {
         parent: 'ValueSites',
         link: '',
         id: 'Value Sites',
         image: valveSites,
+
+        parent2: 'RockShield',
+        link2: '',
+        id2: 'Rock Shield',
+        image2: rockShield,
+
+        parent3: 'Padding',
+        link3: '',
+        id3: 'Padding',
+        image3: padding,
     },
-    {
-        parent: 'RockShield',
-        link: '',
-        id: 'Rock Shield',
-        image: rockShield,
-    },
-    {
-        parent: 'Padding',
-        link: '',
-        id: 'Padding',
-        image: padding,
-    },
+
     {
         parent: 'Lowering',
         link: '',
         id: 'Lowering',
         image: lowering,
+
+        parent2: 'Backfill',
+        link2: '',
+        id2: 'Backfill',
+        image2: backfill,
+
+        parent3: 'Survey',
+        link3: '',
+        id3: 'Survey',
+        image3: survey,
     },
-    {
-        parent: 'Backfill',
-        link: '',
-        id: 'Backfill',
-        image: backfill,
-    },
-    {
-        parent: 'Survey',
-        link: '',
-        id: 'Survey',
-        image: survey,
-    },
+
     {
         parent: 'Abandonment',
         link: '',
         id: 'Abandonment Pipe',
         image: abandonment,
+
+        parent2: 'Pigs',
+        link2: '',
+        id2: 'Pigs',
+        image2: pigs,
+
+        parent3: 'HydrostaticTesting',
+        link3: '',
+        id3: 'Hydrostatic Testing',
+        image3: hydrostaticTesting,
     },
-    {
-        parent: 'Pigs',
-        link: '',
-        id: 'Pigs',
-        image: pigs,
-    },
-    {
-        parent: 'HydrostaticTesting',
-        link: '',
-        id: 'Hydrostatic Testing',
-        image: hydrostaticTesting,
-    },
+
     {
         parent: 'Restoration',
         link: '',
         id: 'Restoration',
         image: restoration,
+
+        parent2: 'InspectorReports',
+        link2: '',
+        id2: 'Inspector Reports',
+        image2: inspectorReports,
+
+        parent3: 'Safety',
+        link3: '',
+        id3: 'Safety',
+        image3: safety,
     },
-    {
-        parent: 'InspectorReports',
-        link: '',
-        id: 'Inspector Reports',
-        image: inspectorReports,
-    },
-    {
-        parent: 'Safety',
-        link: '',
-        id: 'Safety',
-        image: safety,
-    },
+
     {
         parent: 'WeatherTracking',
         link: '',
         id: 'WeatherTracking',
         image: weatherTracking,
+
+        parent2: 'Closing',
+        link2: '',
+        id2: 'Closing',
+        image2: closing,
+
+        parent3: 'EnsureDeliverables',
+        link3: '',
+        id3: 'Ensure Deliverables',
+        image3: ensureDeliverables,
     },
-    {
-        parent: 'Closing',
-        link: '',
-        id: 'Closing',
-        image: closing,
-    },
-    {
-        parent: 'EnsureDeliverables',
-        link: '',
-        id: 'Ensure Deliverables',
-        image: ensureDeliverables,
-    },
+
     {
         parent: 'RecieveCustomerApproval',
         link: '',
         id: 'Recieve Customer Approval',
         image: recieveCustomerApproval,
-    },
-    {
-        parent: 'ArchiveDocuments',
-        link: '',
-        id: 'Archive Documents',
-        image: archiveDocuments,
-    },
-    {
-        parent: 'LessonsLearned',
-        link: '',
-        id: 'Lessons Learned',
-        image: lessonsLearned,
+
+        parent2: 'ArchiveDocuments',
+        link2: '',
+        id2: 'Archive Documents',
+        image2: archiveDocuments,
+
+        parent3: 'LessonsLearned',
+        link3: '',
+        id3: 'Lessons Learned',
+        image3: lessonsLearned,
     },
   ];
 

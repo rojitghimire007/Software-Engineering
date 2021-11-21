@@ -5,56 +5,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { withRouter, useHistory } from 'react-router-dom';
-import { Backdrop } from '@material-ui/core';
 import SideBar from 'components/SideBar';
+import FileBar from 'components/FileBar';
 import useStyles from 'style/AppBarStyles';
+import FileStructure from './FileStructure';
+import AppStructure from './AppStructure';
 
+const fileStructure = FileStructure();
+const options = AppStructure();
 
-const options = [
-    {
-        main: 'Material Inventory',
-        default: '/dashboard',
-        subItems: [{
-            main: 'Pipes',
-            default: '/pipes',
-        },
-        {
-            main: 'Fittings',
-            default: '/fittings'
-        }],
-    },
-    {
-        main: 'Welding',
-        subItems: [''],
-        default: '',
-    },
-    {
-        main: 'Stringing',
-        subItems: [''],
-        default: '/pipes/strung/new',
-    },
-    {
-        main: 'Bending',
-        subItems: [''],
-        default: '',
-    },
-    {
-        main: 'Coating',
-        subItems: [''],
-        default: '',
-    },
-    {
-        main: 'Other',
-        subItems: [''],
-        default: '',
-    },
-];
 
 const ITEM_HEIGHT = 48;
 
@@ -92,6 +55,7 @@ const MenuAppBar = (props: { history: any; }) => {
             <AppBar position="static">
                 <Toolbar className={classes.appContainer}>
                     <SideBar links={options} />
+                    <FileBar links={fileStructure} />
 
                     <Menu
 
