@@ -44,7 +44,7 @@ const createItem = (itemInfo: any, itemFunctions: any, /* dragProps: any */) => 
                     ${styles.left}
                 `}></div>
                 <div className={`${styles.fittingsContent}`}>
-                    <div style={{ position: 'relative', top: '10%', left: '5%' }}>
+                    <div style={{ position: 'relative', top: '15%', left: '10%' }}>
                         <div>Fitting ID: {itemInfo.item_id}</div>
                         <div>Length: {itemInfo.flength}</div>
                     </div>

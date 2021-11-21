@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const StationContainer = ({ styles, stations }: any) => {
+    useEffect(() => { }, [stations])
     return (
         <div className={styles.stationsContainer}>
             <div className={styles.station}>

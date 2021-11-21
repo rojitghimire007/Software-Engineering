@@ -599,6 +599,7 @@ const StrungItems = () => {
   ])
 
   useEffect(() => {
+    console.log(stationNumbers)
     if (sequence.length > 0) {
       setStationNumbers(() => (
         seq[window + 4] != null ? // need to display 5 stations [window ... window + 4]
