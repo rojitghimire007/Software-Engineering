@@ -99,6 +99,8 @@ export default {
   getSequenceLength: (sequence: Array<any>) =>
     authPost(API.getSequenceLength, { sequence }),
 
+  createNewSequence: (station: number, item: string) =>
+    authPost(API.createNewSequence, { station, item }),
   // Cutting
 
   getCuttingEligiblePipes: () => authGet(API.getCuttingEligiblePipes, ''),

@@ -22,12 +22,15 @@ const API = {
   getStringingInfo: `${URL}/stringing`,
   updateStringing: `${URL}/updateStrung`,
   getFittings: `${URL}/fittings`,
+
+  // stringing
   stringing: `${URL}/string`,
   getStrungPipesInfo: `${URL}/pipes/info/`,
   getSequenceLength: `${URL}/pipes/length/`,
   getStriningEligiblePipes: `${URL}/string/eligible`,
   getCuttingEligiblePipes: `${URL}/pipes/cuttable`,
   cutPipe: `${URL}/pipes/cut`,
+  createNewSequence: `${URL}/string/sequence`,
 
 
   //other
