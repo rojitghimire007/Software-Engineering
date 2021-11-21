@@ -24,3 +24,13 @@ button:disabled {
     background-color: pink;
     color: black;
 }
+.add {
+    border: 1px solid black;
+    background-color: blue;
+    color: white;
+}
+.delete {
+    border: 1px solid black;
+    background-color: red;
+    color: white;
+}

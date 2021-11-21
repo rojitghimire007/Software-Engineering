@@ -470,8 +470,8 @@ const StrungItems = () => {
       },
     },
     add: {
-      btnName: 'Add Pipe',
-      btnStyle: 'refresh',
+      btnName: 'Add Pipe +',
+      btnStyle: 'add',
       disabled: false,
       onClick: (e: any) => {
         getItemDetails(newItem);
@@ -553,7 +553,7 @@ const StrungItems = () => {
                       style={{
                         minWidth: '100%',
                         display: 'flex',
-                        justifyContent: 'space-evenly',
+                        justifyContent: 'space-between',
                         // position: 'relative',
                         width: '100%',
                         paddingTop: '5%'
@@ -575,6 +575,7 @@ const StrungItems = () => {
                                 <MainLaneDraggable
                                   item={item}
                                   index={index}
+                                  itemFunctions={controlFunctions}
                                 />
                               </div>
                             )
