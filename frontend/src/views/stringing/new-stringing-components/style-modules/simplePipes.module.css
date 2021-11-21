@@ -1,35 +1,80 @@
-.pipesContainer {
-    /* display: grid; */
-    display: flex;
-    flex-direction: row;
-    /* min-height: 100%;   */
-    /* grid-template-columns: 2fr 1fr 2fr 1fr 2fr 1fr 2fr; */
-    user-select: none;
-    /* justify-content: space-around; */
-    /* margin-top: 2.5%; */
-}
 .pipeWrapper {
-    /* display: grid; */
+    user-select: none !important;
+    /* min-width: fit-content; */
+    width: 100%;
+    min-height: 100%;
+    /* margin: 1%; */
     display: grid;
     grid-template-columns: 1fr 8fr 1fr;
-    /* grid-template-rows: 1fr; */
-    /* min-width: 10%; */
-    width: 50%;
-    height: 80%;
-    margin: 1%;
-    border: 1px solid;
-    /* padding: 1.65% 0; */
+    grid-template-rows: 1fr;
+    /* border: 1px solid; */
+    /* padding: 1.40% 0; */
 }
 .pipeContent {
-    height: 100%;
-    /* padding: 28% 0; */
-    background-color: lightseagreen;
-    /* min-width: max-content; */
-    /* display: grid; */
-    /* grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr; */
+    min-height: 100%;
+    padding: 4.5% 1%;
+    border: 1px solid;
+    background-color: lightgray;
+    max-width: max-content;
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr 1.5fr;
+    grid-template-rows: 1fr; 
+    column-gap: 0;
+    z-index: 1;
+    font-family: Bebas Neue, serif;
+    font-size: 1.23rem;
+}
+.gapContent {
+    min-height: 100%;
+    padding-bottom: 4.5%;
+    padding-top: 4.5%;
+    /* padding-left: 80%; */
+    border: 1px dashed white;
+    min-width: 100%;
+    column-gap: 0;
+    z-index: 1;
+    font-family: Bebas Neue, serif;
+    font-size: 1.27rem;
+}
+.fittingsContent {
+    box-shadow: 0 0 0 8px grey ;
+    border-radius: 30% 5% 30% 5%;
+    font-family: Bebas Neue, serif;
+    font-size: 1.3rem;
+    min-height: 100%;
+    padding: 4.5% 1%;
+    border: 1px solid;
+    background-color: lightgray;
+    max-width: max-content;
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr 1.5fr;
+    grid-template-rows: 1fr; 
+    column-gap: 0;
+    z-index: 1;
 }
 .pipeSide {
-    height: 100%;
-    background-color: red;
+    min-height: 110%;
+    z-index: 0;
+    background-color: grey;
+    
+}
+.gridSide {opacity: 0;}
+.gap {opacity: .3; }
+.left {
+    width: 100%;
+    max-height: 90%;
+    margin-top: 10%;
+    border-left: 1px solid;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+.right {
+    width: 100%;
+    max-height: 90%;
+    margin-top: 10%;
+    border-right: 1px solid;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
 }

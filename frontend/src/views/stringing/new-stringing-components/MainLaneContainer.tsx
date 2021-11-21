@@ -32,10 +32,10 @@ const MainLaneContainer = ({ styles, onDragEnd }: any) => {
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
-                        <MainLaneDraggable
+                        {/* <MainLaneDraggable
                             pipes={pipeData}
                             onDragEnd={onDragEnd}
-                        />
+                        /> */}
                         {provided.placeholder}
                     </div>
                 )}

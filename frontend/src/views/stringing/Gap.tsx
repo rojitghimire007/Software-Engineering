@@ -53,13 +53,14 @@ const Gap = ({
           {...provided.dragHandleProps}
           style={{ margin: '0 50px' }}
         >
-          <div style={{ border: 'dotted 1px black' }} id="mydiv">
-            Station : {station}
+          <div style={{ border: 'dotted 1px white', color: 'white' }} id="mydiv">
+            {/* Station : {station} */}
+            GAP
             <Autocomplete
               disablePortal
               id="combo-box-demo"
               options={eligible}
-              sx={{ width: 300 }}
+              sx={{ width: 300, color: 'white' }}
               value={newItem}
               onChange={(event: any, newValue: any) => {
                 setNewItem(newValue);
