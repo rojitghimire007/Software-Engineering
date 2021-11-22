@@ -27,6 +27,10 @@ const API = {
   cutPipe: `${URL}/pipes/cut`,
 
   bendPipe: `${URL}/bend`,
+  usersInProject: `${URL}/list/user`,
+  addUsersToProject: `${URL}/create/project/user`,
+  getAllUsers: `${URL}/allusers`,
+  aggreate: `${URL}/aggregate`
 };
 
 export { URL, API };

@@ -124,5 +124,21 @@ export default {
 
   removeBend: (bend_id: string) => { 
     return authDelete(`${API.bendPipe}/${bend_id}`);
+  },
+
+  usersInProject: () => {
+    return authGet(API.usersInProject, '');
+  },
+
+  allUsers: () => {
+    return authGet(API.getAllUsers, '');
+  },
+
+  addUserToProject: (user: any) => {
+    return authPost(API.addUsersToProject, user)
+  },
+
+  getAggreate: () => {
+    return authGet(API.aggreate, '')
   }
 };
