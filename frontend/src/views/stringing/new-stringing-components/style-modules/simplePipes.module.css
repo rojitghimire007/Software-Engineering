@@ -67,10 +67,12 @@
 }
 /* IDs */
 .leftInfo :first-child {
+    padding-top: 3px;
     opacity: 0.75;
     font-weight: bold;
 }
 .rightInfo :first-child {
+    padding-top: 3px;
     opacity: 0.75;
     font-weight: bold;
 }

@@ -89,6 +89,7 @@ const MainLaneDraggable = ({
           key={item.id + index}
           className={styles.newContainer}
         >
+          {console.log(item)}
           {createItem(item, itemFunctions, index /* dragDetails */)}
         </div>
       )}
