@@ -60,6 +60,25 @@ export default {
     start_item: string | null
   ) => authPut(API.stringing, { item, prev_item, start_item }),
 
+  
+  // ADMINISTRATION
+
+  postProjectAdmin: (
+    project_number: string,
+    pname: string,
+    company: string,
+    company_address: string,
+    company_phone: string,
+    company_email: string,
+    work_number: string,
+    work_site_phone: string,
+    plocation: string,
+    notes: string,
+    start_date: number,
+    end_date: number
+  ) => authPost(API.postProjectAdmin, 
+    {project_number, pname,  company, company_address, company_phone, company_email, work_number, work_site_phone, plocation,  notes, start_date, end_date}
+  ),
   insertIntoSequence: (
     item: string,
     prev_item: string | null,

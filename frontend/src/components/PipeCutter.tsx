@@ -80,14 +80,14 @@ function PipeCutter() {
                     />
                     </>
                 : null}
-                <div>Cut at length {value}%?</div>
+                <div>Cut at length {value}%? (will be length units once database is set)</div>
                 <button
                     // onClick={() => !cutted? setCutted(!cutted) : resetCut()}
                     onClick={() => {setCutted(!cutted)}}
                 >
                     CUT ME
                 </button>
-                {cutted? <div>Cut pipe at {cutAt}%</div> : null}
+                {cutted? <div>Cut pipe at {cutAt}% (will be length units once database is set)</div> : null}
             </div>
         </div>
     )

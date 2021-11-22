@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-round-carousel": "^1.0.0",
+    "touchsweep": "^1.2.0"
+  }
+}

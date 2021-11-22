@@ -1,0 +1,19 @@
+.cuttingContainer{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    border: 3px solid;
+}
+.pipeContainer{
+    width: calc(100% - 18px);
+    margin: 0 9px 0 9px;
+    background-color: salmon;
+    display: flex;
+}
+.measure{
+    position:relative;
+    width: 3px;
+    height: 64px;
+    background-color: black;
+    z-index: 2;
+}

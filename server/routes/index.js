@@ -81,6 +81,9 @@ const SetRoutes = (app) => {
   //other
   app.get('/items/:item', getItemInfo);
 
+  //other
+  app.get('/items/:item', getItemInfo);
+
   // fittings routes
   app.post('/fittings', addFittings);
   app.get('/fittings', getFittings);

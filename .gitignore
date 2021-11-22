@@ -2,3 +2,5 @@ frontend/node_modules
 server/node_modules
 server/tests
 .vscode
+frontend/src/style/FooterStyles.css
+.env

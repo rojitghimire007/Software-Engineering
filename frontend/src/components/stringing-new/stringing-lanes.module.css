@@ -1,0 +1,41 @@
+.container {
+    display: grid;
+    width: 80vw;
+    max-height: 1000px;
+    grid-template-columns: 10vw 10vw 10vw 10vw 10vw 10vw 10vw 10vw;
+    grid-template-rows: 5vh 20vh;
+    margin: 0 10vw;
+    border: 2px solid;
+}
+
+.stationContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom right, rgba(0,0,255,.2), rgba(0,0,255,.4));
+}
+
+.stationSig {
+    color: #fff;
+    font-weight: bold;
+}
+
+.station {
+    width: 80%;
+    background-color: rgba(240,240,240,.7);
+    text-align: center;
+}
+
+.divider {
+    position: 'relative';
+    left: -10vw;
+}
+
+.lane {
+    grid-column: 1/9;
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    background-color: rgba(0,255,0,.2);
+}

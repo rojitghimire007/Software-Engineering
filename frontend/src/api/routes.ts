@@ -9,6 +9,9 @@ const API = {
   signup: `${URL}/signup`,
   getAssociatedProjects: `${URL}/list/project`,
   selectProject: `${URL}/select/project`,
+  
+  // admin
+  postProjectAdmin: `${URL}/create/project`, // BACKEND url
 
   // pipes
   getPipes: `${URL}/pipes`,
@@ -28,6 +31,7 @@ const API = {
   getCuttingEligiblePipes: `${URL}/pipes/cuttable`,
   cutPipe: `${URL}/pipes/cut`,
   createNewSequence: `${URL}/string/sequence`,
+
 
   //other
   getItemInfo: `${URL}/items/`,

@@ -8,6 +8,9 @@ import AboutUs from 'views/information/AboutUs';
 import ContactUs from 'views/information/ContactUs';
 import TESTING from 'views/TESTING';
 import StrungItems from 'views/stringing/StrungItems';
+// import oldString from 'views/stringing/StrungItems';
+import CreateProject from 'views/administrative/createProject'
+import DashboardInventory from 'views/dashboard/submenus/DashboardInventory';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -27,6 +30,7 @@ const routes: {
     component: ProjectSelect,
   },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
+  { path: '/dashboard/inventory', exact: true, name: 'Dashboard', component: DashboardInventory },
   { path: '/login', exact: true, name: 'Login', component: Login },
   { path: '/pipes', exact: true, name: 'Show', component: ShowPipes },
   {
@@ -41,8 +45,15 @@ const routes: {
     name: 'Show',
     component: StrungItems,
   },
+  // {
+  //   path: '/pipes/strung/new',
+  //   exact: true,
+  //   name: 'Show',
+  //   component: oldString,
+  // },
   { path: '/about', exact: true, name: 'About', component: AboutUs },
   { path: '/contact', exact: true, name: 'Contact', component: ContactUs },
+  //{ path: '/services', exact: true, name: 'Services', component: Services },
   // {
   //   path: '/pipes/strung/new',
   //   exact: true,
@@ -51,6 +62,7 @@ const routes: {
   // },
   { path: '/fittings', exact: true, name: 'Fittings', component: ShowFittings },
   { path: '/testing', exact: true, name: 'TESTING', component: TESTING },
+  { path: '/create-project', exact: true, name: 'Create Project', component: CreateProject},
 ];
 
 export default routes;

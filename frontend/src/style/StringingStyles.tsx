@@ -52,15 +52,16 @@ const useStyles = makeStyles ((theme) => ({
     
     pipeContainer: {
       display: 'flex',
-      rowGap: 0,
-      columnGap: 0,
+      width: '500px !important',
+      // rowGap: 0,
+      // columnGap: 0,
       boxShadow: '0px 80px 30px -70px '+`${ColorScheme.secondaryDark}`,
       
       '&:hover' : {
         borderColor: `${ColorScheme.secondary}`,
         backgroundColor: ColorScheme.secondaryLight,
         color: ColorScheme.onSecondary,
-        transform: 'scale(1.03)',
+        // transform: 'scale(1.03)',
       },
     },
     
@@ -72,9 +73,9 @@ const useStyles = makeStyles ((theme) => ({
       borderRadius: '50%',
       border: '3px solid black',
       zIndex: 997,
-      marginLeft: '15px',
+      // marginLeft: '15px',
       position: 'relative',
-      left: '10px'
+      // left: '10px'
     },
 
     pipePadder: {
@@ -262,7 +263,8 @@ const useStyles = makeStyles ((theme) => ({
       display: 'flex',
     },
     virtList: {
-      margin: '0 12px 0 12px',
+      // margin: '0 12px 0 12px',
+      // maxWidth: '100vw'
     },
     pipeDrag: {
       border: '30px dashed ' + `${ColorScheme.secondaryDark}`,
@@ -280,6 +282,7 @@ const useStyles = makeStyles ((theme) => ({
   
     container: {
       height: '200px',
+      maxWidth: '100vw',
       position: 'relative',
       top: '100px',
       bottom: '0',
