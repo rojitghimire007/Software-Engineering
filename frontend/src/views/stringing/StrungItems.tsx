@@ -8,37 +8,8 @@ import React, {
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import api from 'api';
-import {
-  Typography,
-  AppBar,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  CardHeader,
-  CssBaseline,
-  Grid,
-  Toolbar,
-  //   TextField,
-  Container,
-  CardActionArea,
-  ListItem,
-} from '@material-ui/core';
-import {
-  Select,
-  MenuItem,
-  FormControl,
-  Button,
-  IconButton,
-  collapseClasses,
-  Snackbar,
-  Autocomplete,
-  TextField,
-} from '@mui/material';
-import { createFilterOptions } from '@mui/material/Autocomplete';
 
-import { typography } from '@mui/system';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 
 import useStyles from '../../style/StringingStyles';
 import useUpdateEffect from 'utils/useUpdateEffect';
@@ -47,7 +18,6 @@ import Gap from './Gap';
 import MainLaneControls from './new-stringing-components/MainLaneControls';
 import StationContainer from 'views/stringing/new-stringing-components/StationContainer';
 import MainLaneDraggable from './new-stringing-components/MainLaneDraggable';
-import { PersonalVideoRounded } from '@mui/icons-material';
 
 // Original:  https://codesandbox.io/s/mmrp44okvj?file=/index.js
 type dataType = {
@@ -175,7 +145,7 @@ const StrungItems = () => {
   const [tempSequence, setTempSequence] = useState<Array<dataType>>([]);
   const [currentItemDetails, setCurrentItemDetails] = useState<Array<any>>([]);
 
-  const [window, setWindow] = useState(-1); //careful sliding left when window = 0 ; "view slider"
+  const [startWindow, setStartWindow] = useState(-1); //careful sliding left when window = 0 ; "view slider"
   // right now set to left most index of view (0, rn)
 
   const [loading, setLoading] = useState(true);
@@ -210,7 +180,7 @@ const StrungItems = () => {
     let target_pipe = data.item_id;
     if (!new RegExp('F_.*').test(target_pipe)) target_pipe = 'p_' + target_pipe;
 
-    sequence[window + index] = {
+    sequence[startWindow + index] = {
       ...data,
       station_number: station,
       item_id: target_pipe,
@@ -220,17 +190,17 @@ const StrungItems = () => {
 
     // Preceeded by a gap and the new item doesn't seal the gap between it and the next item
     if (
-      (!sequence[window + index - 1] ||
-        sequence[window + index - 1].item_id == 'gap') &&
-      sequence[window + index + 1] &&
+      (!sequence[startWindow + index - 1] ||
+        sequence[startWindow + index - 1].item_id == 'gap') &&
+      sequence[startWindow + index + 1] &&
       (station + (data.plength || data.flength || 0) <
-        sequence[window + index + 1].station_number ||
-        sequence[window + index - 1].item_id == 'gap')
+        sequence[startWindow + index + 1].station_number ||
+        sequence[startWindow + index - 1].item_id == 'gap')
     ) {
       api
         .createNewSequence(station, target_pipe)
         .then((res) => {
-          let temp = insertItem(sequence, window + index + 1, {
+          let temp = insertItem(sequence, startWindow + index + 1, {
             item_id: 'gap',
             station_number: station + (data.plength || data.flength || 0),
           });
@@ -245,7 +215,7 @@ const StrungItems = () => {
               createGaps(temp, tempSequence);
               unstable_batchedUpdates(() => {
                 setSequence([...temp, ...tempSequence]);
-                setWindow(0);
+                setStartWindow(0);
                 setTempSequence([]);
               });
             } else {
@@ -253,7 +223,7 @@ const StrungItems = () => {
               let l = tempSequence.length + temp.length;
               unstable_batchedUpdates(() => {
                 setSequence([...tempSequence, ...temp]);
-                setWindow(l - 5);
+                setStartWindow(l - 5);
                 setTempSequence([]);
               });
             }
@@ -288,13 +258,13 @@ const StrungItems = () => {
           unstable_batchedUpdates(() => {
             setSequence([...arr]);
             setLoading(false);
-            setWindow(0);
+            setStartWindow(0);
           });
         } else {
           unstable_batchedUpdates(() => {
             setSequence(defaultSequence);
             setLoading(false);
-            setWindow(0);
+            setStartWindow(0);
           });
         }
 
@@ -317,11 +287,11 @@ const StrungItems = () => {
 
     api
       .getStrungItemsInfo(
-        sequence.slice(window, window + 4).map((item) => item.item_id)
+        sequence.slice(startWindow, startWindow + 4).map((item) => item.item_id)
       )
       .then((res) => setCurrentItemDetails(res))
       .catch((err) => alert(err.message));
-  }, [window]);
+  }, [startWindow]);
 
   const addNewItem = (result: any) => {
     let target_pipe = result.draggableId;
@@ -336,12 +306,12 @@ const StrungItems = () => {
       .then((res) => {
         updateStations(
           sequence,
-          window + result.destination.index,
+          startWindow + result.destination.index,
           newItemDetails.plength || newItemDetails.flength || 0
         );
 
         let prevItem: dataType =
-          sequence[window + result.destination.index - 1];
+          sequence[startWindow + result.destination.index - 1];
 
         let length = {};
         if (new RegExp('F_.*').test(target_pipe))
@@ -350,7 +320,7 @@ const StrungItems = () => {
 
         let prev;
         setSequence(
-          insertItem(sequence, window + result.destination.index, {
+          insertItem(sequence, startWindow + result.destination.index, {
             item_id: target_pipe,
             station_number: prevItem
               ? prevItem.station_number +
@@ -360,11 +330,15 @@ const StrungItems = () => {
           })
         );
         setCurrentItemDetails(
-          insertItem(currentItemDetails, window + result.destination.index, {
-            heat_no: newItemDetails?.heat_no,
-            wall_thickness: newItemDetails?.wall_thickness,
-            grade: newItemDetails?.grade,
-          })
+          insertItem(
+            currentItemDetails,
+            startWindow + result.destination.index,
+            {
+              heat_no: newItemDetails?.heat_no,
+              wall_thickness: newItemDetails?.wall_thickness,
+              grade: newItemDetails?.grade,
+            }
+          )
         );
         setNewItemDetails(initialNewItem);
         setEligible(remove(eligible, eligible.indexOf(result.draggableId)));
@@ -377,8 +351,8 @@ const StrungItems = () => {
 
     const items = reorder(
       sequence,
-      window + result.source.index,
-      window + result.destination.index
+      startWindow + result.source.index,
+      startWindow + result.destination.index
     );
 
     let [left_item, start_item] = getLeftAndStartItem(items, result);
@@ -394,34 +368,36 @@ const StrungItems = () => {
       });
   };
 
-  const deleteFromSequence = (result: any) => {
-    let item: dataType = sequence[window + result.source.index];
-    let { item_id, station_number } = item;
-    return api
-      .deleteFromSequence(item_id)
-      .then((res) => {
-        // updateStations(
-        //   sequence,
-        //   window + result.source.index,
-        //   -1 * (item.flength || item.plength || 0)
-        // );
-        let items = remove(sequence, window + result.source.index);
-        items = insertItem(items, result.source.index, {
-          item_id: 'gap',
-          station_number,
-        });
-        setSequence(items);
-        if (new RegExp('p_.*').test(item_id)) item_id = item_id.substring(2);
-        setEligible([...eligible, item_id]);
-      })
-      .catch((err) => alert(err.message));
+  const deleteFromSequence = (index: number) => {
+    let item: dataType = sequence[startWindow + index];
+    if (window.confirm(`Are you sure you want to delete ${item.item_id}?`)) {
+      let { item_id, station_number } = item;
+      return api
+        .deleteFromSequence(item_id)
+        .then((res) => {
+          // updateStations(
+          //   sequence,
+          //   window + index,
+          //   -1 * (item.flength || item.plength || 0)
+          // );
+          let items = remove(sequence, startWindow + index);
+          items = insertItem(items, index, {
+            item_id: 'gap',
+            station_number,
+          });
+          setSequence(items);
+          if (new RegExp('p_.*').test(item_id)) item_id = item_id.substring(2);
+          setEligible([...eligible, item_id]);
+        })
+        .catch((err) => alert(err.message));
+    }
   };
 
   const getLeftAndStartItem = (items: Array<any>, destinationIndex: number) => {
-    let left_item = items[window + destinationIndex - 1];
+    let left_item = items[startWindow + destinationIndex - 1];
     let start_item = null;
     if (!left_item || left_item.item_id == 'gap') {
-      start_item = items[window + destinationIndex + 1].item_id;
+      start_item = items[startWindow + destinationIndex + 1].item_id;
       left_item = null;
     } else left_item = left_item.item_id;
 
@@ -433,7 +409,7 @@ const StrungItems = () => {
     if (!result.destination) {
       return;
     } else if (result.destination.droppableId === 'delete') {
-      deleteFromSequence(result);
+      // deleteFromSequence(result);
     } else if (
       result.source.droppableId == 'hold' &&
       result.destination.droppableId === 'droppable'
@@ -444,11 +420,11 @@ const StrungItems = () => {
       result.source.droppableId === 'droppable'
     ) {
       setNewItemDetails({
-        ...sequence[window + result.source.index],
+        ...sequence[startWindow + result.source.index],
         ...currentItemDetails[result.source.index],
       });
-      let { station_number } = sequence[window + result.source.index];
-      let items = remove(sequence, window + result.source.index);
+      let { station_number } = sequence[startWindow + result.source.index];
+      let items = remove(sequence, startWindow + result.source.index);
       items = insertItem(items, result.source.index, {
         item_id: 'gap',
         station_number,
@@ -460,7 +436,7 @@ const StrungItems = () => {
 
   const goToStation = (target: number) => {
     if (target < 0) {
-      setWindow(0);
+      setStartWindow(0);
       return;
     }
 
@@ -483,7 +459,7 @@ const StrungItems = () => {
       }
 
       setSequence([...arr]);
-      setWindow(0);
+      setStartWindow(0);
       return;
     }
 
@@ -514,7 +490,7 @@ const StrungItems = () => {
     }
 
     setSequence(items);
-    setWindow(position + 1);
+    setStartWindow(position + 1);
   };
 
   //////////////////////////////
@@ -556,14 +532,12 @@ const StrungItems = () => {
   //////////////////////////////
   //            OLD
   //////////////////////////////
-  const [stations, setStations] = useState(['', '', '', '', '']);
-
   const controlFunctions = [
     {
       moveLeft: {
         btnName: 'Move Left',
         btnStyle: 'move',
-        disabled: tempSequence.length == 0 && window == 0 ? true : false,
+        disabled: tempSequence.length == 0 && startWindow == 0 ? true : false,
         onClick: () => {
           if (tempSequence.length > 0) {
             let arr = [...tempSequence];
@@ -571,19 +545,19 @@ const StrungItems = () => {
             unstable_batchedUpdates(() => {
               setSequence(arr);
               setTempSequence([]);
-              setWindow(arr.length - 4);
+              setStartWindow(arr.length - 4);
             });
           } else {
-            setWindow(window - 1);
+            setStartWindow(startWindow - 1);
           }
         },
       },
       moveRight: {
         btnName: 'Move Right',
         btnStyle: 'move',
-        disabled: window + 4 >= sequence.length ? true : false,
+        disabled: startWindow + 4 >= sequence.length ? true : false,
         onClick: () => {
-          setWindow(window + 1);
+          setStartWindow(startWindow + 1);
         },
       },
       add: {
@@ -616,68 +590,20 @@ const StrungItems = () => {
         btnName: 'X',
         btnStyle: 'delete',
         disabled: false,
-        onClick: (item: any, index: any) => {
-          console.log('delete');
-          // api
-          //   .deleteFromSequence(item.item_id)
-          //   .then((res) => {
-          //     let items = remove(sequence, window + item.source.index);
-          //     items = insertItem(items, index, {
-          //       item_id: 'gap',
-          //       station_number,
-          //     });
-          //     setSequence(items);
-          //     if (new RegExp('p_.*').test(item_id)) item_id = item_id.substring(2);
-          //     setEligible([...eligible, item.item_id]);
-          //   })
-          //   .catch((err) => alert(err.message));
-        },
+        onClick: deleteFromSequence,
       },
     },
   ];
 
-  const dragDropTesting = [
-    'item A',
-    'item B',
-    'item C',
-    'item A',
-    'item B',
-    'item C',
-    'item A',
-    'item B',
-    'item C',
-    'item A',
-    'item B',
-    'item C',
-  ];
-
-  const seq = [...sequence];
-  // console.log(seq)
-  const [stationNumbers, setStationNumbers] = useState([
-    0, 1, 2, 3, 4,
-    // seq[0].station_number,
-    // seq[1].station_number,
-    // seq[2].station_number,
-    // seq[3].station_number,
-    // seq[4].station_number,
-  ]);
+  const [stationNumbers, setStationNumbers] = useState([0, 1, 2, 3, 4]);
 
   useEffect(() => {
-    console.log(stationNumbers);
-    if (sequence.length > 0) {
-      setStationNumbers(() =>
-        seq[window + 4] != null // need to display 5 stations [window ... window + 4]
-          ? [
-              seq[window].station_number,
-              seq[window + 1].station_number,
-              seq[window + 2].station_number,
-              seq[window + 3].station_number,
-              seq[window + 4].station_number,
-            ]
-          : stationNumbers
-      );
-    }
-  }, [sequence, window]);
+    setStationNumbers(
+      sequence
+        .slice(startWindow, startWindow + 4)
+        .map((item) => item.station_number)
+    );
+  }, [sequence, startWindow]);
 
   if (!loading)
     return (
@@ -709,7 +635,7 @@ const StrungItems = () => {
                       className={classes.virtList}
                     >
                       {sequence
-                        .slice(window, window + 4)
+                        .slice(startWindow, startWindow + 4)
                         .map((item: dataType, index) => {
                           if (item.item_id == 'gap')
                             return (
