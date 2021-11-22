@@ -134,6 +134,8 @@ exports.stringing = `CREATE TABLE stringing(
   next_item TEXT,
   prev_item TEXT,
   start_pipe TEXT NOT NULL,
+  string_date DATE DEFAULT CURRENT_DATE,
+  string_inspector TEXT NOT NULL,
   PRIMARY KEY(item_id)
 )`;
 
@@ -149,7 +151,6 @@ exports.bend = `CREATE TABLE bend(
   degree FLOAT NOT NULL,
   bdirection TEXT NOT NULL,
   blength TEXT DEFAULT NULL,
-  bendFrom TEXT DEFAULT NULL,
   bdate DATE DEFAULT CURRENT_DATE,
   created_by TEXT NOT NULL,
   PRIMARY KEY(bend_id)
