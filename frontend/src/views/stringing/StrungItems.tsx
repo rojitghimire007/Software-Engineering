@@ -648,7 +648,7 @@ const StrungItems = () => {
                         justifyContent: 'space-between',
                         // position: 'relative',
                         width: '100%',
-                        paddingTop: '5%'
+                        paddingTop: '2.5%'
                       }}
                       ref={provided.innerRef}
                       // style={getListStyle(snapshot.isDraggingOver)}
