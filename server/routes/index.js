@@ -28,6 +28,7 @@ const {
   getStriningEligiblePipes,
   deleteFromSequence,
 } = require('./PipeStringing');
+const { getAggregateData } = require('./dataLogController');
 //const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
@@ -77,6 +78,9 @@ const SetRoutes = (app) => {
   app.post('/fittings', addFittings);
   app.get('/fittings', getFittings);
   app.put('/fittings', editFitting);
+
+  //aggreateData
+  app.get('/aggregate', getAggregateData);
 
 };
 

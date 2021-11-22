@@ -1,4 +1,4 @@
-const pipeStringingQueries = require('../sql_queries/pipeStringingQueries');
+const pipeStringingQueries = require('../sql_queries/stringingQueries');
 const { client } = require('../utils/databaseConnection');
 
 const updateFirstPipe = async (pipe_id) => {
