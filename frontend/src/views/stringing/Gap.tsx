@@ -2,6 +2,7 @@ import { Autocomplete, createFilterOptions, TextField } from '@mui/material';
 import api from 'api';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import styles from './new-stringing-components/style-modules/simplePipes.module.css';
 
 const filterOptions = createFilterOptions({
   matchFrom: 'start',
@@ -51,16 +52,27 @@ const Gap = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={{ margin: '0 50px' }}
+          // style={{ margin: '0 50px' }}
+          className={styles.newContainer}
         >
-          <div style={{ border: 'dotted 1px white', color: 'white' }} id="mydiv">
+          <div 
+            className={styles.gap}
+            style={{ 
+              // border: 'dotted 1px white', 
+              width: '100%', 
+              // color: 'white', 
+              // flex: '1 1 25%',
+              // boxSizing: 'border-box',
+            }} 
+            id="mydiv"
+          >
             {/* Station : {station} */}
             GAP
             <Autocomplete
               disablePortal
               id="combo-box-demo"
               options={eligible}
-              sx={{ width: 300, color: 'white' }}
+              sx={{ width: '100%', color: 'white' }}
               value={newItem}
               onChange={(event: any, newValue: any) => {
                 setNewItem(newValue);

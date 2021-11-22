@@ -70,7 +70,7 @@ const detectOverlaps = (leftSequence: any, rightSequence: any) => {
   for (let i = 0; i < rightSequence.length; i++) {
     if (
       leftSequence.at(-1).station_number +
-        (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
+      (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
       rightSequence[i].station_number
     )
       rightSequence[i]['overlap'] = true;
@@ -81,7 +81,7 @@ const detectOverlaps = (leftSequence: any, rightSequence: any) => {
     if (
       rightSequence[0].station_number <
       leftSequence[i].station_number +
-        (leftSequence[i].plength || leftSequence[i].flength)
+      (leftSequence[i].plength || leftSequence[i].flength)
     )
       leftSequence[i]['overlap'] = true;
     else break;
@@ -337,7 +337,7 @@ const StrungItems = () => {
             item_id: target_pipe,
             station_number: prevItem
               ? prevItem.station_number +
-                (prevItem.flength || prevItem.plength || 0)
+              (prevItem.flength || prevItem.plength || 0)
               : 0,
             ...length,
           })
@@ -643,12 +643,13 @@ const StrungItems = () => {
                   {(provided, snapshot) => (
                     <div
                       style={{
-                        minWidth: '100%',
+                        // minWidth: '100%',
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        flexFlow: 'row nowrap',
+                        // paddingTop: '2.5%',
+                        // justifyContent: 'space-between',
                         // position: 'relative',
-                        width: '100%',
-                        paddingTop: '5%',
+                        minWidth: '90vw',
                       }}
                       ref={provided.innerRef}
                       // style={getListStyle(snapshot.isDraggingOver)}
@@ -669,53 +670,11 @@ const StrungItems = () => {
                             );
                           else
                             return (
-                              // <div
-                              //   ref={provided.innerRef}
-                              //   {...provided.draggableProps}
-                              //   {...provided.dragHandleProps}
-                              //   style={getItemStyle(
-                              //     snapshot.isDragging,
-                              //     provided.draggableProps.style
-                              //   )}
-                              //   className={classes.pipeContainer}
-                              // >
                               <MainLaneDraggable
                                 item={item}
                                 index={index}
                                 itemFunctions={controlFunctions}
-                              >
-                                {/* {(provided, snapshot) => ( */}
-                                {/* <div className={classes.pipeStart} />
-
-                                    <div className={classes.pipe}>
-                                      <div>{item.item_id}</div>
-                                      <div>{item.station_number}</div>
-                                      <div>{item.plength || item.flength}</div>
-                                      <div>{item.overlap ? 'Overlap' : 'NO'}</div>
-                                      <div>
-                                        Heat No:{' '}
-                                        {currentItemDetails[index]
-                                          ? currentItemDetails[index].heat_no
-                                          : ''}
-                                      </div>
-                                      <div>
-                                        Grade:{' '}
-                                        {currentItemDetails[index]
-                                          ? currentItemDetails[index].grade
-                                          : ''}
-                                      </div>
-                                      <div>
-                                        Thickness:{' '}
-                                        {currentItemDetails[index]
-                                          ? currentItemDetails[index]
-                                            .wall_thickness
-                                          : ''}
-                                      </div>
-                                    </div>
-                                    <div className={classes.pipeEnd} /> */}
-                                {/* )} */}
-                              </MainLaneDraggable>
-                              // </div>
+                              />
                             );
                         })}
                       {provided.placeholder}

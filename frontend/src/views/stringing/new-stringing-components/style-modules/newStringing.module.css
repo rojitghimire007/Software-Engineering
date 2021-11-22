@@ -33,6 +33,7 @@
     /* min-width: 100%; */
     width: 100%;
     min-height: 100%;
+    height: 18vh;
     background-color: royalblue;
     text-align: center;
 }
@@ -40,7 +41,8 @@
 .mainBottom {
     /* min-width: 100%; */
     width: 100%;
-    min-height: 500px;
+    min-height: 100%;
+    height: 22vh;
     background-color: royalblue;
     /* text-align: center; */
     /* display: flex;
