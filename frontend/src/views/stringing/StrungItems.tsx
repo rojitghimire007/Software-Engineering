@@ -158,6 +158,13 @@ const initialNewItem = {
   wall_thickness: 0,
 };
 
+const defaultSequence: Array<dataType> = [
+  { item_id: 'gap', station_number: 0 },
+  { item_id: 'gap', station_number: 50 },
+  { item_id: 'gap', station_number: 100 },
+  { item_id: 'gap', station_number: 150 },
+];
+
 const StrungItems = () => {
   const [sequence, setSequence] = useState<Array<dataType>>([]); // correct order of pipe ids
   const [tempSequence, setTempSequence] = useState<Array<dataType>>([]);
@@ -206,20 +213,46 @@ const StrungItems = () => {
 
     let [left_item, start_item] = getLeftAndStartItem(sequence, index);
 
+    // Preceeded by a gap and the new item doesn't seal the gap between it and the next item
     if (
+      (!sequence[window + index - 1] ||
+        sequence[window + index - 1].item_id == 'gap') &&
       sequence[window + index + 1] &&
-      station + (data.plength || data.flength || 0) <
-        sequence[window + index + 1].station_number
+      (station + (data.plength || data.flength || 0) <
+        sequence[window + index + 1].station_number ||
+        sequence[window + index - 1].item_id == 'gap')
     ) {
       api
         .createNewSequence(station, target_pipe)
         .then((res) => {
-          setSequence(
-            insertItem(sequence, window + index + 1, {
-              item_id: 'gap',
-              station_number: station + (data.plength || data.flength || 0),
-            })
-          );
+          let temp = insertItem(sequence, window + index + 1, {
+            item_id: 'gap',
+            station_number: station + (data.plength || data.flength || 0),
+          });
+
+          if (tempSequence.length == 0) {
+            setSequence(temp);
+          } else {
+            if (
+              sequence[sequence.length - 1].station_number <
+              tempSequence[0].station_number
+            ) {
+              createGaps(temp, tempSequence);
+              unstable_batchedUpdates(() => {
+                setSequence([...temp, ...tempSequence]);
+                setWindow(0);
+                setTempSequence([]);
+              });
+            } else {
+              createGaps(tempSequence, temp);
+              let l = tempSequence.length + temp.length;
+              unstable_batchedUpdates(() => {
+                setSequence([...tempSequence, ...temp]);
+                setWindow(l - 5);
+                setTempSequence([]);
+              });
+            }
+          }
         })
         .catch((e) => alert(e.message));
     } else {
@@ -230,27 +263,37 @@ const StrungItems = () => {
         })
         .catch((err) => alert(err.message));
     }
+
+    setEligible(remove(eligible, eligible.indexOf(target_pipe)));
   };
 
   useEffect(() => {
     api
       .getStringing()
       .then((res) => {
-        for (let i = 0; i < res.length - 1; i++) {
-          detectOverlaps(res[i], res[i + 1]);
-          createGaps(res[i], res[i + 1]);
+        if (res.length > 0) {
+          for (let i = 0; i < res.length - 1; i++) {
+            detectOverlaps(res[i], res[i + 1]);
+            createGaps(res[i], res[i + 1]);
+          }
+
+          let arr: any[] = [];
+          for (let row of res) for (let e of row) arr.push(e);
+
+          unstable_batchedUpdates(() => {
+            setSequence([...arr]);
+            setLoading(false);
+            setWindow(0);
+          });
+        } else {
+          unstable_batchedUpdates(() => {
+            setSequence(defaultSequence);
+            setLoading(false);
+            setWindow(0);
+          });
         }
 
-        let arr: any[] = [];
-        for (let row of res) for (let e of row) arr.push(e);
-
-        unstable_batchedUpdates(() => {
-          setSequence([...arr]);
-          setLoading(false);
-          setWindow(0);
-        });
-
-        // updatePipesOnScreen(0, res);
+        // updatePipesOnScreen(0, res);}
       })
       .catch((err) => alert(err.message));
   }, []);
@@ -411,11 +454,17 @@ const StrungItems = () => {
   };
 
   const goToStation = (target: number) => {
+    if (target < 0) {
+      setWindow(0);
+      return;
+    }
+
     let position = 0;
 
     let items: Array<dataType> =
       tempSequence.length == 0 ? [...sequence] : [...tempSequence];
 
+    // Target is greater than all exisiting stations
     if (target > items[items.length - 1].station_number) {
       if (tempSequence.length == 0) setTempSequence([...items]);
 
@@ -443,7 +492,12 @@ const StrungItems = () => {
       }
     }
 
-    if (
+    if (position == -1) {
+      items.splice(0, 0, {
+        item_id: 'gap',
+        station_number: target,
+      });
+    } else if (
       items[position].item_id === 'gap' &&
       items[position].station_number != target
     ) {
@@ -451,11 +505,11 @@ const StrungItems = () => {
         item_id: 'gap',
         station_number: target,
       });
-      position += 1;
+      // position += 1;
     }
 
     setSequence(items);
-    setWindow(position);
+    setWindow(position + 1);
   };
 
   //////////////////////////////
@@ -526,6 +580,14 @@ const StrungItems = () => {
                     {...provided.droppableProps}
                     className={classes.virtList}
                   >
+                    {/* {window == 0 ? (
+                      <Gap
+                        station={0}
+                        dragIndex={15}
+                        eligible={eligible}
+                        transformGap={transformGap}
+                      />
+                    ) : null} */}
                     {sequence
                       .slice(window, window + 4)
                       .map((item: dataType, index) => {
@@ -643,93 +705,6 @@ const StrungItems = () => {
                       backgroundColor: 'red',
                     }}
                   >
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={eligible}
-                sx={{ width: 300 }}
-                value={newItem}
-                onChange={(event: any, newValue: any) => {
-                  setNewItem(newValue);
-                }}
-                inputValue={inputValue}
-                onInputChange={(event, newInputValue) => {
-                  setInputValue(newInputValue);
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Add Item" />
-                )}
-                filterOptions={filterOptions}
-              />
-              <Button
-                variant="contained"
-                onClick={(e) => {
-                  getItemDetails(newItem);
-                  setInputValue('');
-                  setNewItem('');
-                }}
-              >
-                Select
-              </Button>
-
-              <Droppable droppableId="hold" direction="horizontal">
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    // style={getListStyle(snapshot.isDraggingOver)}
-                    {...provided.droppableProps}
-                    // className={classes.virtList}
-                    style={{
-                      height: '20vh',
-                      width: '30vw',
-                      backgroundColor: 'gray',
-                    }}
-                  >
-                    {newItemDetails.item_id ? (
-                      <Draggable
-                        key={`${newItemDetails.item_id}`}
-                        draggableId={`${newItemDetails.item_id}`}
-                        index={0}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
-                            )}
-                            className={classes.pipeContainer}
-                          >
-                            {/* {console.log(`Pipe: ${index}`)}
-                                  {console.log(`Pipe: ${item.item_id}`)} */}
-
-                            <div className={classes.pipeStart} />
-
-                            <div className={classes.pipe}>
-                              <div>{newItemDetails.item_id}</div>
-                              <div>
-                                {newItemDetails.plength ||
-                                  newItemDetails.flength}
-                              </div>
-                              <div>Heat No: {newItemDetails.heat_no}</div>
-                              <div>Grade: {newItemDetails.grade}</div>
-                              <div>
-                                Thickness: {newItemDetails.wall_thickness}
-                              </div>
-                            </div>
-                            <div className={classes.pipeEnd} />
-                          </div>
-                        )}
-                      </Draggable>
-                    ) : null}
-
                     {provided.placeholder}
                   </div>
                 )}
