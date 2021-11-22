@@ -5,6 +5,7 @@ import NewStrungPipes from 'views/stringing/StrungPipes';
 import ProjectsPage from 'views/ProjectsPage';
 import ProjectSelect from 'views/ProjectSelect';
 import BendInfo from 'views/bending/BendInfo';
+import MasterLog from 'views/masterLog/MasterLog';
 
 const Dashboard = React.lazy(() => import('views/dashboard/Dashboard'));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -29,7 +30,8 @@ const routes: {
   //   component: NewStrungPipes,
   // },
   { path: '/fittings', exact: true, name: 'Fittings', component: ShowFittings },
-  { path: '/bending', exact: true, name: 'Bending', component: BendInfo }
+  { path: '/bending', exact: true, name: 'Bending', component: BendInfo },
+  { path: '/aggregate', exact: true, name: 'Aggregate', component: MasterLog }
 ];
 
 export default routes;
