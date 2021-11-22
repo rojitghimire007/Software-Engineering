@@ -174,6 +174,12 @@ const StrungItems = () => {
     overflow: 'auto',
   });
 
+  /**
+   * Changes a gap item into a physical item
+   * @param index Index of gap item
+   * @param station Station number of gap item
+   * @param data The details of the item selected
+   */
   const transformGap = (index: number, station: number, data: dataType) => {
     // let length = sequence[window + index + 1].plength || sequence[window + index + 1].flength
 
@@ -242,6 +248,10 @@ const StrungItems = () => {
     setEligible(remove(eligible, eligible.indexOf(target_pipe)));
   };
 
+  /**
+   * Get stringing data and initialize sequence state.
+   * Also detects gaps and inserts gap items in the sequence.
+   */
   useEffect(() => {
     api
       .getStringing()
@@ -273,6 +283,9 @@ const StrungItems = () => {
       .catch((err) => alert(err.message));
   }, []);
 
+  /**
+   * Gets all the items that are eligibe to be added to stringing
+   */
   useEffect(() => {
     api
       .getStriningEligiblePipes()
@@ -434,6 +447,24 @@ const StrungItems = () => {
     else updateSequence(result);
   };
 
+  const findItem = (item_id: string) => {
+    for (let i = 0; i < sequence.length; i++) {
+      if (sequence[i].item_id === item_id) {
+        if (tempSequence.length > 0) {
+          unstable_batchedUpdates(() => {
+            setSequence(tempSequence);
+            setStartWindow(i);
+          });
+        } else {
+          setStartWindow(i);
+        }
+        return i;
+      }
+    }
+
+    alert(`${item_id} has not been added to stringing.`);
+  };
+
   const goToStation = (target: number) => {
     if (target < 0) {
       setStartWindow(0);
@@ -577,21 +608,6 @@ const StrungItems = () => {
           // console.log(e.currentTarget.value)
         },
       },
-      search: {
-        btnName: 'Search',
-        btnStyle: 'refresh',
-        disabled: false,
-        onClick: (e: any) => {
-          goToStation(parseInt(goTo));
-          // console.log(goTo)
-        },
-      },
-      delete: {
-        btnName: 'X',
-        btnStyle: 'delete',
-        disabled: false,
-        onClick: deleteFromSequence,
-      },
     },
   ];
 
@@ -612,7 +628,12 @@ const StrungItems = () => {
         <DragDropContext onDragEnd={onDragEnd}>
           <div className={styles.sectionA}>
             <div className={styles.mainTop}>
-              <MainLaneControls styles={styles} controls={controlFunctions} />
+              <MainLaneControls
+                styles={styles}
+                goToStation={goToStation}
+                findItem={findItem}
+                controls={controlFunctions}
+              />
               <StationContainer styles={styles} stations={stationNumbers} />
             </div>
             <div className={styles.mainBottom}>
