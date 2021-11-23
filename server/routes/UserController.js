@@ -45,11 +45,20 @@ const login = async (req, res, next) => {
           expiresIn,
         }
       );
+      
+      let isAdmin = false;
+      const checkAdmin = await query_resolver(default_pool, {
+        text: `SELECT * FROM admin WHERE email=$1`,
+        values: [email]
+      });
+
+      if(checkAdmin.length > 0) isAdmin = true;
 
       return res.status(200).send({
         success: true,
         message: 'User Logged In!',
         token: token,
+        isAdmin
       });
     });
   } catch (err) {
