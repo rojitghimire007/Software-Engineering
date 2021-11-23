@@ -1,121 +1,121 @@
 
 const links = [
     {
-        main: 'Menu',
+        main: '01. Menu',
         default: '',
         subItems: [
         {
-            main: 'Web Page',
+            main: '- Web Page',
             default: '/dashboard',
         },
         {
-            main: 'Privacy Statement',
+            main: '- Privacy Statement',
             default: '/'
         },
         {
-            main: 'Term of Use',
+            main: '- Term of Use',
             default: '/'
         },
         {
-            main: 'Current Projects',
+            main: '- Current Projects',
             default: '/'
         },
         {
-            main: 'Login',
+            main: '- Login',
             default: '/'
         },
         {
-            main: 'Menu',
+            main: '- Menu',
             default: '/'
         },
         {
-            main: 'Access Profile',
+            main: '- Access Profile',
             default: '/'
         },
         {
-            main: 'zBending and Pipe Gang',
+            main: '- zBending and Pipe Gang',
             default: '/'
         },
         {
-            main: 'zDatabase Log',
+            main: '- zDatabase Log',
             default: '/'
         },
         {
-            main: 'zHeat Number Tab Pipe Heat Number',
+            main: '- zHeat Number Tab Pipe Heat Number',
             default: '/'
         },
         {
-            main: 'zPipe Inventory Tab',
+            main: '- zPipe Inventory Tab',
             default: '/'
         },
         {
-            main: 'zStringing Stock Pile',
+            main: '- zStringing Stock Pile',
             default: '/'
         },
         {
-            main: 'zStringing Tab',
+            main: '- zStringing Tab',
             default: '/'
         }],
     },
 
 
     {
-        main: 'Construction Committee',
+        main: '02. Construction Committee',
         subItems: [
             {
-                main: 'Why is a Pipeline Needed',
+                main: '- Why is a Pipeline Needed',
                 default: '/'
             },
             {
-                main: 'Needs Analysis and Project Justification',
+                main: '- Needs Analysis and Project Justification',
                 default: '/'
             },
             {
-                main: 'Project Authorization and Certification',
+                main: '- Project Authorization and Certification',
                 default: '/'
             },
             {
-                main: 'Overview of Construction',
+                main: '- Overview of Construction',
                 default: '/'
             },
             {
-                main: 'Special Construction Technique',
+                main: '- Special Construction Technique',
                 default: '/'
             },
             {
-                main: 'Post-Construction Maintenance',
+                main: '- Post-Construction Maintenance',
                 default: '/'
             },
             {
-                main: 'Summary',
+                main: '- Summary',
                 default: '/'
             },
             {
-                main: 'Standard Construction Drawings',
+                main: '- Standard Construction Drawings',
                 default: '/'
             },
             {
-                main: 'Guidelines for Parallel Construction',
+                main: '- Guidelines for Parallel Construction',
                 default: '/'
             },
             {
-                main: 'Construction Bid Documents',
+                main: '- Construction Bid Documents',
                 default: '/'
             },
             {
-                main: 'Construction Standers',
+                main: '- Construction Standers',
                 default: '/'
             },
             {
-                main: 'Schedules',
+                main: '- Schedules',
                 default: '/'
             },
             {
-                main: 'Meeting Minutes',
+                main: '- Meeting Minutes',
                 default: '/'
             },
             {
-                main: 'Contact Phone Numbers',
+                main: '- Contact Phone Numbers',
                 default: '/'
             },
         ],
@@ -124,154 +124,154 @@ const links = [
 
 
     {
-        main: 'Construction Team',
+        main: '03. Construction Team',
         subItems: [
             {
-                main: 'Construction Team',
+                main: '- Construction Team',
                 default: '/'
             },
             {
-                main: 'Contractor Mobilizes',
+                main: '- Contractor Mobilizes',
                 default: '/'
             },
             {
-                main: 'Permits',
+                main: '- Permits',
                 default: '/'
             },
             {
-                main: 'Environmental',
+                main: '- Environmental',
                 default: '/'
             },
             {
-                main: 'Clearing',
+                main: '- Clearing',
                 default: '/'
             },
             {
-                main: 'Grading',
+                main: '- Grading',
                 default: '/'
             },
             {
-                main: 'Access Roads to Right of Way',
+                main: '- Access Roads to Right of Way',
                 default: '/'
             },
             {
-                main: 'Material Inventory',
+                main: '- Material Inventory',
                 default: '/'
             },
             {
-                main: 'GPS Survey',
+                main: '- GPS Survey',
                 default: '/'
             },
             {
-                main: 'Stringing',
+                main: '- Stringing',
                 default: '/'
             },
             {
-                main: 'Trenching',
+                main: '- Trenching',
                 default: '/'
             },
             {
-                main: 'HDD',
+                main: '- HDD',
                 default: '/'
             },
             {
-                main: 'Pipe Bending',
+                main: '- Pipe Bending',
                 default: '/'
             },
             {
-                main: 'Welding',
+                main: '- Welding',
                 default: '/'
             },
             {
-                main: 'X-Ray',
+                main: '- X-Ray',
                 default: '/'
             },
             {
-                main: 'Blasting',
+                main: '- Blasting',
                 default: '/'
             },
             {
-                main: 'Coating',
+                main: '- Coating',
                 default: '/'
             },
             {
-                main: 'Rock Shield',
+                main: '- Rock Shield',
                 default: '/'
             },
             {
-                main: 'Padding',
+                main: '- Padding',
                 default: '/'
             },
             {
-                main: 'Trench Plugs',
+                main: '- Trench Plugs',
                 default: '/'
             },
             {
-                main: 'Lowering In',
+                main: '- Lowering In',
                 default: '/'
             },
             {
-                main: 'Weights',
+                main: '- Weights',
                 default: '/'
             },
             {
-                main: 'Flowable Fill',
+                main: '- Flowable Fill',
                 default: '/'
             },
             {
-                main: 'Backfill',
+                main: '- Backfill',
                 default: '/'
             },
             {
-                main: 'Pipe Removed',
+                main: '- Pipe Removed',
                 default: '/'
             },
             {
-                main: 'Abandonment Pipe',
+                main: '- Abandonment Pipe',
                 default: '/'
             },
             {
-                main: 'Hydrostatic Testing',
+                main: '- Hydrostatic Testing',
                 default: '/'
             },
             {
-                main: 'Valve Site',
+                main: '- Valve Site',
                 default: '/'
             },
             {
-                main: 'Restoration',
+                main: '- Restoration',
                 default: '/'
             },
             {
-                main: 'Utility Pigs',
+                main: '- Utility Pigs',
                 default: '/'
             },
             {
-                main: 'Inline Inspection Tools',
+                main: '- Inline Inspection Tools',
                 default: '/'
             },
             {
-                main: 'Inspector Reports',
+                main: '- Inspector Reports',
                 default: '/'
             },
             {
-                main: 'Safety',
+                main: '- Safety',
                 default: '/'
             },
             {
-                main: 'Road Repair',
+                main: '- Road Repair',
                 default: '/'
             },
             {
-                main: 'Local Mapping',
+                main: '- Local Mapping',
                 default: '/'
             },
             {
-                main: 'Weather Tracking',
+                main: '- Weather Tracking',
                 default: '/'
             },
             {
-                main: 'Progress Reports',
+                main: '- Progress Reports',
                 default: '/'
             },
         ],
@@ -280,74 +280,74 @@ const links = [
 
 
     {
-        main: 'Completion Reports',
+        main: '04. Completion Reports',
         subItems: [
             {
-                main: 'Closing',
+                main: '- Closing',
                 default: '/'
             },
             {
-                main: 'Ensure Deliverables Meets Project Specifications',
+                main: '- Ensure Deliverables Meets Project Specifications',
                 default: '/'
             },
             {
-                main: 'Recieve Customer Approval',
+                main: '- Recieve Customer Approval',
                 default: '/'
             },
             {
-                main: 'Archive Documents Books',
+                main: '- Archive Documents Books',
                 default: '/'
             },
             {
-                main: 'Complete Lessons Learned',
+                main: '- Complete Lessons Learned',
                 default: '/'
             },
         ],
         default: '',
     },
     {
-        main: 'Honor Guard Inspection',
+        main: '05. Honor Guard Inspection',
         subItems: [
             {
-                main: 'Add Items Here',
+                main: '- Add Items Here',
                 default: '/'
             },
         ],
         default: '',
     },
     {
-        main: 'Contractors Tool Box',
+        main: '06. Contractors Tool Box',
         subItems: [
             {
-                main: 'Reference Boxes',
+                main: '- Reference Boxes',
                 default: '/'
             },
             {
-                main: 'Calculator',
+                main: '- Calculator',
                 default: '/'
             },
             {
-                main: 'Welding',
+                main: '- Welding',
                 default: '/'
             },
             {
-                main: 'Pipe and Steel Dimensions',
+                main: '- Pipe and Steel Dimensions',
                 default: '/'
             },
             {
-                main: 'Fabrication',
+                main: '- Fabrication',
                 default: '/'
             },
             {
-                main: 'Rigging',
+                main: '- Rigging',
                 default: '/'
             },
             {
-                main: 'Codes',
+                main: '- Codes',
                 default: '/'
             },
             {
-                main: 'Measurments',
+                main: '- Measurments',
                 default: '/'
             },
         ],

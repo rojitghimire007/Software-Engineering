@@ -64,7 +64,7 @@ const FileBar = (links: any) => {
                 link.subItems.map((sub: any) => {
                   return (
                     <Link to={sub.default}>
-                      <ListItem>
+                      <ListItem style={{color: 'Black', paddingLeft: '3rem' }}>
                         {sub.main}
                       </ListItem>
                     </Link>
