@@ -135,7 +135,11 @@ export default {
   },
 
   addUserToProject: (user: any) => {
-    return authPost(API.addUsersToProject, user)
+    return authPost(API.projUser, user)
+  },
+
+  removeUserFromProject: (user:string) => {
+    return authDelete(`${API.projUser}/${user}`);
   },
 
   getAggreate: () => {
