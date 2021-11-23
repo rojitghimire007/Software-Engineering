@@ -135,7 +135,7 @@ const getAssociatedProjects = async (req, res, next) => {
 const usersInProject = async (req, res, next) => {
   try {
     const query = {
-      text: `SELECT * FROM projects INNER JOIN user_project USING(project_number) WHERE dbname=$1`,
+      text: `SELECT * FROM projects INNER JOIN user_project USING(project_number) INNER JOIN users USING(uname) WHERE dbname=$1`,
       values: [req.dbname],
     };
 

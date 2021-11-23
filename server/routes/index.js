@@ -1,5 +1,5 @@
 const { login, signup, auth, selectProject, getAssociatedProjects, usersInProject} = require('./UserController');
-const { postProject, addUserToProject, getAllUsers } = require('./AdminController');
+const { postProject, addUserToProject, getAllUsers, removeUserFromProject } = require('./AdminController');
 
 const {
   addPipe,
@@ -34,6 +34,7 @@ const { getAggregateData } = require('./dataLogController');
 const SetRoutes = (app) => {
   //admin
   app.post('/create/project', postProject);
+  app.delete('/create/project/user/:uname', removeUserFromProject);
   app.post('/create/project/user', addUserToProject);
   app.get('/allusers', getAllUsers);
 
@@ -81,7 +82,6 @@ const SetRoutes = (app) => {
 
   //aggreateData
   app.get('/aggregate', getAggregateData);
-
 };
 
 module.exports = { SetRoutes };
