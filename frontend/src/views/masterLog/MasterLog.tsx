@@ -190,7 +190,231 @@ const MasterLog = () => {
           },
           {
             title: "Bending Inspector",
-            field: "bendPer",
+            field: "binscp",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Rote Pass",
+            field: "rp",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "HP (D/W)",
+            field: "hp",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "2nd HP",
+            field: "hp2",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Welding",
+            field: "weld",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Weld Date",
+            field: "wdate",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Cap (D/W)",
+            field: "cap",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Weld Inspect",
+            field: "winspect",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Repair",
+            field: "repair",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Cut-outs",
+            field: "cutout",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Procedure",
+            field: "proc",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Type of Weld",
+            field: "wtype",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "X-Ray",
+            field: "xray",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "X-Ray Date",
+            field: "xdate",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Coating Type",
+            field: "ctype",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Coating Date",
+            field: "cdate",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Coating Inspector",
+            field: "cinspect",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Latitude",
+            field: "lat",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Longitude",
+            field: "long",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Elevation",
+            field: "elev",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Survey",
+            field: "sur",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Distance",
+            field: "dist",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Elevation",
+            field: "ele",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Survey Elevation",
+            field: "sele",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Survey Crew",
+            field: "screw",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Survey date",
+            field: "sdate",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Hard Station No. (Start)",
+            field: "hsns",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Hard Station No. (End)",
+            field: "hsne",
+            type: "string",
+            cellStyle: {
+              border: "solid",
+            },
+          },
+          {
+            title: "Engineering notes",
+            field: "enote",
             type: "string",
             cellStyle: {
               border: "solid",
