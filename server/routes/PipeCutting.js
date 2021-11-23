@@ -1,3 +1,4 @@
+const { query } = require("express");
 const { query_resolver, connect_project_db } = require("../utils/dbHandler");
 
 const cutPipe = async (req, res, next) => {
@@ -88,6 +89,25 @@ const getCuttingEligiblePipes = async (req, res, next) => {
   }
 };
 
-module.exports = { cutPipe, getCuttingEligiblePipes };
+const getPipeLength = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    const connection = await connect_project_db(req.dbname);
+    const result = await query_resolver(connection, {
+      text: `SELECT plength FROM pipe WHERE id=$1`,
+      values: [id]
+    })
+
+    return res.status(200).json({
+      success: true,
+      data: result[0]
+    })
+
+  }catch(error){
+    next(error);
+  }
+}
+
+module.exports = { cutPipe, getCuttingEligiblePipes, getPipeLength };
 
 //console.log('Everything is fine');
