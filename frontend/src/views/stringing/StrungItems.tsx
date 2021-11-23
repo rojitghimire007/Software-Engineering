@@ -1,12 +1,6 @@
-import React, {
-  Component,
-  useEffect,
-  useState,
-  SyntheticEvent,
-  MouseEvent,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import api from 'api';
 
 import { createFilterOptions } from '@mui/material/Autocomplete';
@@ -70,7 +64,7 @@ const detectOverlaps = (leftSequence: any, rightSequence: any) => {
   for (let i = 0; i < rightSequence.length; i++) {
     if (
       leftSequence.at(-1).station_number +
-      (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
+        (leftSequence.at(-1).plength || leftSequence.at(-1).flength) >
       rightSequence[i].station_number
     )
       rightSequence[i]['overlap'] = true;
@@ -81,7 +75,7 @@ const detectOverlaps = (leftSequence: any, rightSequence: any) => {
     if (
       rightSequence[0].station_number <
       leftSequence[i].station_number +
-      (leftSequence[i].plength || leftSequence[i].flength)
+        (leftSequence[i].plength || leftSequence[i].flength)
     )
       leftSequence[i]['overlap'] = true;
     else break;
@@ -95,7 +89,6 @@ const createGaps = (leftSequence: any, rightSequence: any) => {
 
   if (leftEnd < rightSequence[0].station_number) {
     let gap_length = rightSequence[0].station_number - leftEnd;
-    // let arr = [];
 
     if (gap_length > 50) {
       let temp = leftEnd;
@@ -104,12 +97,6 @@ const createGaps = (leftSequence: any, rightSequence: any) => {
         temp += gap_length / 4;
       }
     } else leftSequence.push({ item_id: 'gap', station_number: leftEnd });
-
-    //   leftSequence.push({
-    //     item_id: 'gap',
-    //     start: leftEnd,
-    //     gap_length: rightSequence[0].station_number - leftEnd,
-    //   });
   }
 };
 
@@ -184,7 +171,7 @@ const StrungItems = () => {
     // let length = sequence[window + index + 1].plength || sequence[window + index + 1].flength
 
     let target_pipe = data.item_id;
-    if (!new RegExp('F_.*').test(target_pipe)) target_pipe = 'p_' + target_pipe;
+    if (!new RegExp('F_.*').test(target_pipe)) target_pipe = 'P_' + target_pipe;
 
     sequence[startWindow + index] = {
       ...data,
@@ -245,6 +232,10 @@ const StrungItems = () => {
         .catch((err) => alert(err.message));
     }
 
+    if (target_pipe.charAt(0) == 'F')
+      target_pipe = target_pipe.replace('F_', 'F');
+    else target_pipe = target_pipe.substring(2);
+
     setEligible(remove(eligible, eligible.indexOf(target_pipe)));
   };
 
@@ -260,6 +251,22 @@ const StrungItems = () => {
           for (let i = 0; i < res.length - 1; i++) {
             detectOverlaps(res[i], res[i + 1]);
             createGaps(res[i], res[i + 1]);
+
+            let arr = res[i];
+
+            for (let j = 0; j < arr.length; j++) {
+              if (arr[j].item_id === 'gap') continue;
+
+              let temp =
+                arr[j].station_number + (arr[j].plength || arr[j].flength || 0);
+
+              if (arr[j + 1] && temp < arr[j + 1].station_number) {
+                arr.splice(j + 1, 0, {
+                  item_id: 'gap',
+                  station_number: temp,
+                });
+              }
+            }
           }
 
           let arr: any[] = [];
@@ -290,7 +297,14 @@ const StrungItems = () => {
     api
       .getStriningEligiblePipes()
       .then((res) => {
-        setEligible(res);
+        setEligible(
+          res.map((item: string) => {
+            if (new RegExp('F_.*').test(item)) {
+              return item.replace('F_', 'F');
+            }
+            return item;
+          })
+        );
       })
       .catch((err) => alert(err.message));
   }, []);
@@ -337,7 +351,7 @@ const StrungItems = () => {
             item_id: target_pipe,
             station_number: prevItem
               ? prevItem.station_number +
-              (prevItem.flength || prevItem.plength || 0)
+                (prevItem.flength || prevItem.plength || 0)
               : 0,
             ...length,
           })
@@ -368,7 +382,10 @@ const StrungItems = () => {
       startWindow + result.destination.index
     );
 
-    let [left_item, start_item] = getLeftAndStartItem(items, result);
+    let [left_item, start_item] = getLeftAndStartItem(
+      items,
+      result.destination.index
+    );
 
     return api
       .updateSequence(target_pipe, left_item, start_item)
@@ -394,12 +411,14 @@ const StrungItems = () => {
           //   -1 * (item.flength || item.plength || 0)
           // );
           let items = remove(sequence, startWindow + index);
-          items = insertItem(items, index, {
+          items = insertItem(items, startWindow + index, {
             item_id: 'gap',
             station_number,
           });
           setSequence(items);
-          if (new RegExp('p_.*').test(item_id)) item_id = item_id.substring(2);
+          if (new RegExp('F_.*').test(item_id))
+            item_id = item_id.replace('F_', 'F');
+          else item_id = item_id.substring(2);
           setEligible([...eligible, item_id]);
         })
         .catch((err) => alert(err.message));
@@ -419,35 +438,40 @@ const StrungItems = () => {
 
   const onDragEnd = (result: any) => {
     // dropped outside the list
-    if (!result.destination) {
-      return;
-    } else if (result.destination.droppableId === 'delete') {
-      // deleteFromSequence(result);
-    } else if (
-      result.source.droppableId == 'hold' &&
-      result.destination.droppableId === 'droppable'
-    )
-      addNewItem(result);
-    else if (
-      result.destination.droppableId == 'hold' &&
-      result.source.droppableId === 'droppable'
-    ) {
-      setNewItemDetails({
-        ...sequence[startWindow + result.source.index],
-        ...currentItemDetails[result.source.index],
-      });
-      let { station_number } = sequence[startWindow + result.source.index];
-      let items = remove(sequence, startWindow + result.source.index);
-      items = insertItem(items, result.source.index, {
-        item_id: 'gap',
-        station_number,
-      });
-      setSequence(items);
-    } else if (result.source.index == result.destination.index) return;
-    else updateSequence(result);
+    if (!result.destination) return;
+    //  else if (result.destination.droppableId === 'delete') {
+    //   // deleteFromSequence(result);
+    // } else if (
+    //   result.source.droppableId == 'hold' &&
+    //   result.destination.droppableId === 'droppable'
+    // )
+    //   addNewItem(result);
+    // else if (
+    //   result.destination.droppableId == 'hold' &&
+    //   result.source.droppableId === 'droppable'
+    // ) {
+    //   setNewItemDetails({
+    //     ...sequence[startWindow + result.source.index],
+    //     ...currentItemDetails[result.source.index],
+    //   });
+    //   let { station_number } = sequence[startWindow + result.source.index];
+    //   let items = remove(sequence, startWindow + result.source.index);
+    //   items = insertItem(items, result.source.index, {
+    //     item_id: 'gap',
+    //     station_number,
+    //   });
+    //   setSequence(items);
+    // } else if (result.source.index == result.destination.index) return;
+    // else updateSequence(result);
+
+    updateSequence(result);
   };
 
   const findItem = (item_id: string) => {
+    if (item_id.charAt(0) == 'f' || item_id.charAt(0) == 'F')
+      item_id = 'F_' + item_id.substring(1);
+    else item_id = 'P_' + item_id;
+
     for (let i = 0; i < sequence.length; i++) {
       if (sequence[i].item_id === item_id) {
         if (tempSequence.length > 0) {
@@ -541,25 +565,6 @@ const StrungItems = () => {
   }>(initialNewItem);
   const [inputValue, setInputValue] = React.useState('');
 
-  const getItemDetails = (item: string) => {
-    api
-      .getItemInfo(item)
-      .then((res) => {
-        let length = {};
-        if (new RegExp('F_.*').test(item)) length = { flength: res.length };
-        else length = { plength: res.length };
-
-        setNewItemDetails({
-          item_id: res.id,
-          ...length,
-          heat_no: res.heat_no,
-          wall_thickness: res.wall_thickness,
-          grade: res.grade,
-        });
-      })
-      .catch((error) => alert(error.message));
-  };
-
   //////////////////////////////
   //            OLD
   //////////////////////////////
@@ -595,17 +600,11 @@ const StrungItems = () => {
         btnName: 'Add Pipe +',
         btnStyle: 'add',
         disabled: false,
-        onClick: (e: any) => {
-          getItemDetails(newItem);
-          setInputValue('');
-          setNewItem('');
-          console.log('click');
-        },
+        onClick: (e: any) => {},
       },
       stationInput: {
         onChange: (e: any) => {
           setGoTo(e.currentTarget.value);
-          // console.log(e.currentTarget.value)
         },
       },
     },
@@ -673,7 +672,7 @@ const StrungItems = () => {
                               <MainLaneDraggable
                                 item={item}
                                 index={index}
-                                itemFunctions={controlFunctions}
+                                deleteFromSequence={deleteFromSequence}
                               />
                             );
                         })}

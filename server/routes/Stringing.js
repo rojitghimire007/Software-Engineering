@@ -198,7 +198,7 @@ const getStriningEligiblePipes = async (req, res, next) => {
   }
 };
 
-const deleteItemFromStringing = async (item, connection) => {
+const old_deleteItemFromStringing = async (item, connection) => {
   try {
     let _ = null;
     let length = 0;
@@ -270,6 +270,58 @@ const deleteItemFromStringing = async (item, connection) => {
   }
 };
 
+const deleteItemFromStringing = async (item, connection) => {
+  try {
+    let _ = null;
+    let length = 0;
+
+    _ = await query_resolver(connection, {
+      text: 'SELECT * from stringing where item_id = $1',
+      values: [item],
+    });
+
+    let { station_number, next_item, prev_item } = _[0];
+
+    if (!prev_item) {
+      if (next_item) {
+        await query_resolver(connection, {
+          text: `
+          Update sequences set item_id = $1 where item_id = $2;
+        `,
+          values: [next_item, item],
+        });
+        await query_resolver(connection, {
+          text: `
+            Update stringing set start_pipe = $1 where start_pipe = $2;
+          `,
+          values: [next_item, item],
+        });
+      } else
+        await query_resolver(connection, {
+          text: 'DELETE FROM sequences where item_id = $1',
+          values: [item],
+        });
+    }
+
+    await query_resolver(connection, {
+      text: `DELETE from stringing where item_id = $1;`,
+      values: [item],
+    });
+
+    await query_resolver(connection, {
+      text: `UPDATE stringing set next_item = $1 where item_id = $2;`,
+      values: [next_item, prev_item],
+    });
+
+    await query_resolver(connection, {
+      text: `UPDATE stringing set prev_item = $1 where item_id = $2;`,
+      values: [prev_item, next_item],
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
 /**
  *
  * @param {*} item The item to be inserted
@@ -291,20 +343,20 @@ const insertItemIntoStringing = async (
   try {
     if (!start_item) {
       // get the length of prev_item. This is use to calculate the station of the item.
-      if (new RegExp('p_.*').test(prev_item)) {
-        _ = await query_resolver(connection, {
-          text: 'SELECT station_number, next_item, start_pipe, plength from stringing join pipe on pipe.id = SUBSTRING(stringing.item_id, 3) where id = $1',
-          values: [prev_item.substring(2)],
-        });
-
-        length = _[0].plength;
-      } else {
+      if (new RegExp('F_.*').test(prev_item)) {
         _ = await query_resolver(connection, {
           text: 'SELECT station_number, next_item, start_pipe, flength from stringing join fitting on fitting.id = SUBSTRING(stringing.item_id, 3) where id = $1',
           values: [prev_item.substring(2)],
         });
 
         length = _[0].flength;
+      } else {
+        _ = await query_resolver(connection, {
+          text: 'SELECT station_number, next_item, start_pipe, plength from stringing join pipe on pipe.id = SUBSTRING(stringing.item_id, 3) where id = $1',
+          values: [prev_item.substring(2)],
+        });
+
+        length = _[0].plength;
       }
 
       station_number = _[0].station_number;
@@ -347,19 +399,19 @@ const insertItemIntoStringing = async (
     let item_length = 0;
 
     // get length
-    if (new RegExp('p_.*').test(item)) {
+    if (new RegExp('F_.*').test(item)) {
+      _ = await query_resolver(connection, {
+        text: 'SELECT flength from fitting where id = $1',
+        values: [item.substring(2)],
+      });
+      item_length = _[0].flength;
+    } else {
       _ = await query_resolver(connection, {
         text: 'SELECT plength from pipe where id = $1',
         values: [item.substring(2)],
       });
 
       item_length = _[0].plength;
-    } else {
-      _ = await query_resolver(connection, {
-        text: 'SELECT flength from fitting where id = $1',
-        values: [item.substring(2)],
-      });
-      item_length = _[0].flength;
     }
 
     //update stations of following items
@@ -444,8 +496,15 @@ const getStrungItemsInfo = async (req, res, next) => {
     const connection = await connect_project_db(req.dbname);
     for (item of items) {
       if (item == 'gap')
-        ans.push({ heat_no: null, wall_thickness: null, grade: null });
+        ans.push({
+          heat_no: null,
+          wall_thickness: null,
+          grade: null,
+          bending: null,
+        });
       else ans.push(await getOneItemInfo(item, connection));
+
+      // SELECT ARRAY_AGG(degree  || ' ' ||  bdirection || CASE WHEN blength is not null THEN ' @ ' || blength ELSE '' END) as bendInfo   from pipe left join pipe_bend on pipe_bend.id = pipe.id    left join bend on bend.bend_id = pipe_bend.bend_id where pipe.id='90' group by pipe.id
     }
     res.status(200).send(ans);
   } catch (error) {
