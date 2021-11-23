@@ -7,10 +7,11 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const createItem = (
   itemInfo: any,
-  itemFunctions: any,
-  index: number /* dragProps: any */
+  index: number /* dragProps: any */,
+  deleteFromSequence: any
 ) => {
-  if (itemInfo.item_id &&
+  if (
+    itemInfo.item_id &&
     (itemInfo.item_id.charAt(0) === 'F' || itemInfo.item_id.charAt(0) === 'f')
   ) {
     return (
@@ -21,13 +22,13 @@ const createItem = (
             <div>Length:</div>
           </div>
           <div className={styles.rightInfo}>
-            <div>{itemInfo.item_id}</div>
+            <div>{itemInfo.item_id.replace('F_', 'F')}</div>
             <div>{itemInfo.flength}</div>
           </div>
           <div className={styles.topRow}>
             <IconButton
               color="warning"
-              onClick={() => itemFunctions[0].delete.onClick(index)}
+              onClick={() => deleteFromSequence(index)}
             >
               <CloseIcon />
             </IconButton>
@@ -35,8 +36,9 @@ const createItem = (
         </div>
       </div>
     );
-  } else if (itemInfo.item_id &&
-    itemInfo.item_id.charAt(0) === ('p' || 'P')
+  } else if (
+    itemInfo.item_id &&
+    itemInfo.item_id.charAt(0).toUpperCase() === 'P'
   ) {
     return (
       <div className={styles.newPipeWrapper}>
@@ -46,7 +48,7 @@ const createItem = (
             <div>
               <IconButton
                 color="warning"
-                onClick={() => itemFunctions[0].delete.onClick(index)}
+                onClick={() => deleteFromSequence(index)}
               >
                 <CloseIcon />
               </IconButton>
@@ -60,7 +62,7 @@ const createItem = (
             <div>Length:</div>
           </div>
           <div className={styles.rightInfo}>
-            <div>{itemInfo.item_id}</div>
+            <div>{itemInfo.item_id.replace('P_', '')}</div>
             <div>{itemInfo.station_number}</div>
             <div>123345{itemInfo.heat_no}</div>
             <div>X65{itemInfo.grade}</div>
@@ -77,7 +79,7 @@ const MainLaneDraggable = ({
   item,
   index,
   dragDetails,
-  itemFunctions,
+  deleteFromSequence,
 }: any) => {
   return (
     <Draggable draggableId={item.item_id} key={item.item_id} index={index}>
@@ -89,8 +91,7 @@ const MainLaneDraggable = ({
           key={item.id + index}
           className={styles.newContainer}
         >
-          {console.log(item)}
-          {createItem(item, itemFunctions, index /* dragDetails */)}
+          {createItem(item, index, deleteFromSequence /* dragDetails */)}
         </div>
       )}
     </Draggable>

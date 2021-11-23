@@ -21,6 +21,8 @@ const Gap = ({
 }) => {
   const [newItem, setNewItem] = useState('');
   const itemSelected = (item: string) => {
+    if (item.charAt(0) == 'F') item = item.replace('F', 'F_');
+    else item = 'P_' + item;
     api
       .getItemInfo(item)
       .then((res) => {
@@ -55,15 +57,15 @@ const Gap = ({
           // style={{ margin: '0 50px' }}
           className={styles.newContainer}
         >
-          <div 
+          <div
             className={styles.gap}
-            style={{ 
-              // border: 'dotted 1px white', 
-              width: '100%', 
-              // color: 'white', 
+            style={{
+              // border: 'dotted 1px white',
+              width: '100%',
+              // color: 'white',
               // flex: '1 1 25%',
               // boxSizing: 'border-box',
-            }} 
+            }}
             id="mydiv"
           >
             {/* Station : {station} */}
