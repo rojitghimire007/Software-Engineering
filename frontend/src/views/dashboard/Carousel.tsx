@@ -2,54 +2,10 @@
 import { Carousel, CarouselItem } from 'react-round-carousel';
 import './Carousel.css'
 import { Link } from 'react-router-dom';
-import inventoryImg from 'img/MaterialInventory.png';
-import stringingImg from 'img/Stringing.png';
-import bendingImg from 'img/Bending.png';
-import coatingImg from 'img/Coating.png';
-import weldingImg from 'img/Welding.png';
+import Slides from './Links';
 
 
-
-const links = [
-    // Inventory
-    {
-      parent: 'Material Inventory',
-      link: '/dashboard/inventory',
-      id: 'Material Inventory',
-      image: inventoryImg,
-    },
-    // Welding
-    {
-      parent: 'Welding',
-      link: '/',
-      id: 'Welding',
-      image: weldingImg,
-    },
-    // Stringing
-    {
-      parent: 'Stringing',
-      link: 'pipes/strung/new',
-      id: 'Stringing',
-      image: stringingImg,
-    },
-    // Bending
-    {
-      parent: 'Bending',
-      link: '/bending',
-      id: 'Bending',
-      image: bendingImg,
-    },
-    // Coating
-    {
-      parent: 'Coating',
-      link: '/coating',
-      id: 'Coating',
-      image: coatingImg,
-    },
-    // Other
-  ];
-
-
+const links = Slides();
 // Create an array of Carousel Items
 const items: CarouselItem[] = 
   links.map((item, index) => ({
@@ -57,12 +13,26 @@ const items: CarouselItem[] =
     image: '',
     content: (
         <>
-            <Link to={item.link} style={{width: '100%', height: '100%'}}>
-                <img src={item.image} style={{height: '90%'}}></img>
-                <div style={{height: '10%', color: 'white', textDecoration: 'none', backgroundColor: 'black'}}>
+          <div style={{height: '100%'}}>
+            <Link to={item.link} style={{width: '100%', height: '33%'}}>
+                <img src={item.image} style={{height: '80%'}}></img>
+                <div style={{height: '20%', color: 'white', fontSize: 'small', textDecoration: 'none', backgroundColor: 'black'}}>
                     {item.id}
                 </div>
             </Link>
+            <Link to={item.link2} style={{width: '100%', height: '34%'}}>
+                <img src={item.image2} style={{height: '80%'}}></img>
+                <div style={{height: '20%', color: 'white', fontSize: 'small', textDecoration: 'none', backgroundColor: 'black'}}>
+                    {item.id2}
+                </div>
+            </Link>
+            <Link to={item.link3} style={{width: '100%', height: '33%'}}>
+                <img src={item.image3} style={{height: '80%'}}></img>
+                <div style={{height: '20%', color: 'white', fontSize: 'small', textDecoration: 'none', backgroundColor: 'black'}}>
+                    {item.id3}
+                </div>
+            </Link>
+          </div>
         </>
     )
 }));

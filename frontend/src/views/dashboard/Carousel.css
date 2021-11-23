@@ -1,6 +1,7 @@
 .comp-container {
     /* width: 50vw; */
     max-width: 80vw;
+    height: 30rem;
     background-color: black;
     opacity: 100%;
     margin-left: auto;
@@ -15,6 +16,7 @@
 .root {
     flex: 0 0 100%;
     padding-bottom: 3rem;
+    background-color: black;
     overflow: hidden;
 }
 
@@ -36,9 +38,10 @@
     /* width: 13.125rem; */
     width: 6rem; /* optimized for a list with 10 items. */
     /* height: 13.125rem; */
-    height: 12rem;
+    height: 27rem;
     position: relative;
     margin: 0 auto;
+    margin-top: 4rem; /*Changes distance of carousel from top of container */
     /* perspective: 62.5rem; */
     /* perspective: 200rem; */ /* may need to mess with this when resizing/positioning */
     /* perspective: calc(62.5rem * 2); */
@@ -99,7 +102,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    /* opacity: 0; */
     /* color: white; */
     transition: opacity .35s ease-in-out;
     background-color: rgba(0,0,0,.2);
@@ -136,7 +138,7 @@
 .filler :first-child {
     height: 100%;
     /* padding: 10px; */
-    /* border: 2px solid blue; */
+    border: 2px solid blue; 
     grid-column: 1 / 1;
     grid-row: 1 / 1;
     display: flex;
@@ -148,7 +150,7 @@
 .filler :nth-child(2) {
     height: 100%;
     padding: 10px;
-    /* border: 2px solid red; */
+    border: 2px solid red; 
     grid-column: 1 / 1;
     grid-row: 2 / 2;
     display: flex;
@@ -159,7 +161,7 @@
 .filler :nth-child(3) {
     height: 100%;
     padding: 10px;
-    /* border: 2px solid green; */
+    border: 2px solid green;
     grid-column: 1 / 1;
     grid-row: 3 / 3;
     display: flex;
