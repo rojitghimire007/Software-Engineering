@@ -36,6 +36,12 @@ const API = {
   //other
   getItemInfo: `${URL}/items/`,
   getStrungItemsInfo: `${URL}/string/details/`,
+
+  bendPipe: `${URL}/bend`,
+  usersInProject: `${URL}/list/user`,
+  projUser: `${URL}/create/project/user`,
+  getAllUsers: `${URL}/allusers`,
+  aggreate: `${URL}/aggregate`
 };
 
 export { URL, API };

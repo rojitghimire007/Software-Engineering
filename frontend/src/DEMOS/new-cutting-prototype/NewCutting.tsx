@@ -7,11 +7,16 @@ const pipeData = [
         units: 'feet',
     }
 ]
-const NewCutting = () => {
+const NewCutting = ({id, length}:any) => {
     const [cutLengthPercent, setCutLengthPercent] = useState(50);
     const [leftLength, setLeftLength] = useState(pipeData[0].length * .5)
     const [rightLength, setRightLength] = useState(pipeData[0].length * .5)
     const [cutFinalized, setCutFinalized] = useState(false)
+    const [finalLengths, setFinalLengths] = useState([pipeData[0].length, 0])
+
+    useEffect(() => {
+        setFinalLengths([leftLength, rightLength])
+    }, [cutFinalized === true])
 
     useEffect(() => {
         setRightLength(pipeData[0].length - (.01 * cutLengthPercent * pipeData[0].length))
@@ -42,7 +47,9 @@ const NewCutting = () => {
                         >
 
                         </div> */}
-                        cut Pipe!
+                        cut Pipe! 
+                        <div>id 1 {finalLengths[0]}</div>
+                        <div>id 2 {finalLengths[1]}</div>
                     </div>
                     :
                     <div

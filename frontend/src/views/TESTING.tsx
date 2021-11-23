@@ -18,6 +18,7 @@ import StringingContainer from './stringing/new-stringing-components/StringingCo
 import NewCutting from 'DEMOS/new-cutting-prototype/NewCutting'
 
 import DraggingFunctions from 'DEMOS/DraggingFunctions'
+import PipeCutting from './cutting/PipeCutting'
 //////////////
 
 const TESTING = () => {
@@ -69,7 +70,8 @@ const TESTING = () => {
             {/* <DragDropContext onDragEnd={DraggingFunctions.onDragEnd}>
                 <StringingContainer onDragEnd={DraggingFunctions.onDragEnd}/>
             </DragDropContext> */}
-            <NewCutting />
+            {/* <NewCutting /> */}
+            <PipeCutting />
 
 
 

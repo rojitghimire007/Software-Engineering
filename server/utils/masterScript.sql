@@ -47,3 +47,9 @@ CREATE TABLE user_project
   FOREIGN KEY(uname) REFERENCES users(uname),
   FOREIGN KEY(project_number) REFERENCES projects(project_number)
 );
+
+CREATE TABLE admin
+(
+  email TEXT NOT NULL,
+  PRIMARY KEY (email)
+)

@@ -1,16 +1,5 @@
-const {
-  login,
-  signup,
-  auth,
-  selectProject,
-  getAssociatedProjects,
-  usersInProject,
-} = require('./UserController');
-const {
-  postProject,
-  addUserToProject,
-  getAllUsers,
-} = require('./AdminController');
+const { login, signup, auth, selectProject, getAssociatedProjects, usersInProject} = require('./UserController');
+const { postProject, addUserToProject, getAllUsers, removeUserFromProject } = require('./AdminController');
 
 const {
   addPipe,
@@ -24,9 +13,11 @@ const {
   editPipe,
 } = require('./PipeContoller');
 
-const { addFittings, getFittings } = require('./FittingContoller');
+const { addFittings, getFittings, editFitting } = require('./FittingContoller');
 
 const { cutPipe, getCuttingEligiblePipes } = require('./PipeCutting');
+
+const { bendPipe, removeBend, updateBend, getBend } = require('./pipeBending');
 
 const {
   getStringing,
@@ -38,11 +29,14 @@ const {
   insertIntoSequence,
   getStrungItemsInfo,
 } = require('./Stringing');
+// } = require('./PipeStringing');
+const { getAggregateData } = require('./dataLogController');
 //const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
   //admin
   app.post('/create/project', postProject);
+  app.delete('/create/project/user/:uname', removeUserFromProject);
   app.post('/create/project/user', addUserToProject);
   app.get('/allusers', getAllUsers);
 
@@ -66,8 +60,13 @@ const SetRoutes = (app) => {
 
   //cutting routes
   app.get('/pipes/cuttable', getCuttingEligiblePipes);
-  //cutting
   app.post('/pipes/cut', cutPipe);
+
+  //bend
+  app.delete('/bend/:bend_id', removeBend);
+  app.post('/bend', bendPipe);
+  app.put('/bend', updateBend);
+  app.get('/bend', getBend);
 
   //stringing
   app.get('/string', getStringing);
@@ -87,6 +86,10 @@ const SetRoutes = (app) => {
   // fittings routes
   app.post('/fittings', addFittings);
   app.get('/fittings', getFittings);
+  app.put('/fittings', editFitting);
+
+  //aggreateData
+  app.get('/aggregate', getAggregateData);
 };
 
 module.exports = { SetRoutes };

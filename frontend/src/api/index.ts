@@ -132,4 +132,40 @@ export default {
   getStrungItemsInfo: (items: Array<string>) => {
     return authGet(API.getStrungItemsInfo, items.join('-'));
   },
+  //bend
+  getBend: () => {
+    return authGet(API.bendPipe, '');
+  },
+
+  postBend: (data: any) => {
+    return authPost(API.bendPipe, data);
+  },
+
+  updateBend: (data: any) => {
+    return authPut(API.bendPipe, data);
+  },
+
+  removeBend: (bend_id: string) => { 
+    return authDelete(`${API.bendPipe}/${bend_id}`);
+  },
+
+  usersInProject: () => {
+    return authGet(API.usersInProject, '');
+  },
+
+  allUsers: () => {
+    return authGet(API.getAllUsers, '');
+  },
+
+  addUserToProject: (user: any) => {
+    return authPost(API.projUser, user)
+  },
+
+  removeUserFromProject: (user:string) => {
+    return authDelete(`${API.projUser}/${user}`);
+  },
+
+  getAggreate: () => {
+    return authGet(API.aggreate, '')
+  }
 };

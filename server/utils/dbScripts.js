@@ -134,6 +134,8 @@ exports.stringing = `CREATE TABLE stringing(
   next_item TEXT,
   prev_item TEXT,
   start_pipe TEXT NOT NULL,
+  string_date DATE DEFAULT CURRENT_DATE,
+  string_inspector TEXT NOT NULL,
   PRIMARY KEY(item_id)
 )`;
 
@@ -142,4 +144,22 @@ exports.sequences = `CREATE TABLE sequences(
   item_id TEXT UNIQUE NOT NULL,
   PRIMARY KEY (start_station),
   FOREIGN KEY(item_id) REFERENCES stringing(item_id)
+)`;
+
+exports.bend = `CREATE TABLE bend(
+  bend_id TEXT NOT NULL,
+  degree FLOAT NOT NULL,
+  bdirection TEXT NOT NULL,
+  blength TEXT DEFAULT NULL,
+  bdate DATE DEFAULT CURRENT_DATE,
+  created_by TEXT NOT NULL,
+  PRIMARY KEY(bend_id)
+)`;
+
+exports.pipe_bend = `CREATE TABLE pipe_bend(
+  id  TEXT NOT NULL,
+  bend_id TEXT NOT NULL,
+  PRIMARY KEY (id, bend_id),
+  FOREIGN KEY(id) REFERENCES pipe(id) ON DELETE CASCADE,
+  FOREIGN KEY(bend_id) REFERENCES bend(bend_id) ON DELETE CASCADE
 )`;

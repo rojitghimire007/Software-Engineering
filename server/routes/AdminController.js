@@ -1,5 +1,5 @@
 const { getRandomString } = require('../utils/randomGenerator');
-const {default_pool, create_database, query_resolver } = require('../utils/dbHandler');
+const { default_pool, create_database, query_resolver } = require('../utils/dbHandler');
 
 const postProject = async (req, res, next) => {
   try {
@@ -57,8 +57,16 @@ const addUserToProject = async (req, res, next) => {
      * TODO: Admin check
      */
     const { users } = req.body;
+    if (users.length == 0) throw { status: 500, message: 'No user selected to associate with the project!' };
 
-    if(users.length == 0) throw {status: 500, message: 'No user selected to associate with the project!'};
+    let existingUsers = await query_resolver(default_pool, {
+      text: 'SELECT * FROM users WHERE uname = $1',
+      values: [users[0]],
+    });
+
+    if(existingUsers.length == 0){
+      throw {status: 500, message: "No such users!"};
+    }
 
     const query = {
       text: `SELECT project_number FROM projects WHERE dbname=$1`,
@@ -66,20 +74,38 @@ const addUserToProject = async (req, res, next) => {
     }
 
     const result = await query_resolver(default_pool, query);
-    
+
+    let usersInProj = await query_resolver(default_pool, {
+      text: `SELECT uname from user_project WHERE project_number=$1`,
+      values: [result[0].project_number]
+    });
+
+    usersInProj = new Set(usersInProj.map(user => user.uname));
+    let difference = users.filter(x => !usersInProj.has(x));
+
+    if (difference.length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: "Mentioned user(s) already in the project!"
+      });
+    }
+
     const { project_number } = result[0];
-    let valueList = users.map(ele => {
+    /**
+     * TODO: check of duplicates within inputs itself
+     */
+    let valueList = difference.map(ele => {
       return `('${ele.trim()}', '${project_number.trim()}')`
     });
 
     const vals = valueList.join(', ').trim();
 
-    const inQuery = `INSERT INTO user_project VALUES ${vals}`
+    const inQuery = `INSERT INTO user_project(uname, project_number) VALUES ${vals}`
 
     await query_resolver(default_pool, inQuery);
 
     return res.status(200).json({
-      success:true,
+      success: true,
       message: 'Successfully added users to the project!'
     });
 
@@ -88,12 +114,37 @@ const addUserToProject = async (req, res, next) => {
   }
 }
 
+const removeUserFromProject = async (req, res, next) => {
+  try {
+    const { uname } = req.params;
+
+    const projNum = await query_resolver(default_pool, {
+      text: `SELECT project_number FROM projects WHERE dbname=$1`,
+      values: [req.dbname]
+    });
+
+    const query = {
+      text: `DELETE FROM user_project WHERE uname=$1 AND project_number=$2`,
+      values: [uname, projNum[0].project_number]
+    }
+
+    await query_resolver(default_pool, query);
+
+    return res.status(200).json({
+      success: true,
+      message: 'User deleted from the project!'
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
 const getAllUsers = async (req, res, next) => {
-  try{
+  try {
     /**
      * Check if admin
      */
-    const query =  `SELECT * FROM users`;
+    const query = `SELECT * FROM users`;
 
     const users = await query_resolver(default_pool, query);
 
@@ -101,9 +152,9 @@ const getAllUsers = async (req, res, next) => {
       success: true,
       data: [...users]
     });
-  }catch(error){
+  } catch (error) {
     next(error);
   }
 }
 
-module.exports = { postProject, addUserToProject, getAllUsers }
+module.exports = { postProject, addUserToProject, getAllUsers, removeUserFromProject }
