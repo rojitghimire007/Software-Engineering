@@ -30,6 +30,7 @@ const API = {
   getStriningEligiblePipes: `${URL}/string/eligible`,
   getCuttingEligiblePipes: `${URL}/pipes/cuttable`,
   cutPipe: `${URL}/pipes/cut`,
+  getPipeLength: `${URL}/pipe/length`,
   createNewSequence: `${URL}/string/sequence`,
 
 

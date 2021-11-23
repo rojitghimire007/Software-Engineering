@@ -105,6 +105,8 @@ export default {
 
   getCuttingEligiblePipes: () => authGet(API.getCuttingEligiblePipes, ''),
 
+  getPipeLength: (id: string) => authPost(API.getPipeLength, { id }),
+
   /**
    *
    * @param pipe id of pipe to be cut
