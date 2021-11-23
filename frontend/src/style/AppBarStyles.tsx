@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         color: '#fff !important',
+        '&:hover':{ 
+            color: '#0000ff !important',
+        },
     },
 
     headerOptions: {

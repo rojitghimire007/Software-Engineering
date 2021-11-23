@@ -1,11 +1,12 @@
 import React from "react";
 import AppBar from "../../components/AppBar";
 import Footer from "components/Footer";
-import { Link } from "react-router-dom";
+
 
 const styles = {
     container: {
         padding: '20px 30px 20px 20px',
+        minHeight: 'calc(100vh - 20px)',
     },
     header: {
         marginBottom: '0px',
@@ -32,9 +33,9 @@ const ContactUs = () => {
                 <p> Office : 318-355-2938</p>
                 <p>E-mail: 401keystone@gmail.com</p>
             </div>
-        
+            <Footer />
         </>
-        
+
     )
 }
 

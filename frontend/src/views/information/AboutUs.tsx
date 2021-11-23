@@ -66,6 +66,7 @@ const AboutUs = () => {
                         Bring design and construction into the 21st century is characterised by unique components being brought together on-site, resulting in supply chains,
                         materials and processes requiring precise alignment to avoid cost and time overruns, and ultimately, gross inefficiencies.
                     </p>
+                    <br/>
                     <h3 style={styles.header}>Integrity</h3>
                     <p style={styles.para}>
                         Integrity comes in many forms, but the most important traits that are expected at the workplace are dependability, honesty, loyalty and good judgement.

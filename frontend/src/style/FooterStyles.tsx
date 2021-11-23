@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         //width: '100%',
         maxWidth: 'lg',
-        position: 'relative',
+        position: 'absolute',
         bottom: 0,
         minHeight: '20px !important',
         //flexDirection: 'column',
@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         color: '#fff !important',
+        '&:hover':{ 
+            color: '#0000ff !important',
+        },
     },
 
 
