@@ -646,7 +646,7 @@ const StrungItems = () => {
                         // minWidth: '100%',
                         display: 'flex',
                         flexFlow: 'row nowrap',
-                        // paddingTop: '2.5%',
+                        // paddingTop: '5%',
                         // justifyContent: 'space-between',
                         // position: 'relative',
                         minWidth: '90vw',

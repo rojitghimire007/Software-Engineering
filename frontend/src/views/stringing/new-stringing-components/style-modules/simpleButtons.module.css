@@ -1,4 +1,5 @@
 button {
+  padding-top: 1%;;
   transition: scale 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 button:hover {
@@ -15,6 +16,7 @@ button:disabled {
   color: black !important;
 }
 .refresh {
+  margin-top: 3% !important;
   border: 1px solid red;
   background-color: greenyellow !important;
   color: black !important;

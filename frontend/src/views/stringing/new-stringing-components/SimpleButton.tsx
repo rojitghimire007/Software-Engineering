@@ -23,6 +23,7 @@ const SimpleButton = ({ btnName, btnStyle, buttonProps }: any) => {
           disabled={buttonInformation.disabled}
           onClick={buttonInformation.onClick}
           //   color="success"
+          size="small"
           variant="contained"
         >
           {!buttonInformation.disabled ? <>{btnName}</> : <>DISABLED</>}

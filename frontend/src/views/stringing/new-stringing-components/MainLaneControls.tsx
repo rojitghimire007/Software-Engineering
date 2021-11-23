@@ -24,7 +24,7 @@ const MainLaneControls = ({ styles, goToStation, findItem, controls }: any) => {
 
   return (
     <div className={styles.mainControllerContainer}>
-      <div>North</div>
+      <div></div>
       <div className={styles.mainController}>
         <div className={styles.mainControllerColumn}>
           <SimpleButton
@@ -34,7 +34,7 @@ const MainLaneControls = ({ styles, goToStation, findItem, controls }: any) => {
           />
         </div>
         <div className={styles.mainControllerColumn}>
-          <div style={{ alignSelf: 'flex-end' }}>
+          <div style={{ alignSelf: 'flex-end', flex: '.5 .5 50%'  }}>
             Station No.
             <input
               type="search"
@@ -49,7 +49,7 @@ const MainLaneControls = ({ styles, goToStation, findItem, controls }: any) => {
               }}
             />
           </div>
-          <div style={{ alignSelf: 'flex-end' }}>
+          <div style={{ alignSelf: 'flex-end', flex: '.5 .5 50%' }}>
             Joint No.
             <input
               type="search"

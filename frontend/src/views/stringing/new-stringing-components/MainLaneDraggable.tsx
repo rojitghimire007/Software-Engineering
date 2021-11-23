@@ -40,7 +40,7 @@ const createItem = (
   ) {
     return (
       <div className={styles.newPipeWrapper}>
-        <div className={styles.pipeSide} />
+        <div className={styles.pipeSide} style={{borderRadius: '50% 0 0 50%'}}/>
         <div className={styles.pipeContent}>
           <div className={styles.topRow}>
             <div>
@@ -67,7 +67,9 @@ const createItem = (
             <div>{itemInfo.plength}</div>
           </div>
         </div>
-        <div className={styles.pipeSide} />
+        <div className={styles.pipeSide} style={{borderRadius: '0 50% 50% 0'}}>
+          <div/>
+        </div>
       </div>
     );
   } else return <div style={{ width: '100%' }}>Invalid Item</div>;

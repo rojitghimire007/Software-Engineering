@@ -5,7 +5,7 @@ const StationContainer = ({ styles, stations }: any) => {
     return (
         <div className={styles.stationsContainer}>
             <div className={styles.station}>
-                Ending Station No.
+                Starting Station No.
                 <div className={styles.stationName}>
                     {stations[0]}
                 </div>
@@ -31,9 +31,9 @@ const StationContainer = ({ styles, stations }: any) => {
                 </div>
             </div>
             <div className={styles.lastStation}>
-                Starting Station No.
+                Ending Station No.
                 <div className={styles.stationName}>
-                    {stations[4]}
+                    {stations[4] ? stations[4] : stations[3] + 50}
                 </div>
             </div>
         </div>

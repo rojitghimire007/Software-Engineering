@@ -15,14 +15,14 @@
 
 .sectionA {
     min-width: 90vw;
-    min-height: 40vh;
+    min-height: 60vh;
     border: 1px solid;
     margin: 0 5vw;
 }
 
 .sectionB {
     min-width: 90vw;
-    min-height: 40vh;
+    min-height: 20vh;
     border: 1px solid;
     margin: 1.25vh 5vw;
 }
@@ -33,7 +33,7 @@
     /* min-width: 100%; */
     width: 100%;
     min-height: 100%;
-    height: 18vh;
+    height: 20vh;
     background-color: royalblue;
     text-align: center;
 }
@@ -42,7 +42,7 @@
     /* min-width: 100%; */
     width: 100%;
     min-height: 100%;
-    height: 22vh;
+    height: 40vh;
     background-color: royalblue;
     /* text-align: center; */
     /* display: flex;
