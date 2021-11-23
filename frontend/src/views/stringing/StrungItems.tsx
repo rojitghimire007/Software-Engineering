@@ -665,6 +665,7 @@ const StrungItems = () => {
                                 dragIndex={index}
                                 eligible={eligible}
                                 transformGap={transformGap}
+                                key={index}
                               />
                             );
                           else
@@ -673,6 +674,7 @@ const StrungItems = () => {
                                 item={item}
                                 index={index}
                                 deleteFromSequence={deleteFromSequence}
+                                key={index}
                               />
                             );
                         })}
