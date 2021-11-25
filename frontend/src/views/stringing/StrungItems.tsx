@@ -227,7 +227,22 @@ const StrungItems = () => {
       api
         .insertIntoSequence(target_pipe, left_item, start_item)
         .then((res) => {
-          setSequence([...sequence]);
+          if (
+            sequence[startWindow + index + 1] &&
+            sequence[startWindow + index].station_number <
+              sequence[startWindow + index + 1].station_number
+          )
+            setSequence(
+              insertItem(sequence, startWindow + index + 1, {
+                item_id: 'gap',
+                station_number:
+                  sequence[startWindow + index].station_number +
+                  (sequence[startWindow + index].plength ||
+                    sequence[startWindow + index].flength ||
+                    0),
+              })
+            );
+          else setSequence([...sequence]);
         })
         .catch((err) => alert(err.message));
     }
@@ -320,6 +335,9 @@ const StrungItems = () => {
       .catch((err) => alert(err.message));
   }, [startWindow]);
 
+  /**
+   * Depricated
+   */
   const addNewItem = (result: any) => {
     let target_pipe = result.draggableId;
     let [left_item, start_item] = getLeftAndStartItem(
@@ -381,6 +399,12 @@ const StrungItems = () => {
       startWindow + result.source.index,
       startWindow + result.destination.index
     );
+
+    // if(items[result.destination.index + 1]){
+    //   let temp = items[result.destination.index].station_number;
+    //   items[result.destination.index].station_number = items[result.destination.index + 1].station_number
+
+    // }
 
     let [left_item, start_item] = getLeftAndStartItem(
       items,
@@ -671,7 +695,7 @@ const StrungItems = () => {
                           else
                             return (
                               <MainLaneDraggable
-                                item={item}
+                                item={{ ...item, ...currentItemDetails[index] }}
                                 index={index}
                                 deleteFromSequence={deleteFromSequence}
                                 key={index}
