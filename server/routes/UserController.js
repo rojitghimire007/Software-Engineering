@@ -15,7 +15,6 @@ const login = async (req, res, next) => {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
     });
-    console.log('users');
 
     if (user.rows.length == 0)
       return next({
@@ -124,6 +123,11 @@ const getAssociatedProjects = async (req, res, next) => {
       values: [req.uname],
     };
 
+    const admin = await query_resolver(default_pool, `Select email FROM admin`);
+
+    if(admin[0].email == req.userEmail){
+      query = `SELECT * FROM projects`;
+    }
     //TODO: check for admin, if admin show all project
     // if(isAdmin){
     //   query = `SELECT * FROM projects`;
