@@ -18,8 +18,7 @@ const classes = useStyles();
       <div className={classes.background}></div>
       <div className={classes.page}>
         <MenuAppBar />
-        <main >
-          
+        <main className={classes.mainAll}>
           <Container maxWidth="lg" >
             <Carousel />
           </Container>

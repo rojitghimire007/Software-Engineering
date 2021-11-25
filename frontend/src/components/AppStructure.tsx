@@ -36,6 +36,12 @@ const options = [
         subItems: [''],
         default: '',
     },
+    {
+        main: 'Associate User',
+        subItems: [''],
+        default: '/project/user',
+        admin: 'true'
+    },
 ];
 
 const AppStructure = () => {
