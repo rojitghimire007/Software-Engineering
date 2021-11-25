@@ -241,6 +241,7 @@ const useStyles = makeStyles(() => ({
     listButton: { backgroundColor: 'grey', },
     menuItem: { padding: '1rem 1.5rem 1.5rem', },
     cardGrid: { padding: '20px 0' },
+    mainAll: {paddingTop: '5rem'},
 }));
 
 export default useStyles;
