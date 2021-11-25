@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import MaterialTable from "material-table";
 
+import useStyles from "style/ShowPipeStyles";
+import MenuAppBar from "../../components/AppBar";
 import { tableIcons } from "utils/tableIcons";
+import { Typography, CssBaseline, Toolbar } from "@material-ui/core";
 import api from "api";
 
 interface DataType {
@@ -22,6 +25,8 @@ interface Bend {
 
 const BendInfo = () => {
   const [data, setData] = useState<DataType[]>([]);
+
+  const classes = useStyles();
 
   const rowAddFunc = (newData: any) => {
     const bendData: Bend[] = [
@@ -50,7 +55,7 @@ const BendInfo = () => {
     if (
       newData.degree === oldData.degree &&
       newData.bdirection === oldData.bdirection &&
-      newData.blength == oldData.blength
+      newData.blength === oldData.blength
     ) {
       return new Promise<void>((resolve, reject) => {
         resolve();
@@ -103,102 +108,115 @@ const BendInfo = () => {
 
   return (
     <>
-      <MaterialTable
-        icons={tableIcons}
-        title="Bend Information"
-        columns={[
-          {
-            title: "Item ID",
-            field: "id",
-            type: "string",
-            editable: "onAdd",
-            cellStyle: {
-              border: "solid",
-            },
-          },
-          {
-            title: "Degree",
-            field: "degree",
-            type: "string",
-            cellStyle: {
-              border: "solid",
-            },
-          },
-          {
-            title: "Bend Direction",
-            field: "bdirection",
-            type: "string",
-            cellStyle: {
-              border: "solid",
-            },
-          },
-          {
-            title: "Length",
-            field: "blength",
-            type: "string",
-            cellStyle: {
-              border: "solid",
-            },
-          },
-          {
-            title: "Bend Date",
-            field: "bdate",
-            type: "date",
-            editable: "never",
-            cellStyle: {
-              border: "solid",
-            },
-          },
-          {
-            title: "Bend Inspector",
-            field: "created_by",
-            type: "string",
-            editable: "never",
-            cellStyle: {
-              border: "solid",
-            },
-          },
-          {
-            title: "Bend_id",
-            field: "bend_id",
-            editable: "never",
-            cellStyle: {
-              border: "solid",
-            },
-            hidden: true,
-          },
-        ]}
-        data={data}
-        editable={{
-          onRowAdd: rowAddFunc,
-          onRowUpdate: rowUpdateFunc,
-          onRowDelete: rowDeleteFunc,
-        }}
-        options={{
-          headerStyle: {
-            backgroundColor: "lightgrey",
-            fontWeight: "bold",
-            border: "solid",
-          },
-          filterCellStyle: {
-            border: "solid",
-          },
-          filtering: true,
-          columnsButton: true,
-          search: true,
-          loadingType: "linear",
-          draggable: true,
-          showTextRowsSelected: true,
-          toolbarButtonAlignment: "left",
-          pageSize: 5,
-          pageSizeOptions: [5, 10, 25, 50],
-          actionsCellStyle: { zIndex: 999 },
-          maxBodyHeight: "70vh",
-          minBodyHeight: "35vh",
-          exportButton: true,
-          sorting: true,
-        }}
-      />
+      <div className={classes.wrapper}>
+        <div>
+          <MenuAppBar />
+          <CssBaseline />
+          <Toolbar className={classes.title}>
+            <Typography variant="h4" className={classes.titleContent}>
+              Bending Information
+            </Typography>
+          </Toolbar>
+        </div>
+        <div className={classes.stickyActions}>
+          <MaterialTable
+            icons={tableIcons}
+            title="Bend Information"
+            columns={[
+              {
+                title: "Item ID",
+                field: "id",
+                type: "string",
+                editable: "onAdd",
+                cellStyle: {
+                  border: "solid",
+                },
+              },
+              {
+                title: "Degree",
+                field: "degree",
+                type: "string",
+                cellStyle: {
+                  border: "solid",
+                },
+              },
+              {
+                title: "Bend Direction",
+                field: "bdirection",
+                type: "string",
+                cellStyle: {
+                  border: "solid",
+                },
+              },
+              {
+                title: "Length",
+                field: "blength",
+                type: "string",
+                cellStyle: {
+                  border: "solid",
+                },
+              },
+              {
+                title: "Bend Date",
+                field: "bdate",
+                type: "date",
+                editable: "never",
+                cellStyle: {
+                  border: "solid",
+                },
+              },
+              {
+                title: "Bend Inspector",
+                field: "created_by",
+                type: "string",
+                editable: "never",
+                cellStyle: {
+                  border: "solid",
+                },
+              },
+              {
+                title: "Bend_id",
+                field: "bend_id",
+                editable: "never",
+                cellStyle: {
+                  border: "solid",
+                },
+                hidden: true,
+              },
+            ]}
+            data={data}
+            editable={{
+              onRowAdd: rowAddFunc,
+              onRowUpdate: rowUpdateFunc,
+              onRowDelete: rowDeleteFunc,
+            }}
+            options={{
+              headerStyle: {
+                backgroundColor: "lightgrey",
+                fontWeight: "bold",
+                border: "solid",
+              },
+              filterCellStyle: {
+                border: "solid",
+              },
+              filtering: true,
+              columnsButton: true,
+              search: true,
+              loadingType: "linear",
+              draggable: true,
+              showTextRowsSelected: true,
+              toolbarButtonAlignment: "left",
+              pageSize: 5,
+              pageSizeOptions: [5, 10, 25, 50],
+              actionsCellStyle: { zIndex: 999 },
+              maxBodyHeight: "70vh",
+              minBodyHeight: "35vh",
+              exportButton: true,
+              sorting: true,
+            }}
+          />
+        </div>
+      </div>
     </>
   );
 };
