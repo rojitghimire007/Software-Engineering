@@ -1,3 +1,4 @@
+import { Select, MenuItem, InputLabel, FormControl, Button } from '@mui/material';
 import api from 'api';
 import NewCutting from 'DEMOS/new-cutting-prototype/NewCutting';
 import React, { useEffect, useState } from 'react';
@@ -8,6 +9,8 @@ const PipeCutting = () => {
   const [eligiblePipes, setEligiblePipes] = useState<Array<string>>([]);
   const [eligibleLength, setEligibleLength] = useState(0);
   const [selectedPipe, setSelectedPipe] = useState<string>('');
+  const [pipeChosen, setPipeChosen] = useState(false);
+  const [errored, setErrored] = useState(false);
 
   useEffect(() => {
     api
@@ -29,12 +32,22 @@ const PipeCutting = () => {
       .then((res) => {
         // console.log(res.data.plength)
         setEligibleLength(res.data.plength)
-        console.log(eligibleLength)
+        // console.log(eligibleLength)
       })
       .catch((err) => {
         alert(err.message);
       })
-  }, [fetch === true])
+  }, [selectedPipe != ''])
+
+  useEffect(() => {
+    setSelectedPipe('');
+    setPipeChosen(false);
+  }, [errored === true])
+
+  useEffect(() => {
+    setErrored(false);
+  }, [selectedPipe === '', !pipeChosen])
+
 
   // useUpdateEffect(() => {
   //   api
@@ -44,19 +57,61 @@ const PipeCutting = () => {
   // }, [selectedPipe, fetch]);
   return (
     <>
-      <button onClick={() => setFetch(!fetch)}>
+      {/* <button onClick={() => setFetch(!fetch)}>
         {fetch ?
           <>Fetch Data</>
           :
           <>Unfetch</>
         }
-      </button>
-      <div>
-        
-      </div>
-      {/* {console.log(eligiblePipes)}
-      {console.log(selectedPipe)} */}
-      <NewCutting id='pipe_10' length={200} />
+      </button> */}
+      {!pipeChosen ?
+        <div>
+          <FormControl sx={{ margin: '25px 0', minWidth: '25%' }}>
+            <InputLabel id="cut-eligible-pipes">Select Pipe for Cutting *</InputLabel>
+            <Select
+              labelId="cut-eligible-pipes"
+              id="eligible-pipes"
+              value={selectedPipe}
+              label="Select Pipe for Cutting *"
+              onChange={
+                (e) => {
+                  setSelectedPipe(e.target.value);
+                }
+              }
+              >
+              {eligiblePipes.map((pipe: any) => {
+                return (
+                  <MenuItem value={pipe}>
+                    <em>{pipe}</em>
+                  </MenuItem>
+                )
+              })}
+            </Select>
+            <Button
+              variant="contained"
+              onClick={() => { setPipeChosen(true) }}
+              >
+              Proceed
+            </Button>
+          </FormControl>
+        </div>
+        :
+        null
+      }
+      {pipeChosen && selectedPipe === ''?
+        <>
+          {setErrored(true)}
+          {alert('Please select a valid pipe from the drop down')}
+        </>
+        :
+        null
+
+      }
+      {pipeChosen && selectedPipe != '' ?
+        <NewCutting id={selectedPipe} length={eligibleLength} />
+        :
+        null
+      }
     </>
   );
 };
