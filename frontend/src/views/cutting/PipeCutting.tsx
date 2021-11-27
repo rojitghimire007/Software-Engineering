@@ -1,14 +1,25 @@
-import { Select, MenuItem, InputLabel, FormControl, Button } from '@mui/material';
-import api from 'api';
-import NewCutting from 'DEMOS/new-cutting-prototype/NewCutting';
-import React, { useEffect, useState } from 'react';
-import useUpdateEffect from 'utils/useUpdateEffect';
+import {
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
+import api from "api";
+import NewCutting from "DEMOS/new-cutting-prototype/NewCutting";
+import React, { useEffect, useState } from "react";
+import useUpdateEffect from "utils/useUpdateEffect";
 
 const PipeCutting = () => {
   const [fetch, setFetch] = useState(false);
   const [eligiblePipes, setEligiblePipes] = useState<Array<string>>([]);
   const [eligibleLength, setEligibleLength] = useState(0);
-  const [selectedPipe, setSelectedPipe] = useState<string>('');
+  const [selectedPipe, setSelectedPipe] = useState<string>("");
   const [pipeChosen, setPipeChosen] = useState(false);
   const [errored, setErrored] = useState(false);
 
@@ -31,23 +42,22 @@ const PipeCutting = () => {
       .getPipeLength(eligiblePipes[0])
       .then((res) => {
         // console.log(res.data.plength)
-        setEligibleLength(res.data.plength)
+        setEligibleLength(res.data.plength);
         // console.log(eligibleLength)
       })
       .catch((err) => {
         alert(err.message);
-      })
-  }, [selectedPipe != ''])
+      });
+  }, [selectedPipe != ""]);
 
   useEffect(() => {
-    setSelectedPipe('');
-    setPipeChosen(false);
-  }, [errored === true])
+    // setSelectedPipe('');
+    // setPipeChosen(false);
+  }, [errored === true]);
 
   useEffect(() => {
     setErrored(false);
-  }, [selectedPipe === '', !pipeChosen])
-
+  }, [selectedPipe === "", !pipeChosen]);
 
   // useUpdateEffect(() => {
   //   api
@@ -57,61 +67,56 @@ const PipeCutting = () => {
   // }, [selectedPipe, fetch]);
   return (
     <>
-      {/* <button onClick={() => setFetch(!fetch)}>
-        {fetch ?
-          <>Fetch Data</>
-          :
-          <>Unfetch</>
-        }
-      </button> */}
-      {!pipeChosen ?
+      {!pipeChosen ? (
         <div>
-          <FormControl sx={{ margin: '25px 0', minWidth: '25%' }}>
-            <InputLabel id="cut-eligible-pipes">Select Pipe for Cutting *</InputLabel>
+          <FormControl sx={{ margin: "25px 0", minWidth: "25%" }}>
+            <InputLabel id="cut-eligible-pipes">
+              Select Pipe for Cutting *
+            </InputLabel>
             <Select
               labelId="cut-eligible-pipes"
               id="eligible-pipes"
               value={selectedPipe}
               label="Select Pipe for Cutting *"
-              onChange={
-                (e) => {
-                  setSelectedPipe(e.target.value);
-                }
-              }
-              >
+              onChange={(e) => {
+                setSelectedPipe(e.target.value);
+              }}
+            >
               {eligiblePipes.map((pipe: any) => {
                 return (
                   <MenuItem value={pipe}>
                     <em>{pipe}</em>
                   </MenuItem>
-                )
+                );
               })}
             </Select>
             <Button
               variant="contained"
-              onClick={() => { setPipeChosen(true) }}
-              >
+              onClick={() => {
+                setPipeChosen(true);
+              }}
+            >
               Proceed
             </Button>
           </FormControl>
         </div>
-        :
-        null
-      }
-      {pipeChosen && selectedPipe === ''?
-        <>
-          {setErrored(true)}
-          {alert('Please select a valid pipe from the drop down')}
-        </>
-        :
-        null
-
-      }
-      {pipeChosen && selectedPipe != '' ?
+      ) : null}
+      {pipeChosen && selectedPipe === "" ? (
+        <Dialog open={true}>
+          <DialogTitle>{"Error:"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please select a pipe from the dropdown.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setPipeChosen(false)}>OK</Button>
+          </DialogActions>
+        </Dialog>
+      ) : null}
+      {pipeChosen && selectedPipe != "" ? (
         <NewCutting id={selectedPipe} length={eligibleLength} />
-        :
-        null
-      }
+      ) : null}
     </>
   );
 };
