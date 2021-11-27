@@ -226,7 +226,6 @@ const NewCutting = ({ id, length }: any) => {
               style={{
                 minWidth: `${rightLength / displayLength}%`,
                 border: "1px dashed white",
-                // marginLeft: "20px",
                 height: "100px",
               }}
             >

@@ -9,6 +9,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Autocomplete,
+  CircularProgress,
+  TextField,
 } from "@mui/material";
 import api from "api";
 import NewCutting from "DEMOS/new-cutting-prototype/NewCutting";
@@ -22,6 +25,8 @@ const PipeCutting = () => {
   const [selectedPipe, setSelectedPipe] = useState<string>("");
   const [pipeChosen, setPipeChosen] = useState(false);
   const [errored, setErrored] = useState(false);
+  const [open, setOpen] = useState(false);
+  const loading = open && eligiblePipes.length === 0;
 
   useEffect(() => {
     api
@@ -31,7 +36,7 @@ const PipeCutting = () => {
         setEligiblePipes(res.data.map((item: { id: string }) => item.id));
       })
       .catch((err) => {
-        alert(err.message);
+        // alert(err.message);
       });
   }, []);
 
@@ -70,10 +75,54 @@ const PipeCutting = () => {
       {!pipeChosen ? (
         <div>
           <FormControl sx={{ margin: "25px 0", minWidth: "25%" }}>
-            <InputLabel id="cut-eligible-pipes">
-              Select Pipe for Cutting *
-            </InputLabel>
-            <Select
+            {(!open && selectedPipe === "") || errored ? (
+              <InputLabel id="cut-eligible-pipes">
+                Select Pipe for Cutting *
+              </InputLabel>
+            ) : null}
+            <Autocomplete
+              // labelId="cut-eligible-pipes"
+              id="eligible-pipes"
+              open={open}
+              loading={loading}
+              getOptionLabel={(option) => option}
+              options={eligiblePipes}
+              openOnFocus
+              onOpen={() => {
+                setOpen(true);
+              }}
+              onClose={() => {
+                setOpen(false);
+              }}
+              onChange={(e: any, value: any) => {
+                setSelectedPipe(value);
+                console.log(value);
+              }}
+              onInputChange={(e: any, value: any) => {
+                if (eligiblePipes.indexOf(value) == -1) {
+                  setSelectedPipe("");
+                } else {
+                  setSelectedPipe(value);
+                }
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <React.Fragment>
+                        {loading ? (
+                          <CircularProgress color="inherit" size={20} />
+                        ) : null}
+                        {params.InputProps.endAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
+                ></TextField>
+              )}
+            ></Autocomplete>
+            {/* <Select
               labelId="cut-eligible-pipes"
               id="eligible-pipes"
               value={selectedPipe}
@@ -89,7 +138,7 @@ const PipeCutting = () => {
                   </MenuItem>
                 );
               })}
-            </Select>
+            </Select> */}
             <Button
               variant="contained"
               onClick={() => {
