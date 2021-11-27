@@ -81,6 +81,7 @@ exports.pipe = `CREATE TABLE pipe(
   is_void BOOLEAN DEFAULT FALSE,
   is_used BOOLEAN DEFAULT FALSE,
   is_cut BOOLEAN DEFAULT FALSE,
+  is_weld BOOLEAN DEFAULT FALSE,
   parent TEXT DEFAULT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(pipe_shared_id) REFERENCES pipe_shared_info(pipe_shared_id)
@@ -123,6 +124,7 @@ exports.fitting = `CREATE TABLE fitting(
   comment TEXT,
   is_void BOOLEAN DEFAULT FALSE,
   is_used BOOLEAN DEFAULT FALSE,
+  is_weld BOOLEAN DEFAULT FALSE,
   parent TEXT DEFAULT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(fitting_shared_id) REFERENCES fitting_shared_info(fitting_shared_id)
@@ -162,4 +164,26 @@ exports.pipe_bend = `CREATE TABLE pipe_bend(
   PRIMARY KEY (id, bend_id),
   FOREIGN KEY(id) REFERENCES pipe(id) ON DELETE CASCADE,
   FOREIGN KEY(bend_id) REFERENCES bend(bend_id) ON DELETE CASCADE
+)`;
+
+exports.weld = `CREATE TABLE weld(
+  weld_id TEXT,
+  rp TEXT[],
+  hp TEXT[],
+  hpp TEXT[],
+  fl TEXT[],
+  wdate DATE,
+  fldate DATE,
+  PRIMARY KEY(weld_id)
+)`;
+
+exports.weld_seq =`CREATE TABLE weld_seq(
+  item_id TEXT,
+  next_item TEXT,
+  weld_id TEXT,
+  start_station FLOAT NOT NULL,
+  PRIMARY KEY(item_id),
+  FOREIGN KEY(item_id) REFERENCES stringing(item_id),
+  FOREIGN KEY(next_item) REFERENCES stringing(item_id),
+  FOREIGN KEY(weld_id) REFERENCES weld(weld_id)
 )`;

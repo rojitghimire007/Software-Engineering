@@ -12,14 +12,14 @@ const stringingQueries = {
     left join fitting on fitting.id = substring(item_id , 3) 
     left join pipe_shared_info on pipe.pipe_shared_id = pipe_shared_info.pipe_shared_id 
     left join pipe_heat on pipe_shared_info.pipe_heat_id = pipe_heat.pipe_heat_id 
-    left join pipe_ref on pipe_shared_info.pipe_ref_id = pipe_ref.pipe_ref_id  
+    left join pipe_ref on pipe_shared_info.pipe_ref_id = pipe_ref.pipe_ref_id 
     left join fitting_shared_info on fitting.fitting_shared_id = fitting_shared_info.fitting_shared_id 
     left join fitting_heat on fitting_heat.fitting_heat_id = fitting_shared_info.fitting_heat_id 
     left join pipe_bend on pipe_bend.id = pipe.id 
     left join bend on bend.bend_id = pipe_bend.bend_id 
     where start_pipe = $1 group by item_id, pipe.id, fitting.id, pipe_heat.heat_number, fitting_heat.heat_number, pipe_ref.diameter, pipe_ref.thickness, 
     fitting_shared_info.thickness, fitting_shared_info.coat, pipe_shared_info.coat, pipe_shared_info.grade, fitting_shared_info.grade, 
-    pipe_shared_info.created_by, fitting_shared_info.created_by, pipe_shared_info.created_on, fitting_shared_info.created_on, pipe_heat.manufacture, fitting_heat.manufacture  
+    pipe_shared_info.created_by, fitting_shared_info.created_by, pipe_shared_info.created_on, fitting_shared_info.created_on, pipe_heat.manufacture, fitting_heat.manufacture 
     order by station_number asc`,
 };
 
