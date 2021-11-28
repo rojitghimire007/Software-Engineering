@@ -68,19 +68,19 @@ const links = [
             },
             {
                 main: '- Needs Analysis and Project Justification',
-                default: '/'
+                default: '/dashboard/needsAnalysis'
             },
             {
                 main: '- Project Authorization and Certification',
-                default: '/'
+                default: '/dashboard/projectAuthorization'
             },
             {
                 main: '- Overview of Construction',
-                default: '/'
+                default: '/dashboard/overviewOfConstruction'
             },
             {
                 main: '- Special Construction Technique',
-                default: '/'
+                default: '/dashboard/specialConstructionTechnique'
             },
             {
                 main: '- Post-Construction Maintenance',
@@ -96,7 +96,7 @@ const links = [
             },
             {
                 main: '- Guidelines for Parallel Construction',
-                default: '/'
+                default: '/dashboard/guidelines'
             },
             {
                 main: '- Construction Bid Documents',
@@ -104,7 +104,7 @@ const links = [
             },
             {
                 main: '- Construction Standers',
-                default: '/'
+                default: '/dashboard/constructionStanders'
             },
             {
                 main: '- Schedules',
@@ -128,7 +128,7 @@ const links = [
         subItems: [
             {
                 main: '- Construction Team',
-                default: '/'
+                default: '/dashboard/constructionTeam'
             },
             {
                 main: '- Contractor Mobilizes',
@@ -136,19 +136,19 @@ const links = [
             },
             {
                 main: '- Permits',
-                default: '/'
+                default: '/dashboard/permits'
             },
             {
                 main: '- Environmental',
-                default: '/'
+                default: '/dashboard/environmental'
             },
             {
                 main: '- Clearing',
-                default: '/'
+                default: '/dashboard/clearing'
             },
             {
                 main: '- Grading',
-                default: '/'
+                default: '/dashboard/grading'
             },
             {
                 main: '- Access Roads to Right of Way',
@@ -156,35 +156,35 @@ const links = [
             },
             {
                 main: '- Material Inventory',
-                default: '/'
+                default: '/dashboard/inventory/materialInventory'
             },
             {
                 main: '- GPS Survey',
-                default: '/'
+                default: '/dashboard/gpsSurvey'
             },
             {
                 main: '- Stringing',
-                default: '/'
+                default: '/dashboard/stringing'
             },
             {
                 main: '- Trenching',
-                default: '/'
+                default: '/dashboard/trenching'
             },
             {
                 main: '- HDD',
-                default: '/'
+                default: '/dashboard/hdd'
             },
             {
                 main: '- Pipe Bending',
-                default: '/'
+                default: '/dashboard/bending'
             },
             {
                 main: '- Welding',
-                default: '/'
+                default: '/dashboard/welding'
             },
             {
                 main: '- X-Ray',
-                default: '/'
+                default: '/dashboard/xray'
             },
             {
                 main: '- Blasting',

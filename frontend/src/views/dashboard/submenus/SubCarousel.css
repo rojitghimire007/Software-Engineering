@@ -38,7 +38,7 @@
   /* width: 13.125rem; */
   width: 6rem; /* optimized for a list with 10 items. */
   /* height: 13.125rem; */
-  height: 27rem !important;
+  height: 12rem !important;
   position: relative;
   margin: 0 auto;
   margin-top: 4rem; /*Changes distance of carousel from top of container */
@@ -63,19 +63,19 @@
 .carousel__slide {
   position: absolute;
   /* width: calc(11.875rem * 2);
-    height: calc(11.875rem * 2); */
+      height: calc(11.875rem * 2); */
   /* width: 20rem; USE THIS TO FINE TUNE THE CARD SIZES
-    height: 20rem; */
+      height: 20rem; */
   /* left: calc(0.625rem * 2);
-    top: calc(0.625rem * 2); */
+      top: calc(0.625rem * 2); */
   /* left: -2.4rem; */ /* THIS PART WILL DETERMINE THE CENTER OF THE CYLINDER */
   /* top: 0.625rem; */
   /* width: 11.875rem;
-    height: 11.875rem; */
+      height: 11.875rem; */
   width: 10rem; /* USE THIS TO FINE TUNE THE CARD SIZES */
   height: 11rem;
   /* left: 0.625rem;
-    top: 0.625rem; */
+      top: 0.625rem; */
   left: -2.4rem; /* THIS PART WILL DETERMINE THE CENTER OF THE CYLINDER */
   top: 0.625rem;
   border: 0.125rem solid;
@@ -105,10 +105,10 @@
   z-index: 1;
   display: flex;
   /* flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center; */
+      justify-content: center;
+      align-items: center; */
   /* display: grid;
-    grid-template-rows: [first] 100% [second] 100% [last] 100%; */
+      grid-template-rows: [first] 100% [second] 100% [last] 100%; */
   /* margin: 0 15rem; */
 }
 

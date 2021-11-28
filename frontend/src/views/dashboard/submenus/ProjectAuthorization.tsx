@@ -4,7 +4,7 @@ import useStyles from '../../../style/DashboardStyles'; // new styling
 import MenuAppBar from '../../../components/AppBar';
 import { Carousel, CarouselItem } from 'react-round-carousel';
 import { Link } from 'react-router-dom';
-import inventoryImg from 'img/MaterialInventory.png';
+import projectAuthorization from 'img/projectAuthorization.png';
 import './SubCarousel.css';
 
 
@@ -12,58 +12,40 @@ import './SubCarousel.css';
 const links = [
     // Inventory
     {
-      parent: 'Material Inventory',
-      link: '/dashboard/inventory/materialInventory',
-      id: 'Material Inventory',
-      image: inventoryImg,
+      parent: 'ProjectAuthorization',
+      link: '/',
+      id: 'FERC Pre-Filing Process',
+      image: projectAuthorization,
     },
     {
-      parent: 'Material Inventory',
+      parent: 'ProjectAuthorization',
       link: '/',
-      id: 'Purchase Order',
-      image: inventoryImg,
+      id: 'Pre-Construction Surveys',
+      image: projectAuthorization,
     },
     {
-      parent: 'Material Inventory',
+      parent: 'ProjectAuthorization',
       link: '/',
-      id: 'Manufacturer Manuals',
-      image: inventoryImg,
+      id: 'Application to FERC',
+      image: projectAuthorization,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Truck Tickets',
-      image: inventoryImg,
+        parent: 'ProjectAuthorization',
+        link: '/',
+        id: 'Right-of-Way Acquisition',
+        image: projectAuthorization,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'MTRS',
-      image: inventoryImg,
+        parent: 'ProjectAuthorization',
+        link: '/',
+        id: 'Notice to Proceed',
+        image: projectAuthorization,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Drops (Cuts)',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Un-used Material',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Disposal',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Report',
-      image: inventoryImg,
+        parent: 'ProjectAuthorization',
+        link: '/',
+        id: 'Blanket Certificate Process',
+        image: projectAuthorization,
     },
   ];
 
@@ -99,7 +81,7 @@ const CarouselInventory = () => {
 	)
 }
 
-const DashboardInventory = () => {
+const ProjectAuthorization = () => {
 
 const classes = useStyles();
 
@@ -119,4 +101,4 @@ const classes = useStyles();
   );
 };
 
-export default DashboardInventory;
+export default ProjectAuthorization;

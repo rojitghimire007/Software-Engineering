@@ -4,7 +4,7 @@ import useStyles from '../../../style/DashboardStyles'; // new styling
 import MenuAppBar from '../../../components/AppBar';
 import { Carousel, CarouselItem } from 'react-round-carousel';
 import { Link } from 'react-router-dom';
-import inventoryImg from 'img/MaterialInventory.png';
+import stringing from 'img/Stringing.png';
 import './SubCarousel.css';
 
 
@@ -12,58 +12,16 @@ import './SubCarousel.css';
 const links = [
     // Inventory
     {
-      parent: 'Material Inventory',
-      link: '/dashboard/inventory/materialInventory',
-      id: 'Material Inventory',
-      image: inventoryImg,
+      parent: 'ConstructionTeam',
+      link: '/pipes/strung/new',
+      id: 'Stringing',
+      image: stringing,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Purchase Order',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Manufacturer Manuals',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Truck Tickets',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'MTRS',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Drops (Cuts)',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Un-used Material',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Disposal',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Report',
-      image: inventoryImg,
+      parent: 'ConstructionTeam',
+      link: '/dashboard/xray',
+      id: 'X-Ray',
+      image: stringing,
     },
   ];
 
@@ -99,7 +57,7 @@ const CarouselInventory = () => {
 	)
 }
 
-const DashboardInventory = () => {
+const Stringing = () => {
 
 const classes = useStyles();
 
@@ -119,4 +77,4 @@ const classes = useStyles();
   );
 };
 
-export default DashboardInventory;
+export default Stringing;

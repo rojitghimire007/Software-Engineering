@@ -1,8 +1,11 @@
-// import * as React from 'react';
+import React from 'react';
+import { Container } from '@material-ui/core';
+import useStyles from '../../../style/DashboardStyles'; // new styling
+import MenuAppBar from '../../../components/AppBar';
 import { Carousel, CarouselItem } from 'react-round-carousel';
-import '../Carousel.css'
 import { Link } from 'react-router-dom';
 import inventoryImg from 'img/MaterialInventory.png';
+import './SubCarousel.css';
 
 
 
@@ -22,7 +25,7 @@ const links = [
     },
     {
       parent: 'Database Log',
-      link: '/',
+      link: '/aggregate',
       id: 'Database Log',
       image: inventoryImg,
     },
@@ -46,6 +49,7 @@ const items: CarouselItem[] =
     )
 }));
 
+
 const CarouselInventory = () => {
     return (
         <div className='comp-container'>
@@ -58,4 +62,25 @@ const CarouselInventory = () => {
         </div>
 	)
 }
-export default CarouselInventory;
+
+const MaterialInventory = () => {
+
+const classes = useStyles();
+
+  return (
+    <div className={classes.container}  >
+      <div className={classes.background}></div>
+      <div className={classes.page}>
+        
+        <MenuAppBar />
+        <main >
+          <Container maxWidth="lg" >
+            <CarouselInventory />
+          </Container>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default MaterialInventory;

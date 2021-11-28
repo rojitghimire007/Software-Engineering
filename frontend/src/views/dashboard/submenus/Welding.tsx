@@ -4,7 +4,7 @@ import useStyles from '../../../style/DashboardStyles'; // new styling
 import MenuAppBar from '../../../components/AppBar';
 import { Carousel, CarouselItem } from 'react-round-carousel';
 import { Link } from 'react-router-dom';
-import inventoryImg from 'img/MaterialInventory.png';
+import welding from 'img/Welding.png';
 import './SubCarousel.css';
 
 
@@ -12,59 +12,71 @@ import './SubCarousel.css';
 const links = [
     // Inventory
     {
-      parent: 'Material Inventory',
-      link: '/dashboard/inventory/materialInventory',
-      id: 'Material Inventory',
-      image: inventoryImg,
+      parent: 'ConstructionTeam',
+      link: '/',
+      id: 'Welder Test Card',
+      image: welding,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Purchase Order',
-      image: inventoryImg,
+      parent: 'ConstructionTeam',
+      link: '/bending',
+      id: 'Repair Welds',
+      image: welding,
     },
     {
-      parent: 'Material Inventory',
+      parent: 'ConstructionTeam',
       link: '/',
-      id: 'Manufacturer Manuals',
-      image: inventoryImg,
+      id: 'Cut-Outs',
+      image: welding,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Truck Tickets',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'MTRS',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Drops (Cuts)',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Un-used Material',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Disposal',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Report',
-      image: inventoryImg,
-    },
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Tie-ins',
+        image: welding,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Fabrication Drawing',
+        image: welding,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Fabrication Pictures',
+        image: welding,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Weld Photos',
+        image: welding,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Weld Waiver Request',
+        image: welding,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Welder Stats',
+        image: welding,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Welding Productivity',
+        image: welding,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Welding Equipment',
+        image: welding,
+      },
   ];
 
 
@@ -99,7 +111,7 @@ const CarouselInventory = () => {
 	)
 }
 
-const DashboardInventory = () => {
+const Welding = () => {
 
 const classes = useStyles();
 
@@ -119,4 +131,4 @@ const classes = useStyles();
   );
 };
 
-export default DashboardInventory;
+export default Welding;

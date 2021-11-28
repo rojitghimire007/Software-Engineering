@@ -4,7 +4,7 @@ import useStyles from '../../../style/DashboardStyles'; // new styling
 import MenuAppBar from '../../../components/AppBar';
 import { Carousel, CarouselItem } from 'react-round-carousel';
 import { Link } from 'react-router-dom';
-import inventoryImg from 'img/MaterialInventory.png';
+import hdd from 'img/hdd.png';
 import './SubCarousel.css';
 
 
@@ -12,59 +12,41 @@ import './SubCarousel.css';
 const links = [
     // Inventory
     {
-      parent: 'Material Inventory',
-      link: '/dashboard/inventory/materialInventory',
-      id: 'Material Inventory',
-      image: inventoryImg,
+      parent: 'ConstructionTeam',
+      link: '/',
+      id: 'Road Crossing',
+      image: hdd,
     },
     {
-      parent: 'Material Inventory',
+      parent: 'ConstructionTeam',
       link: '/',
-      id: 'Purchase Order',
-      image: inventoryImg,
+      id: 'Railroad Crossing',
+      image: hdd,
     },
     {
-      parent: 'Material Inventory',
+      parent: 'ConstructionTeam',
       link: '/',
-      id: 'Manufacturer Manuals',
-      image: inventoryImg,
+      id: 'Wetland Crossing',
+      image: hdd,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Truck Tickets',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'MTRS',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Drops (Cuts)',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Un-used Material',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Disposal',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Report',
-      image: inventoryImg,
-    },
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'River Crossing',
+        image: hdd,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Stream Crossing',
+        image: hdd,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Equipment',
+        image: hdd,
+      },
   ];
 
 
@@ -99,7 +81,7 @@ const CarouselInventory = () => {
 	)
 }
 
-const DashboardInventory = () => {
+const HDD = () => {
 
 const classes = useStyles();
 
@@ -119,4 +101,4 @@ const classes = useStyles();
   );
 };
 
-export default DashboardInventory;
+export default HDD;

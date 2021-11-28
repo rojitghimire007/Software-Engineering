@@ -4,67 +4,48 @@ import useStyles from '../../../style/DashboardStyles'; // new styling
 import MenuAppBar from '../../../components/AppBar';
 import { Carousel, CarouselItem } from 'react-round-carousel';
 import { Link } from 'react-router-dom';
-import inventoryImg from 'img/MaterialInventory.png';
+import xray from 'img/MaterialInventory.png';
 import './SubCarousel.css';
-
 
 
 const links = [
     // Inventory
     {
-      parent: 'Material Inventory',
-      link: '/dashboard/inventory/materialInventory',
-      id: 'Material Inventory',
-      image: inventoryImg,
+      parent: 'ConstructionTeam',
+      link: '/',
+      id: 'X-Ray Equipment Spec',
+      image: xray,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Purchase Order',
-      image: inventoryImg,
+      parent: 'ConstructionTeam',
+      link: '/bending',
+      id: 'X-Ray Report',
+      image: xray,
     },
     {
-      parent: 'Material Inventory',
+      parent: 'ConstructionTeam',
       link: '/',
-      id: 'Manufacturer Manuals',
-      image: inventoryImg,
+      id: 'X-Ray Film',
+      image: xray,
     },
     {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Truck Tickets',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'MTRS',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Drops (Cuts)',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Un-used Material',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Disposal',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Report',
-      image: inventoryImg,
-    },
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Liquid Penetrants',
+        image: xray,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Magnetic Particles',
+        image: xray,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Untested Welds',
+        image: xray,
+      },
   ];
 
 
@@ -88,7 +69,7 @@ const items: CarouselItem[] =
 
 const CarouselInventory = () => {
     return (
-        <div className='comp-container'>
+        <div className='comp-container2'>
             {/* notice className root */}
             {/*  DO NOT CHANGE THIS (atm at least) */}
             <div className="root">
@@ -99,7 +80,7 @@ const CarouselInventory = () => {
 	)
 }
 
-const DashboardInventory = () => {
+const XRay = () => {
 
 const classes = useStyles();
 
@@ -119,4 +100,4 @@ const classes = useStyles();
   );
 };
 
-export default DashboardInventory;
+export default XRay;

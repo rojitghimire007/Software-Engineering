@@ -4,7 +4,7 @@ import useStyles from '../../../style/DashboardStyles'; // new styling
 import MenuAppBar from '../../../components/AppBar';
 import { Carousel, CarouselItem } from 'react-round-carousel';
 import { Link } from 'react-router-dom';
-import inventoryImg from 'img/MaterialInventory.png';
+import needsAnalysis from 'img/needsAnalysis.png';
 import './SubCarousel.css';
 
 
@@ -12,58 +12,22 @@ import './SubCarousel.css';
 const links = [
     // Inventory
     {
-      parent: 'Material Inventory',
-      link: '/dashboard/inventory/materialInventory',
-      id: 'Material Inventory',
-      image: inventoryImg,
+      parent: 'NeedsAnalysis',
+      link: '/',
+      id: 'Needs Analysis',
+      image: needsAnalysis,
     },
     {
-      parent: 'Material Inventory',
+      parent: 'NeedsAnalysis',
       link: '/',
-      id: 'Purchase Order',
-      image: inventoryImg,
+      id: 'Open Seasons',
+      image: needsAnalysis,
     },
     {
-      parent: 'Material Inventory',
+      parent: 'NeedsAnalysis',
       link: '/',
-      id: 'Manufacturer Manuals',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Truck Tickets',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'MTRS',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Drops (Cuts)',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Un-used Material',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Disposal',
-      image: inventoryImg,
-    },
-    {
-      parent: 'Material Inventory',
-      link: '/',
-      id: 'Material Report',
-      image: inventoryImg,
+      id: 'Corridor Analysis',
+      image: needsAnalysis,
     },
   ];
 
@@ -99,7 +63,7 @@ const CarouselInventory = () => {
 	)
 }
 
-const DashboardInventory = () => {
+const NeedsAnalysis = () => {
 
 const classes = useStyles();
 
@@ -119,4 +83,4 @@ const classes = useStyles();
   );
 };
 
-export default DashboardInventory;
+export default NeedsAnalysis;
