@@ -44,12 +44,8 @@ const CreateProject = () => {
         new Date(end_date).getTime()
       )
       .then((res) => {
-        if (res) {
-          console.log("Success!");
-        }
-        if (!res) {
-          console.log("Failure :-(");
-        }
+        alert(res.message);
+        history.push('/project-select');
       })
       .catch((err) => alert(err.message));
   };
@@ -59,13 +55,13 @@ const CreateProject = () => {
       style={{ backgroundSize: "cover", backgroundImage: `url(${background})` }}
     >
       <div style={{ padding: "3rem 0", width: "80%", margin: "auto" }}>
-        <div className={styling.headerStyle} style={{width: "100%"}}>
+        <div className={styling.headerStyle} style={{ width: "100%" }}>
           <Typography variant="h3" className={styling.headerContent}>
             Pipeliner Project
           </Typography>
         </div>
-        <div className={styling.formContainer} style={{width: "100%"}}>
-          <form style={{ display: 'flex', flexDirection: 'column'}}>
+        <div className={styling.formContainer} style={{ width: "100%" }}>
+          <form style={{ display: "flex", flexDirection: "column" }}>
             <TextField
               onChange={(e) => {
                 setCompany(e.target.value);
@@ -207,7 +203,6 @@ const CreateProject = () => {
             <Button
               onClick={() => {
                 addProject();
-                alert("Project Created");
               }}
               variant="contained"
               style={{
