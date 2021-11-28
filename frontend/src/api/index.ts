@@ -10,6 +10,10 @@ export default {
     return post(API.login, { email, password });
   },
 
+  signup: (fname: string, email: string, password: string, phone: string) => {
+    return authPost(API.signup, {fname, email, password, phone});
+  },
+
   getAssociatedProjects: () => {
     return authGet(API.getAssociatedProjects, '');
   },

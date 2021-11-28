@@ -60,7 +60,7 @@ const login = async (req, res, next) => {
 const signup = async (req, res, next) => {
   try {
     let { fname, password, email, phone } = req.body;
-
+    console.log(fname, password, email, phone)
     email = email.trim();
 
     // Check if the user already exists
@@ -101,10 +101,12 @@ const signup = async (req, res, next) => {
         });
       } catch (er) {
         next(er);
+        
       }
     });
   } catch (err) {
     next(err);
+    
   }
 };
 
