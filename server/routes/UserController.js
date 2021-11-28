@@ -165,8 +165,7 @@ const usersInProject = async (req, res, next) => {
 
 const selectProject = async (req, res, next) => {
   try {
-    if (!req.userEmail)
-      throw { status: 401, message: 'Unauthorized user! Please login first.' };
+    if (!req.userEmail) throw { status: 401, message: 'Unauthorized user! Please login first!' };
 
     const { project_number } = req.body;
 

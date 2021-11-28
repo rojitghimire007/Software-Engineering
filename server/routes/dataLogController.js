@@ -68,7 +68,13 @@ const getAggregateData = async (req, res, next) => {
             bends,
             bendDate,
             bendPer,
-            item_type: ele.item_type
+            item_type: ele.item_type,
+            rp: ele.rp? ele.rp.join(", ") : null,
+            hp: ele.hp? ele.hp.join(", ") : null,
+            hpp: ele.hpp? ele.hpp.join(", "): null,
+            fl: ele.fl? ele.fl.join(", "): null,
+            wdate: ele.wdate,
+            fldate: ele.fldate
           }
         } else {
 
@@ -91,7 +97,13 @@ const getAggregateData = async (req, res, next) => {
             bends: null,
             bendDate: null,
             bendPer: null,
-            item_type: ele.item_type
+            item_type: ele.item_type,
+            rp: ele.rp? ele.rp.join(", ") : null,
+            hp: ele.hp? ele.hp.join(", ") : null,
+            hpp: ele.hpp? ele.hpp.join(", "): null,
+            fl: ele.fl? ele.fl.join(", "): null,
+            wdate: ele.wdate,
+            fldate: ele.fldate
           }
         }
       });

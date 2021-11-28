@@ -81,7 +81,7 @@ const updateBend = async (req, res, next) => {
     const checkDup = await query_resolver(connection, {
       text: `SELECT id from pipe_bend JOIN bend USING(bend_id) WHERE degree=$1 AND bdirection=$2 AND blength=$3 AND id=$4`,
       values: [degree, bdirection, blength, id]
-    })
+    });
 
     if(checkDup.length > 0) throw {status: 500, message: 'Bending credential already recorded for the pipe!'}
 

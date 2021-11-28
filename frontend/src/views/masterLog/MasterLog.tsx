@@ -230,7 +230,7 @@ const MasterLog = () => {
               },
               {
                 title: "2nd HP",
-                field: "hp2",
+                field: "hpp",
                 type: "string",
                 cellStyle: {
                   border: "solid",
@@ -247,23 +247,23 @@ const MasterLog = () => {
               {
                 title: "Weld Date",
                 field: "wdate",
-                type: "string",
+                type: "date",
                 cellStyle: {
                   border: "solid",
                 },
               },
               {
                 title: "Cap (D/W)",
-                field: "cap",
+                field: "fl",
                 type: "string",
                 cellStyle: {
                   border: "solid",
                 },
               },
               {
-                title: "Weld Inspect",
-                field: "winspect",
-                type: "string",
+                title: "Fire Lane Date",
+                field: "fldate",
+                type: "date",
                 cellStyle: {
                   border: "solid",
                 },
