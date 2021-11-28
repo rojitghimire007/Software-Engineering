@@ -1,7 +1,7 @@
 const stringingQueries = {
   getSequences: 'SELECT item_id from sequences order by start_station asc',
   getOneSequence:
-    `SELECT item_id, station_number, pipe.id as pid, fitting.id as fid, coil_number, pipe_heat.heat_number as pheat, fitting_heat.heat_number as fheat, 
+    `SELECT rp, hp, hpp, fl, fldate, wdate, stringing.item_id as item_id, station_number, pipe.id as pid, fitting.id as fid, coil_number, pipe_heat.heat_number as pheat, fitting_heat.heat_number as fheat, 
     diameter, pipe_ref.thickness as pthick, fitting_shared_info.thickness as fthick, fitting_shared_info.coat as fcoat, pipe_shared_info.coat as pcoat, 
     pipe_shared_info.grade as pgrade, fitting_shared_info.grade as fgrade, (CASE WHEN plength is null THEN 'fitting' ELSE 'pipe' END) as item_type, flength, plength, 
     pipe_shared_info.created_by as pperson, fitting_shared_info.created_by as fperson, 
@@ -17,9 +17,12 @@ const stringingQueries = {
     left join fitting_heat on fitting_heat.fitting_heat_id = fitting_shared_info.fitting_heat_id 
     left join pipe_bend on pipe_bend.id = pipe.id 
     left join bend on bend.bend_id = pipe_bend.bend_id 
+    left join weld_seq on weld_seq.item = stringing.item_id
+    left join weld on weld_seq.weld_id = weld.weld_id 
     where start_pipe = $1 group by item_id, pipe.id, fitting.id, pipe_heat.heat_number, fitting_heat.heat_number, pipe_ref.diameter, pipe_ref.thickness, 
     fitting_shared_info.thickness, fitting_shared_info.coat, pipe_shared_info.coat, pipe_shared_info.grade, fitting_shared_info.grade, 
-    pipe_shared_info.created_by, fitting_shared_info.created_by, pipe_shared_info.created_on, fitting_shared_info.created_on, pipe_heat.manufacture, fitting_heat.manufacture 
+    pipe_shared_info.created_by, fitting_shared_info.created_by, pipe_shared_info.created_on, fitting_shared_info.created_on, pipe_heat.manufacture, fitting_heat.manufacture, 
+    weld.rp, weld.hpp, weld.hp, weld.fldate, weld.wdate, weld.fl  
     order by station_number asc`,
 };
 

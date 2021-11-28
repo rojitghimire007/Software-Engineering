@@ -31,7 +31,7 @@ const {
 } = require('./Stringing');
 // } = require('./PipeStringing');
 const { getAggregateData } = require('./dataLogController');
-const { getWeld, postWeld } = require('./weldingController');
+const { getWeld, postWeld, editWeld } = require('./weldingController');
 //const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
@@ -96,6 +96,7 @@ const SetRoutes = (app) => {
   //welding
   app.get('/welding', getWeld);
   app.post('/welding', postWeld);
+  app.put('/welding', editWeld);
 };
 
 module.exports = { SetRoutes };
