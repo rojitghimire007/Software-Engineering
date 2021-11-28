@@ -12,7 +12,7 @@ const addFittings = async (req, res, next) => {
     is_void,
     is_used,
     heat_number,
-    manufacturer,
+    manufacture,
     po_number,
     grade,
     ftype,
@@ -37,7 +37,7 @@ const addFittings = async (req, res, next) => {
     if (fitting_heat.length === 0) {
       const query1 = {
         text: 'INSERT INTO fitting_heat(heat_number, manufacture) VALUES($1, $2)',
-        values: [heat_number, manufacturer]
+        values: [heat_number, manufacture]
       };
       await query_resolver(connection, query1);
 
@@ -47,7 +47,7 @@ const addFittings = async (req, res, next) => {
       }
 
       fitting_heat = await query_resolver(connection, query2);
-    } else if (fitting_heat[0].manufacture != manufacturer) {
+    } else if (fitting_heat[0].manufacture != manufacture) {
       throw {
         status: 400,
         message:
@@ -64,7 +64,7 @@ const addFittings = async (req, res, next) => {
       if(purchase.length === 0){
         await query_resolver(connection, {
           text: `INSERT INTO purchase_number(po_number, manufacture) VALUES ($1, $2)`,
-          values: [po_number, manufacturer]
+          values: [po_number, manufacture]
         });
       }
     }

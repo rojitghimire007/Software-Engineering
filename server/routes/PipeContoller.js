@@ -140,8 +140,7 @@ const addPipe = async (req, res, next) => {
       message: 'Pipe Added!',
     });
   } catch (error) {
-    console.log(error);
-    next({ status: 500, message: 'Something went wrong!' });
+    next({ status: 500, message: error.message });
   }
 };
 

@@ -82,7 +82,7 @@ const signup = async (req, res, next) => {
         throw { status: 405, message: 'User already exists!' };
     } catch (error) {}
 
-    let randomNumber = getRandomString(5, '0123456789');
+    let randomNumber = getRandomString(3, '0123456789');
     let uname = fname.toLowerCase().trim().replace(' ', '') + randomNumber;
 
     // Hash the password and do the rest in the callback function
@@ -128,10 +128,6 @@ const getAssociatedProjects = async (req, res, next) => {
     if(admin[0].email == req.userEmail){
       query = `SELECT * FROM projects`;
     }
-    //TODO: check for admin, if admin show all project
-    // if(isAdmin){
-    //   query = `SELECT * FROM projects`;
-    // }
 
     const projects = await query_resolver(default_pool, query);
 
