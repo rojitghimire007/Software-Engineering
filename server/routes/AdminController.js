@@ -19,6 +19,10 @@ const postProject = async (req, res, next) => {
       start_date,
       end_date } = req.body;
     
+    if(pname.match(/\s/g) || pname == null){ //checks if project name is null or just whitespace
+      throw {status: 500, message: "Project name can't be null or empty"}
+    }
+
     const dbname = pname.trim().toLowerCase().replace(/[^a-zA-Z0-9]/g, "") + getRandomString(5, '0123456789');
     
     const projObj = {

@@ -15,7 +15,6 @@ const login = async (req, res, next) => {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
     });
-    console.log('users');
 
     if (user.rows.length == 0)
       return next({
@@ -45,11 +44,20 @@ const login = async (req, res, next) => {
           expiresIn,
         }
       );
+      
+      let isAdmin = false;
+      const checkAdmin = await query_resolver(default_pool, {
+        text: `SELECT * FROM admin WHERE email=$1`,
+        values: [email]
+      });
+
+      if(checkAdmin.length > 0) isAdmin = true;
 
       return res.status(200).send({
         success: true,
         message: 'User Logged In!',
         token: token,
+        isAdmin
       });
     });
   } catch (err) {
@@ -115,6 +123,11 @@ const getAssociatedProjects = async (req, res, next) => {
       values: [req.uname],
     };
 
+    const admin = await query_resolver(default_pool, `Select email FROM admin`);
+
+    if(admin[0].email == req.userEmail){
+      query = `SELECT * FROM projects`;
+    }
     //TODO: check for admin, if admin show all project
     // if(isAdmin){
     //   query = `SELECT * FROM projects`;

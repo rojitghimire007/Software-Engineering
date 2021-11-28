@@ -1,4 +1,3 @@
-const { query } = require("express");
 const { query_resolver, connect_project_db } = require("../utils/dbHandler");
 
 const cutPipe = async (req, res, next) => {
@@ -70,11 +69,11 @@ const getCuttingEligiblePipes = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);
     let allPipeExceptString = await query_resolver(connection, {
-      text: `SELECT id FROM pipe WHERE id !~ '[0-9]+[A-Z]' AND is_void!=TRUE AND is_cut!=TRUE EXCEPT ALL SELECT SUBSTRING(item_id, 3) AS id FROM stringing WHERE SUBSTR(item_id, 0, 3)='p_'`
+      text: `SELECT id FROM pipe WHERE id !~ '[0-9]+[A-Z]' AND (is_void!=TRUE OR is_void IS NULL) AND is_cut!=TRUE EXCEPT ALL SELECT SUBSTRING(item_id, 3) AS id FROM stringing WHERE SUBSTR(item_id, 0, 3)='P_'`
     });
 
     let cutMaxPipeExceptString = await query_resolver(connection, {
-      text: `SELECT  MAX(id) as id FROM pipe WHERE id ~ '[0-9]+[A-Z]' AND is_void!=TRUE AND is_cut!=TRUE GROUP BY SUBSTR(id, 0, LENGTH(id)) EXCEPT ALL SELECT SUBSTRING(item_id, 3) AS id FROM stringing WHERE SUBSTR(item_id, 0, 3)='p_'`
+      text: `SELECT  MAX(id) as id FROM pipe WHERE id ~ '[0-9]+[A-Z]' AND (is_void!=TRUE OR is_void IS NULL) AND is_cut!=TRUE GROUP BY SUBSTR(id, 0, LENGTH(id)) EXCEPT ALL SELECT SUBSTRING(item_id, 3) AS id FROM stringing WHERE SUBSTR(item_id, 0, 3)='P_'`
     });
 
     const result = allPipeExceptString.concat(cutMaxPipeExceptString);

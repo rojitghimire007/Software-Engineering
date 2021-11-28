@@ -1,32 +1,11 @@
-import React, { createRef, forwardRef, useEffect, useState } from 'react';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MaterialTable, { MTableToolbar } from 'material-table';
-import { tableIcons } from 'utils/tableIcons';
-import api from 'api';
-import { unstable_batchedUpdates } from 'react-dom';
-import { MenuItem } from '@mui/material';
-import {
-  Typography,
-  AppBar,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  CardHeader,
-  CssBaseline,
-  Grid,
-  Toolbar,
-  Button,
-  TextField,
-  Container,
-  CardActionArea,
-} from '@material-ui/core';
-import useStyles from '../../style/ShowFittingsStyles';
-import ColorScheme from '../../style/ColorScheme';
-import Footer from '../../components/Footer';
-import MenuAppBar from '../../components/AppBar';
-import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import React, { createRef, useEffect, useState } from "react";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import MaterialTable, { MTableToolbar } from "material-table";
+import { tableIcons } from "utils/tableIcons";
+import api from "api";
+import { Typography, CssBaseline, Toolbar } from "@material-ui/core";
+import useStyles from "../../style/ShowFittingsStyles";
+import MenuAppBar from "../../components/AppBar";
 
 interface dataType {
   id: number;
@@ -49,39 +28,15 @@ interface dataType {
 
 const ShowFittings = () => {
   const materialTableRef = createRef();
-  let date = new Date();
 
   const [initialFormData, setInitialFormData] = useState({});
-  const [data, setData] = useState<dataType[]>([
-    // {
-    //     id: 1234,
-    //     inspector: "Todd Deville",
-    //     location: "Shreveport",
-    //     dimension: "20",
-    //     style: "Tee",
-    //     wall_thickness: 0.375,
-    //     grade: "Y65",
-    //     heat_number: "A15AAT",
-    //     mfg: "Hackney Ladish",
-    //     coating_type: "Bare",
-    //     description: "Barred",
-    //     material: "Steel",
-    //     purchase_order: 6969420,
-    //     smart_label: '',
-    // }
-  ]);
-
-  // const [schedules, setSchedules] = useState({});
-  // const [grades, setGrades] = useState({});
-  // const [coatings, setCoatings] = useState({});
-  // const [materials, setMaterials] = useState({});
-  // const [po_numbers, setPO_numbers] = useState({});
+  const [data, setData] = useState<dataType[]>([]);
 
   useEffect(() => {
     api
       .getFittings()
       .then((res) => {
-        setData(res.fittings);
+        setData(res.data);
       })
       .catch((err) => alert(err.message));
   }, []);
@@ -95,28 +50,7 @@ const ShowFittings = () => {
       })
       .catch((err) => alert(err.message));
   };
-  /*
-  const onRowUpdate = (newData: dataType, oldData: dataType | undefined) => {
-    return api
-      .editPipe(
-        {
-          oldData,
-          newData,
-        },
-        oldData ? oldData.id : ''
-      )
-      .then((res) => {
-        const dataUpdate = [];
-        for (let i = 0; i < data.length; i++) {
-          if (oldData && data[i].id == oldData.id) dataUpdate.push(newData);
-          else dataUpdate.push(data[i]);
-        }
-        setData([...dataUpdate]);
 
-        console.log(res);
-      })
-      .catch((err) => alert(err.message));
-  };*/
   const classes = useStyles();
 
   return (
@@ -139,25 +73,16 @@ const ShowFittings = () => {
               filtering: true,
               search: true,
               columnsButton: true,
-              loadingType: 'linear',
+              loadingType: "linear",
               draggable: true,
-              // padding: 'dense',
               showTextRowsSelected: true,
-              // selection: true,
-              toolbarButtonAlignment: 'left',
+              toolbarButtonAlignment: "left",
               pageSize: 10,
               pageSizeOptions: [5, 10, 25, 50],
               actionsCellStyle: { zIndex: 999 },
-              maxBodyHeight: '70vh',
-              minBodyHeight: '35vh',
+              maxBodyHeight: "70vh",
+              minBodyHeight: "35vh",
               exportButton: true,
-              /*exportFileName:
-                'Fitting_Data_' +
-                date.getFullYear() +
-                '_' +
-                (date.getMonth() + 1) +
-                '_' +
-                date.getDate(),*/
             }}
             //removes title toolbar
             components={{
@@ -166,66 +91,66 @@ const ShowFittings = () => {
                   <MTableToolbar {...props} />
                 </div>
               ),
-              // Toolbar: (props) => (
-              //   <div
-              //     style={{
-              //       height: '0px',
-              //     }}
-              //   >
-              //     <MTableToolbar {...props} />
-              //   </div>
-              // ),
             }}
             columns={[
-              { title: 'Void', field: 'isvoid', type: 'boolean' },
-              { title: 'Date', field: 'inventory_date', editable: 'never' },
-              { title: 'Inspector', field: 'inspector', editable: 'never' },
-              { title: 'ID', field: 'id' },
-              { title: 'Location', field: 'location' },
-              { title: 'Dimensions', field: 'dimension' },
-              { title: 'Style', field: 'style' },
-              { title: 'Type' },
-              { title: 'Wall Thickness', field: 'wall_thickness' },
-              { title: 'Grade Type', field: 'grade' },
-              { title: 'Heat Number', field: 'heat_number' },
-              { title: 'Manufacturer', field: 'mfg', editable: 'never' },
-              { title: 'Length', field: 'length' },
-              { title: 'Coating', field: 'coating_type' },
-              { title: 'Description', field: 'description' },
-              { title: 'Material', field: 'material' },
-              { title: 'P.O. Number', field: 'purchase_order' },
-              { title: 'Smart Label', field: 'smart_label' },
-              { title: 'Comments', field: 'comments' },
+              { title: "Void", field: "is_void", type: "boolean" },
+              {
+                title: "Date",
+                field: "created_on",
+                type: "date",
+                editable: "never",
+              },
+              { title: "Inspector", field: "created_by", editable: "never" },
+              { title: "ID", field: "id" },
+              { title: "Location", field: "flocation" },
+              { title: "Dimensions", field: "dimension" },
+              { title: "Style", field: "style" },
+              { title: "Type", field: "ftype" },
+              { title: "Wall Thickness", field: "thickness" },
+              { title: "Grade Type", field: "grade" },
+              { title: "Heat Number", field: "heat_number" },
+              {
+                title: "Manufacturer",
+                field: "manufacture",
+                editable: "never",
+              },
+              { title: "Length", field: "flength" },
+              { title: "Coating", field: "coat" },
+              { title: "Description", field: "fdescription" },
+              { title: "Material", field: "material_type" },
+              { title: "P.O. Number", field: "po_number" },
+              { title: "Smart Label", field: "smart_label" },
+              { title: "Comments", field: "comment" },
             ]}
             data={data}
             tableRef={materialTableRef}
             initialFormData={initialFormData}
             editable={{
               onRowAddCancelled: (rowData) =>
-                console.log('Row adding cancelled'),
+                console.log("Row adding cancelled"),
               onRowUpdateCancelled: (rowData) =>
-                console.log('Row editing cancelled'),
+                console.log("Row editing cancelled"),
               onRowAdd: onRowAdd,
               onRowUpdate: (newData, oldData) => {
                 console.log(newData);
 
                 return new Promise((resolve, reject) => {
                   setTimeout(() => {
-                    resolve('Row Updated');
+                    resolve("Row Updated");
                   }, 1000);
                 });
               },
               onRowDelete: (oldData) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
-                    resolve('Row Deleted');
+                    resolve("Row Deleted");
                   }, 1000);
                 }),
             }}
             actions={[
               {
                 icon: () => <LibraryAddIcon />,
-                tooltip: 'Duplicate Fitting',
+                tooltip: "Duplicate Fitting",
                 onClick: (event, rowData) => {
                   const materialTable = materialTableRef.current;
 
@@ -243,14 +168,6 @@ const ShowFittings = () => {
                     ...(materialTable as any).dataManager.getRenderState(),
                     showAddRow: true,
                   });
-
-                  //headerStyle: {backgroundColor: classes.headerStyle},
-                  /*rowStyle: (rowData) => ({
-                    backgroundColor: rowData.color ? rowData.color : null,
-                    color: rowData.color ? 'white' : 'black',
-                  }),
-                  columnsButton: true,
-                }}*/
                 },
               },
             ]}

@@ -192,7 +192,7 @@ const editFitting = async (req, res, next) => {
 const getFittings = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);
-    const query = `SELECT * from fitting JOIN fitting_shared_info USING (fitting_shared_id)`;
+    const query = `SELECT * from fitting JOIN fitting_shared_info USING (fitting_shared_id) JOIN fitting_heat ON fitting_heat.fitting_heat_id = fitting_shared_info.fitting_heat_id`;
     const fittings = await query_resolver(connection, query);
 
     res.status(200).send({
