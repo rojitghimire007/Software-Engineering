@@ -1,5 +1,6 @@
-import trenching from 'img/trenching.png';
+import trenchPlugs from 'img/Bending.png';
 import SubCarousel from '../SubCarousel';
+
 
 
 const links = [
@@ -7,26 +8,26 @@ const links = [
     {
       parent: 'ConstructionTeam',
       link: '/',
-      id: 'Excavator',
-      image: trenching,
+      id: 'Spray Foam',
+      image: trenchPlugs,
     },
     {
       parent: 'ConstructionTeam',
       link: '/',
-      id: 'Ditching Machine',
-      image: trenching,
+      id: 'Sand Bags',
+      image: trenchPlugs,
     },
     {
       parent: 'ConstructionTeam',
-      link: '/dashboard/blasting',
-      id: 'Blasting',
-      image: trenching,
+      link: '/',
+      id: 'Gravel Bags',
+      image: trenchPlugs,
     },
   ];
 
-const Trenching = () => {
+const TrenchPlugs = () => {
     return (
         SubCarousel(links)
     );
 }
-export default Trenching;
+export default TrenchPlugs;

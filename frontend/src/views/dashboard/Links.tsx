@@ -73,7 +73,7 @@ const links = [
       image: bendingImg,
 
       parent2: 'Coating',
-      link2: '/coating',
+      link2: '/dashboard/coating',
       id2: 'Coating',
       image2: coatingImg,
 
@@ -231,14 +231,14 @@ const links = [
         image2: rockShield,
 
         parent3: 'Padding',
-        link3: '',
+        link3: '/dashboard/padding',
         id3: 'Padding',
         image3: padding,
     },
 
     {
         parent: 'Lowering',
-        link: '',
+        link: '/dashboard/lowering',
         id: 'Lowering',
         image: lowering,
 
@@ -260,36 +260,36 @@ const links = [
         image: abandonment,
 
         parent2: 'Pigs',
-        link2: '',
+        link2: '/dashboard/pigs',
         id2: 'Pigs',
         image2: pigs,
 
         parent3: 'HydrostaticTesting',
-        link3: '',
+        link3: '/dashboard/hydrostaticTesting',
         id3: 'Hydrostatic Testing',
         image3: hydrostaticTesting,
     },
 
     {
         parent: 'Restoration',
-        link: '',
+        link: '/dashboard/restoration',
         id: 'Restoration',
         image: restoration,
 
         parent2: 'InspectorReports',
-        link2: '',
+        link2: '/dashboard/inspectorReports',
         id2: 'Inspector Reports',
         image2: inspectorReports,
 
         parent3: 'Safety',
-        link3: '',
+        link3: '/dashboard/safety',
         id3: 'Safety',
         image3: safety,
     },
 
     {
         parent: 'WeatherTracking',
-        link: '',
+        link: '/dashboard/weatherTracking',
         id: 'WeatherTracking',
         image: weatherTracking,
 
