@@ -362,7 +362,6 @@ const ShowPipes = () => {
               {
                 title: "Manufacturer",
                 field: "manufacturer",
-                editable: "never",
               },
               {
                 title: "Diameter",
@@ -454,7 +453,7 @@ const ShowPipes = () => {
                   </Select>
                 ),
               },
-              { title: "Material", field: "material_type", lookup: materials },
+              { title: "Material", field: "material_type", type: 'string'},
               { title: "P.O.", field: "po_number" /*lookup: po_numbers*/ },
               { title: "Smart Label", field: "smart_label" },
               { title: "Comments", field: "comments" },

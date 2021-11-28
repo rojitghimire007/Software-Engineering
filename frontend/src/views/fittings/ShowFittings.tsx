@@ -112,7 +112,6 @@ const ShowFittings = () => {
               {
                 title: "Manufacturer",
                 field: "manufacture",
-                editable: "never",
               },
               { title: "Length", field: "flength" },
               { title: "Coating", field: "coat" },

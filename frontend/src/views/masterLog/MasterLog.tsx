@@ -206,7 +206,7 @@ const MasterLog = () => {
               },
               {
                 title: "Bending Inspector",
-                field: "binscp",
+                field: "bendPer",
                 type: "string",
                 cellStyle: {
                   border: "solid",
@@ -237,7 +237,7 @@ const MasterLog = () => {
                 },
               },
               {
-                title: "Welding",
+                title: "Welding Inspector",
                 field: "weld",
                 type: "string",
                 cellStyle: {
