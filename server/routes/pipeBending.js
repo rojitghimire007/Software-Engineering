@@ -118,8 +118,4 @@ const getBend = async (req, res, next) => {
   }
 }
 
-// const result = await query_resolver(connection, {
-//   text: `select ARRAY_AGG(id || CASE WHEN coil_number is not null THEN ' ' ||  coil_number ELSE '' END) from pipe group by plength`
-// });
-
 module.exports = { bendPipe, removeBend, updateBend, getBend };
