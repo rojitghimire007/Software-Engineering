@@ -9,7 +9,7 @@ const pipeQueries = {
   addPipe:
     'INSERT INTO pipe(id, pipe_shared_id, plength, updated_by, plocation, coil_number, comment, is_void, is_used) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)',
   allPipes:
-    'SELECT id, diameter, schedule, grade, is_void AS void, updated_on AS date, updated_by AS inspector, plocation AS location, coil_number AS coil_no, heat_number AS heat_no, thickness AS wall_thickness, plength AS length, coat AS coating, color AS coating_color, manufacture AS manufacturer, material_type, po_number, comment AS comments FROM pipe JOIN pipe_shared_info USING (pipe_shared_id) JOIN pipe_heat USING (pipe_heat_id) JOIN pipe_ref USING (pipe_ref_id) JOIN pipe_coat USING (coat);',
+    'SELECT id, diameter, schedule, grade, is_void AS void, is_cut AS cut, is_used AS used, updated_on AS date, updated_by AS inspector, plocation AS location, coil_number AS coil_no, heat_number AS heat_no, thickness AS wall_thickness, plength AS length, coat AS coating, color AS coating_color, manufacture AS manufacturer, material_type, po_number, comment AS comments FROM pipe JOIN pipe_shared_info USING (pipe_shared_id) JOIN pipe_heat USING (pipe_heat_id) JOIN pipe_ref USING (pipe_ref_id) JOIN pipe_coat USING (coat);',
   onePipe:
     'SELECT id, diameter, schedule, grade, is_void AS void, updated_on AS date, updated_by AS inspector, plocation AS location, coil_number AS coil_no, heat_number AS heat_no, thickness AS wall_thickness, plength AS length, coat AS coating, color AS coating_color, manufacture AS manufacturer, material_type, po_number, comment AS comments FROM pipe JOIN pipe_shared_info USING (pipe_shared_id) JOIN pipe_heat USING (pipe_heat_id) JOIN pipe_ref USING (pipe_ref_id) JOIN pipe_coat USING (coat) where id = $1;',
   updatePipe:
