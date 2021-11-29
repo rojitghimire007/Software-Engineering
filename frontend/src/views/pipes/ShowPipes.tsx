@@ -220,7 +220,7 @@ const ShowPipes = () => {
     <>
       <div className={classes.wrapper}>
         {/* {console.log(date)} */}
-        <div>
+        
           <MenuAppBar />
           <CssBaseline />
           <Toolbar className={classes.title}>
@@ -228,7 +228,7 @@ const ShowPipes = () => {
               Pipe Inventory
             </Typography>
           </Toolbar>
-        </div>
+        
 
         {colorPicker ? (
           <Backdrop open={colorPicker} style={{ zIndex: 99999 }}>

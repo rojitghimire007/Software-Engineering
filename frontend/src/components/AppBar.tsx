@@ -117,14 +117,14 @@ const MenuAppBar = (props: { history: any }) => {
             </Button>
             <Button
               className={classes.button}
-              onClick={() => handleButtonsClick("/dashboard")}
+              onClick={() => handleButtonsClick("/training")}
             >
               {" "}
               Training{" "}
             </Button>
             <Button
               className={classes.button}
-              onClick={() => handleButtonsClick("/dashboard")}
+              onClick={() => handleButtonsClick("/careers")}
             >
               {" "}
               Careers{" "}
