@@ -11,6 +11,8 @@ const {
   getOptions,
   deletePipe,
   editPipe,
+  addCoating,
+  getCoating,
 } = require('./PipeContoller');
 
 const { addFittings, getFittings, editFitting } = require('./FittingContoller');
@@ -97,6 +99,10 @@ const SetRoutes = (app) => {
   app.get('/welding', getWeld);
   app.post('/welding', postWeld);
   app.put('/welding', editWeld);
+
+  //coating
+  app.post('/coating', addCoating);
+  app.get('/coating', getCoating)
 };
 
 module.exports = { SetRoutes };
