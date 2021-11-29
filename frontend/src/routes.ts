@@ -68,7 +68,7 @@ const routes: {
     exact: true,
     name: "Project Users",
     component: ListUser,
-  },
+  }
 ];
 
 export default routes;
