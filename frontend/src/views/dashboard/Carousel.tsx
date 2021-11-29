@@ -3,15 +3,24 @@ import { Carousel, CarouselItem } from "react-round-carousel";
 import "./Carousel.css";
 import Slides from "./Links";
 
-import { useHistory } from "react-router"; // history.push('theLink')
-
 const links = Slides();
 
 const RunCarousel = () => {
+  const opacityHandler = () => {};
+
   const [focused, setFocused] = useState(0);
   const [rotating, setRotating] = useState(false);
   const [testString, setTestString] = useState("(test me here)");
-  const history = useHistory();
+
+  const [circleQueue, setCircleQueue] = useState(
+    links.map((item, index) => ({
+      prev: index - 1 < 0 ? links.length - 1 : index - 1,
+      index: index,
+      focusState: index === focused ? true : false,
+      next: index + 1 > links.length - 1 ? 0 : index + 1,
+      opacity: 1,
+    }))
+  );
 
   const templatePromise = (func: any, params: any) => {
     setTimeout(() => {
@@ -19,24 +28,45 @@ const RunCarousel = () => {
     }, 2);
   };
 
-  let circleQueue = links.map((item, index) => ({
-    prev: index - 1 < 0 ? links.length - 1 : index - 1,
-    index: index,
-    focusState: index === focused ? true : false,
-    next: index + 1 > links.length - 1 ? 0 : index + 1,
-  }));
-
   useEffect(() => {
-    circleQueue = links.map((item, index) => ({
-      prev: index - 1 < 0 ? links.length - 1 : index - 1,
-      index: index,
-      focusState: index === focused ? true : false,
-      next: index + 1 > links.length ? 0 : index + 1,
-    }));
+    setCircleQueue(
+      links.map((item, index) => ({
+        prev: index - 1 < 0 ? links.length - 1 : index - 1,
+        index: index,
+        focusState: index === focused ? true : false,
+        next: index + 1 > links.length - 1 ? 0 : index + 1,
+        opacity: handleOpacity(index),
+      }))
+    );
+    console.log(...circleQueue);
   }, [focused]);
 
-  const handleOpacity = () => {
-    return 1; // full opacity
+  const handleOpacity = (index: any) => {
+    const LR3 = 0.5;
+    const LR2 = 0.7;
+    const LR1 = 0.95;
+    const cen = 1;
+    let give = 0;
+
+    //   console.log(item.opacity + " " + index);
+
+    //   if (item.index === focused) return cen;
+
+    // arr.forEach((item: any, index: any) => {
+    if (index === focused) {
+      give = cen;
+    } else if (index === focused - 1 || index === focused + 1) {
+      give = LR1;
+    } else if (index === focused - 2 || index === focused + 2) {
+      give = LR2;
+    } else if (index === focused - 3 || index === focused + 3) {
+      give = LR3;
+    } else {
+      give = 0.15;
+    }
+    // });
+
+    return give;
   };
 
   // Create an array of Carousel Items
@@ -47,7 +77,10 @@ const RunCarousel = () => {
       <>
         <div
           style={{
+            transition: "opacity .3s ease-in-out",
+            opacity: `${circleQueue[index].opacity}`,
             //   opacity: {focused === index? return '1' : return'.3'},
+            width: "100%",
             height:
               "100%" /* opacity: `${(index: any) => (focusArray[index].focused ? 1: 0)}` */,
           }}
@@ -136,7 +169,22 @@ const RunCarousel = () => {
         {circleQueue.map((item, index) => {
           return (
             <div style={{ background: "green", color: "white", margin: "2px" }}>
-              {focused === index ? "-II-" : "---"}
+              {focused === index
+                ? "-F-"
+                : index === focused - 1 || index === focused + 1
+                ? "-1-"
+                : index === focused - 2 || index === focused + 2
+                ? "-2-"
+                : index === focused - 3 || index === focused + 3
+                ? "-3-"
+                : "---"}
+            </div>
+          );
+        })}
+        {circleQueue.map((item, index) => {
+          return (
+            <div style={{ background: "green", color: "white", margin: "2px" }}>
+              {item.focusState}
             </div>
           );
         })}
@@ -196,82 +244,6 @@ const RunCarousel = () => {
       </div>
       <div
         style={{
-          background: "white",
-          position: "absolute",
-          left: "0px",
-          bottom: "0px",
-        }}
-      >
-        <h3>Circle Queue State :::::: TESTING</h3>
-        <h4>
-          Array Size = {circleQueue.length} Focused on = {focused}
-        </h4>
-        <h4>
-          rotating? {rotating.toString()} testString: {testString}
-        </h4>
-        <div
-          style={{
-            border: "3px solid black",
-            color: "black",
-            display: "flex",
-            flexFlow: "column nowrap",
-          }}
-        >
-          {circleQueue.map((item: any, index: any) => {
-            return (
-              <div
-                style={{
-                  display: "flex",
-                  flexFlow: "row nowrap",
-                  width: "100%",
-                  //   borderWidth: "0 2xp 0 0",
-                  //   borderStyle: "dashed",
-                  justifyContent: "space-evenly",
-                }}
-              >
-                <div
-                  style={{
-                    background: "rgba(244,10,0,.5)",
-                    flexGrow: 1,
-                    flexShrink: 0.75,
-                  }}
-                >
-                  previous: {item.prev}
-                </div>
-                <div
-                  style={{
-                    background: "rgba(0,230,150,.6)",
-                    flexGrow: 1,
-                    flexShrink: 0.75,
-                  }}
-                >
-                  index: {item.index}
-                </div>
-                <div
-                  style={{
-                    background: "rgba(244,10,0,.5)",
-                    flexGrow: 1,
-                    flexShrink: 0.75,
-                  }}
-                >
-                  Next: {item.next}
-                </div>
-                <div
-                  style={{
-                    background: "rgba(0,230,150,.6)",
-                    flexGrow: 1,
-                    flexShrink: 0.75,
-                  }}
-                >
-                  focus?: {item.focusState.toString()}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div
-        style={{
           position: "fixed",
           top: 0,
           left: 0,
@@ -281,7 +253,13 @@ const RunCarousel = () => {
         }}
       >
         {rotating ? testString : ""}
+        <div>{`prev: ${circleQueue[focused].prev}`}</div>
         <div>{`Next: ${circleQueue[focused].next}`}</div>
+        {/* First: 0 <div />
+        Halfway: {Math.floor(circleQueue.length / 2)}
+        <div />
+        Last: {circleQueue.length - 1}
+        <div /> */}
       </div>
     </div>
   );
