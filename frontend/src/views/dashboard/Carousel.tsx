@@ -41,6 +41,17 @@ const RunCarousel = () => {
     console.log(...circleQueue);
   }, [focused]);
 
+  const [clickable, setClickable] = useState([
+    -1, -1, -1, -1, -1, -1, -1, -1, -1,
+  ]);
+
+  //   const handleClickLocations = (index: any, operation: any) => {
+  //       if (operation === 'makeClickable')
+  //         setClickable([clickable.shift()])
+  //     else if (operation === 'makeUnclickable')
+  //         setClickable([clickable.push()])
+  //   }
+
   const handleOpacity = (index: any) => {
     const LR3 = 0.5;
     const LR2 = 0.7;
@@ -55,16 +66,49 @@ const RunCarousel = () => {
     // arr.forEach((item: any, index: any) => {
     if (index === focused) {
       give = cen;
-    } else if (index === focused - 1 || index === focused + 1) {
+    } else if (
+      index === focused - 1 ||
+      index === focused + 1 ||
+      (index === circleQueue.length - 1 && focused === 0) ||
+      (index === 0 && focused === circleQueue.length - 1)
+    ) {
       give = LR1;
-    } else if (index === focused - 2 || index === focused + 2) {
+    } else if (
+      index === focused - 2 ||
+      index === focused + 2 ||
+      (index === circleQueue.length - 2 && focused === 0) ||
+      (index === circleQueue.length - 1 && focused === 1) ||
+      (index === 1 && focused === circleQueue.length - 1) ||
+      (index === 0 && focused === circleQueue.length - 2)
+    ) {
       give = LR2;
-    } else if (index === focused - 3 || index === focused + 3) {
+    } else if (
+      index === focused - 3 ||
+      index === focused + 3 ||
+      (index === circleQueue.length - 3 && focused === 0) ||
+      (index === circleQueue.length - 2 && focused === 1) ||
+      (index === circleQueue.length - 1 && focused === 2) ||
+      (index === 2 && focused === circleQueue.length - 1) ||
+      (index === 1 && focused === circleQueue.length - 2) ||
+      (index === 0 && focused === circleQueue.length - 3)
+    ) {
       give = LR3;
-    } else {
-      give = 0.15;
-    }
-    // });
+      // } else if (
+      //   (index === 2 || index === circleQueue.length - 3) &&
+      //   index != focused
+      // ) {
+      //   give = 0.3;
+      // } else if (
+      //   (index === 1 || index === circleQueue.length - 2) &&
+      //   index != focused
+      // ) {
+      //   give = 0.25;
+      // } else if (
+      //   (index === 0 || index === circleQueue.length - 1) &&
+      //   index != focused
+      // ) {
+      //   give = 0.2;
+    } else give = 0.15;
 
     return give;
   };
@@ -133,20 +177,6 @@ const RunCarousel = () => {
   }));
 
   const handleClick = (i: number, typeOfIt: string) => {
-    // if (focused + 1 * i < 0) {
-    //   setTestString(`${typeOfIt} ${focused} + ${i} < 0`);
-    //   return circleQueue.length - 1;
-    // } else if (focused + i > circleQueue.length) {
-    //   setTestString(
-    //     `${typeOfIt} ${focused} + ${i} {i.e. ${focused + i}} > ${
-    //       circleQueue.length
-    //     }`
-    //   );
-    //   return 0;
-    // } else {
-    //   setTestString(`NO DECISION: ${i} is the number, ${focused} is focused`);
-    //   return focused;
-    // }
     setTestString(`input: ${i + focused}   focus: ${focused + i}`);
     i === 1
       ? setFocused(circleQueue[focused].next)
@@ -166,21 +196,45 @@ const RunCarousel = () => {
           right: 0,
         }}
       >
-        {circleQueue.map((item, index) => {
+        {/* {circleQueue.map((item, index) => {
           return (
             <div style={{ background: "green", color: "white", margin: "2px" }}>
               {focused === index
                 ? "-F-"
                 : index === focused - 1 || index === focused + 1
                 ? "-1-"
+                : index === circleQueue.length - 1 && focused === 0
+                ? "-1-"
+                : index === 0 && focused === circleQueue.length - 1
+                ? "-1-"
                 : index === focused - 2 || index === focused + 2
                 ? "-2-"
+                : index === circleQueue.length - 2 && focused === 0
+                ? "-2-"
+                : index === circleQueue.length - 1 && focused === 1
+                ? "-2-"
+                : index === 1 && focused === circleQueue.length - 1
+                ? "-2-"
+                : index === 0 && focused === circleQueue.length - 2
+                ? "-2-"
                 : index === focused - 3 || index === focused + 3
+                ? "-3-"
+                : index === circleQueue.length - 3 && focused === 0
+                ? "-3-"
+                : index === circleQueue.length - 2 && focused === 1
+                ? "-3-"
+                : index === circleQueue.length - 1 && focused === 2
+                ? "-3-"
+                : index === 2 && focused === circleQueue.length - 1
+                ? "-3-"
+                : index === 1 && focused === circleQueue.length - 2
+                ? "-3-"
+                : index === 0 && focused === circleQueue.length - 3
                 ? "-3-"
                 : "---"}
             </div>
           );
-        })}
+        })} */}
         {circleQueue.map((item, index) => {
           return (
             <div style={{ background: "green", color: "white", margin: "2px" }}>
@@ -202,12 +256,12 @@ const RunCarousel = () => {
             <button
               style={{
                 position: "relative",
-                bottom: "20%",
-                right: "19%",
+                // bottom: "20%",
+                // right: "19%",
                 opacity: "1",
-                width: "2.5rem",
-                height: "2.5rem",
-                borderRadius: "50%",
+                width: "4rem",
+                height: "4rem",
+                borderRadius: "30%",
                 zIndex: 5,
               }}
               onClick={(e: any) => {
@@ -223,12 +277,12 @@ const RunCarousel = () => {
             <button
               style={{
                 position: "relative",
-                top: 0,
-                left: 0,
+                // top: 0,
+                right: "70%",
                 opacity: "1",
-                width: "2.5rem",
-                height: "2.5rem",
-                borderRadius: "50%",
+                width: "4rem",
+                height: "4rem",
+                borderRadius: "30%",
                 zIndex: 5,
               }}
               onClick={(e: any) => {
@@ -242,7 +296,7 @@ const RunCarousel = () => {
           }
         />
       </div>
-      <div
+      {/* <div
         style={{
           position: "fixed",
           top: 0,
@@ -260,7 +314,7 @@ const RunCarousel = () => {
         <div />
         Last: {circleQueue.length - 1}
         <div /> */}
-      </div>
+      {/* </div> */}
     </div>
   );
 };

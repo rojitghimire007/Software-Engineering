@@ -8,7 +8,7 @@
   margin-right: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   /* border: 2px solid; */
   border-radius: 10px;
 }
@@ -78,7 +78,7 @@
     top: 0.625rem; */
   left: -2.4rem; /* THIS PART WILL DETERMINE THE CENTER OF THE CYLINDER */
   top: 0.625rem;
-  border: 0.125rem solid;
+  /* border: 0.125rem solid; */
   transition: transform 1s, opacity 1s;
 }
 
@@ -134,7 +134,7 @@
 .filler :first-child {
   height: 100%;
   /* padding: 10px; */
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
   grid-column: 1 / 1;
   grid-row: 1 / 1;
   display: flex;
@@ -145,7 +145,7 @@
 .filler :nth-child(2) {
   height: 100%;
   padding: 10px;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   grid-column: 1 / 1;
   grid-row: 2 / 2;
   display: flex;
@@ -156,7 +156,7 @@
 .filler :nth-child(3) {
   height: 100%;
   padding: 10px;
-  border: 2px solid green;
+  /* border: 2px solid green; */
   grid-column: 1 / 1;
   grid-row: 3 / 3;
   display: flex;
@@ -182,10 +182,33 @@
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
-  padding-top: 2rem;
+  padding-top: 10rem;
+  opacity: 1;
+  z-index: 9999999;
 }
 
-.carousel__control {
+.carousel__control--next {
+  background: rgba(0, 0, 0, 0);
+  border: none;
+}
+.carousel__control--next::before {
+  opacity: 0;
+}
+.carousel__control--next::after {
+  opacity: 0;
+}
+.carousel__control--prev {
+  background: rgba(0, 0, 0, 0);
+  border: none;
+}
+.carousel__control--prev::before {
+  opacity: 0;
+}
+.carousel__control--prev::after {
+  opacity: 0;
+}
+
+/* .carousel__control {
   font-size: 0;
   line-height: 0;
   text-indent: 0;
@@ -195,12 +218,11 @@
   position: relative;
   border: 1px solid;
   margin: 0 2rem;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 50%;
-  box-shadow: none;
-}
+  /* background: rgba(0, 0, 0, 0.7); */
+/* border-radius: 50%; */
+/* box-shadow: none; }*/
 
-.carousel__control:after,
+/* .carousel__control:after,
 .carousel__control:before {
   content: "";
   display: block;
@@ -235,7 +257,7 @@
 
 .carousel__control--prev:after {
   transform: rotate(45deg);
-}
+} */
 
 a {
   text-decoration: none;
