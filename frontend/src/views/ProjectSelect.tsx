@@ -145,19 +145,21 @@ const ProjectSelect = () => {
               className={classes.btn}
               onClick={() => history.push("/create-project")}
             >
-              CREATE
+              CREATE PROJECT
             </div>
           ) : (
             <> </>
           )}
-          {/* <div
-            className={classes.btn}
-            onClick={() => {
-              console.log(projectDetails);
-            }}
-          >
-            REFRESH CONSOLE
-          </div> */}
+          {getLocalStorage("isAdmin") ? (
+            <div
+              className={classes.btn}
+              onClick={() => history.push("/create/user")}
+            >
+              CREATE USER
+            </div>
+          ) : (
+            <> </>
+          )}
         </div>
       </div>
     </div>

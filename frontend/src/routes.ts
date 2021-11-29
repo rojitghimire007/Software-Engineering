@@ -13,6 +13,7 @@ import DashboardInventory from "views/dashboard/submenus/DashboardInventory";
 import BendInfo from "views/bending/BendInfo";
 import MasterLog from "views/masterLog/MasterLog";
 import ListUser from "views/userListProj/ListUser";
+import SignUpUser from "views/administrative/SignUpUser";
 
 const Dashboard = React.lazy(() => import("views/dashboard/Dashboard"));
 const Login = React.lazy(() => import("views/Login"));
@@ -68,6 +69,12 @@ const routes: {
     exact: true,
     name: "Project Users",
     component: ListUser,
+  },
+  {
+    path:"/create/user",
+    exact: true,
+    name: "SignUp",
+    component: SignUpUser
   }
 ];
 
