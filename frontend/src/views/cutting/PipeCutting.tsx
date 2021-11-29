@@ -28,6 +28,8 @@ const PipeCutting = () => {
   const [open, setOpen] = useState(false);
   const loading = open && eligiblePipes.length === 0;
 
+  const [resetEnvironment, setResetEnvironment] = useState(false);
+
   useEffect(() => {
     api
       .getCuttingEligiblePipes()
@@ -51,7 +53,7 @@ const PipeCutting = () => {
         // console.log(eligibleLength)
       })
       .catch((err) => {
-        alert(err.message);
+        console.log(err.message + "... may be awaiting response?");
       });
   }, [selectedPipe != ""]);
 
@@ -164,7 +166,24 @@ const PipeCutting = () => {
         </Dialog>
       ) : null}
       {pipeChosen && selectedPipe != "" ? (
-        <NewCutting id={selectedPipe} length={eligibleLength} />
+        <>
+          {!resetEnvironment ? (
+            <NewCutting
+              id={selectedPipe}
+              length={eligibleLength}
+              reset={setResetEnvironment}
+            />
+          ) : (
+            <>
+              {setResetEnvironment(true)}
+              <NewCutting
+                id={selectedPipe}
+                length={eligibleLength}
+                reset={setResetEnvironment}
+              />
+            </>
+          )}
+        </>
       ) : null}
     </>
   );

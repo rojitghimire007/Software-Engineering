@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./newCuttingStyles.module.css";
+import CuttingVisual from "./CuttingVisual";
 import {
   Button,
   Select,
@@ -17,25 +18,62 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
 const NewCutting = ({ id, length }: any) => {
   const fineTuning = [10.0, 1.0, 0.1, 0.01, 0.001];
   const units = ["ft", "in"];
+  const radioGroupRef = useRef<HTMLElement>(null);
   const [cutLengthPercent, setCutLengthPercent] = useState(50);
   const [leftLength, setLeftLength] = useState(length);
   const [rightLength, setRightLength] = useState(0);
-  const [cutFinalized, setCutFinalized] = useState(false);
   const [finalLengths, setFinalLengths] = useState([length, 0]);
-  const [sliderPosition, setSliderPosition] = useState(50);
   const [fineTuneAmount, setFineTuneAmount] = useState(0.001);
-  const [changingUnits, setChangingUnits] = useState(false);
   const [cuttingUnits, setCuttingUnits] = useState([null, units[0]]);
   const [displayLength, setDisplayLength] = useState(length);
+  const [pipeNames, setPipeNames] = useState(["", ""]);
+  const [userPipeNames, setUserPipeNames] = useState(["", ""]);
+  // Action performed / state changed
+  const [cutFinalized, setCutFinalized] = useState(false);
+  const [changingUnits, setChangingUnits] = useState(false);
   const [invalidIncrement, setInvalidIncrement] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [pipeNames, setPipeNames] = useState(["", ""]);
-  const radioGroupRef = useRef<HTMLElement>(null);
+  const [openError, setOpenError] = useState(false);
+  const [manualCutAmount, setManualCutAmount] = useState("");
+  const [incrementing, setIncrementing] = useState(false);
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [block, setBlock] = useState(false);
+  const [buttonsActive, setButtonsActive] = useState([true, true, true]);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitType, setSubmitType] = useState("FromWhere");
+  const [checked, setChecked] = useState([false, false]);
+
+  const promiseTemplate = (func: any) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, 50, "foo");
+    });
+  };
+
+  useEffect(() => {
+    setUserPipeNames([pipeNames[0], pipeNames[1]]);
+  }, [pipeNames]);
+
+  useEffect(() => {
+    if (checked[0]) {
+      setUserPipeNames([pipeNames[0], userPipeNames[1]]);
+    } else if (!checked[0]) {
+      setUserPipeNames(["-", userPipeNames[1]]);
+    }
+  }, [checked[0]]);
+
+  useEffect(() => {
+    if (checked[1]) {
+      setUserPipeNames([userPipeNames[0], pipeNames[1]]);
+    } else if (!checked[1]) {
+      setUserPipeNames([userPipeNames[0], "-"]);
+    }
+  }, [checked[1]]);
 
   useEffect(() => {
     setFinalLengths([leftLength, rightLength]);
@@ -43,11 +81,24 @@ const NewCutting = ({ id, length }: any) => {
 
   useEffect(() => {
     setRightLength(displayLength - 0.01 * cutLengthPercent * displayLength);
-  }, [cutLengthPercent || sliderPosition || displayLength]);
+  }, [cutLengthPercent || displayLength]);
 
   useEffect(() => {
     setLeftLength(displayLength - rightLength);
   }, [rightLength]);
+
+  useEffect(() => {
+    setSliderPosition((leftLength / displayLength) * 100);
+    setManualCutAmount(leftLength.toString());
+  }, [leftLength]);
+
+  // useEffect(() => {
+  //   // Promise.all([
+  //   //   promiseTemplate(setSliderPosition((leftLength / displayLength) * 100)),
+  //   // ]).then(() => {
+  //   //   setIncrementing(false);
+  //   // });
+  // }, [incrementing === true]);
 
   useEffect(() => {
     if (cuttingUnits[0] == "in" && cuttingUnits[1] == "ft") {
@@ -126,14 +177,42 @@ const NewCutting = ({ id, length }: any) => {
 
     setPipeNames([suggestionA, suggestionB]);
 
-    console.log("suggestions: " + pipeNames);
+    // console.log("suggestions: " + pipeNames);
+  };
+
+  const handleManual = (value: any) => {
+    // console.log(value);
+    if (
+      value.match(/[0-9]/) != null &&
+      value.match(/[A-Z]/) === null &&
+      value.match(/[a-z]/) === null &&
+      parseInt(value) >= 0 &&
+      parseInt(value) <= displayLength &&
+      value != ""
+    ) {
+      // console.log(
+      //   "pass: " +
+      //     value.match(/[^0-9]/) +
+      //     " " +
+      //     (parseInt(value) >= 0).toString() +
+      //     `(${parseInt(value)} >= ${0}) ` +
+      //     (parseInt(value) <= displayLength).toString() +
+      //     `(${parseInt(value)} <= ${displayLength}) value!=""? ${value != ""}` +
+      //     ` setOfLetters?: ${value.match(/[A-Z][a-z]/)}`
+      // );
+      return value;
+    } else {
+      /* console.log(`fail: ${value}`); */
+      return "";
+    }
   };
 
   return (
     <div className={styles.cuttingContainer}>
+      {/* {console.log(sliderPosition)} */}
       <div style={{ textAlign: "center", marginBottom: "1%" }}>
-        Pipe Name: {id} <div />
-        Starting Pipe Length: {displayLength} {cuttingUnits[1]}
+        Original Pipe ID: {id} <div />
+        Original Pipe Length: {displayLength} {cuttingUnits[1]}
         <div
           style={{
             margin: "1% 0",
@@ -142,36 +221,84 @@ const NewCutting = ({ id, length }: any) => {
             alignItems: "center",
           }}
         >
-          <TextField
-            label="Desired length of pipe"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {cuttingUnits[1]}
-                </InputAdornment>
-              ),
-            }}
-          />
+          {!cutFinalized ? (
+            <TextField
+              label="Desired length of pipe"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {cuttingUnits[1]}
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e: any) => {
+                // setManualCutAmount(e.target.value);
+                Promise.all([
+                  promiseTemplate(
+                    setManualCutAmount(handleManual(e.target.value))
+                  ),
+                  // promiseTemplate(setRightLength(displayLength - e.target.value)),
+                ]).then((res) => {
+                  setRightLength(displayLength - e.target.value);
+                  // console.log(manualCutAmount);
+                });
+              }}
+            />
+          ) : null}
+          {!cutFinalized ? (
+            <Button
+              variant="contained"
+              color="success"
+              style={{ margin: "1% 1%", alignSelf: "center" }}
+              onClick={() => {
+                if (manualCutAmount === "") {
+                  setOpenError(true);
+                } else setOpenConfirmation(!openConfirmation);
+              }}
+            >
+              Cut At Length
+            </Button>
+          ) : null}
+          <Dialog open={openError}>
+            <DialogTitle style={{ color: "red" }}>
+              {"ERROR: Invalid Length"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                <p>
+                  Please enter only numeric values into the desired pipe length
+                  box.
+                </p>
+                <p>
+                  Please make sure the length cut is no greater than the
+                  original pipe's length or less than zero.
+                </p>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setOpenError(false);
+                }}
+              >
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+        {!cutFinalized ? (
           <Button
-            variant="contained"
-            color="success"
-            style={{ margin: "1% 1%", alignSelf: "center" }}
+            variant="outlined"
+            style={{ margin: "0.25% 1%", alignSelf: "center" }}
             onClick={() => {
-              setCutFinalized(!cutFinalized);
+              setChangingUnits(!changingUnits);
             }}
           >
-            {!cutFinalized ? "Cut Pipe" : "Reset?"}
+            Change Units
           </Button>
-        </div>
-        <Button
-          variant="outlined"
-          style={{ margin: "0.25% 1%", alignSelf: "center" }}
-          onClick={() => {
-            setChangingUnits(!changingUnits);
-          }}
-        >
-          Change Units
-        </Button>
+        ) : null}
         <Dialog open={changingUnits} maxWidth="md">
           <DialogTitle>{"Select Unit:"}</DialogTitle>
           <DialogContent dividers>
@@ -209,71 +336,37 @@ const NewCutting = ({ id, length }: any) => {
           </DialogActions>
         </Dialog>
       </div>
-      <div className={styles.pipeContainer}>
-        {cutFinalized ? (
-          <div style={{ display: "flex" }}>
-            <div
-              style={{
-                minWidth: `${leftLength / displayLength}%`,
-                border: "1px dashed white",
-                height: "100px",
-              }}
-            >
-              <div>id: {pipeNames[0]}</div>
-              <div>length: {finalLengths[0]}</div>
-            </div>
-            <div
-              style={{
-                minWidth: `${rightLength / displayLength}%`,
-                border: "1px dashed white",
-                height: "100px",
-              }}
-            >
-              <div>id: {pipeNames[1]}</div>
-              <div>length: {finalLengths[1]}</div>
-            </div>
-          </div>
-        ) : (
-          <div
-            className={styles.measure}
-            style={{
-              marginLeft: `${
-                cutLengthPercent != 99.001 ? cutLengthPercent : 99.001
-              }%`,
-            }}
-          />
-        )}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexFlow: "column nowrap",
-          alignItems: "center",
-          margin: "1% 0",
-        }}
-      >
-        <div>
-          Left Length: {leftLength.toPrecision(5)} {cuttingUnits[1]}
-        </div>
-        <div>
-          Right Length: {rightLength.toPrecision(5)} {cuttingUnits[1]}
-        </div>
-        <div>Slider Position: {sliderPosition} %</div>
-      </div>
+      <CuttingVisual
+        distance={sliderPosition}
+        lengths={[leftLength, rightLength]}
+        units={cuttingUnits[1]}
+        displayLength={displayLength}
+        pipeNames={userPipeNames}
+        doneCutting={cutFinalized && !openConfirmation}
+      />
       {!cutFinalized ? (
         <>
-          <input
-            type="range"
-            min={0}
-            value={sliderPosition}
-            max={100}
-            onChange={(e: any) => setSliderPosition(e.target.value)}
-            onInput={(e: any) => setCutLengthPercent(e.target.value)}
-            step={0.001}
+          <div
             style={{
-              margin: "2%% 1% 0 1%",
+              // padding: "10%% 0 0 1%",
+              width: "100%",
+              display: "flex",
             }}
-          />
+          >
+            <input
+              type="range"
+              min={0}
+              value={sliderPosition}
+              max={100}
+              onChange={(e: any) => setSliderPosition(e.target.value)}
+              onInput={(e: any) => setCutLengthPercent(e.target.value)}
+              step={0.001}
+              style={{
+                width: "99%",
+                margin: "1%",
+              }}
+            />
+          </div>
           <div
             style={{
               display: "flex",
@@ -287,7 +380,10 @@ const NewCutting = ({ id, length }: any) => {
               variant="contained"
               style={{ margin: "0 .25%" }}
               // onClick={() => { setSliderPosition(sliderPosition - fineTuneAmount); }}
-              onClick={() => setRightLength(handleIncrement(fineTuneAmount))}
+              onClick={() => {
+                setRightLength(handleIncrement(fineTuneAmount));
+                setIncrementing(true);
+              }}
             >
               -
             </Button>
@@ -308,7 +404,8 @@ const NewCutting = ({ id, length }: any) => {
                   return (
                     <MenuItem value={amount}>
                       <em>
-                        {amount} {index == 2 ? <>(Default)</> : null}
+                        {amount} {cuttingUnits[1]}{" "}
+                        {index == 2 ? <>(Default)</> : null}
                       </em>
                     </MenuItem>
                   );
@@ -324,9 +421,10 @@ const NewCutting = ({ id, length }: any) => {
               variant="contained"
               style={{ margin: "0 .25%" }}
               // onClick={() => { setSliderPosition(sliderPosition + fineTuneAmount);}}
-              onClick={() =>
-                setRightLength(handleIncrement(-1 * fineTuneAmount))
-              }
+              onClick={() => {
+                setRightLength(handleIncrement(-1 * fineTuneAmount));
+                setIncrementing(true);
+              }}
             >
               +
             </Button>
@@ -334,6 +432,215 @@ const NewCutting = ({ id, length }: any) => {
           </div>
         </>
       ) : null}
+      {!cutFinalized ? (
+        <div
+          style={{
+            display: "flex",
+            flexFlow: "column nowrap",
+            alignItems: "center",
+            margin: "1% 0",
+          }}
+        >
+          <div>
+            Left Length:{" "}
+            {leftLength % 1 === 0 && leftLength != 0
+              ? leftLength.toPrecision(6).slice(0, -5)
+              : leftLength === 0
+              ? 0
+              : leftLength < 1
+              ? leftLength.toPrecision(3)
+              : leftLength < 10
+              ? leftLength.toPrecision(4)
+              : leftLength < 100
+              ? leftLength.toPrecision(5)
+              : leftLength > 100
+              ? leftLength.toPrecision(6)
+              : null}{" "}
+            {cuttingUnits[1]}
+          </div>
+          <div>
+            Right Length:{" "}
+            {rightLength % 1 === 0 && rightLength != 0
+              ? rightLength.toPrecision(6).slice(0, -5)
+              : rightLength === 0
+              ? 0
+              : rightLength < 1
+              ? rightLength.toPrecision(3)
+              : rightLength < 10
+              ? rightLength.toPrecision(4)
+              : rightLength < 100
+              ? rightLength.toPrecision(5)
+              : rightLength > 100
+              ? rightLength.toPrecision(6)
+              : null}{" "}
+            {cuttingUnits[1]}
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            flexFlow: "row nowrap",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "98%",
+            margin: "1% 1%",
+            fontSize: "1.25rem",
+          }}
+        >
+          <div
+            style={{
+              border: "3px solid black",
+              // boxShadow: `${
+              //   "-1px 0 4px 20px linear-gradient(to left, rgba(255,255,225,1), rgba(255,0,0,1))," +
+              //   "0 -1px 4px 20px linear-gradient(to bottom, rgba(255,255,225,1), rgba(255,0,0,1)),"
+              // }`,
+              padding: ".25%",
+              margin: "1%",
+              color: "white",
+              background:
+                "linear-gradient(to bottom left, rgba(0,0,50,.3), rgba(0,10,100,.6))",
+              flexGrow: 0.25,
+            }}
+          >
+            <p>
+              The generated ID's for the newly cut pipes are{" "}
+              <a style={{ color: "rgba(125,255,40,.9)" }}>{pipeNames[0]}</a>
+              {" and "}
+              <a style={{ color: "rgba(255,255,40,.85)" }}>{pipeNames[1]}</a>.
+            </p>
+            {/* <div>The states are: </div>
+            <div>
+              check A: {checked[0].toString()} {" | "} check B:
+              {checked[1].toString()}
+            </div>
+            <div>
+              pipe A: {userPipeNames[0]}
+              {" | "} pipe B: {userPipeNames[1]}
+            </div>
+            <div>
+              generated A: {pipeNames[0]}
+              {" | "} generated B: {pipeNames[1]}
+            </div> */}
+          </div>
+          {!buttonsActive[2] ? (
+            <>
+              {/* {console.log(buttonsActive)} */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: "0 auto",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                  }}
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    Use Generated Id
+                    <Checkbox
+                      checked={checked[0]}
+                      onChange={() => {
+                        // console.log("change");
+                        setChecked([!checked[0], checked[1]]);
+                      }}
+                    />
+                  </div>
+                  <TextField
+                    disabled={checked[0] ? true : false}
+                    placeholder={`${pipeNames[0]} (generated)`}
+                    inputProps={{ maxLength: 6 }}
+                    helperText="6 characters or less"
+                    onChange={(e: any) => {
+                      setUserPipeNames([
+                        `${e.target.value === "" ? "-" : e.target.value}`,
+                        userPipeNames[1],
+                      ]);
+                      console.log(e.target.value);
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                  }}
+                >
+                  <div style={{ fontSize: "1rem" }}>
+                    Use Generated Id
+                    <Checkbox
+                      checked={checked[1]}
+                      onChange={() => {
+                        setChecked([checked[0], !checked[1]]);
+                      }}
+                    />
+                  </div>
+                  <TextField
+                    disabled={checked[1] ? true : false}
+                    placeholder={`${pipeNames[1]} (generated)`}
+                    inputProps={{ maxLength: 6 }}
+                    helperText="6 characters or less"
+                    onChange={(e: any) => {
+                      setUserPipeNames([
+                        userPipeNames[0],
+                        `${e.target.value === "" ? "-" : e.target.value}`,
+                      ]);
+                    }}
+                  />
+                </div>
+
+                <div
+                  style={{
+                    alignSelf: "center",
+                    display: "flex",
+                    marginTop: "1%",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="error"
+                    style={{ margin: "1% 1%" }}
+                    onClick={() => {
+                      setButtonsActive([true, true, true]);
+                      setUserPipeNames([pipeNames[0], pipeNames[1]]);
+                      setChecked([false, false]);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    style={{ margin: "1% 1%" }}
+                    onClick={() => {
+                      setSubmitting(true);
+                      // console.log(userPipeNames);
+                      // console.log(checked);
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </div>
+            </>
+          ) : !buttonsActive[1] ? (
+            <>
+              {setButtonsActive([true, true, true])}
+              {/* <Button
+                variant="contained"
+                color="error"
+                style={{ margin: "1% 1%" }}
+                onClick={() => {
+                  setButtonsActive([true, true, true]);
+                }}
+              >
+                Cancel
+              </Button> */}
+            </>
+          ) : null}
+        </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -349,15 +656,20 @@ const NewCutting = ({ id, length }: any) => {
               setOpenConfirmation(!openConfirmation);
             }}
           >
-            {!cutFinalized ? "Finalize Cut?" : "Reset?"}
+            Finalize Cut
           </Button>
         ) : null}
         <Dialog open={openConfirmation}>
-          <DialogTitle>{"Ready to Finalize?"}</DialogTitle>
+          <DialogTitle>{"Ready to Cut?"}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              If you are finished cutting the pipe, press OK. Otherwise, press
-              Back to go back to the cutting page.
+              <p>
+                If you are finished cutting the pipe, press OK. Otherwise, press
+                <a style={{ fontStyle: "italic" }}>
+                  {"   "}'Back'{"   "}
+                </a>{" "}
+                to return to the cutting page.
+              </p>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -374,26 +686,139 @@ const NewCutting = ({ id, length }: any) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => {
-                setOpenConfirmation(!openConfirmation);
-                setCutFinalized(true);
-                nameNewPipe();
+              onClick={(e: any) => {
+                promiseTemplate(e.target.value).then(() => {
+                  if (leftLength + rightLength != displayLength)
+                    setOpenError(true);
+                  else {
+                    setOpenConfirmation(!openConfirmation);
+                    setCutFinalized(true);
+                    nameNewPipe();
+                  }
+                });
+                // .then(setOpenConfirmation(!openConfirmation))
+                // .then(setCutFinalized(true))
+                // .then(nameNewPipe())
               }}
             >
               OK
             </Button>
           </DialogActions>
         </Dialog>
-        <Button
-          variant="outlined"
-          style={{ margin: "1% 1%" }}
-          onClick={() => {
-            setSliderPosition(50);
-            setRightLength(displayLength / 2);
-          }}
-        >
-          Reset Slider
-        </Button>
+        <Dialog open={submitting}>
+          <DialogTitle>{"Upload?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <p>You have chosen to name the pipes:</p>
+              <p style={{ textAlign: "center", fontSize: "1.3rem" }}>
+                {" "}
+                {userPipeNames[0]} and {userPipeNames[1]}{" "}
+              </p>
+              <p>
+                Press 'OK' to log these new pipes and their sizes in the
+                database.
+              </p>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => {
+                setSubmitting(false);
+              }}
+            >
+              BACK
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={(e: any) => {
+                promiseTemplate(submitting)
+                  .then(() => {
+                    if (userPipeNames[0] === "-" || userPipeNames[1] === "-")
+                      setOpenError(true);
+                  })
+                  .then(() => {
+                    setSubmitting(false);
+                  });
+              }}
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {cutFinalized ? (
+          <div
+            style={{
+              display: "flex",
+              position: "relative",
+              flexDirection: `${
+                !buttonsActive[1] || !buttonsActive[2] ? "column" : "row"
+              }`,
+              justifySelf: `${
+                !buttonsActive[1] || !buttonsActive[2] ? "flex-start" : "center"
+              }`,
+              margin: `${
+                !buttonsActive[1] || !buttonsActive[2] ? "0 85% 0 0 " : "auto"
+              }`,
+            }}
+          >
+            <Button
+              variant="outlined"
+              style={{ margin: "1% 1%" }}
+              disabled={!buttonsActive[0]}
+              onClick={() => {
+                setSliderPosition(50);
+                setRightLength(displayLength / 2);
+                setCutFinalized(false);
+                setButtonsActive([true, true, true]);
+              }}
+            >
+              Reset Cutting
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ margin: "1% 1%" }}
+              disabled={!buttonsActive[1]}
+              disableElevation={!buttonsActive[1]}
+              disableRipple={buttonsActive[1]}
+              onClick={() => {
+                setButtonsActive([false, true, false]);
+              }}
+            >
+              Modify Generated Ids
+            </Button>
+            <Button
+              variant="contained"
+              style={{ margin: "1% 1%" }}
+              disabled={!buttonsActive[2]}
+              disableElevation={!buttonsActive[2]}
+              disableRipple={buttonsActive[2]}
+              onClick={() => {
+                setButtonsActive([false, false, true]);
+                promiseTemplate(setSubmitting(true)).then(() => {
+                  setUserPipeNames([pipeNames[0], pipeNames[1]]);
+                });
+              }}
+            >
+              Use Generated Pipe Ids
+            </Button>
+          </div>
+        ) : (
+          <Button
+            variant="outlined"
+            style={{ margin: "1% 1%" }}
+            onClick={() => {
+              setSliderPosition(50);
+              setRightLength(displayLength / 2);
+              setCutFinalized(false);
+            }}
+          >
+            Reset Slider
+          </Button>
+        )}
       </div>
     </div>
   );
