@@ -45,13 +45,6 @@ const RunCarousel = () => {
     -1, -1, -1, -1, -1, -1, -1, -1, -1,
   ]);
 
-  //   const handleClickLocations = (index: any, operation: any) => {
-  //       if (operation === 'makeClickable')
-  //         setClickable([clickable.shift()])
-  //     else if (operation === 'makeUnclickable')
-  //         setClickable([clickable.push()])
-  //   }
-
   const handleOpacity = (index: any) => {
     const LR3 = 0.5;
     const LR2 = 0.7;
@@ -59,11 +52,6 @@ const RunCarousel = () => {
     const cen = 1;
     let give = 0;
 
-    //   console.log(item.opacity + " " + index);
-
-    //   if (item.index === focused) return cen;
-
-    // arr.forEach((item: any, index: any) => {
     if (index === focused) {
       give = cen;
     } else if (
@@ -93,21 +81,6 @@ const RunCarousel = () => {
       (index === 0 && focused === circleQueue.length - 3)
     ) {
       give = LR3;
-      // } else if (
-      //   (index === 2 || index === circleQueue.length - 3) &&
-      //   index != focused
-      // ) {
-      //   give = 0.3;
-      // } else if (
-      //   (index === 1 || index === circleQueue.length - 2) &&
-      //   index != focused
-      // ) {
-      //   give = 0.25;
-      // } else if (
-      //   (index === 0 || index === circleQueue.length - 1) &&
-      //   index != focused
-      // ) {
-      //   give = 0.2;
     } else give = 0.15;
 
     return give;
@@ -123,10 +96,8 @@ const RunCarousel = () => {
           style={{
             transition: "opacity .3s ease-in-out",
             opacity: `${circleQueue[index].opacity}`,
-            //   opacity: {focused === index? return '1' : return'.3'},
             width: "100%",
-            height:
-              "100%" /* opacity: `${(index: any) => (focusArray[index].focused ? 1: 0)}` */,
+            height: "100%",
           }}
         >
           <a href={`${item.link}`} style={{ width: "100%", height: "33%" }}>
@@ -196,6 +167,7 @@ const RunCarousel = () => {
           right: 0,
         }}
       >
+        {/* TESTING TOOL */}
         {/* {circleQueue.map((item, index) => {
           return (
             <div style={{ background: "green", color: "white", margin: "2px" }}>
@@ -243,12 +215,7 @@ const RunCarousel = () => {
           );
         })}
       </div>
-      {/* {console.log(focusArray)} */}
-      {/* {console.log(circleQueue)} */}
-      {/* notice className root */}
-      {/*  DO NOT CHANGE THIS (atm at least) */}
       <div className="root">
-        {/* this is the carousel item*/}
         <Carousel
           items={items}
           itemWidth={200}
@@ -296,6 +263,7 @@ const RunCarousel = () => {
           }
         />
       </div>
+      {/* TESTING */}
       {/* <div
         style={{
           position: "fixed",

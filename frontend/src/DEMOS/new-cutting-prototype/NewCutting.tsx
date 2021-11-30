@@ -20,6 +20,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
+import api from "api";
 
 const NewCutting = ({ id, length }: any) => {
   const fineTuning = [10.0, 1.0, 0.1, 0.01, 0.001];
@@ -248,6 +249,7 @@ const NewCutting = ({ id, length }: any) => {
         >
           {!cutFinalized ? (
             <TextField
+              style={{ background: "rgba(100,100,100, .1)", color: "white" }}
               label="Desired length of pipe"
               InputProps={{
                 endAdornment: (
@@ -314,20 +316,22 @@ const NewCutting = ({ id, length }: any) => {
           </Dialog>
         </div>
         {!cutFinalized ? (
-          <Button
-            variant="outlined"
-            style={{
-              margin: "0.25% 1%",
-              alignSelf: "center",
-              color: "white",
-              background: "rgba(225,245,255, .1)",
-            }}
-            onClick={() => {
-              setChangingUnits(!changingUnits);
-            }}
-          >
-            Change Units
-          </Button>
+          <div style={{ background: "rgba(225,245,255, .1)", padding: ".5%" }}>
+            <Button
+              variant="outlined"
+              style={{
+                margin: "0.25% 1%",
+                alignSelf: "center",
+                color: "white",
+                background: "rgba(225,245,255, .1)",
+              }}
+              onClick={() => {
+                setChangingUnits(!changingUnits);
+              }}
+            >
+              Change Units
+            </Button>
+          </div>
         ) : null}
         <Dialog open={changingUnits} maxWidth="md">
           <DialogTitle>{"Select Unit:"}</DialogTitle>
@@ -483,49 +487,53 @@ const NewCutting = ({ id, length }: any) => {
         </>
       ) : null}
       {!cutFinalized ? (
-        <div
-          style={{
-            display: "flex",
-            flexFlow: "column nowrap",
-            alignItems: "center",
-            margin: "1% 0",
-          }}
-        >
-          <div>
-            Left Length:{" "}
-            {leftLength % 1 === 0 && leftLength != 0
-              ? leftLength.toPrecision(6).slice(0, -5)
-              : leftLength === 0
-              ? 0
-              : leftLength < 1
-              ? leftLength.toPrecision(3)
-              : leftLength < 10
-              ? leftLength.toPrecision(4)
-              : leftLength < 100
-              ? leftLength.toPrecision(5)
-              : leftLength > 100
-              ? leftLength.toPrecision(6)
-              : null}{" "}
-            {cuttingUnits[1]}
+        <>
+          <div
+            style={{
+              display: "flex",
+              flexFlow: "column nowrap",
+              alignItems: "center",
+              padding: ".25%",
+              background: "rgba(225,245,255, .1)",
+              fontFamily: "Roboto",
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <div>Left Length:</div>{" "}
+              {leftLength % 1 === 0 && leftLength != 0
+                ? leftLength.toPrecision(6).slice(0, -5)
+                : leftLength === 0
+                ? 0
+                : leftLength < 1
+                ? leftLength.toPrecision(3)
+                : leftLength < 10
+                ? leftLength.toPrecision(4)
+                : leftLength < 100
+                ? leftLength.toPrecision(5)
+                : leftLength > 100
+                ? leftLength.toPrecision(6)
+                : null}{" "}
+              {cuttingUnits[1]}
+            </div>
+            <div style={{ display: "flex" }}>
+              <div>Right Length:</div>{" "}
+              {rightLength % 1 === 0 && rightLength != 0
+                ? rightLength.toPrecision(6).slice(0, -5)
+                : rightLength === 0
+                ? 0
+                : rightLength < 1
+                ? rightLength.toPrecision(3)
+                : rightLength < 10
+                ? rightLength.toPrecision(4)
+                : rightLength < 100
+                ? rightLength.toPrecision(5)
+                : rightLength > 100
+                ? rightLength.toPrecision(6)
+                : null}{" "}
+              {cuttingUnits[1]}
+            </div>
           </div>
-          <div>
-            Right Length:{" "}
-            {rightLength % 1 === 0 && rightLength != 0
-              ? rightLength.toPrecision(6).slice(0, -5)
-              : rightLength === 0
-              ? 0
-              : rightLength < 1
-              ? rightLength.toPrecision(3)
-              : rightLength < 10
-              ? rightLength.toPrecision(4)
-              : rightLength < 100
-              ? rightLength.toPrecision(5)
-              : rightLength > 100
-              ? rightLength.toPrecision(6)
-              : null}{" "}
-            {cuttingUnits[1]}
-          </div>
-        </div>
+        </>
       ) : (
         <div
           style={{
@@ -710,6 +718,7 @@ const NewCutting = ({ id, length }: any) => {
         style={{
           display: "flex",
           justifyContent: "center",
+          background: "rgba(225,245,255, .1)",
         }}
       >
         {!cutFinalized ? (
@@ -804,7 +813,18 @@ const NewCutting = ({ id, length }: any) => {
                       setOpenError(true);
                   })
                   .then(() => {
-                    setSubmitting(false);
+                    api
+                      .cutPipe(id, finalLengths[0])
+                      .then((res) => {
+                        setSubmitting(false);
+                        console.log("data posted");
+                        console.log(res);
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        console.log(id + " " + finalLengths[0]);
+                        console.log(typeof id + " " + typeof finalLengths[0]);
+                      });
                   });
               }}
             >

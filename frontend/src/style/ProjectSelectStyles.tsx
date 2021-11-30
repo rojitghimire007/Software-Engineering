@@ -95,16 +95,18 @@ const useStyles = makeStyles((theme: any) => ({
         border: '1px solid black',
         '& span': {
             opacity: 0,
-        }
+        },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     },
     btn: {
         backgroundColor: `${ColorScheme.secondaryDark}`,
         borderRadius: '6px',
         boxShadow: `0 0 2px 3px ${ColorScheme.secondaryLight}`,
         color: 'white',
-        margin: '3% 43%',
-        width: '150px',
-        height: '40px',
+        margin: '.5rem',
+        width: '50%',
         textAlign: 'center',
         justifyContent: 'center',
         cursor: 'pointer',

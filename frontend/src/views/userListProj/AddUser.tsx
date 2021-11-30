@@ -41,7 +41,7 @@ const AddUser = (props: any) => {
     e.preventDefault();
     try {
       if (user == "") {
-        throw new Error('Give a valid user!');
+        throw new Error("Give a valid user!");
       }
       api
         .addUserToProject({ users: [user] })
@@ -61,7 +61,17 @@ const AddUser = (props: any) => {
   return (
     <>
       <form onSubmit={(e) => addUser(e)}>
-        <label>Choose a user to add to the project:</label>
+        <label
+          style={{
+            fontSize: "large",
+            fontWeight: "bold",
+            marginLeft: "1rem",
+            marginTop: "1rem",
+            marginRight: ".5rem",
+          }}
+        >
+          Choose a user to add to the project:
+        </label>
         <input
           list="users"
           name="user"

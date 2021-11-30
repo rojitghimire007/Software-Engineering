@@ -15,7 +15,6 @@ const login = async (req, res, next) => {
       text: 'SELECT * FROM users WHERE email = $1',
       values: [email],
     });
-    console.log('users');
 
     if (user.rows.length == 0)
       return next({
@@ -45,11 +44,20 @@ const login = async (req, res, next) => {
           expiresIn,
         }
       );
+      
+      let isAdmin = false;
+      const checkAdmin = await query_resolver(default_pool, {
+        text: `SELECT * FROM admin WHERE email=$1`,
+        values: [email]
+      });
+
+      if(checkAdmin.length > 0) isAdmin = true;
 
       return res.status(200).send({
         success: true,
         message: 'User Logged In!',
         token: token,
+        isAdmin
       });
     });
   } catch (err) {
@@ -60,7 +68,6 @@ const login = async (req, res, next) => {
 const signup = async (req, res, next) => {
   try {
     let { fname, password, email, phone } = req.body;
-
     email = email.trim();
 
     // Check if the user already exists
@@ -74,7 +81,7 @@ const signup = async (req, res, next) => {
         throw { status: 405, message: 'User already exists!' };
     } catch (error) {}
 
-    let randomNumber = getRandomString(5, '0123456789');
+    let randomNumber = getRandomString(3, '0123456789');
     let uname = fname.toLowerCase().trim().replace(' ', '') + randomNumber;
 
     // Hash the password and do the rest in the callback function
@@ -101,10 +108,12 @@ const signup = async (req, res, next) => {
         });
       } catch (er) {
         next(er);
+        
       }
     });
   } catch (err) {
     next(err);
+    
   }
 };
 
@@ -115,10 +124,11 @@ const getAssociatedProjects = async (req, res, next) => {
       values: [req.uname],
     };
 
-    //TODO: check for admin, if admin show all project
-    // if(isAdmin){
-    //   query = `SELECT * FROM projects`;
-    // }
+    const admin = await query_resolver(default_pool, `Select email FROM admin`);
+
+    if(admin[0].email == req.userEmail){
+      query = `SELECT * FROM projects`;
+    }
 
     const projects = await query_resolver(default_pool, query);
 
@@ -152,8 +162,7 @@ const usersInProject = async (req, res, next) => {
 
 const selectProject = async (req, res, next) => {
   try {
-    if (!req.userEmail)
-      throw { status: 401, message: 'Unauthorized user! Please login first.' };
+    if (!req.userEmail) throw { status: 401, message: 'Unauthorized user! Please login first!' };
 
     const { project_number } = req.body;
 

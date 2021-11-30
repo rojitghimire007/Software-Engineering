@@ -86,13 +86,13 @@ const addPipe = async (req, res, next) => {
       };
     }
 
-    if(po_number){
-      const purchase = await query_resolver(connection,  {
+    if (po_number) {
+      const purchase = await query_resolver(connection, {
         text: `SELECT po_number FROM purchase_number WHERE po_number=$1`,
         values: [po_number]
       });
-  
-      if(purchase.length === 0){
+
+      if (purchase.length === 0) {
         await query_resolver(connection, {
           text: `INSERT INTO purchase_number(po_number, manufacture) VALUES ($1, $2)`,
           values: [po_number, manufacturer]
@@ -140,8 +140,7 @@ const addPipe = async (req, res, next) => {
       message: 'Pipe Added!',
     });
   } catch (error) {
-    console.log(error);
-    next({ status: 500, message: 'Something went wrong!' });
+    next({ status: 500, message: error.message });
   }
 };
 
@@ -385,6 +384,55 @@ const getOptions = async (req, res, next) => {
   }
 };
 
+const addCoating = async (req, res, next) => {
+  try {
+    const { coat, color } = req.body;
+    const connection = await connect_project_db(req.dbname);
+
+    const checkDuplicateCoat = await query_resolver(connection, {
+      text: 'SELECT  * FROM pipe_coat WHERE coat=$1',
+      values: [coat]
+    });
+
+    const checkDuplicateColor = await query_resolver(connection, {
+      text: 'SELECT  * FROM pipe_coat WHERE color=$1',
+      values: [color]
+    });
+
+    if(checkDuplicateColor.length > 0 || checkDuplicateCoat.length > 0) {
+      throw {status: 500, message: 'Duplicate entry already exist in the database!'}
+    }
+
+    await query_resolver(connection, {
+      text: 'INSERT INTO pipe_coat(coat, color) VALUES ($1, $2)',
+      values: [coat, color]
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Coating recorded!"
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+const getCoating = async (req, res, next) => {
+  try{
+    const connection = await connect_project_db(req.dbname);
+
+    const getDistinctColor = await query_resolver(connection, 'SELECT DISTINCT(color) AS color FROM pipe_coat');
+
+    return res.status(200).json({
+      data: [...getDistinctColor],
+      success: true
+    })
+  }catch(error){
+    next(error);
+  }
+}
+
 module.exports = {
   addPipe,
   allPipes,
@@ -395,4 +443,6 @@ module.exports = {
   getOptions,
   editPipe,
   updatePipeSchedule,
+  addCoating,
+  getCoating
 };

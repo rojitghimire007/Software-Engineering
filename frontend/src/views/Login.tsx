@@ -71,6 +71,7 @@ const Login = () => {
       .login(email, password)
       .then((res) => {
         setLocalStorage('pipeline_token', res.token);
+        setLocalStorage('isAdmin', res.isAdmin);
         history.push(link);
       })
       .catch((err) => alert(err.message));

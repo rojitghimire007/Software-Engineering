@@ -46,9 +46,12 @@ import InspectorReports from "views/dashboard/submenus/content/InspectorReports"
 import Safety from "views/dashboard/submenus/content/Safety";
 import WeatherTracking from "views/dashboard/submenus/content/WeatherTracking";
 import Menu from "views/dashboard/submenus/content/Menu";
+import PipeCutting from "views/cutting/PipeCutting";
+
+// const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
+import SignUpUser from "views/administrative/SignUpUser";
 
 const Dashboard = React.lazy(() => import("views/dashboard/Dashboard"));
-// const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
 const Login = React.lazy(() => import("views/Login"));
 
 const routes: {
@@ -258,6 +261,13 @@ const routes: {
 
 
 
+  { path: "/dashboard", exact: true, name: "Dashboard", component: Dashboard },
+  {
+    path: "/dashboard/inventory",
+    exact: true,
+    name: "Dashboard",
+    component: DashboardInventory,
+  },
   { path: "/login", exact: true, name: "Login", component: Login },
   { path: "/pipes", exact: true, name: "Show", component: ShowPipes },
   {
@@ -272,21 +282,8 @@ const routes: {
     name: "Show",
     component: StrungItems,
   },
-  // {
-  //   path: '/pipes/strung/new',
-  //   exact: true,
-  //   name: 'Show',
-  //   component: oldString,
-  // },
   { path: "/about", exact: true, name: "About", component: AboutUs },
   { path: "/contact", exact: true, name: "Contact", component: ContactUs },
-  //{ path: '/services', exact: true, name: 'Services', component: Services },
-  // {
-  //   path: '/pipes/strung/new',
-  //   exact: true,
-  //   name: 'Show',
-  //   component: NewStrungPipes,
-  // },
   { path: "/fittings", exact: true, name: "Fittings", component: ShowFittings },
   { path: "/testing", exact: true, name: "TESTING", component: TESTING },
   {
@@ -303,6 +300,12 @@ const routes: {
     name: "Project Users",
     component: ListUser,
   },
+  {
+    path:"/create/user",
+    exact: true,
+    name: "SignUp",
+    component: SignUpUser
+  }
 ];
 
 export default routes;

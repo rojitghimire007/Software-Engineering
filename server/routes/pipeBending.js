@@ -81,7 +81,7 @@ const updateBend = async (req, res, next) => {
     const checkDup = await query_resolver(connection, {
       text: `SELECT id from pipe_bend JOIN bend USING(bend_id) WHERE degree=$1 AND bdirection=$2 AND blength=$3 AND id=$4`,
       values: [degree, bdirection, blength, id]
-    })
+    });
 
     if(checkDup.length > 0) throw {status: 500, message: 'Bending credential already recorded for the pipe!'}
 
@@ -117,9 +117,5 @@ const getBend = async (req, res, next) => {
     next(error);
   }
 }
-
-// const result = await query_resolver(connection, {
-//   text: `select ARRAY_AGG(id || CASE WHEN coil_number is not null THEN ' ' ||  coil_number ELSE '' END) from pipe group by plength`
-// });
 
 module.exports = { bendPipe, removeBend, updateBend, getBend };

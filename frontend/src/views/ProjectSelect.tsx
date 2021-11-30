@@ -1,17 +1,16 @@
-import { Login } from '@mui/icons-material';
-import { useHistory } from 'react-router';
-import React, { useState, useEffect } from 'react';
-import useStyles from 'style/ProjectSelectStyles';
-import api from 'api';
-import { setLocalStorage } from 'utils/utils';
-import { AppBar, Toolbar, Typography } from '@mui/material';
-
+import { Login } from "@mui/icons-material";
+import { useHistory } from "react-router";
+import React, { useState, useEffect } from "react";
+import useStyles from "style/ProjectSelectStyles";
+import api from "api";
+import { getLocalStorage, setLocalStorage } from "utils/utils";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 
 const ProjectSelect = () => {
-  const classes = useStyles('');
+  const classes = useStyles("");
   const history = useHistory();
-  const link = 'dashboard';
-  const [selected, setSelected] = useState([-1,'']);
+  const link = "dashboard";
+  const [selected, setSelected] = useState([-1, ""]);
   const [errored, setErrored] = useState(false);
   const [loading, setLoading] = useState(false);
   const [projectDetails, setProjectDetails] = useState<
@@ -30,15 +29,17 @@ const ProjectSelect = () => {
   }, []);
 
   const logIn = () => {
-    if (selected === [-1,'']) setErrored(true);
+    if (selected === [-1, ""]) setErrored(true);
     else {
       api
         // .selectProject(projectDetails[parseInt(selected)].project_number)
-        .selectProject(projectDetails[parseInt(selected[0].toString())].project_number)
+        .selectProject(
+          projectDetails[parseInt(selected[0].toString())].project_number
+        )
         .then((res: any) => {
-          setLocalStorage('pipeline_token', res.token);
+          setLocalStorage("pipeline_token", res.token);
 
-          history.push('/');
+          history.push("/");
         })
         .catch((err: any) => alert(err.message));
       // setLoading(true);
@@ -46,12 +47,11 @@ const ProjectSelect = () => {
       //   history.push(link);
       // }
     }
-    console.log('logging in to ' + selected);
+    console.log("logging in to " + selected);
   };
 
   return (
     <div className={classes.page}>
-
       <AppBar position="relative" className={classes.titleTop}>
         <Toolbar>
           <Typography variant="h3" className={classes.titleTopContent}>
@@ -91,11 +91,11 @@ const ProjectSelect = () => {
           {projectDetails.map((item, index) => {
             return (
               <>
-                {selected[1].toString() === item.pname?
+                {selected[1].toString() === item.pname ? (
                   <div
                     className={`${classes.selectedItem} ${classes.item}`}
                     onClick={(e) => {
-                      setSelected([e.currentTarget.id,item.pname]);
+                      setSelected([e.currentTarget.id, item.pname]);
                       setErrored(false);
                     }}
                     /* onClick={() => {
@@ -105,29 +105,31 @@ const ProjectSelect = () => {
                     key={index}
                     id={`${index}`}
                   >
-                    <span style={{ margin: '3px 3px' }}>
-                      {item.pname}{/* , last accessed {item.accessed} */}
+                    <span style={{ margin: "3px 3px" }}>
+                      {item.pname}
+                      {/* , last accessed {item.accessed} */}
                     </span>
                   </div>
-                :
+                ) : (
                   <div
-                  className={classes.item}
-                  onClick={(e) => {
-                    setSelected([e.currentTarget.id,item.pname]);
-                    setErrored(false);
-                  }}
-                  /* onClick={() => {
+                    className={classes.item}
+                    onClick={(e) => {
+                      setSelected([e.currentTarget.id, item.pname]);
+                      setErrored(false);
+                    }}
+                    /* onClick={() => {
                     setSelected(item.pname);
                     setErrored(false);
                   }} */
-                  key={index}
-                  id={`${index}`}
+                    key={index}
+                    id={`${index}`}
                   >
-                    <span style={{ margin: '3px 3px' }}>
-                      {item.pname}{/* , last accessed {item.accessed} */}
+                    <span style={{ margin: "3px 3px" }}>
+                      {item.pname}
+                      {/* , last accessed {item.accessed} */}
                     </span>
                   </div>
-                }
+                )}
               </>
             );
           })}
@@ -138,18 +140,26 @@ const ProjectSelect = () => {
           <div className={classes.btn} onClick={() => logIn()}>
             ENTER
           </div>
-
-          <div className={classes.btn} onClick={() => history.push("/create-project")}>
-            CREATE
-          </div>
-          {/* <div
-            className={classes.btn}
-            onClick={() => {
-              console.log(projectDetails);
-            }}
-          >
-            REFRESH CONSOLE
-          </div> */}
+          {getLocalStorage("isAdmin") ? (
+            <div
+              className={classes.btn}
+              onClick={() => history.push("/create-project")}
+            >
+              CREATE PROJECT
+            </div>
+          ) : (
+            <> </>
+          )}
+          {getLocalStorage("isAdmin") ? (
+            <div
+              className={classes.btn}
+              onClick={() => history.push("/create/user")}
+            >
+              CREATE USER
+            </div>
+          ) : (
+            <> </>
+          )}
         </div>
       </div>
     </div>

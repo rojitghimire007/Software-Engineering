@@ -24,7 +24,7 @@ const options = [
     {
         main: 'Bending',
         subItems: [''],
-        default: '',
+        default: '/bending',
     },
     {
         main: 'Coating',
@@ -35,6 +35,17 @@ const options = [
         main: 'Other',
         subItems: [''],
         default: '',
+    },
+    {
+        main: 'Master Log',
+        subItems: [''],
+        default: '/aggregate',
+    },
+    {
+        main: 'Associate User',
+        subItems: [''],
+        default: '/project/user',
+        admin: 'true'
     },
 ];
 
