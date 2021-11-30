@@ -1,6 +1,13 @@
 const { connect_project_db, query_resolver } = require("../utils/dbHandler");
 const { getRandomString } = require("../utils/randomGenerator");
 
+/**
+ * Records bend information
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if bending is recorded
+ */
 const bendPipe = async (req, res, next) => {
   const { bends, id } = req.body;
 
@@ -51,6 +58,13 @@ const bendPipe = async (req, res, next) => {
   }
 }
 
+/**
+ * Removes bend information
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if bending is removed
+ */
 const removeBend = async (req, res, next) => {
   try {
     const { bend_id } = req.params;
@@ -71,6 +85,13 @@ const removeBend = async (req, res, next) => {
   }
 }
 
+/**
+ * Updates bend information
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if bending info is updated
+ */
 const updateBend = async (req, res, next) => {
   try {
     const { bend_obj, bend_id, id } = req.body;
@@ -100,6 +121,13 @@ const updateBend = async (req, res, next) => {
   }
 }
 
+/**
+ * Get bend information
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Array of bending info objects
+ */
 const getBend = async (req, res, next) => {
   try{
     const connection = await connect_project_db(req.dbname);

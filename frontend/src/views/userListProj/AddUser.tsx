@@ -39,6 +39,7 @@ const AddUser = (props: any) => {
 
   const addUser = (e: any) => {
     e.preventDefault();
+    console.log(user)
     try {
       if (user == "") {
         throw new Error("Give a valid user!");
@@ -46,6 +47,7 @@ const AddUser = (props: any) => {
       api
         .addUserToProject({ users: [user] })
         .then((res) => {
+          alert(res.message);
           props.getUsers();
         })
         .catch((err) => alert(err.message));

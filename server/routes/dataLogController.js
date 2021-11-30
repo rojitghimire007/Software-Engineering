@@ -1,6 +1,13 @@
 const stringingQueries = require('../sql_queries/materDataQueries');
 const { connect_project_db, query_resolver } = require('../utils/dbHandler');
 
+/**
+ * Get master log information
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Get date for master log database
+ */
 const getAggregateData = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);

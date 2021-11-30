@@ -3,6 +3,13 @@ const { client } = require('../utils/databaseConnection');
 const { connect_project_db, query_resolver } = require('../utils/dbHandler');
 const { getRandomString } = require('../utils/randomGenerator');
 
+/**
+ * Get reference id form pipe_ref table
+ * @param {Object} connection - Database connection object
+ * @param {String} schedule - Schedule and thickness of a pipe
+ * @param {String} diameter - Diameter of a pipe
+ * @returns {String} Reference id for a combination of diameter, schedule and thickness from pipe_ref table
+ */
 const getSchedule = async (connection, schedule, diameter) => {
   try {
     const breakSchedule = schedule.split('-');
@@ -27,6 +34,13 @@ const getSchedule = async (connection, schedule, diameter) => {
   }
 };
 
+/**
+ * Add Pipe
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if pipe is added successfully
+ */
 const addPipe = async (req, res, next) => {
   let {
     coating,
@@ -46,13 +60,6 @@ const addPipe = async (req, res, next) => {
   } = req.body;
 
   try {
-    // USER AUTHENTICATION
-    // if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
-
-    // let user = await client.query(
-    //   `SELECT * FROM USERS WHERE email = '${req.userEmail}'`
-    // );
-    // user = user.rows[0].id;
 
     const connection = await connect_project_db(req.dbname);
 
@@ -144,6 +151,13 @@ const addPipe = async (req, res, next) => {
   }
 };
 
+/**
+ * Get all pipes info
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} List of pipe and its details
+ */
 const allPipes = async (req, res, next) => {
   const connection = await connect_project_db(req.dbname);
   try {
@@ -157,6 +171,13 @@ const allPipes = async (req, res, next) => {
   }
 };
 
+/**
+ * Deletes pipe
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if the pipe is deleted
+ */
 const deletePipe = async (req, res, next) => {
   let { pipeID } = req.params;
 
@@ -170,6 +191,13 @@ const deletePipe = async (req, res, next) => {
   }
 };
 
+/**
+ * Get Stringing Info
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Get Stringing List
+ */
 const getStringingInfo = async (req, res, next) => {
   try {
     let info = await client.query(
@@ -183,6 +211,14 @@ const getStringingInfo = async (req, res, next) => {
   }
 };
 
+/**
+ * Update pipe schedule information
+ * @param {String} schedule - Pipe Schedule
+ * @param {String} diameter - Pipe diameter
+ * @param {String} pipeSharedId - Pipe_Shared_Info Id
+ * @param {Object} connection - DB Connection object
+ * @returns {Void} 
+ */
 const updatePipeSchedule = async (
   schedule,
   diameter,
@@ -207,6 +243,13 @@ const updatePipeSchedule = async (
   }
 };
 
+/**
+ * Edit Pipe Info
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if pipe edited successfully
+ */
 const editPipe = async (req, res, next) => {
   let { oldData, newData } = req.body;
 
@@ -276,6 +319,13 @@ const editPipe = async (req, res, next) => {
   }
 };
 
+/**
+ * Update Stringing
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
 const updateStrung = async (req, res, next) => {
   let { pipe_id, curr_id, curr_station, left_of_target } = req.body;
   try {
@@ -316,6 +366,13 @@ const updateStrung = async (req, res, next) => {
   }
 };
 
+/**
+ * Deletes pipe from stringing 
+ * @param {String} pipe_id - pipe id
+ * @param {String} curr_id - current item id
+ * @param {Number} curr_station - current station
+ * @returns {Number} pipe length
+ */
 const deleteFromString = async (pipe_id, curr_id, curr_station) => {
   try {
     await client.query(`DELETE FROM STATIONS WHERE pipe_id = ${pipe_id}`);
@@ -337,6 +394,13 @@ const deleteFromString = async (pipe_id, curr_id, curr_station) => {
   }
 };
 
+/**
+ * Recieve pipe attributes options
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Returns options for pipe entry
+ */
 const getOptions = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);
@@ -384,6 +448,13 @@ const getOptions = async (req, res, next) => {
   }
 };
 
+/**
+ * Post new coating info
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
 const addCoating = async (req, res, next) => {
   try {
     const { coat, color } = req.body;
@@ -418,6 +489,13 @@ const addCoating = async (req, res, next) => {
   }
 }
 
+/**
+ * Get coating info
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Get Distinct color for coating in db
+ */
 const getCoating = async (req, res, next) => {
   try{
     const connection = await connect_project_db(req.dbname);

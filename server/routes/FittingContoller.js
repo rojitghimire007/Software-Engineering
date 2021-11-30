@@ -1,6 +1,14 @@
 const { connect_project_db, query_resolver } = require('../utils/dbHandler');
 const { getRandomString } = require('../utils/randomGenerator');
 
+/**
+ * Adds a fitting
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if a fitting is successfully added
+ */
+
 const addFittings = async (req, res, next) => {
   let {
     id,
@@ -23,8 +31,6 @@ const addFittings = async (req, res, next) => {
   } = req.body;
 
   try {
-    // if (!req.userEmail) throw { status: 400, message: 'Invalid Token!' };
-
     const connection = await connect_project_db(req.dbname);
 
     const query = {
@@ -96,6 +102,13 @@ const addFittings = async (req, res, next) => {
   }
 };
 
+/**
+ * Edits fitting data
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if fitting is successfully edited
+ */
 const editFitting = async (req, res, next) => {
   const { oldData_id, newData } = req.body;
   const {
@@ -189,6 +202,13 @@ const editFitting = async (req, res, next) => {
   }
 }
 
+/**
+ * Gets all fitting information
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Lists of fitting along with its details
+ */
 const getFittings = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);

@@ -1,6 +1,13 @@
 const { getRandomString } = require('../utils/randomGenerator');
 const { default_pool, create_database, query_resolver } = require('../utils/dbHandler');
 
+/**
+ * Creates new project
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if the project creation is successful
+ */
 const postProject = async (req, res, next) => {
   try {
     /**
@@ -54,13 +61,18 @@ const postProject = async (req, res, next) => {
   }
 }
 
+/**
+ * Associates users to a project (Admin Only Functionality)
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if the users are save in the project
+ */
 const addUserToProject = async (req, res, next) => {
   try {
-    /**
-     * users => arrays of usernames of the users
-     * TODO: Admin check
-     */
+    
     const { users } = req.body;
+    
     if (users.length == 0) throw { status: 500, message: 'No user selected to associate with the project!' };
 
     let existingUsers = await query_resolver(default_pool, {
@@ -118,6 +130,13 @@ const addUserToProject = async (req, res, next) => {
   }
 }
 
+/**
+ * Removes a user from a project (Admin Only Functionality)
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if a user is removed successfully
+ */
 const removeUserFromProject = async (req, res, next) => {
   try {
     const { uname } = req.params;
@@ -143,11 +162,15 @@ const removeUserFromProject = async (req, res, next) => {
   }
 }
 
+/**
+ * Gets all the users in the database
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} List of all the users and their data
+ */
 const getAllUsers = async (req, res, next) => {
   try {
-    /**
-     * Check if admin
-     */
     const query = `SELECT * FROM users`;
 
     const users = await query_resolver(default_pool, query);

@@ -5,6 +5,13 @@ const jwt = require('jsonwebtoken');
 const { SaltRounds, JWTConfig, JWTExpiresIn: expiresIn } = require('../config');
 const validateToken = require('../utils/TokenValidator');
 
+/**
+ * Logs in user
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Login token
+ */
 const login = async (req, res, next) => {
   try {
     let { password, email } = req.body;
@@ -65,6 +72,13 @@ const login = async (req, res, next) => {
   }
 };
 
+/**
+ * Sign up a new user
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
 const signup = async (req, res, next) => {
   try {
     let { fname, password, email, phone } = req.body;
@@ -117,6 +131,13 @@ const signup = async (req, res, next) => {
   }
 };
 
+/**
+ * Get project associated with a user
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Project that is accessible to the user
+ */
 const getAssociatedProjects = async (req, res, next) => {
   try {
     let query = {
@@ -141,7 +162,13 @@ const getAssociatedProjects = async (req, res, next) => {
   }
 };
 
-//use when adding users to a project
+/**
+ * Get users in the project
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Users list for a project
+ */
 const usersInProject = async (req, res, next) => {
   try {
     const query = {
@@ -160,6 +187,13 @@ const usersInProject = async (req, res, next) => {
   }
 };
 
+/**
+ * Make project selection to connect to project
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} token with project info
+ */
 const selectProject = async (req, res, next) => {
   try {
     if (!req.userEmail) throw { status: 401, message: 'Unauthorized user! Please login first!' };

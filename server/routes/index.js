@@ -5,7 +5,6 @@ const {
   addPipe,
   allPipes,
   updateStrung,
-  //addToString,
   deleteFromString,
   getStringingInfo,
   getOptions,
@@ -31,10 +30,9 @@ const {
   insertIntoSequence,
   getStrungItemsInfo,
 } = require('./Stringing');
-// } = require('./PipeStringing');
+
 const { getAggregateData } = require('./dataLogController');
 const { getWeld, postWeld, editWeld } = require('./weldingController');
-//const { cutPipe } = require('./PipeCutting');
 
 const SetRoutes = (app) => {
   //admin

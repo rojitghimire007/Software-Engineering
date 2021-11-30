@@ -3,6 +3,13 @@ const pipeQueries = require('../sql_queries/pipeQueries');
 const stringingQueries = require('../sql_queries/stringingQueries');
 const { connect_project_db, query_resolver } = require('../utils/dbHandler');
 
+/**
+ * Get Stringing items
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Get all stringing item
+ */
 const getStringing = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);
@@ -47,6 +54,13 @@ const getStringing = async (req, res, next) => {
   }
 };
 
+/**
+ * Update Stringing Sequence
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
 const updateSequence = async (req, res, next) => {
   // let { target_pipe, left_pipe } = req.body;
   let { item, prev_item, start_item } = req.body;
@@ -107,6 +121,13 @@ const updateSequence = async (req, res, next) => {
   }
 };
 
+/**
+ * Delete item from sequence
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
 const deleteFromSequence = async (req, res, next) => {
   let { item } = req.params;
 
@@ -144,6 +165,13 @@ const deleteFromSequence = async (req, res, next) => {
   }
 };
 
+/**
+ * Insert item into sequence
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
 const insertIntoSequence = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);
@@ -159,6 +187,13 @@ const insertIntoSequence = async (req, res, next) => {
   }
 };
 
+/**
+ * Get all stringing eligible pipes
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Stringing eligible pipes
+ */
 const getStriningEligiblePipes = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);
@@ -270,6 +305,11 @@ const old_deleteItemFromStringing = async (item, connection) => {
   }
 };
 
+/**
+ * Delete item from sequence
+ * @param {String} item - Item id
+ * @param {Object} connection - connection object for db
+ */
 const deleteItemFromStringing = async (item, connection) => {
   try {
     let _ = null;
@@ -323,11 +363,11 @@ const deleteItemFromStringing = async (item, connection) => {
 };
 
 /**
- *
- * @param {*} item The item to be inserted
- * @param {*} prev_item The thing that needs to be ahead of our item in the updated sequence. Can be null if item is placed at the beginning of the sequence.
- * @param {*} start_item If the item is placed at the beginning of the sequence, this will be the previous first item in that sequence.
- * @param {*} connection connection to db
+ * Insert item into stringing
+ * @param {String} item The item to be inserted
+ * @param {String} prev_item The thing that needs to be ahead of our item in the updated sequence. Can be null if item is placed at the beginning of the sequence.
+ * @param {String} start_item If the item is placed at the beginning of the sequence, this will be the previous first item in that sequence.
+ * @param {Object} connection connection object to db
  */
 const insertItemIntoStringing = async (
   item,
@@ -430,6 +470,13 @@ const insertItemIntoStringing = async (
   }
 };
 
+/**
+ * Create new sequence
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
 const createNewSequence = async (req, res, next) => {
   try {
     let { station, item } = req.body;
@@ -453,6 +500,12 @@ const createNewSequence = async (req, res, next) => {
   }
 };
 
+/**
+ * 
+ * @param {String} item - item id of an item
+ * @param {Object} connection connection object to the db
+ * @returns 
+ */
 const getOneItemInfo = async (item, connection) => {
   try {
     // If fitting
@@ -474,6 +527,13 @@ const getOneItemInfo = async (item, connection) => {
   }
 };
 
+/**
+ * Get item information
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Information about an item
+ */
 const getItemInfo = async (req, res, next) => {
   // item needs to be p_ or f_
   let { item } = req.params;
@@ -488,6 +548,13 @@ const getItemInfo = async (req, res, next) => {
   }
 };
 
+/**
+ * Get info on item in stringing
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Get item details in stringing
+ */
 const getStrungItemsInfo = async (req, res, next) => {
   let items = req.params.items.split('-');
   let ans = [];

@@ -1,5 +1,12 @@
 const { query_resolver, connect_project_db } = require("../utils/dbHandler");
 
+/**
+ * Cuts pipe
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
 const cutPipe = async (req, res, next) => {
   const { id, cutLength } = req.body;
 
@@ -65,6 +72,13 @@ const cutPipe = async (req, res, next) => {
   }
 };
 
+/**
+ * Get eligible pipes for cutting
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} List of cutable pipes
+ */
 const getCuttingEligiblePipes = async (req, res, next) => {
   try {
     const connection = await connect_project_db(req.dbname);
@@ -88,6 +102,13 @@ const getCuttingEligiblePipes = async (req, res, next) => {
   }
 };
 
+/**
+ * Get pipes length
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} pipe length
+ */
 const getPipeLength = async (req, res, next) => {
   try {
     const { id } = req.body;
