@@ -1,5 +1,5 @@
 import inspectorReports from 'img/inspectorReports.png';
-import excel from 'img/excel.jpg';
+import excel from 'img/excel.png';
 import SubCarousel from '../SubCarousel';
 
 
@@ -98,25 +98,25 @@ const links = [
       },
       {
         parent: 'ConstructionTeam',
-        link: '/',
+        link: 'https://docs.google.com/spreadsheets/d/1Rl6n8eeJU3vueVUqDRQwM6QgqP8lqBit/edit#gid=797439740',
         id: 'Blank CPG Photo Report.xls',
         image: excel,
       },
       {
         parent: 'ConstructionTeam',
-        link: '/',
+        link: 'https://docs.google.com/spreadsheets/d/1Fsg-Gf3-kFu8GYG-2XMN6rBl8hGl3qbf/edit#gid=1424690196',
         id: 'Blank Qualified Welding Personnel.xlsx',
         image: excel,
       },
       {
         parent: 'ConstructionTeam',
-        link: '/',
+        link: 'https://docs.google.com/spreadsheets/d/1hILrv5AaGSo5RtKsD5upiGV6DHqS_kL6/edit#gid=835424141',
         id: 'Utility Inspector Report.xlsx',
         image: excel,
       },
       {
         parent: 'ConstructionTeam',
-        link: '/',
+        link: 'https://docs.google.com/spreadsheets/d/1rBxSfqyTpxqnkB3ILv3g_-f-j_x8QYjo/edit#gid=1271156030',
         id: 'Welding Inspector Daily.xlsx',
         image: excel,
       },

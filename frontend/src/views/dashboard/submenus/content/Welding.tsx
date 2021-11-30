@@ -71,6 +71,18 @@ const links = [
         id: 'Welding Equipment',
         image: welding,
       },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Welding Procedure',
+        image: welding,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Welding Electrode MSDS',
+        image: welding,
+      },
   ];
 
 
