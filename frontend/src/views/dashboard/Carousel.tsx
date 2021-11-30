@@ -109,6 +109,8 @@ const RunCarousel = () => {
                 fontSize: "small",
                 textDecoration: "none",
                 backgroundColor: "black",
+                borderBottomLeftRadius: '10px',
+                borderBottomRightRadius: '10px',
               }}
             >
               {item.id}
@@ -123,6 +125,8 @@ const RunCarousel = () => {
                 fontSize: "small",
                 textDecoration: "none",
                 backgroundColor: "black",
+                borderBottomLeftRadius: '10px',
+                borderBottomRightRadius: '10px',
               }}
             >
               {item.id2}
@@ -137,6 +141,8 @@ const RunCarousel = () => {
                 fontSize: "small",
                 textDecoration: "none",
                 backgroundColor: "black",
+                borderBottomLeftRadius: '10px',
+                borderBottomRightRadius: '10px',
               }}
             >
               {item.id3}
@@ -158,6 +164,7 @@ const RunCarousel = () => {
 
   return (
     <div className="comp-container">
+<<<<<<< HEAD
       <div
         style={{
           display: "flex",
@@ -207,6 +214,58 @@ const RunCarousel = () => {
             </div>
           );
         })} */}
+||||||| ca7daaf
+      <div
+        style={{
+          display: "flex",
+          background: "white",
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+        }}
+      >
+        {/* {circleQueue.map((item, index) => {
+          return (
+            <div style={{ background: "green", color: "white", margin: "2px" }}>
+              {focused === index
+                ? "-F-"
+                : index === focused - 1 || index === focused + 1
+                ? "-1-"
+                : index === circleQueue.length - 1 && focused === 0
+                ? "-1-"
+                : index === 0 && focused === circleQueue.length - 1
+                ? "-1-"
+                : index === focused - 2 || index === focused + 2
+                ? "-2-"
+                : index === circleQueue.length - 2 && focused === 0
+                ? "-2-"
+                : index === circleQueue.length - 1 && focused === 1
+                ? "-2-"
+                : index === 1 && focused === circleQueue.length - 1
+                ? "-2-"
+                : index === 0 && focused === circleQueue.length - 2
+                ? "-2-"
+                : index === focused - 3 || index === focused + 3
+                ? "-3-"
+                : index === circleQueue.length - 3 && focused === 0
+                ? "-3-"
+                : index === circleQueue.length - 2 && focused === 1
+                ? "-3-"
+                : index === circleQueue.length - 1 && focused === 2
+                ? "-3-"
+                : index === 2 && focused === circleQueue.length - 1
+                ? "-3-"
+                : index === 1 && focused === circleQueue.length - 2
+                ? "-3-"
+                : index === 0 && focused === circleQueue.length - 3
+                ? "-3-"
+                : "---"}
+            </div>
+          );
+        })} */}
+=======
+      <div>
+>>>>>>> FinalMenuChanges
         {circleQueue.map((item, index) => {
           return (
             <div style={{ background: "green", color: "white", margin: "2px" }}>

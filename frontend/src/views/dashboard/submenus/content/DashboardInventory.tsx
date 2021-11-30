@@ -31,7 +31,7 @@ const links = [
     },
     {
       parent: 'Material Inventory',
-      link: '/',
+      link: '/dashboard/MTRS',
       id: 'MTRS',
       image: inventoryImg,
     },

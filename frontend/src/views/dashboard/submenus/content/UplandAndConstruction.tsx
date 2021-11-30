@@ -7,52 +7,64 @@ const links = [
     // Inventory
     {
       parent: 'ConstructionTeam',
-      link: '/dashboard/uplandAndConstruction',
-      id: 'Upland and Construction',
+      link: '/',
+      id: 'General',
       image: environmental,
     },
     {
       parent: 'ConstructionTeam',
       link: '/',
-      id: 'Stream and Wetland Crossings',
+      id: 'Right-of-way Width',
       image: environmental,
     },
     {
       parent: 'ConstructionTeam',
       link: '/',
-      id: 'Spill Prevention, Containment and Control',
+      id: 'Clearing',
       image: environmental,
     },
     {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'Maintenance',
+        id: 'Grading',
         image: environmental,
     },
     {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'Environmental Construction Management and Inspection',
+        id: 'Access Roads',
         image: environmental,
     },
     {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'Emergency Construction',
+        id: 'Residential Area',
         image: environmental,
     },
     {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'Winter Season Construction Plan',
+        id: 'Trenching',
         image: environmental,
-},
+    },
+    {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Backfilling Specifications',
+        image: environmental,
+    },
+    {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'HydrostaticTesting',
+        image: environmental,
+    },
   ];
 
 
-const Environmental = () => {
+const UplandAndConstruction = () => {
     return (
         SubCarousel(links)
     );
 }
-export default Environmental;
+export default UplandAndConstruction;
