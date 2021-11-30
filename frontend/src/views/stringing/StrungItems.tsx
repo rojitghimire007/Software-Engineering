@@ -126,6 +126,18 @@ const defaultSequence: Array<dataType> = [
   { item_id: 'gap', station_number: 100 },
   { item_id: 'gap', station_number: 150 },
 ];
+const getLastItem = (arr: any) => {
+  if (arr.length == 0 || arr.at(-1).item_id === 'gap') return [];
+
+  let last = arr.at(-1);
+
+  return [
+    {
+      item_id: 'gap',
+      station_number: last.station_number + (last.plength || last.flength),
+    },
+  ];
+};
 
 const StrungItems = () => {
   const [sequence, setSequence] = useState<Array<dataType>>([]); // correct order of pipe ids
@@ -229,9 +241,12 @@ const StrungItems = () => {
         .then((res) => {
           if (
             sequence[startWindow + index + 1] &&
-            sequence[startWindow + index].station_number <
+            sequence[startWindow + index].station_number +
+              (sequence[startWindow + index].plength ||
+                sequence[startWindow + index].flength ||
+                0) <
               sequence[startWindow + index + 1].station_number
-          )
+          ) {
             setSequence(
               insertItem(sequence, startWindow + index + 1, {
                 item_id: 'gap',
@@ -242,7 +257,11 @@ const StrungItems = () => {
                     0),
               })
             );
-          else setSequence([...sequence]);
+            updateDetails();
+          } else {
+            setSequence([...sequence]);
+            updateDetails();
+          }
         })
         .catch((err) => alert(err.message));
     }
@@ -287,8 +306,20 @@ const StrungItems = () => {
           let arr: any[] = [];
           for (let row of res) for (let e of row) arr.push(e);
 
+          // If less than 4 items in stringing. It will always be >= 1.
+          if (arr.length < 4) {
+            arr = [...arr, ...getLastItem(arr)];
+            let temp = arr.length;
+            for (let i = 0; i < 4 - temp; i++) {
+              arr.push({
+                item_id: 'gap',
+                station_number: arr[arr.length - 1].station_number + 50,
+              });
+            }
+          }
+
           unstable_batchedUpdates(() => {
-            setSequence([...arr]);
+            setSequence([...arr, ...getLastItem(arr)]);
             setLoading(false);
             setStartWindow(0);
           });
@@ -324,17 +355,28 @@ const StrungItems = () => {
       .catch((err) => alert(err.message));
   }, []);
 
-  useUpdateEffect(() => {
-    setCurrentItemDetails([]);
-
+  const updateDetails = () => {
     api
       .getStrungItemsInfo(
         sequence.slice(startWindow, startWindow + 4).map((item) => item.item_id)
       )
       .then((res) => setCurrentItemDetails(res))
       .catch((err) => alert(err.message));
+  };
+
+  useUpdateEffect(() => {
+    setCurrentItemDetails([]);
+    updateDetails();
   }, [startWindow]);
 
+  useEffect(() => {
+    let last = getLastItem(sequence);
+
+    if (last.length == 0) return;
+    else {
+      setSequence([...sequence, ...last]);
+    }
+  }, [sequence]);
   /**
    * Depricated
    */

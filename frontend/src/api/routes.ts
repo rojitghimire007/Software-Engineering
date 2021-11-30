@@ -9,7 +9,7 @@ const API = {
   signup: `${URL}/signup`,
   getAssociatedProjects: `${URL}/list/project`,
   selectProject: `${URL}/select/project`,
-  
+
   // admin
   postProjectAdmin: `${URL}/create/project`, // BACKEND url
 
@@ -33,6 +33,8 @@ const API = {
   getPipeLength: `${URL}/pipe/length`,
   createNewSequence: `${URL}/string/sequence`,
 
+  //welding
+  welding: `${URL}/welding`,
 
   //other
   getItemInfo: `${URL}/items/`,
@@ -42,7 +44,7 @@ const API = {
   usersInProject: `${URL}/list/user`,
   projUser: `${URL}/create/project/user`,
   getAllUsers: `${URL}/allusers`,
-  aggreate: `${URL}/aggregate`
+  aggreate: `${URL}/aggregate`,
 };
 
 export { URL, API };
