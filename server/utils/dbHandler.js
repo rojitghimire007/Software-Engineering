@@ -132,6 +132,8 @@ const create_tables = async (db_connection) => {
     await query_resolver(db_connection, dbScripts.populate_ref);
     await query_resolver(db_connection, dbScripts.bend);
     await query_resolver(db_connection, dbScripts.pipe_bend);
+    await query_resolver(db_connection, dbScripts.weld);
+    await query_resolver(db_connection, dbScripts.weld_seq);
   } catch (error) {
     console.log("Error(133)", error);
     throw error;

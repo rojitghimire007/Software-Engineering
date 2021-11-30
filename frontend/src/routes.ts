@@ -72,6 +72,9 @@ import PipeGange from "views/welding/pipeGange/pipeGange";
 import SingleVbutt from "views/welding/pipeGange/singleVbutt";
 import FiringLine from "views/welding/pipeGange/firingLine";
 import WeldingProcedure from "views/welding/weldingProcedure";
+import Services from "views/information/Services";
+import Training from "views/information/Training";
+import Careers from "views/information/Careers";
 
 const Dashboard = React.lazy(() => import("views/dashboard/Dashboard"));
 const Login = React.lazy(() => import("views/Login"));
@@ -471,6 +474,30 @@ const routes: {
     exact: true,
     name: 'Welding Procedure',
     component: WeldingProcedure,
+  },
+  {
+    path: '/services',
+    exact: true,
+    name: 'Services',
+    component: Services,
+  },
+  {
+    path: '/training',
+    exact: true,
+    name: 'Training',
+    component: Training,
+  },
+  {
+    path: '/careers',
+    exact: true,
+    name: 'Careers',
+    component: Careers,
+  },
+  {
+    path: '/contact',
+    exact: true,
+    name: 'Contact',
+    component: ContactUs,
   },
 ];
 
