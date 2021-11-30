@@ -20,7 +20,7 @@ type dataType = {
   fl: Array<string> | null;
 };
 
-const Welding = () => {
+const Weld = () => {
   const classes = useStyles();
   const itemCols = [1, 3, 5, 7];
   const gapCols = [2, 4, 6];
@@ -142,4 +142,4 @@ const Welding = () => {
     );
 };
 
-export default Welding;
+export default Weld;

@@ -817,7 +817,7 @@ const NewCutting = ({ id, length }: any) => {
                       .cutPipe(id, finalLengths[0])
                       .then((res) => {
                         setSubmitting(false);
-                        console.log("data posted");
+                        alert(res.message + " Check pipe inventory to see the changes!");
                         console.log(res);
                       })
                       .catch((err) => {

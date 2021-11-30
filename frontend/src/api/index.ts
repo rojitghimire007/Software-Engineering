@@ -1,5 +1,5 @@
-import { authGet, post, authPost, authPut, get, authDelete } from './request';
-import { API } from './routes';
+import { authGet, post, authPost, authPut, get, authDelete } from "./request";
+import { API } from "./routes";
 
 export default {
   auth: () => {
@@ -11,11 +11,11 @@ export default {
   },
 
   signup: (fname: string, email: string, password: string, phone: string) => {
-    return authPost(API.signup, {fname, email, password, phone});
+    return authPost(API.signup, { fname, email, password, phone });
   },
 
   getAssociatedProjects: () => {
-    return authGet(API.getAssociatedProjects, '');
+    return authGet(API.getAssociatedProjects, "");
   },
 
   selectProject: (project_number: any) => {
@@ -23,7 +23,7 @@ export default {
   },
 
   getPipes: () => {
-    return authGet(API.getPipes, '');
+    return authGet(API.getPipes, "");
   },
 
   addPipe: (data: any) => {
@@ -39,22 +39,22 @@ export default {
   },
 
   getOptions: () => {
-    return authGet(API.getOptions, '');
+    return authGet(API.getOptions, "");
   },
 
   getSchedules: (diameter: string) => {
-    return authGet(API.getSchedules, diameter.replaceAll(' ', '%20'));
+    return authGet(API.getSchedules, diameter.replaceAll(" ", "%20"));
   },
 
   getStringingInfo: () => {
-    return authGet(API.getStringingInfo, '');
+    return authGet(API.getStringingInfo, "");
   },
 
   // Stringing calls
 
-  getStriningEligiblePipes: () => authGet(API.getStriningEligiblePipes, ''),
+  getStriningEligiblePipes: () => authGet(API.getStriningEligiblePipes, ""),
 
-  getStringing: () => authGet(API.stringing, ''),
+  getStringing: () => authGet(API.stringing, ""),
 
   appendToString: (pipe_id: string) => authPost(API.stringing, { pipe_id }),
 
@@ -101,7 +101,7 @@ export default {
   ) => authPost(API.stringing, { item, prev_item, start_item }),
 
   getStrungPipesInfo: (pipes: Array<string | number>) => {
-    return authGet(API.getStrungPipesInfo, pipes.join('_'));
+    return authGet(API.getStrungPipesInfo, pipes.join("_"));
   },
 
   /**
@@ -118,7 +118,7 @@ export default {
     authPost(API.createNewSequence, { station, item }),
   // Cutting
 
-  getCuttingEligiblePipes: () => authGet(API.getCuttingEligiblePipes, ''),
+  getCuttingEligiblePipes: () => authGet(API.getCuttingEligiblePipes, ""),
 
   getPipeLength: (id: string) => authPost(API.getPipeLength, { id }),
 
@@ -129,11 +129,11 @@ export default {
    * @returns
    */
   cutPipe: (pipe: string, cut_length: number) =>
-    authPost(API.cutPipe, { pipe, cut_length }),
+    authPost(API.cutPipe, { id: pipe, cutLength: cut_length }),
 
   // Fittings
   getFittings: () => {
-    return authGet(API.getFittings, '');
+    return authGet(API.getFittings, "");
   },
 
   addFitting: (data: any) => {
@@ -142,16 +142,16 @@ export default {
 
   getItemInfo: (item: string) => {
     item = item.toUpperCase();
-    if (!new RegExp('F_.*').test(item)) item = 'P_' + item;
+    if (!new RegExp("F_.*").test(item)) item = "P_" + item;
     return authGet(API.getItemInfo, item);
   },
 
   getStrungItemsInfo: (items: Array<string>) => {
-    return authGet(API.getStrungItemsInfo, items.join('-'));
+    return authGet(API.getStrungItemsInfo, items.join("-"));
   },
   //bend
   getBend: () => {
-    return authGet(API.bendPipe, '');
+    return authGet(API.bendPipe, "");
   },
 
   postBend: (data: any) => {
@@ -167,11 +167,11 @@ export default {
   },
 
   usersInProject: () => {
-    return authGet(API.usersInProject, '');
+    return authGet(API.usersInProject, "");
   },
 
   allUsers: () => {
-    return authGet(API.getAllUsers, '');
+    return authGet(API.getAllUsers, "");
   },
 
   addUserToProject: (user: any) => {
@@ -183,10 +183,10 @@ export default {
   },
 
   getAggreate: () => {
-    return authGet(API.aggreate, '');
+    return authGet(API.aggreate, "");
   },
 
-  getWelding: () => authGet(API.welding, ''),
+  getWelding: () => authGet(API.welding, ""),
 
   updateWelding: (data: any) => authPut(API.welding, data),
   createWeld: (data: any) => authPost(API.welding, data),

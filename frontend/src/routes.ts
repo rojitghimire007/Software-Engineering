@@ -9,7 +9,7 @@ import ContactUs from "views/information/ContactUs";
 import TESTING from "views/TESTING";
 import StrungItems from "views/stringing/StrungItems";
 // import oldString from 'views/stringing/StrungItems';
-import CreateProject from "views/administrative/createProject";
+import CreateProject from "views/administrative/CreateProject";
 import DashboardInventory from "views/dashboard/submenus/content/DashboardInventory";
 import BendInfo from "views/bending/BendInfo";
 import MasterLog from "views/masterLog/MasterLog";
@@ -50,7 +50,7 @@ import PipeCutting from "views/cutting/PipeCutting";
 
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
 import SignUpUser from "views/administrative/SignUpUser";
-import Welding from "views/welding/Welding";
+import Weld from "views/welding/Weld";
 
 const Dashboard = React.lazy(() => import("views/dashboard/Dashboard"));
 const Login = React.lazy(() => import("views/Login"));
@@ -311,8 +311,14 @@ const routes: {
     path:"/welding",
     exact: true,
     name: "Welding",
-    component: Welding
-  }
+    component: Weld
+  },
+  {
+    path:"/cutting",
+    exact: true,
+    name: "Welding",
+    component: PipeCutting
+  },
 ];
 
 export default routes;
