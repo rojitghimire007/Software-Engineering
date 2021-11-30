@@ -364,6 +364,12 @@ const routes: {
     name: "PipeAndSteelDimensions",
     component: PipeAndSteelDimensions,
   },
+  {
+    path: "/stringing/cutting",
+    exact: true,
+    name: "Cutting",
+    component: PipeCutting,
+  },
 
 
 

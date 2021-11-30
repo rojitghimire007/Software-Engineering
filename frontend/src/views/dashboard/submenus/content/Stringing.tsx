@@ -13,6 +13,12 @@ const links = [
     },
     {
       parent: 'ConstructionTeam',
+      link: '/stringing/cutting',
+      id: 'Cutting',
+      image: stringing,
+    },
+    {
+      parent: 'ConstructionTeam',
       link: '/dashboard/xray',
       id: 'X-Ray',
       image: stringing,
