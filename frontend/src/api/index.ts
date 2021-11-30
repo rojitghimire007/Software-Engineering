@@ -64,7 +64,6 @@ export default {
     start_item: string | null
   ) => authPut(API.stringing, { item, prev_item, start_item }),
 
-  
   // ADMINISTRATION
 
   postProjectAdmin: (
@@ -80,9 +79,21 @@ export default {
     notes: string,
     start_date: number,
     end_date: number
-  ) => authPost(API.postProjectAdmin, 
-    {project_number, pname,  company, company_address, company_phone, company_email, work_number, work_site_phone, plocation,  notes, start_date, end_date}
-  ),
+  ) =>
+    authPost(API.postProjectAdmin, {
+      project_number,
+      pname,
+      company,
+      company_address,
+      company_phone,
+      company_email,
+      work_number,
+      work_site_phone,
+      plocation,
+      notes,
+      start_date,
+      end_date,
+    }),
   insertIntoSequence: (
     item: string,
     prev_item: string | null,
@@ -151,7 +162,7 @@ export default {
     return authPut(API.bendPipe, data);
   },
 
-  removeBend: (bend_id: string) => { 
+  removeBend: (bend_id: string) => {
     return authDelete(`${API.bendPipe}/${bend_id}`);
   },
 
@@ -164,14 +175,19 @@ export default {
   },
 
   addUserToProject: (user: any) => {
-    return authPost(API.projUser, user)
+    return authPost(API.projUser, user);
   },
 
-  removeUserFromProject: (user:string) => {
+  removeUserFromProject: (user: string) => {
     return authDelete(`${API.projUser}/${user}`);
   },
 
   getAggreate: () => {
-    return authGet(API.aggreate, '')
-  }
+    return authGet(API.aggreate, '');
+  },
+
+  getWelding: () => authGet(API.welding, ''),
+
+  updateWelding: (data: any) => authPut(API.welding, data),
+  createWeld: (data: any) => authPost(API.welding, data),
 };

@@ -42,7 +42,10 @@ const createItem = (
   ) {
     return (
       <div className={styles.newPipeWrapper}>
-        <div className={styles.pipeSide} style={{borderRadius: '50% 0 0 50%'}}/>
+        <div
+          className={styles.pipeSide}
+          style={{ borderRadius: '50% 0 0 50%' }}
+        />
         <div className={styles.pipeContent}>
           <div className={styles.topRow}>
             <div>
@@ -56,21 +59,22 @@ const createItem = (
           </div>
           <div className={styles.leftInfo}>
             <div>Pipe ID:</div>
-            <div>Station:</div>
             <div>Heat:</div>
             <div>Grade: </div>
             <div>Length:</div>
           </div>
           <div className={styles.rightInfo}>
             <div>{itemInfo.item_id.replace('P_', '')}</div>
-            <div>{itemInfo.station_number}</div>
-            <div>123345{itemInfo.heat_no}</div>
-            <div>X65{itemInfo.grade}</div>
+            <div>{itemInfo.heat_no}</div>
+            <div>{itemInfo.grade}</div>
             <div>{itemInfo.plength}</div>
           </div>
         </div>
-        <div className={styles.pipeSide} style={{borderRadius: '0 50% 50% 0'}}>
-          <div/>
+        <div
+          className={styles.pipeSide}
+          style={{ borderRadius: '0 50% 50% 0' }}
+        >
+          <div />
         </div>
       </div>
     );

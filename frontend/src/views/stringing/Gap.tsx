@@ -19,13 +19,16 @@ const Gap = ({
   eligible: Array<any>;
   transformGap: any;
 }) => {
-  const [newItem, setNewItem] = useState('');
+  const [newItem, setNewItem] = useState(null);
   const itemSelected = (item: string) => {
+    // Make sure that fitting goes as F_.*
     if (item.charAt(0) == 'F') item = item.replace('F', 'F_');
-    else item = 'P_' + item;
+
+    // Get the item info and transform Gap
     api
       .getItemInfo(item)
       .then((res) => {
+        //Determining length based on item type
         let length = {};
         if (new RegExp('F_.*').test(item)) length = { flength: res.length };
         else length = { plength: res.length };
@@ -38,9 +41,12 @@ const Gap = ({
           grade: res.grade,
         });
 
-        setNewItem('');
+        setNewItem(null);
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => {
+        alert(error.message);
+        setNewItem(null);
+      });
   };
   return (
     <Draggable
