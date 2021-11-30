@@ -2,60 +2,12 @@
 const links = [
     {
         main: '01. Menu',
-        default: '',
+        default: '/',
         subItems: [
-        {
-            main: '- Web Page',
-            default: '/dashboard',
-        },
-        {
-            main: '- Privacy Statement',
-            default: '/'
-        },
-        {
-            main: '- Term of Use',
-            default: '/'
-        },
-        {
-            main: '- Current Projects',
-            default: '/'
-        },
-        {
-            main: '- Login',
-            default: '/'
-        },
-        {
-            main: '- Menu',
-            default: '/'
-        },
-        {
-            main: '- Access Profile',
-            default: '/'
-        },
-        {
-            main: '- zBending and Pipe Gang',
-            default: '/'
-        },
-        {
-            main: '- zDatabase Log',
-            default: '/'
-        },
-        {
-            main: '- zHeat Number Tab Pipe Heat Number',
-            default: '/'
-        },
-        {
-            main: '- zPipe Inventory Tab',
-            default: '/'
-        },
-        {
-            main: '- zStringing Stock Pile',
-            default: '/'
-        },
-        {
-            main: '- zStringing Tab',
-            default: '/'
-        }],
+            {
+                main: '- Menu Files',
+                default: '/dashboard/menu'
+            }],
     },
 
 
@@ -68,19 +20,19 @@ const links = [
             },
             {
                 main: '- Needs Analysis and Project Justification',
-                default: '/'
+                default: '/dashboard/needsAnalysis'
             },
             {
                 main: '- Project Authorization and Certification',
-                default: '/'
+                default: '/dashboard/projectAuthorization'
             },
             {
                 main: '- Overview of Construction',
-                default: '/'
+                default: '/dashboard/overviewOfConstruction'
             },
             {
                 main: '- Special Construction Technique',
-                default: '/'
+                default: '/dashboard/specialConstructionTechnique'
             },
             {
                 main: '- Post-Construction Maintenance',
@@ -96,7 +48,7 @@ const links = [
             },
             {
                 main: '- Guidelines for Parallel Construction',
-                default: '/'
+                default: '/dashboard/guidelines'
             },
             {
                 main: '- Construction Bid Documents',
@@ -104,7 +56,7 @@ const links = [
             },
             {
                 main: '- Construction Standers',
-                default: '/'
+                default: '/dashboard/constructionStanders'
             },
             {
                 main: '- Schedules',
@@ -128,7 +80,7 @@ const links = [
         subItems: [
             {
                 main: '- Construction Team',
-                default: '/'
+                default: '/dashboard/constructionTeam'
             },
             {
                 main: '- Contractor Mobilizes',
@@ -136,19 +88,19 @@ const links = [
             },
             {
                 main: '- Permits',
-                default: '/'
+                default: '/dashboard/permits'
             },
             {
                 main: '- Environmental',
-                default: '/'
+                default: '/dashboard/environmental'
             },
             {
                 main: '- Clearing',
-                default: '/'
+                default: '/dashboard/clearing'
             },
             {
                 main: '- Grading',
-                default: '/'
+                default: '/dashboard/grading'
             },
             {
                 main: '- Access Roads to Right of Way',
@@ -156,43 +108,43 @@ const links = [
             },
             {
                 main: '- Material Inventory',
-                default: '/'
+                default: '/dashboard/inventory/materialInventory'
             },
             {
                 main: '- GPS Survey',
-                default: '/'
+                default: '/dashboard/gpsSurvey'
             },
             {
                 main: '- Stringing',
-                default: '/'
+                default: '/dashboard/stringing'
             },
             {
                 main: '- Trenching',
-                default: '/'
+                default: '/dashboard/trenching'
             },
             {
                 main: '- HDD',
-                default: '/'
+                default: '/dashboard/hdd'
             },
             {
                 main: '- Pipe Bending',
-                default: '/'
+                default: '/dashboard/bending'
             },
             {
                 main: '- Welding',
-                default: '/'
+                default: '/dashboard/welding'
             },
             {
                 main: '- X-Ray',
-                default: '/'
+                default: '/dashboard/xray'
             },
             {
                 main: '- Blasting',
-                default: '/'
+                default: '/dashboard/blasting'
             },
             {
                 main: '- Coating',
-                default: '/'
+                default: '/dashboard/coating'
             },
             {
                 main: '- Rock Shield',
@@ -200,7 +152,7 @@ const links = [
             },
             {
                 main: '- Padding',
-                default: '/'
+                default: '/dashboard/padding'
             },
             {
                 main: '- Trench Plugs',
@@ -208,7 +160,7 @@ const links = [
             },
             {
                 main: '- Lowering In',
-                default: '/'
+                default: '/dashboard/lowering'
             },
             {
                 main: '- Weights',
@@ -232,7 +184,7 @@ const links = [
             },
             {
                 main: '- Hydrostatic Testing',
-                default: '/'
+                default: '/dashboard/hydrostaticTesting'
             },
             {
                 main: '- Valve Site',
@@ -240,11 +192,11 @@ const links = [
             },
             {
                 main: '- Restoration',
-                default: '/'
+                default: '/dashboard/restoration'
             },
             {
                 main: '- Utility Pigs',
-                default: '/'
+                default: '/dashboard/pigs'
             },
             {
                 main: '- Inline Inspection Tools',
@@ -252,11 +204,11 @@ const links = [
             },
             {
                 main: '- Inspector Reports',
-                default: '/'
+                default: '/dashboard/inspectorReports'
             },
             {
                 main: '- Safety',
-                default: '/'
+                default: '/dashboard/safety'
             },
             {
                 main: '- Road Repair',
@@ -268,7 +220,7 @@ const links = [
             },
             {
                 main: '- Weather Tracking',
-                default: '/'
+                default: '/dashboard/weatherTracking'
             },
             {
                 main: '- Progress Reports',

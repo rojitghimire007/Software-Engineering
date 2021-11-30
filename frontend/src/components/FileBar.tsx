@@ -43,14 +43,14 @@ const FileBar = (links: any) => {
           return (
             <List>
               {link.subItems[0] == '' ?
-                <Link to={link.default}>
+                <a href={`${link.default}`}>
                   <ListItem button key={link.main} onClick={() => {
                     setIsSubDrawerOpen(!isSubDrawerOpen);
                     setLinkOpen(link.main);
                   }}>
                     <ListItemText primary={link.main} />
                   </ListItem>
-                </Link>
+                </a>
                 : //or
                 <ListItem button key={link.main} onClick={() => {
                   setIsSubDrawerOpen(!isSubDrawerOpen);
@@ -63,11 +63,11 @@ const FileBar = (links: any) => {
               {isSubDrawerOpen && linkOpen == link.main && link.subItems[0] != '' ?
                 link.subItems.map((sub: any) => {
                   return (
-                    <Link to={sub.default}>
+                    <a href={`${sub.default}`}>
                       <ListItem style={{color: 'Black', paddingLeft: '3rem' }}>
                         {sub.main}
                       </ListItem>
-                    </Link>
+                    </a>
                   )
                 })
                 : null

@@ -56,24 +56,24 @@ const links = [
       image: inventoryImg,
 
       parent2: 'Welding',
-      link2: '/',
+      link2: '/dashboard/welding',
       id2: 'Welding',
       image2: weldingImg,
 
       parent3: 'Stringing',
-      link3: 'pipes/strung/new',
+      link3: 'dashboard/stringing',
       id3: 'Stringing',
       image3: stringingImg,
     },
     
     {
       parent: 'Bending',
-      link: '/bending',
+      link: '/dashboard/bending',
       id: 'Bending',
       image: bendingImg,
 
       parent2: 'Coating',
-      link2: '/coating',
+      link2: '/dashboard/coating',
       id2: 'Coating',
       image2: coatingImg,
 
@@ -85,24 +85,24 @@ const links = [
 
     {
       parent: 'NeedsAnalysis',
-      link: '',
+      link: '/dashboard/needsAnalysis',
       id: 'Needs Analysis and Project Justification',
       image: needsAnalysis,
 
       parent2: 'ProjectAuthorization',
-      link2: '',
+      link2: '/dashboard/projectAuthorization',
       id2: 'Project Authorization and Certification',
       image2: projectAuthorization,
 
       parent3: 'OverviewOfConstruction',
-      link3: '',
+      link3: '/dashboard/overviewOfConstruction',
       id3: 'Overview of Construction',
       image3: overviewOfConstruction,
     },
 
     {
       parent: 'SpecialConstructionTechnique',
-      link: '',
+      link: '/dashboard/specialConstructionTechnique',
       id: 'Special Construction Technique',
       image: specialConstructionTechnique,
 
@@ -129,7 +129,7 @@ const links = [
       image2: standardConstructionDrawings,
 
       parent3: 'GuidlinesForParallelConstruction',
-      link3: '',
+      link3: '/dashboard/guidelines',
       id3: 'Guidlines for Parallel Construction',
       image3: guidelines,
     },
@@ -141,7 +141,7 @@ const links = [
       image: constructionBidDocuments,
 
       parent2: 'ConstructionStanders',
-      link2: '',
+      link2: '/dashboard/constructionStanders',
       id2: 'Construction Standers',
       image2: constructionStanders,
 
@@ -163,7 +163,7 @@ const links = [
       image2: contactPhoneNumbers,
 
       parent3: 'ConstructionTeam',
-      link3: '',
+      link3: '/dashboard/constructionTeam',
       id3: 'Construction Team',
       image3: constructionTeam,
     },
@@ -175,24 +175,24 @@ const links = [
       image: constructorMobilization,
 
       parent2: 'Permits',
-      link2: '',
+      link2: '/dashboard/permits',
       id2: 'Permits',
       image2: permits,
 
       parent3: 'Environmental',
-      link3: '',
+      link3: '/dashboard/environmental',
       id3: 'Environmental',
       image3: environmental,
     },
 
     {
       parent: 'Clearing',
-      link: '',
+      link: '/dashboard/clearing',
       id: 'Clearing',
       image: clearing,
 
       parent2: 'Grading',
-      link2: '',
+      link2: '/dashboard/grading',
       id2: 'Grading',
       image2: grading,
 
@@ -204,17 +204,17 @@ const links = [
 
     {
         parent: 'gpsSurvey',
-        link: '',
+        link: '/dashboard/gpsSurvey',
         id: 'GPS Survey',
         image: gpsSurvey,
 
         parent2: 'Trenching',
-        link2: '',
+        link2: '/dashboard/trenching',
         id2: 'Trenching',
         image2: trenching,
 
         parent3: 'HDD',
-        link3: '',
+        link3: '/dashboard/hdd',
         id3: 'HDD',
         image3: hdd,
     },
@@ -231,14 +231,14 @@ const links = [
         image2: rockShield,
 
         parent3: 'Padding',
-        link3: '',
+        link3: '/dashboard/padding',
         id3: 'Padding',
         image3: padding,
     },
 
     {
         parent: 'Lowering',
-        link: '',
+        link: '/dashboard/lowering',
         id: 'Lowering',
         image: lowering,
 
@@ -260,36 +260,36 @@ const links = [
         image: abandonment,
 
         parent2: 'Pigs',
-        link2: '',
+        link2: '/dashboard/pigs',
         id2: 'Pigs',
         image2: pigs,
 
         parent3: 'HydrostaticTesting',
-        link3: '',
+        link3: '/dashboard/hydrostaticTesting',
         id3: 'Hydrostatic Testing',
         image3: hydrostaticTesting,
     },
 
     {
         parent: 'Restoration',
-        link: '',
+        link: '/dashboard/restoration',
         id: 'Restoration',
         image: restoration,
 
         parent2: 'InspectorReports',
-        link2: '',
+        link2: '/dashboard/inspectorReports',
         id2: 'Inspector Reports',
         image2: inspectorReports,
 
         parent3: 'Safety',
-        link3: '',
+        link3: '/dashboard/safety',
         id3: 'Safety',
         image3: safety,
     },
 
     {
         parent: 'WeatherTracking',
-        link: '',
+        link: '/dashboard/weatherTracking',
         id: 'WeatherTracking',
         image: weatherTracking,
 

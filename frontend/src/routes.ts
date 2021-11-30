@@ -8,11 +8,47 @@ import AboutUs from "views/information/AboutUs";
 import ContactUs from "views/information/ContactUs";
 import TESTING from "views/TESTING";
 import StrungItems from "views/stringing/StrungItems";
-import CreateProject from "views/administrative/CreateProject";
-import DashboardInventory from "views/dashboard/submenus/DashboardInventory";
+// import oldString from 'views/stringing/StrungItems';
+import CreateProject from "views/administrative/createProject";
+import DashboardInventory from "views/dashboard/submenus/content/DashboardInventory";
 import BendInfo from "views/bending/BendInfo";
 import MasterLog from "views/masterLog/MasterLog";
 import ListUser from "views/userListProj/ListUser";
+import NeedsAnalysis from "views/dashboard/submenus/content/NeedsAnalysis";
+import ProjectAuthorization from "views/dashboard/submenus/content/ProjectAuthorization";
+import OverviewOfConstruction from "views/dashboard/submenus/content/OverviewOfConstruction";
+import SpecialConstructionTechnique from "views/dashboard/submenus/content/SpecialConstructionTechnique";
+import GuidlinesForParallelConstruction from "views/dashboard/submenus/content/GuidelinesforParallelConstruction";
+import ConstructionStanders from "views/dashboard/submenus/content/ConstructionStanders";
+import ConstructionTeam from "views/dashboard/submenus/content/ConstructionTeam";
+import Permits from "views/dashboard/submenus/content/Permits";
+import Environmental from "views/dashboard/submenus/content/Environmental";
+import Clearing from "views/dashboard/submenus/content/Clearing";
+import Grading from "views/dashboard/submenus/content/Grading";
+import MaterialInventory from "views/dashboard/submenus/content/MaterialInventory";
+import GPSSurvey from "views/dashboard/submenus/content/GPSSurvey";
+import Trenching from "views/dashboard/submenus/content/Trenching";
+import HDD from "views/dashboard/submenus/content/HDD";
+import Bending from "views/dashboard/submenus/content/Bending";
+import Welding from "views/dashboard/submenus/content/Welding";
+import XRay from "views/dashboard/submenus/content/XRay";
+import Stringing from "views/dashboard/submenus/content/Stringing";
+import Blasting from "views/dashboard/submenus/content/Blasting";
+import Coating from "views/dashboard/submenus/content/Coating";
+import Padding from "views/dashboard/submenus/content/Padding";
+import TrenchPlugs from "views/dashboard/submenus/content/TrenchPlugs";
+import Lowering from "views/dashboard/submenus/content/Lowering";
+import Weights from "views/dashboard/submenus/content/Weights";
+import HydrostaticTesting from "views/dashboard/submenus/content/HydrostaticTesting";
+import Restoration from "views/dashboard/submenus/content/Restoration";
+import Pigs from "views/dashboard/submenus/content/Pigs";
+import InspectorReports from "views/dashboard/submenus/content/InspectorReports";
+import Safety from "views/dashboard/submenus/content/Safety";
+import WeatherTracking from "views/dashboard/submenus/content/WeatherTracking";
+import Menu from "views/dashboard/submenus/content/Menu";
+import PipeCutting from "views/cutting/PipeCutting";
+
+// const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
 import SignUpUser from "views/administrative/SignUpUser";
 import Welding from "views/welding/Welding";
 
@@ -32,6 +68,200 @@ const routes: {
     name: "Project Select",
     component: ProjectSelect,
   },
+
+  //Carousel path and SubCarousel Paths
+  { path: "/dashboard", exact: true, name: "Dashboard", component: Dashboard },
+  {
+    path: "/dashboard/inventory",
+    exact: true,
+    name: "Dashboard",
+    component: DashboardInventory,
+  },
+  {
+    path: "/dashboard/needsAnalysis",
+    exact: true,
+    name: "NeedsAnalysis",
+    component: NeedsAnalysis,
+  },
+  {
+    path: "/dashboard/projectAuthorization",
+    exact: true,
+    name: "ProjectAuthorization",
+    component: ProjectAuthorization,
+  },
+  {
+    path: "/dashboard/overviewOfConstruction",
+    exact: true,
+    name: "OverviewOfConstruction",
+    component: OverviewOfConstruction,
+  },
+  {
+    path: "/dashboard/specialConstructionTechnique",
+    exact: true,
+    name: "SpecialConstructionTechnique",
+    component: SpecialConstructionTechnique,
+  },
+  {
+    path: "/dashboard/guidelines",
+    exact: true,
+    name: "GuidelinesForParallelConstruction",
+    component: GuidlinesForParallelConstruction,
+  },
+  {
+    path: "/dashboard/constructionStanders",
+    exact: true,
+    name: "ConstructionStanders",
+    component: ConstructionStanders,
+  },
+  {
+    path: "/dashboard/constructionTeam",
+    exact: true,
+    name: "ConstructionTeam",
+    component: ConstructionTeam,
+  },
+  {
+    path: "/dashboard/permits",
+    exact: true,
+    name: "Permits",
+    component: Permits,
+  },
+  {
+    path: "/dashboard/environmental",
+    exact: true,
+    name: "Environmental",
+    component: Environmental,
+  },
+  {
+    path: "/dashboard/clearing",
+    exact: true,
+    name: "Clearing",
+    component: Clearing,
+  },
+  {
+    path: "/dashboard/grading",
+    exact: true,
+    name: "Grading",
+    component: Grading,
+  },
+  {
+    path: "/dashboard/inventory/materialInventory",
+    exact: true,
+    name: "MaterialInventory",
+    component: MaterialInventory,
+  },
+  {
+    path: "/dashboard/gpsSurvey",
+    exact: true,
+    name: "GPSSurvey",
+    component: GPSSurvey,
+  },
+  {
+    path: "/dashboard/trenching",
+    exact: true,
+    name: "Trenching",
+    component: Trenching,
+  },
+  { path: "/dashboard/hdd", exact: true, name: "HDD", component: HDD },
+  {
+    path: "/dashboard/bending",
+    exact: true,
+    name: "Bending",
+    component: Bending,
+  },
+  {
+    path: "/dashboard/welding",
+    exact: true,
+    name: "Welding",
+    component: Welding,
+  },
+  { path: "/dashboard/xray", exact: true, name: "XRay", component: XRay },
+  {
+    path: "/dashboard/stringing",
+    exact: true,
+    name: "Stringing",
+    component: Stringing,
+  },
+  {
+    path: "/dashboard/blasting",
+    exact: true,
+    name: "Blasting",
+    component: Blasting,
+  },
+  {
+    path: "/dashboard/coating",
+    exact: true,
+    name: "Coating",
+    component: Coating,
+  },
+  {
+    path: "/dashboard/padding",
+    exact: true,
+    name: "Padding",
+    component: Padding,
+  },
+  {
+    path: "/dashboard/trenchPlugs",
+    exact: true,
+    name: "TrenchPlugs",
+    component: TrenchPlugs,
+  },
+  {
+    path: "/dashboard/lowering",
+    exact: true,
+    name: "Lowering",
+    component: Lowering,
+  },
+  {
+    path: "/dashboard/weights",
+    exact: true,
+    name: "Weights",
+    component: Weights,
+  },
+  {
+    path: "/dashboard/hydrostaticTesting",
+    exact: true,
+    name: "HydrostaticTesting",
+    component: HydrostaticTesting,
+  },
+  {
+    path: "/dashboard/restoration",
+    exact: true,
+    name: "Restoration",
+    component: Restoration,
+  },
+  {
+    path: "/dashboard/pigs",
+    exact: true,
+    name: "Pigs",
+    component: Pigs,
+  },
+  {
+    path: "/dashboard/inspectorReports",
+    exact: true,
+    name: "InspectorReports",
+    component: InspectorReports,
+  },
+  {
+    path: "/dashboard/safety",
+    exact: true,
+    name: "Safety",
+    component: Safety,
+  },
+  {
+    path: "/dashboard/weatherTracking",
+    exact: true,
+    name: "WeatherTracking",
+    component: WeatherTracking,
+  },
+  {
+    path: "/dashboard/menu",
+    exact: true,
+    name: "Menu",
+    component: Menu,
+  },
+
+
+
   { path: "/dashboard", exact: true, name: "Dashboard", component: Dashboard },
   {
     path: "/dashboard/inventory",
