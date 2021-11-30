@@ -208,17 +208,42 @@ const NewCutting = ({ id, length }: any) => {
   };
 
   return (
-    <div className={styles.cuttingContainer}>
+    <div
+      // className={styles.cuttingContainer}
+      style={{
+        background:
+          "linear-gradient(to bottom left, rgba(65, 131, 215,.4), rgba(34, 49, 63, .4))",
+        // maxHeight: "75%",
+        height: "95%",
+        border: "3px inset",
+        // minWidth: "75%",
+        width: "90vw",
+        // margin: "6.125% 12.5%",
+        padding: "0 1%",
+      }}
+    >
       {/* {console.log(sliderPosition)} */}
-      <div style={{ textAlign: "center", marginBottom: "1%" }}>
-        Original Pipe ID: {id} <div />
-        Original Pipe Length: {displayLength} {cuttingUnits[1]}
+      <div style={{ textAlign: "center", marginBottom: "1%", color: "black" }}>
         <div
           style={{
-            margin: "1% 0",
+            fontSize: "1.5rem",
+            color: "black",
+            fontFamily: "Fenix",
+            margin: "1% 0 0 0",
+            padding: "1% 0",
+            background: "rgba(225,245,255, .1)",
+          }}
+        >
+          Original Pipe ID: {id} <div />
+          Original Pipe Length: {displayLength} {cuttingUnits[1]}
+        </div>
+        <div
+          style={{
+            padding: "1% 0",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            background: "rgba(225,245,255, .1)",
           }}
         >
           {!cutFinalized ? (
@@ -291,7 +316,12 @@ const NewCutting = ({ id, length }: any) => {
         {!cutFinalized ? (
           <Button
             variant="outlined"
-            style={{ margin: "0.25% 1%", alignSelf: "center" }}
+            style={{
+              margin: "0.25% 1%",
+              alignSelf: "center",
+              color: "white",
+              background: "rgba(225,245,255, .1)",
+            }}
             onClick={() => {
               setChangingUnits(!changingUnits);
             }}
@@ -373,19 +403,31 @@ const NewCutting = ({ id, length }: any) => {
               justifyContent: "center",
               alignItems: "center",
               margin: "1% 0 0 0",
+              background: "rgba(225,245,255, .1)",
+              padding: "1%",
+              borderRadius: "3%",
+              boxShadow: "-50 -50 0 3px rgb(255 ,255, 40)",
             }}
           >
             <div />
             <Button
               variant="contained"
-              style={{ margin: "0 .25%" }}
+              style={{
+                margin: "0 1% 2% 0",
+                alignSelf: "center",
+                // fontSize: "2rem",
+                // padding: "1%",
+                // maxHeight: "50%"
+                width: "1%",
+                height: "1%",
+              }}
               // onClick={() => { setSliderPosition(sliderPosition - fineTuneAmount); }}
               onClick={() => {
                 setRightLength(handleIncrement(fineTuneAmount));
                 setIncrementing(true);
               }}
             >
-              -
+              <div style={{ fontSize: "150%" }}>-</div>
             </Button>
             <FormControl size="medium">
               <InputLabel id="fine-tuning-label">
@@ -419,14 +461,22 @@ const NewCutting = ({ id, length }: any) => {
             </FormControl>
             <Button
               variant="contained"
-              style={{ margin: "0 .25%" }}
+              style={{
+                margin: "0 0 2% 1%",
+                // alignSelf: "center",
+                // fontSize: "2rem",
+                // padding: "1%",
+                // maxHeight: "1%",
+                // width: ".5%",
+                // height: "50%",
+              }}
               // onClick={() => { setSliderPosition(sliderPosition + fineTuneAmount);}}
               onClick={() => {
                 setRightLength(handleIncrement(-1 * fineTuneAmount));
                 setIncrementing(true);
               }}
             >
-              +
+              <div style={{ fontSize: "150%" }}>+</div>
             </Button>
             <div />
           </div>
@@ -531,6 +581,10 @@ const NewCutting = ({ id, length }: any) => {
                   display: "flex",
                   flexDirection: "column",
                   margin: "0 auto",
+                  background: "rgba(225,245,255, .1)",
+                  padding: "1%",
+                  borderRadius: "3%",
+                  boxShadow: "0 0 0 3px rgb(255 ,255, 40)",
                 }}
               >
                 <div
@@ -594,13 +648,20 @@ const NewCutting = ({ id, length }: any) => {
                   style={{
                     alignSelf: "center",
                     display: "flex",
-                    marginTop: "1%",
+                    marginTop: "2%",
+                    borderTop: "2px solid",
+                    paddingTop: "2%",
+                    width: "100%",
                   }}
                 >
                   <Button
                     variant="contained"
                     color="error"
-                    style={{ margin: "1% 1%" }}
+                    style={{
+                      margin: "1% 1%",
+                      position: "relative",
+                      // right: "25%",
+                    }}
                     onClick={() => {
                       setButtonsActive([true, true, true]);
                       setUserPipeNames([pipeNames[0], pipeNames[1]]);
@@ -612,7 +673,11 @@ const NewCutting = ({ id, length }: any) => {
                   <Button
                     variant="contained"
                     color="success"
-                    style={{ margin: "1% 1%" }}
+                    style={{
+                      margin: "1% 1%",
+                      position: "relative",
+                      left: "50%",
+                    }}
                     onClick={() => {
                       setSubmitting(true);
                       // console.log(userPipeNames);
@@ -715,8 +780,7 @@ const NewCutting = ({ id, length }: any) => {
                 {userPipeNames[0]} and {userPipeNames[1]}{" "}
               </p>
               <p>
-                Press 'OK' to log these new pipes and their sizes in the
-                database.
+                Press 'OK' to log the new pipes and their sizes in the database.
               </p>
             </DialogContentText>
           </DialogContent>
@@ -808,8 +872,9 @@ const NewCutting = ({ id, length }: any) => {
           </div>
         ) : (
           <Button
-            variant="outlined"
-            style={{ margin: "1% 1%" }}
+            variant="contained"
+            // color="info"
+            style={{ margin: "1% 1%", color: "white" }}
             onClick={() => {
               setSliderPosition(50);
               setRightLength(displayLength / 2);

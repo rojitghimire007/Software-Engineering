@@ -73,10 +73,25 @@ const PipeCutting = () => {
   //     .catch((e) => alert(e.message));
   // }, [selectedPipe, fetch]);
   return (
-    <>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 2fr 1fr",
+        gridTemplateRows: "100vh",
+        alignItems: "center",
+        // border: "3px solid",
+        background: "rgba(137, 196, 244, .4)",
+        padding: "1vh 0",
+        maxWidth: "100vw",
+        // minWidth: "100vw",
+        maxHeight: "98vh",
+        // minHeight: "100vh",
+      }}
+    >
+      <div />
       {!pipeChosen ? (
         <div>
-          <FormControl sx={{ margin: "25px 0", minWidth: "25%" }}>
+          <FormControl sx={{ margin: "25px 0", minWidth: "100%" }}>
             {(!open && selectedPipe === "") || errored ? (
               <InputLabel id="cut-eligible-pipes">
                 Select Pipe for Cutting *
@@ -185,7 +200,8 @@ const PipeCutting = () => {
           )}
         </>
       ) : null}
-    </>
+      <div />
+    </div>
   );
 };
 
