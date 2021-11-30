@@ -123,20 +123,66 @@ const WeldingForcast = () => {
             left: '91px',
           }}
         >
-          {/* <div style={{ fontSize: '20px' }}>
+          <div style={{ fontSize: '20px' }}>
             <label>PS</label>
             <select id="N" name="FLW">
-              <option value="0">0</option>
+              <option value="0">0.125</option>
+              <option value="1">0.250</option>
+              <option value="1">0.375</option>
+              <option value="1">0.500</option>
               <option value="1">1</option>
+              <option value="1">1.25</option>
+              <option value="1">1.50</option>
+              <option value="1">2</option>
+              <option value="1">2.50</option>
+              <option value="1">3</option>
+              <option value="1">3.5</option>
+              <option value="1">4</option>
+              <option value="1">4.5</option>
+              <option value="1">5</option>
+              <option value="1">6</option>
+              <option value="1">8</option>
+              <option value="1">4</option>
+              <option value="1">10</option>
+              <option value="1">11</option>
+
+              <option value="1">16</option>
+              <option value="1">20</option>
+              <option value="1">22</option>
+              <option value="1">24</option>
+              <option value="1">30</option>
+              <option value="1">32</option>
+              <option value="1">36</option>
+              <option value="1">42</option>
+              <option value="1">46</option>
+              <option value="1">48</option>
+              <option value="1">50</option>
+              <option value="1">54</option>
+              <option value="1">60</option>
             </select>
             <div style={{ fontSize: '20px', position: 'relative' }}>
               <label>WT</label>
               <select id="N" name="FLW">
-                <option value="0">0</option>
-                <option value="1">1</option>
+                <option value="0">0.035</option>
+                <option value="1">0.049</option>
+                <option value="0">0.068</option>
+                <option value="1">0.095</option>
+                <option value="0">0.188</option>
+                <option value="1">0.147</option>
               </select>
             </div>
-          </div> */}
+            <div style={{ fontSize: '20px', position: 'relative' }}>
+              <label>circum</label>
+              <select id="N" name="FLW">
+                <option value="0">2.5447</option>
+                <option value="1">3.9329</option>
+                <option value="0">4.2412</option>
+                <option value="1">5.2779</option>
+                <option value="0">6.5973</option>
+                <option value="1">8.4226</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div
           style={{ fontSize: '15px', marginTop: '80px', textAlign: 'center' }}
