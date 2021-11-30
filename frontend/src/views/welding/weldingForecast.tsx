@@ -32,6 +32,11 @@ const WeldingForcast = () => {
   const [area2, setArea2] = useState<number>(0);
   const [area3, setArea3] = useState<number>(0);
   const [totalCross, setTotalCross] = useState<number>(0);
+  const [numPassCaps, setNumPassCaps] = useState({
+    numPasses: '1',
+    numCaps: '1',
+  });
+  // const [numCaps, setNumCaps] = useState(0);
 
   console.log('rootOpening: ' + rootOpening);
   const rows = 4;
@@ -79,6 +84,11 @@ const WeldingForcast = () => {
     setRodBornLength(e.target.value);
   };
 
+  const onPassCapChange = (e: any) => {
+    let newNumPassCaps = { ...numPassCaps, [e.target.name]: e.target.value };
+    setNumPassCaps(newNumPassCaps);
+  };
+
   return (
     <div
       style={{
@@ -99,7 +109,7 @@ const WeldingForcast = () => {
         id="col1"
       >
         Single V-Butt Welding
-        <img src={img1} />
+        {/* <img src={img1} /> */}
         <div
           id="Circle"
           style={{
@@ -109,9 +119,11 @@ const WeldingForcast = () => {
             borderRadius: '155px',
             position: 'relative',
             boxShadow: '0 0 0 35px #cfd1d1',
+            top: '39px',
+            left: '91px',
           }}
         >
-          <div style={{ fontSize: '20px' }}>
+          {/* <div style={{ fontSize: '20px' }}>
             <label>PS</label>
             <select id="N" name="FLW">
               <option value="0">0</option>
@@ -124,7 +136,7 @@ const WeldingForcast = () => {
                 <option value="1">1</option>
               </select>
             </div>
-          </div>
+          </div> */}
         </div>
         <div
           style={{ fontSize: '15px', marginTop: '80px', textAlign: 'center' }}
@@ -591,8 +603,8 @@ const WeldingForcast = () => {
               </td>
             </tr>
           </table>
-          <div className="pipe-gange">
-            <div style={{ marginRight: '30px' }}>
+          <div className="pipe-firing-container">
+            <div className="pipe-gange" style={{ marginRight: '10px' }}>
               <div className="pipe-row">
                 <label>Root Pass Welders</label>
                 <select
@@ -666,82 +678,101 @@ const WeldingForcast = () => {
                   <option value="4">4</option>
                 </select>
               </div>
-
-              <Link
-                to={`/welding/create-table/${pipeGange.rootPass},${pipeGange.grindingHelpers},${pipeGange.hotPass},${pipeGange.buffingHelpers},${pipeGange.secondPass}`}
-              >
-                <button style={{ width: '250px', height: '30px' }}>Next</button>
-              </Link>
             </div>
 
-            <div className="Firing Line">
-              <label>Firing Line Type</label>
-              <select id="Firing line Type" name="FLT">
-                <option value="Leap Frog">Leap Frog</option>
-                <option value="Wagon Train">Wagon Traing</option>
-              </select>
-              <br></br>
-              <label>Number of Firing Line Welders</label>
-              <select id="Number of Firing Line Welders" name="FLW">
-                <option value="0">0</option>
-                <option value="1">1</option>
-              </select>
-              <br></br>
-
-              <label>Single hand or brother in law </label>
-              <select id="Single Hand or Brother in Law" name="SH">
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>
-              <br></br>
+            <div className="firing-line">
+              <div className="firing-row">
+                <label>Firing Line Type</label>
+                <select name="FLT">
+                  <option value="Leap Frog">Leap Frog</option>
+                  <option value="Wagon Train">Wagon Traing</option>
+                </select>
+              </div>
+              <div className="firing-row">
+                <label>Number of Firing Line Welders</label>
+                <select name="FLW">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                </select>
+              </div>
+              <div className="firing-row">
+                <label>Single hand or brother in law </label>
+                <select name="SH">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
+              </div>
 
               {/* fireline ends */}
             </div>
-            <div>
-              <label> Number of Passes </label>
-              <select id="Number of Passes" name="numPasses">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-              </select>
-              <br></br>
-              <label> Number of caps </label>
-              <select id="Number of Caps" name="caps">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
+            <div className="pass-caps" style={{ width: '20%' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <label> Number of Passes </label>
+                <select
+                  id="Number of Passes"
+                  name="numPasses"
+                  value={numPassCaps.numPasses}
+                  onChange={onPassCapChange}
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                </select>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <label> Number of caps </label>
+                <select
+                  id="Number of Caps"
+                  name="numCaps"
+                  value={numPassCaps.numCaps}
+                  onChange={onPassCapChange}
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
             </div>
           </div>
+
+          <br />
+          <Link
+            to={{
+              pathname: '/welding/pipe-gange',
+              state: { pipeGangeNumber: pipeGange, numPassCaps: numPassCaps },
+            }}
+          >
+            <button style={{ width: '250px', height: '30px' }}>Next</button>
+          </Link>
         </div>
       </div>
       {/* end oulmn 2 */}
