@@ -45,6 +45,7 @@ import Pigs from "views/dashboard/submenus/content/Pigs";
 import InspectorReports from "views/dashboard/submenus/content/InspectorReports";
 import Safety from "views/dashboard/submenus/content/Safety";
 import WeatherTracking from "views/dashboard/submenus/content/WeatherTracking";
+import Menu from "views/dashboard/submenus/content/Menu";
 
 const Dashboard = React.lazy(() => import("views/dashboard/Dashboard"));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -248,7 +249,12 @@ const routes: {
     name: "WeatherTracking",
     component: WeatherTracking,
   },
-
+  {
+    path: "/dashboard/menu",
+    exact: true,
+    name: "Menu",
+    component: Menu,
+  },
 
 
 
