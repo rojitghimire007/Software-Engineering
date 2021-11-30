@@ -1,7 +1,7 @@
 .comp-container {
   /* width: 50vw; */
   max-width: 80vw;
-  height: 30rem !important;
+  height: 20rem !important;
   /* background-color: linear-gradient(rgba(255, 255, 255, 0)); */
   opacity: 100%;
   margin-left: auto;
@@ -38,7 +38,7 @@
   /* width: 13.125rem; */
   width: 6rem; /* optimized for a list with 10 items. */
   /* height: 13.125rem; */
-  height: 27rem !important;
+  height: 23rem !important;
   position: relative;
   margin: 0 auto;
   margin-top: 4rem; /*Changes distance of carousel from top of container */
