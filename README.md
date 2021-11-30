@@ -32,7 +32,7 @@
   - Once the module instalization is done, you can issue a `node index.js`
   - Backend runs in port 8081 by default
 
-- Once frontend and backend is running, you can open your browser and test it locally.
+Once frontend and backend is running, you can open your browser and test it locally.
 
 ## Making code changes
  - Fork and clone the repository git clone https://github.com/rojitghimire007/Software-Engineering
