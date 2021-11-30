@@ -55,7 +55,7 @@ const links = [
     },
     {
         parent: 'OverviewOfConstruction',
-        link: '/',
+        link: '/dashboard/tieIns',
         id: 'Tie-ins',
         image: overviewOfConstruction,
     },

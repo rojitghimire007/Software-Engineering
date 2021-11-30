@@ -8,7 +8,7 @@ const links = [
     // Inventory
     {
       parent: 'ConstructionTeam',
-      link: '/',
+      link: '/dashboard/chiefReports',
       id: 'Chief Reports',
       image: inspectorReports,
     },

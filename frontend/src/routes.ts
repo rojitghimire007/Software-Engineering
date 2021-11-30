@@ -46,6 +46,21 @@ import InspectorReports from "views/dashboard/submenus/content/InspectorReports"
 import Safety from "views/dashboard/submenus/content/Safety";
 import WeatherTracking from "views/dashboard/submenus/content/WeatherTracking";
 import Menu from "views/dashboard/submenus/content/Menu";
+import TieIns from "views/dashboard/submenus/content/TieIns";
+import ContractorPipline from "views/dashboard/submenus/content/ContractorPipeline";
+import ContractorClearing from "views/dashboard/submenus/content/ContractorClearing";
+import ContractorXRay from "views/dashboard/submenus/content/ContractorXray";
+import ContractorTesting from "views/dashboard/submenus/content/ContractorTesting";
+import ContractorSeeding from "views/dashboard/submenus/content/ContractorSeeding";
+import ContractorPainting from "views/dashboard/submenus/content/ContractorPainting";
+import ContractorFencing from "views/dashboard/submenus/content/ContractorFencing";
+import ContractorRoad from "views/dashboard/submenus/content/ContractorRoad";
+import UplandAndConstruction from "views/dashboard/submenus/content/UplandAndConstruction";
+import MTRS from "views/dashboard/submenus/content/MTRS";
+import ChiefReports from "views/dashboard/submenus/content/ChiefReports";
+import FirstAid from "views/dashboard/submenus/content/FirstAid";
+import SafetyTopic from "views/dashboard/submenus/content/SafetyTopic";
+import PipeAndSteelDimensions from "views/dashboard/submenus/content/PipeAndSteelDimensions";
 
 const Dashboard = React.lazy(() => import("views/dashboard/Dashboard"));
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
@@ -254,6 +269,96 @@ const routes: {
     exact: true,
     name: "Menu",
     component: Menu,
+  },
+  {
+    path: "/dashboard/tieIns",
+    exact: true,
+    name: "TieIns",
+    component: TieIns,
+  },
+  {
+    path: "/dashboard/contractorPipeline",
+    exact: true,
+    name: "ContractorPipeline",
+    component: ContractorPipline,
+  },
+  {
+    path: "/dashboard/contractorClearing",
+    exact: true,
+    name: "ContractorClearing",
+    component: ContractorClearing,
+  },
+  {
+    path: "/dashboard/contractorXRay",
+    exact: true,
+    name: "ContractorXRay",
+    component: ContractorXRay,
+  },
+  {
+    path: "/dashboard/contractorTesting",
+    exact: true,
+    name: "ContractorTesting",
+    component: ContractorTesting,
+  },
+  {
+    path: "/dashboard/contractorSeeding",
+    exact: true,
+    name: "ContractorSeeding",
+    component: ContractorSeeding,
+  },
+  {
+    path: "/dashboard/contractorPainting",
+    exact: true,
+    name: "ContractorPainting",
+    component: ContractorPainting,
+  },
+  {
+    path: "/dashboard/contractorFencing",
+    exact: true,
+    name: "ContractorFencing",
+    component: ContractorFencing,
+  },
+  {
+    path: "/dashboard/contractorRoad",
+    exact: true,
+    name: "ContractorRoad",
+    component: ContractorRoad,
+  },
+  {
+    path: "/dashboard/uplandAndConstruction",
+    exact: true,
+    name: "UplandAndConstruction",
+    component: UplandAndConstruction,
+  },
+  {
+    path: "/dashboard/MTRS",
+    exact: true,
+    name: "MTRS",
+    component: MTRS,
+  },
+  {
+    path: "/dashboard/chiefReports",
+    exact: true,
+    name: "ChiefReports",
+    component: ChiefReports,
+  },
+  {
+    path: "/dashboard/firstAid",
+    exact: true,
+    name: "FirstAid",
+    component: FirstAid,
+  },
+  {
+    path: "/dashboard/safetyTopic",
+    exact: true,
+    name: "SafetyTopic",
+    component: SafetyTopic,
+  },
+  {
+    path: "/dashboard/pipeAndSteelDimensions",
+    exact: true,
+    name: "PipeAndSteelDimensions",
+    component: PipeAndSteelDimensions,
   },
 
 

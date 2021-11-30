@@ -216,7 +216,7 @@ const links = [
             },
             {
                 main: '- Local Mapping',
-                default: '/'
+                default: 'https://docs.google.com/document/d/1SVJcIpygNHZpzUz6fKJYYB7wdePlm74J/edit?usp=drive_web&ouid=102872920544363015107&rtpof=true'
             },
             {
                 main: '- Weather Tracking',
@@ -284,7 +284,7 @@ const links = [
             },
             {
                 main: '- Pipe and Steel Dimensions',
-                default: '/'
+                default: '/dashboard/pipeAndSteelDimensions'
             },
             {
                 main: '- Fabrication',

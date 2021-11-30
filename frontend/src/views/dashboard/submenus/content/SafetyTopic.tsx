@@ -8,68 +8,68 @@ const links = [
     {
       parent: 'ConstructionTeam',
       link: '/',
-      id: 'PPE',
-      image: safety,
-    },
-    {
-      parent: 'ConstructionTeam',
-      link: '/',
-      id: 'OQ\'s',
-      image: safety,
-    },
-    {
-      parent: 'ConstructionTeam',
-      link: '/',
-      id: 'Hot Work Permits',
+      id: 'Mechanical',
       image: safety,
     },
     {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'Write ups',
+        id: 'Electrical',
         image: safety,
       },
       {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'Incident Reports',
+        id: 'Pressure',
         image: safety,
       },
       {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'Air Monitoring',
+        id: 'Tempurature',
         image: safety,
       },
       {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'Good Catch',
-        image: safety,
-      },
-      {
-        parent: 'ConstructionTeam',
-        link: '/dashboard/firstAid',
-        id: 'First Aid',
-        image: safety,
-      },
-      {
-        parent: 'ConstructionTeam',
-        link: '/dashboard/safetyTopic',
-        id: 'Safety Topic',
+        id: 'Chemical',
         image: safety,
       },
       {
         parent: 'ConstructionTeam',
         link: '/',
-        id: 'MSDS',
+        id: 'Biological',
+        image: safety,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Radiation',
+        image: safety,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Sound',
+        image: safety,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Gravity',
+        image: safety,
+      },
+      {
+        parent: 'ConstructionTeam',
+        link: '/',
+        id: 'Motion',
         image: safety,
       },
   ];
 
-const Safety = () => {
+const SafetyTopic = () => {
     return (
         SubCarousel(links)
     );
 }
-export default Safety;
+export default SafetyTopic;
