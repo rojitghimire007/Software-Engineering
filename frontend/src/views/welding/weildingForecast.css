@@ -1,0 +1,41 @@
+.pipe-firing-container {
+  max-width: 85%;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.pipe-gange .pipe-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pipe-gange select {
+  width: 100px;
+}
+
+#single-vbutt table {
+  font-size: 12px;
+  /* color: #89CFF0; */
+}
+
+.firing-line,
+.pipe-gange {
+  flex-basis: 35%;
+  padding-right: 10px;
+}
+
+.firing-line .firing-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.firing-line .firing-row select {
+  width: 100px;
+}
+
+.pipe-firing-container .pass-caps select {
+  width: 60px;
+}

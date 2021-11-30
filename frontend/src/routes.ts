@@ -66,6 +66,12 @@ import PipeAndSteelDimensions from "views/dashboard/submenus/content/PipeAndStee
 // const StrungPipes = React.lazy(() => import('views/stringing/NewStrungPipes'));
 import SignUpUser from "views/administrative/SignUpUser";
 import Weld from "views/welding/Weld";
+import WeldingForcast from "views/welding/weldingForecast";
+import CreateTable from "views/welding/createTable";
+import PipeGange from "views/welding/pipeGange/pipeGange";
+import SingleVbutt from "views/welding/pipeGange/singleVbutt";
+import FiringLine from "views/welding/pipeGange/firingLine";
+import WeldingProcedure from "views/welding/weldingProcedure";
 
 const Dashboard = React.lazy(() => import("views/dashboard/Dashboard"));
 const Login = React.lazy(() => import("views/Login"));
@@ -423,6 +429,42 @@ const routes: {
     exact: true,
     name: "Welding",
     component: PipeCutting
+  },
+  {
+    path: '/welding/forecast',
+    exact: true,
+    name: 'Forecast',
+    component: WeldingForcast,
+  },
+  {
+    path: '/welding/create-table/:root,:grinding,:hot,:buffing,:second',
+    exact: true,
+    name: 'Create Table',
+    component: CreateTable,
+  },
+  {
+    path: '/welding/pipe-gange',
+    exact: true,
+    name: 'PipeGange',
+    component: PipeGange,
+  },
+  {
+    path: '/welding/firing-line',
+    exact: true,
+    name: 'PipeGange',
+    component: FiringLine,
+  },
+  {
+    path: '/welding/single-vbutt-weld',
+    exact: true,
+    name: 'SingVbuttWeld',
+    component: SingleVbutt,
+  },
+  {
+    path: '/welding-procedure',
+    exact: true,
+    name: 'Welding Procedure',
+    component: WeldingProcedure,
   },
 ];
 
