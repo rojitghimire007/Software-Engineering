@@ -13,7 +13,7 @@ const links = [
     },
     {
       parent: 'ConstructionTeam',
-      link: '/bending',
+      link: '/welding',
       id: 'Repair Welds',
       image: welding,
     },
@@ -55,7 +55,7 @@ const links = [
       },
       {
         parent: 'ConstructionTeam',
-        link: '/',
+        link: '/welding/forecast',
         id: 'Welder Stats',
         image: welding,
       },

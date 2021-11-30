@@ -183,8 +183,8 @@ exports.weld_seq =`CREATE TABLE weld_seq(
   weld_id TEXT,
   start_station FLOAT NOT NULL,
   current_station FLOAT NOT NULL,
-  PRIMARY KEY(item_id),
-  FOREIGN KEY(item_id) REFERENCES stringing(item_id),
+  PRIMARY KEY(item),
+  FOREIGN KEY(item) REFERENCES stringing(item_id),
   FOREIGN KEY(next_item) REFERENCES stringing(item_id),
   FOREIGN KEY(weld_id) REFERENCES weld(weld_id)
 )`;
