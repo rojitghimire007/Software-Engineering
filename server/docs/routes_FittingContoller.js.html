@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: routes/FittingContoller.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: routes/FittingContoller.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { connect_project_db, query_resolver } = require('../utils/dbHandler');
+const { getRandomString } = require('../utils/randomGenerator');
+
+/**
+ * Adds a fitting
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if a fitting is successfully added
+ */
+
+const addFittings = async (req, res, next) => {
+  let {
+    id,
+    flength,
+    dimension,
+    style,
+    flocation,
+    comment,
+    is_void,
+    is_used,
+    heat_number,
+    manufacture,
+    po_number,
+    grade,
+    ftype,
+    coat,
+    fdescription,
+    material_type,
+    thickness
+  } = req.body;
+
+  try {
+    const connection = await connect_project_db(req.dbname);
+
+    const query = {
+      text: 'SELECT * FROM fitting_heat WHERE heat_number = $1',
+      values: [heat_number],
+    }
+
+    let fitting_heat = await query_resolver(connection, query);
+
+    if (fitting_heat.length === 0) {
+      const query1 = {
+        text: 'INSERT INTO fitting_heat(heat_number, manufacture) VALUES($1, $2)',
+        values: [heat_number, manufacture]
+      };
+      await query_resolver(connection, query1);
+
+      const query2 = {
+        text: 'SELECT * FROM fitting_heat WHERE heat_number = $1',
+        values: [heat_number],
+      }
+
+      fitting_heat = await query_resolver(connection, query2);
+    } else if (fitting_heat[0].manufacture != manufacture) {
+      throw {
+        status: 400,
+        message:
+          'Same Heat Number with a different manufacturer exists. Please consult admin to verify correct manufacturer. You can also leave a comment on the pipe.',
+      };
+    }
+
+    if(po_number){
+      const purchase = await query_resolver(connection,  {
+        text: `SELECT po_number FROM purchase_number WHERE po_number=$1`,
+        values: [po_number]
+      });
+  
+      if(purchase.length === 0){
+        await query_resolver(connection, {
+          text: `INSERT INTO purchase_number(po_number, manufacture) VALUES ($1, $2)`,
+          values: [po_number, manufacture]
+        });
+      }
+    }
+
+    fitting_heat = fitting_heat[0].fitting_heat_id;
+
+    const shared_ref = getRandomString(30);
+    const query3 = {
+      text: `INSERT INTO fitting_shared_info(fitting_shared_id, fitting_heat_id, po_number, grade, ftype, coat, fdescription, material_type, thickness, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      values: [shared_ref, fitting_heat, po_number ? po_number : null, grade, ftype, coat, fdescription, material_type, thickness, req.uname]
+    }
+
+    await query_resolver(connection, query3);
+
+    const query4 = {
+      text: `INSERT INTO fitting(id, fitting_shared_id, flength, dimension, style, flocation, comment, is_void, is_used) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      values: [id, shared_ref, flength, dimension, style, flocation, comment, Boolean(is_void), Boolean(is_used)]
+    }
+
+    await query_resolver(connection, query4);
+
+    return res.status(200).send({
+      success: true,
+      message: 'Fitting Added!'
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+/**
+ * Edits fitting data
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if fitting is successfully edited
+ */
+const editFitting = async (req, res, next) => {
+  const { oldData_id, newData } = req.body;
+  const {
+    heat_number,
+    manufacturer,
+    po_number,
+    grade,
+    ftype,
+    coat,
+    fdescription,
+    material_type,
+    thickness,
+    id,
+    flength,
+    dimension,
+    style,
+    flocation,
+    comment,
+    is_void,
+    is_used
+  } = newData;
+
+  try{
+    const connection = await connect_project_db(req.dbname);
+    let fitting_heat = await query_resolver(connection, {
+      text: 'SELECT * from fitting_heat WHERE heat_number=$1',
+      values: [heat_number]
+    });
+
+    if (fitting_heat.length === 0) {
+      const query1 = {
+        text: 'INSERT INTO fitting_heat(heat_number, manufacture) VALUES($1, $2)',
+        values: [heat_number, manufacturer]
+      };
+      await query_resolver(connection, query1);
+
+      const query2 = {
+        text: 'SELECT * FROM fitting_heat WHERE heat_number = $1',
+        values: [heat_number],
+      }
+
+      fitting_heat = await query_resolver(connection, query2);
+    } else if (fitting_heat[0].manufacture != manufacturer) {
+      console.log(fitting_heat);
+      throw {
+        status: 400,
+        message:
+          'Same Heat Number with a different manufacturer exists. Please consult admin to verify correct manufacturer. You can also leave a comment on the pipe.',
+      };
+    }
+
+    if(po_number){
+      const purchase = await query_resolver(connection,  {
+        text: `SELECT po_number FROM purchase_number WHERE po_number=$1`,
+        values: [po_number]
+      });
+  
+      if(purchase.length === 0){
+        await query_resolver(connection, {
+          text: `INSERT INTO purchase_number(po_number, manufacture) VALUES ($1, $2)`,
+          values: [po_number, manufacturer]
+        });
+      }
+    }
+
+    let shared_id = await query_resolver(connection, {
+      text: `SELECT fitting_shared_id FROM fitting WHERE id=$1`,
+      values: [oldData_id]
+    });
+
+    fitting_heat = fitting_heat[0].fitting_heat_id;
+    shared_id = shared_id[0].fitting_shared_id;
+
+    await query_resolver(connection, {
+      text: `UPDATE fitting_shared_info SET fitting_heat_id=$1, po_number=$2, grade=$3, ftype=$4, coat=$5, fdescription=$6, material_type=$7, thickness=$8 WHERE fitting_shared_id=$9`,
+      values: [fitting_heat, po_number, grade, ftype, coat, fdescription, material_type, thickness, shared_id] 
+    });
+
+    await query_resolver(connection, {
+      text: `UPDATE fitting SET id=$1, flength=$2, dimension=$3, style=$4, flocation=$5, comment=$6, is_void=$7, is_used=$8 WHERE id=$9`,
+      values:[id, flength, dimension, style, flocation, comment, Boolean(is_void), Boolean(is_used), oldData_id]
+    });
+
+    return res.status(200).send({
+      success: true,
+      message: 'Fitting Updated!'
+    });
+
+  }catch(error){
+    next(error);
+  }
+}
+
+/**
+ * Gets all fitting information
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Lists of fitting along with its details
+ */
+const getFittings = async (req, res, next) => {
+  try {
+    const connection = await connect_project_db(req.dbname);
+    const query = `SELECT * from fitting JOIN fitting_shared_info USING (fitting_shared_id) JOIN fitting_heat ON fitting_heat.fitting_heat_id = fitting_shared_info.fitting_heat_id`;
+    const fittings = await query_resolver(connection, query);
+
+    res.status(200).send({
+      success: true,
+      data: [...fittings]
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+module.exports = { addFittings, getFittings, editFitting };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCoating">addCoating</a></li><li><a href="global.html#addFittings">addFittings</a></li><li><a href="global.html#addPipe">addPipe</a></li><li><a href="global.html#addUserToProject">addUserToProject</a></li><li><a href="global.html#allPipes">allPipes</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#bendPipe">bendPipe</a></li><li><a href="global.html#connect_project_db">connect_project_db</a></li><li><a href="global.html#create_database">create_database</a></li><li><a href="global.html#create_tables">create_tables</a></li><li><a href="global.html#cutPipe">cutPipe</a></li><li><a href="global.html#deleteFromSequence">deleteFromSequence</a></li><li><a href="global.html#deleteFromString">deleteFromString</a></li><li><a href="global.html#deleteItemFromStringing">deleteItemFromStringing</a></li><li><a href="global.html#deletePipe">deletePipe</a></li><li><a href="global.html#editFitting">editFitting</a></li><li><a href="global.html#editPipe">editPipe</a></li><li><a href="global.html#getAggregateData">getAggregateData</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAssociatedProjects">getAssociatedProjects</a></li><li><a href="global.html#getBend">getBend</a></li><li><a href="global.html#getCoating">getCoating</a></li><li><a href="global.html#getCuttingEligiblePipes">getCuttingEligiblePipes</a></li><li><a href="global.html#getFittings">getFittings</a></li><li><a href="global.html#getItemInfo">getItemInfo</a></li><li><a href="global.html#getOneItemInfo">getOneItemInfo</a></li><li><a href="global.html#getOptions">getOptions</a></li><li><a href="global.html#getPipeLength">getPipeLength</a></li><li><a href="global.html#getRandomString">getRandomString</a></li><li><a href="global.html#getSchedule">getSchedule</a></li><li><a href="global.html#getStringing">getStringing</a></li><li><a href="global.html#getStringingInfo">getStringingInfo</a></li><li><a href="global.html#getStriningEligiblePipes">getStriningEligiblePipes</a></li><li><a href="global.html#getStrungItemsInfo">getStrungItemsInfo</a></li><li><a href="global.html#InitialMiddleWare">InitialMiddleWare</a></li><li><a href="global.html#insertIntoSequence">insertIntoSequence</a></li><li><a href="global.html#insertItemIntoStringing">insertItemIntoStringing</a></li><li><a href="global.html#isDbRegistered">isDbRegistered</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#old_deleteItemFromStringing">old_deleteItemFromStringing</a></li><li><a href="global.html#oldinsertItemIntoStringing">oldinsertItemIntoStringing</a></li><li><a href="global.html#postProject">postProject</a></li><li><a href="global.html#promiseHandler">promiseHandler</a></li><li><a href="global.html#query_resolver">query_resolver</a></li><li><a href="global.html#removeBend">removeBend</a></li><li><a href="global.html#removeUserFromProject">removeUserFromProject</a></li><li><a href="global.html#selectProject">selectProject</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#TokenMiddleWare">TokenMiddleWare</a></li><li><a href="global.html#update_project_list">update_project_list</a></li><li><a href="global.html#updateBend">updateBend</a></li><li><a href="global.html#updatePipeSchedule">updatePipeSchedule</a></li><li><a href="global.html#updateSequence">updateSequence</a></li><li><a href="global.html#updateStrung">updateStrung</a></li><li><a href="global.html#usersInProject">usersInProject</a></li><li><a href="global.html#validateToken">validateToken</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Nov 29 2021 22:15:32 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: routes/PipeCutting.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: routes/PipeCutting.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { query_resolver, connect_project_db } = require("../utils/dbHandler");
+
+/**
+ * Cuts pipe
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success object
+ */
+const cutPipe = async (req, res, next) => {
+  const { id, cutLength } = req.body;
+
+  try {
+    const connection = await connect_project_db(req.dbname);
+
+    let selected_pipe = await query_resolver(connection, {
+      text: `SELECT plength, parent, is_void, is_used, is_cut, pipe_shared_id, plocation FROM pipe WHERE id=$1`,
+      values: [id]
+    });
+
+    if (selected_pipe.length === 0) {
+      throw { status: 500, message: 'Invalid pipe id!' }
+    }
+
+    if (cutLength >= selected_pipe[0].plength) {
+      throw { status: 401, message: "Invalid cut length!" }
+    }
+
+    if (selected_pipe[0].parent) {
+      const newPipeId = selected_pipe[0].parent + String.fromCharCode(id.charCodeAt(id.length - 1) + 1);
+
+      await query_resolver(connection, {
+        text: `INSERT INTO pipe(id, pipe_shared_id, plength, updated_by, updated_on, plocation, parent) VALUES ($1, $2, $3, $4, to_timestamp($5), $6, $7)`,
+        values: [newPipeId, selected_pipe[0].pipe_shared_id, selected_pipe[0].plength - cutLength, req.uname, Math.floor(Date.now() / 1000), selected_pipe[0].plocation, selected_pipe[0].parent]
+      });
+
+      await query_resolver(connection, {
+        text: `UPDATE pipe SET plength=$1, updated_by=$2, updated_on=to_timestamp($3) WHERE id=$4`,
+        values: [cutLength, req.uname, Math.floor(Date.now() / 1000), id]
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: 'Pipe Successfully Cut!'
+      });
+
+    } else {
+      const newPipeIds = [
+        { id: `${id}A`, len: cutLength },
+        { id: `${id}B`, len: selected_pipe[0].plength - cutLength }
+      ]
+
+      for (let i = 0; i &lt; 2; i++) {
+        await query_resolver(connection, {
+          text: `INSERT INTO pipe(id, pipe_shared_id, plength, updated_by, updated_on, plocation, parent) VALUES ($1, $2, $3, $4, to_timestamp($5), $6, $7)`,
+          values: [newPipeIds[i].id, selected_pipe[0].pipe_shared_id, newPipeIds[i].len, req.uname, Math.floor(Date.now() / 1000), selected_pipe[0].plocation, id]
+        });
+      }
+    }
+    await query_resolver(connection, {
+      text: `UPDATE pipe SET is_cut=$1, updated_by=$2, updated_on=to_timestamp($3) WHERE id=$4`,
+      values: [true, req.uname, Math.floor(Date.now() / 1000), id]
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Pipe Successfully Cut!'
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get eligible pipes for cutting
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} List of cutable pipes
+ */
+const getCuttingEligiblePipes = async (req, res, next) => {
+  try {
+    const connection = await connect_project_db(req.dbname);
+    let allPipeExceptString = await query_resolver(connection, {
+      text: `SELECT id FROM pipe WHERE id !~ '[0-9]+[A-Z]' AND (is_void!=TRUE OR is_void IS NULL) AND is_cut!=TRUE EXCEPT ALL SELECT SUBSTRING(item_id, 3) AS id FROM stringing WHERE SUBSTR(item_id, 0, 3)='P_'`
+    });
+
+    let cutMaxPipeExceptString = await query_resolver(connection, {
+      text: `SELECT  MAX(id) as id FROM pipe WHERE id ~ '[0-9]+[A-Z]' AND (is_void!=TRUE OR is_void IS NULL) AND is_cut!=TRUE GROUP BY SUBSTR(id, 0, LENGTH(id)) EXCEPT ALL SELECT SUBSTRING(item_id, 3) AS id FROM stringing WHERE SUBSTR(item_id, 0, 3)='P_'`
+    });
+
+    const result = allPipeExceptString.concat(cutMaxPipeExceptString);
+
+    return res.status(200).json({
+      success: true,
+      data: [...result]
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+/**
+ * Get pipes length
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} pipe length
+ */
+const getPipeLength = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    const connection = await connect_project_db(req.dbname);
+    const result = await query_resolver(connection, {
+      text: `SELECT plength FROM pipe WHERE id=$1`,
+      values: [id]
+    })
+
+    return res.status(200).json({
+      success: true,
+      data: result[0]
+    })
+
+  }catch(error){
+    next(error);
+  }
+}
+
+module.exports = { cutPipe, getCuttingEligiblePipes, getPipeLength };
+
+//console.log('Everything is fine');
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCoating">addCoating</a></li><li><a href="global.html#addFittings">addFittings</a></li><li><a href="global.html#addPipe">addPipe</a></li><li><a href="global.html#addUserToProject">addUserToProject</a></li><li><a href="global.html#allPipes">allPipes</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#bendPipe">bendPipe</a></li><li><a href="global.html#connect_project_db">connect_project_db</a></li><li><a href="global.html#create_database">create_database</a></li><li><a href="global.html#create_tables">create_tables</a></li><li><a href="global.html#cutPipe">cutPipe</a></li><li><a href="global.html#deleteFromSequence">deleteFromSequence</a></li><li><a href="global.html#deleteFromString">deleteFromString</a></li><li><a href="global.html#deleteItemFromStringing">deleteItemFromStringing</a></li><li><a href="global.html#deletePipe">deletePipe</a></li><li><a href="global.html#editFitting">editFitting</a></li><li><a href="global.html#editPipe">editPipe</a></li><li><a href="global.html#getAggregateData">getAggregateData</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAssociatedProjects">getAssociatedProjects</a></li><li><a href="global.html#getBend">getBend</a></li><li><a href="global.html#getCoating">getCoating</a></li><li><a href="global.html#getCuttingEligiblePipes">getCuttingEligiblePipes</a></li><li><a href="global.html#getFittings">getFittings</a></li><li><a href="global.html#getItemInfo">getItemInfo</a></li><li><a href="global.html#getOneItemInfo">getOneItemInfo</a></li><li><a href="global.html#getOptions">getOptions</a></li><li><a href="global.html#getPipeLength">getPipeLength</a></li><li><a href="global.html#getRandomString">getRandomString</a></li><li><a href="global.html#getSchedule">getSchedule</a></li><li><a href="global.html#getStringing">getStringing</a></li><li><a href="global.html#getStringingInfo">getStringingInfo</a></li><li><a href="global.html#getStriningEligiblePipes">getStriningEligiblePipes</a></li><li><a href="global.html#getStrungItemsInfo">getStrungItemsInfo</a></li><li><a href="global.html#InitialMiddleWare">InitialMiddleWare</a></li><li><a href="global.html#insertIntoSequence">insertIntoSequence</a></li><li><a href="global.html#insertItemIntoStringing">insertItemIntoStringing</a></li><li><a href="global.html#isDbRegistered">isDbRegistered</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#old_deleteItemFromStringing">old_deleteItemFromStringing</a></li><li><a href="global.html#oldinsertItemIntoStringing">oldinsertItemIntoStringing</a></li><li><a href="global.html#postProject">postProject</a></li><li><a href="global.html#promiseHandler">promiseHandler</a></li><li><a href="global.html#query_resolver">query_resolver</a></li><li><a href="global.html#removeBend">removeBend</a></li><li><a href="global.html#removeUserFromProject">removeUserFromProject</a></li><li><a href="global.html#selectProject">selectProject</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#TokenMiddleWare">TokenMiddleWare</a></li><li><a href="global.html#update_project_list">update_project_list</a></li><li><a href="global.html#updateBend">updateBend</a></li><li><a href="global.html#updatePipeSchedule">updatePipeSchedule</a></li><li><a href="global.html#updateSequence">updateSequence</a></li><li><a href="global.html#updateStrung">updateStrung</a></li><li><a href="global.html#usersInProject">usersInProject</a></li><li><a href="global.html#validateToken">validateToken</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Nov 29 2021 22:15:32 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

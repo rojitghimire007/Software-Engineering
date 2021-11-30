@@ -9,6 +9,7 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(express.static('docs'))
 
 InitialMiddleWare(app); //Add initial middlewares (cors, body-parser)
 TokenMiddleWare(app); // Extract email from the jwt token and put it in body

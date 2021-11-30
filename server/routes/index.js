@@ -1,4 +1,5 @@
-const { login, signup, auth, selectProject, getAssociatedProjects, usersInProject} = require('./UserController');
+const path = require('path');
+const { login, signup, auth, selectProject, getAssociatedProjects, usersInProject } = require('./UserController');
 const { postProject, addUserToProject, getAllUsers, removeUserFromProject } = require('./AdminController');
 
 const {
@@ -101,6 +102,12 @@ const SetRoutes = (app) => {
   //coating
   app.post('/coating', addCoating);
   app.get('/coating', getCoating)
+
+  //docs
+  app.get('/docs/:file', (req, res) => {
+    const { file } = req.params;
+    res.sendFile(path.join(__dirname + `/../docs/${file}`));
+  })
 };
 
 module.exports = { SetRoutes };

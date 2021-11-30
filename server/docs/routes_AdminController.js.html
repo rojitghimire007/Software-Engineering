@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: routes/AdminController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: routes/AdminController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { getRandomString } = require('../utils/randomGenerator');
+const { default_pool, create_database, query_resolver } = require('../utils/dbHandler');
+
+/**
+ * Creates new project
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if the project creation is successful
+ */
+const postProject = async (req, res, next) => {
+  try {
+    /**
+     * TODO: Check if admin
+     */
+    const { project_number,
+      pname,
+      company,
+      company_address,
+      company_phone,
+      company_email,
+      work_number,
+      work_site_phone,
+      plocation,
+      notes,
+      start_date,
+      end_date } = req.body;
+    
+    if(!pname.replace(/\s/g, '').length || pname == null){ //checks if project name is null or just whitespace
+      throw {status: 500, message: "Project name can't be null or empty"}
+    }
+
+    const dbname = pname.trim().toLowerCase().replace(/[^a-zA-Z0-9]/g, "") + getRandomString(5, '0123456789');
+    
+    const projObj = {
+      project_number: project_number.trim(),
+      pname,
+      company,
+      work_number,
+      plocation,
+      company_address: company_address ? company_address: null,
+      company_phone: company_phone ? company_phone: null,
+      company_email: company_email ? company_email: null,
+      work_site_phone: work_site_phone ? work_site_phone: null,
+      notes: notes ? notes: null,
+      start_date: start_date ? start_date : null,
+      end_date: end_date ? end_date : null,
+      dbname
+
+    }
+    
+    await create_database(projObj);
+
+    return res.status(200).json({
+      success: true,
+      message: "Project Created!"
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Associates users to a project (Admin Only Functionality)
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if the users are save in the project
+ */
+const addUserToProject = async (req, res, next) => {
+  try {
+    
+    const { users } = req.body;
+    
+    if (users.length == 0) throw { status: 500, message: 'No user selected to associate with the project!' };
+
+    let existingUsers = await query_resolver(default_pool, {
+      text: 'SELECT * FROM users WHERE uname = $1',
+      values: [users[0]],
+    });
+
+    if(existingUsers.length == 0){
+      throw {status: 500, message: "No such users!"};
+    }
+
+    const query = {
+      text: `SELECT project_number FROM projects WHERE dbname=$1`,
+      values: [req.dbname]
+    }
+
+    const result = await query_resolver(default_pool, query);
+
+    let usersInProj = await query_resolver(default_pool, {
+      text: `SELECT uname from user_project WHERE project_number=$1`,
+      values: [result[0].project_number]
+    });
+
+    usersInProj = new Set(usersInProj.map(user => user.uname));
+    let difference = users.filter(x => !usersInProj.has(x));
+
+    if (difference.length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: "Mentioned user(s) already in the project!"
+      });
+    }
+
+    const { project_number } = result[0];
+    /**
+     * TODO: check of duplicates within inputs itself
+     */
+    let valueList = difference.map(ele => {
+      return `('${ele.trim()}', '${project_number.trim()}')`
+    });
+
+    const vals = valueList.join(', ').trim();
+
+    const inQuery = `INSERT INTO user_project(uname, project_number) VALUES ${vals}`
+
+    await query_resolver(default_pool, inQuery);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Successfully added users to the project!'
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Removes a user from a project (Admin Only Functionality)
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} Success message if a user is removed successfully
+ */
+const removeUserFromProject = async (req, res, next) => {
+  try {
+    const { uname } = req.params;
+
+    const projNum = await query_resolver(default_pool, {
+      text: `SELECT project_number FROM projects WHERE dbname=$1`,
+      values: [req.dbname]
+    });
+
+    const query = {
+      text: `DELETE FROM user_project WHERE uname=$1 AND project_number=$2`,
+      values: [uname, projNum[0].project_number]
+    }
+
+    await query_resolver(default_pool, query);
+
+    return res.status(200).json({
+      success: true,
+      message: 'User deleted from the project!'
+    })
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Gets all the users in the database
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {Function} next - Next Function
+ * @returns {Object} List of all the users and their data
+ */
+const getAllUsers = async (req, res, next) => {
+  try {
+    const query = `SELECT * FROM users`;
+
+    const users = await query_resolver(default_pool, query);
+
+    return res.status(200).json({
+      success: true,
+      data: [...users]
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { postProject, addUserToProject, getAllUsers, removeUserFromProject }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCoating">addCoating</a></li><li><a href="global.html#addFittings">addFittings</a></li><li><a href="global.html#addPipe">addPipe</a></li><li><a href="global.html#addUserToProject">addUserToProject</a></li><li><a href="global.html#allPipes">allPipes</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#bendPipe">bendPipe</a></li><li><a href="global.html#connect_project_db">connect_project_db</a></li><li><a href="global.html#create_database">create_database</a></li><li><a href="global.html#create_tables">create_tables</a></li><li><a href="global.html#cutPipe">cutPipe</a></li><li><a href="global.html#deleteFromSequence">deleteFromSequence</a></li><li><a href="global.html#deleteFromString">deleteFromString</a></li><li><a href="global.html#deleteItemFromStringing">deleteItemFromStringing</a></li><li><a href="global.html#deletePipe">deletePipe</a></li><li><a href="global.html#editFitting">editFitting</a></li><li><a href="global.html#editPipe">editPipe</a></li><li><a href="global.html#getAggregateData">getAggregateData</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAssociatedProjects">getAssociatedProjects</a></li><li><a href="global.html#getBend">getBend</a></li><li><a href="global.html#getCoating">getCoating</a></li><li><a href="global.html#getCuttingEligiblePipes">getCuttingEligiblePipes</a></li><li><a href="global.html#getFittings">getFittings</a></li><li><a href="global.html#getItemInfo">getItemInfo</a></li><li><a href="global.html#getOneItemInfo">getOneItemInfo</a></li><li><a href="global.html#getOptions">getOptions</a></li><li><a href="global.html#getPipeLength">getPipeLength</a></li><li><a href="global.html#getRandomString">getRandomString</a></li><li><a href="global.html#getSchedule">getSchedule</a></li><li><a href="global.html#getStringing">getStringing</a></li><li><a href="global.html#getStringingInfo">getStringingInfo</a></li><li><a href="global.html#getStriningEligiblePipes">getStriningEligiblePipes</a></li><li><a href="global.html#getStrungItemsInfo">getStrungItemsInfo</a></li><li><a href="global.html#InitialMiddleWare">InitialMiddleWare</a></li><li><a href="global.html#insertIntoSequence">insertIntoSequence</a></li><li><a href="global.html#insertItemIntoStringing">insertItemIntoStringing</a></li><li><a href="global.html#isDbRegistered">isDbRegistered</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#old_deleteItemFromStringing">old_deleteItemFromStringing</a></li><li><a href="global.html#oldinsertItemIntoStringing">oldinsertItemIntoStringing</a></li><li><a href="global.html#postProject">postProject</a></li><li><a href="global.html#promiseHandler">promiseHandler</a></li><li><a href="global.html#query_resolver">query_resolver</a></li><li><a href="global.html#removeBend">removeBend</a></li><li><a href="global.html#removeUserFromProject">removeUserFromProject</a></li><li><a href="global.html#selectProject">selectProject</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#TokenMiddleWare">TokenMiddleWare</a></li><li><a href="global.html#update_project_list">update_project_list</a></li><li><a href="global.html#updateBend">updateBend</a></li><li><a href="global.html#updatePipeSchedule">updatePipeSchedule</a></li><li><a href="global.html#updateSequence">updateSequence</a></li><li><a href="global.html#updateStrung">updateStrung</a></li><li><a href="global.html#usersInProject">usersInProject</a></li><li><a href="global.html#validateToken">validateToken</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Nov 29 2021 22:15:32 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

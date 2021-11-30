@@ -14,6 +14,7 @@ import BendInfo from "views/bending/BendInfo";
 import MasterLog from "views/masterLog/MasterLog";
 import ListUser from "views/userListProj/ListUser";
 import SignUpUser from "views/administrative/SignUpUser";
+import Welding from "views/welding/Welding";
 
 const Dashboard = React.lazy(() => import("views/dashboard/Dashboard"));
 const Login = React.lazy(() => import("views/Login"));
@@ -75,6 +76,12 @@ const routes: {
     exact: true,
     name: "SignUp",
     component: SignUpUser
+  },
+  {
+    path:"/welding",
+    exact: true,
+    name: "Welding",
+    component: Welding
   }
 ];
 

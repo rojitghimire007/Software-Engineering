@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/randomGenerator.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/randomGenerator.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Generate random string
+ * @param {Number} length - length of the random string
+ * @param {String} chars - character sequence to be used to generate random sequence
+ * @returns {String} random string
+ */
+function getRandomString(
+  length,
+  chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+) {
+  var result = '';
+  for (var i = length; i > 0; --i)
+    result += chars[Math.floor(Math.random() * chars.length)];
+  return result;
+}
+
+module.exports = { getRandomString };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addCoating">addCoating</a></li><li><a href="global.html#addFittings">addFittings</a></li><li><a href="global.html#addPipe">addPipe</a></li><li><a href="global.html#addUserToProject">addUserToProject</a></li><li><a href="global.html#allPipes">allPipes</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#bendPipe">bendPipe</a></li><li><a href="global.html#connect_project_db">connect_project_db</a></li><li><a href="global.html#create_database">create_database</a></li><li><a href="global.html#create_tables">create_tables</a></li><li><a href="global.html#cutPipe">cutPipe</a></li><li><a href="global.html#deleteFromSequence">deleteFromSequence</a></li><li><a href="global.html#deleteFromString">deleteFromString</a></li><li><a href="global.html#deleteItemFromStringing">deleteItemFromStringing</a></li><li><a href="global.html#deletePipe">deletePipe</a></li><li><a href="global.html#editFitting">editFitting</a></li><li><a href="global.html#editPipe">editPipe</a></li><li><a href="global.html#getAggregateData">getAggregateData</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAssociatedProjects">getAssociatedProjects</a></li><li><a href="global.html#getBend">getBend</a></li><li><a href="global.html#getCoating">getCoating</a></li><li><a href="global.html#getCuttingEligiblePipes">getCuttingEligiblePipes</a></li><li><a href="global.html#getFittings">getFittings</a></li><li><a href="global.html#getItemInfo">getItemInfo</a></li><li><a href="global.html#getOneItemInfo">getOneItemInfo</a></li><li><a href="global.html#getOptions">getOptions</a></li><li><a href="global.html#getPipeLength">getPipeLength</a></li><li><a href="global.html#getRandomString">getRandomString</a></li><li><a href="global.html#getSchedule">getSchedule</a></li><li><a href="global.html#getStringing">getStringing</a></li><li><a href="global.html#getStringingInfo">getStringingInfo</a></li><li><a href="global.html#getStriningEligiblePipes">getStriningEligiblePipes</a></li><li><a href="global.html#getStrungItemsInfo">getStrungItemsInfo</a></li><li><a href="global.html#InitialMiddleWare">InitialMiddleWare</a></li><li><a href="global.html#insertIntoSequence">insertIntoSequence</a></li><li><a href="global.html#insertItemIntoStringing">insertItemIntoStringing</a></li><li><a href="global.html#isDbRegistered">isDbRegistered</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#old_deleteItemFromStringing">old_deleteItemFromStringing</a></li><li><a href="global.html#oldinsertItemIntoStringing">oldinsertItemIntoStringing</a></li><li><a href="global.html#postProject">postProject</a></li><li><a href="global.html#promiseHandler">promiseHandler</a></li><li><a href="global.html#query_resolver">query_resolver</a></li><li><a href="global.html#removeBend">removeBend</a></li><li><a href="global.html#removeUserFromProject">removeUserFromProject</a></li><li><a href="global.html#selectProject">selectProject</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#TokenMiddleWare">TokenMiddleWare</a></li><li><a href="global.html#update_project_list">update_project_list</a></li><li><a href="global.html#updateBend">updateBend</a></li><li><a href="global.html#updatePipeSchedule">updatePipeSchedule</a></li><li><a href="global.html#updateSequence">updateSequence</a></li><li><a href="global.html#updateStrung">updateStrung</a></li><li><a href="global.html#usersInProject">usersInProject</a></li><li><a href="global.html#validateToken">validateToken</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Nov 29 2021 22:15:32 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
