@@ -14,7 +14,7 @@ const options = [
     {
         main: 'Welding',
         subItems: [''],
-        default: '',
+        default: '/welding',
     },
     {
         main: 'Stringing',
