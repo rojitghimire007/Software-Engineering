@@ -8,10 +8,10 @@ let project_list = null; //list of all the projects in the system
 
 //default connection to the master database
 const master_pool = new Pool({
-  user: 'postgres',
-  host: 'teamdaemon.chdmjbgrdfsw.us-east-2.rds.amazonaws.com',
-  database: 'master',
-  password: 'teamDaemon',
+  user: process.env.USER1,
+  host: process.env.HOST1,
+  database: process.env.DATABASE1,
+  password: process.env.PASSWORD1,
   port: 5432,
   
 });
@@ -71,10 +71,10 @@ const connect_project_db = async (dbname) => {
 
     //make new connection to another project's database
     project_connection = new Pool({
-      user: 'postgres',
-      host: 'teamdaemon.chdmjbgrdfsw.us-east-2.rds.amazonaws.com',
+      user: process.env.USER1,
+      host: process.env.HOST1,
       database: dbname,
-      password: 'teamDaemon',
+      password: process.env.PASSWORD1,
       port: 5432,
     });
 
