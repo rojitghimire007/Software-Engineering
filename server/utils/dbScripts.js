@@ -188,3 +188,5 @@ exports.weld_seq =`CREATE TABLE weld_seq(
   FOREIGN KEY(next_item) REFERENCES stringing(item_id),
   FOREIGN KEY(weld_id) REFERENCES weld(weld_id)
 )`;
+
+exports.demoCoat = `INSERT INTO pipe_coat(coat, color) VALUES ('AAA', '#FFAAEE'), ('BBB', '12CCF5')`;
