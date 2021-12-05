@@ -11,8 +11,8 @@ const stringingQueries = {
   // getStriningEligibleFittings1: `SELECT CONCAT('F_', id) as id FROM fitting WHERE parent is null except all select substring(item_id , 3) from stringing except all select parent from pipe`,
   // getStriningEligibleFittings2: `SELECT  CONCAT('F_', min(id)) as id FROM fitting where parent is not null group by SUBSTR(id, 0, LENGTH(id)) except all select substring(item_id , 3) from stringing`,
   insertIntoStringing: `INSERT INTO public.stringing(
-  item_id, station_number, next_item, prev_item, start_pipe)
-  VALUES ($1, $2, $3, $4, $5);`,
+  item_id, station_number, next_item, prev_item, start_pipe, string_inspector)
+  VALUES ($1, $2, $3, $4, $5, $6);`,
 };
 
 module.exports = stringingQueries;
