@@ -1,5 +1,5 @@
 // let URL = process.env.API || 'http://localhost:8081';
-let URL = process.env.API || 'http://18.233.158.96:8081';
+let URL = process.env.API || 'http://3.12.36.251:8081';
 
 const API = {
   poc: `${URL}/poc`,
