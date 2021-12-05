@@ -493,6 +493,8 @@ const insertItemIntoStringing = async (
     next_item,
     start_pipe = null;
   let length = 0;
+
+  let inspector = req.uname;
   try {
     if (!start_item) {
       // get the length of prev_item. This is use to calculate the station of the item.
@@ -528,7 +530,14 @@ const insertItemIntoStringing = async (
     // insert the pipe
     await query_resolver(connection, {
       text: stringingQueries.insertIntoStringing,
-      values: [item, station_number + length, next_item, prev_item, start_pipe],
+      values: [
+        item,
+        station_number + length,
+        next_item,
+        prev_item,
+        start_pipe,
+        inspector,
+      ],
     });
 
     // point prev pipe to this new pipe
@@ -586,12 +595,13 @@ const insertItemIntoStringing = async (
 const createNewSequence = async (req, res, next) => {
   try {
     let { station, item } = req.body;
+    let inspector = req.uname;
     const connection = await connect_project_db(req.dbname);
 
     // insert the pipe
     await query_resolver(connection, {
       text: stringingQueries.insertIntoStringing,
-      values: [item, station, null, null, item],
+      values: [item, station, null, null, item, inspector],
     });
 
     await query_resolver(connection, {
