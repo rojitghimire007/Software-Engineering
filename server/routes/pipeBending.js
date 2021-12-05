@@ -25,7 +25,7 @@ const bendPipe = async (req, res, next) => {
     if(pipeCheck.length === 0) throw {status: 500, message: 'No such pipe with the id in the database!'}
 
     for (let bend of bends) {
-      let bendLen = bend.blength ? bend.blength : null;
+      let bendLen = bend.blength ? bend.blength.replace("'", "") : null;
       const test = `SELECT * FROM pipe_bend JOIN bend USING (bend_id) WHERE id=$1 AND degree=$2 AND bdirection=$3 AND blength${bendLen? "='"+bendLen+"'": ' IS NULL'}`;
       let prevBend = await query_resolver(connection, {
         text: test,

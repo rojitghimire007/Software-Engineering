@@ -50,163 +50,147 @@ import lessonsLearned from 'img/lessonsLearned.png';
 
 const links = [
     {
-      parent: 'Material Inventory',
-      link: '/dashboard/inventory',
-      id: 'Material Inventory',
-      image: inventoryImg,
 
-      parent2: 'Welding',
-      link2: '/dashboard/welding',
-      id2: 'Welding',
-      image2: weldingImg,
+      parent: 'WhyPipeline',
+      link: '',
+      id: 'Why is a Pipeline Needed',
+      image: whyPipeline,
 
-      parent3: 'Stringing',
-      link3: 'dashboard/stringing',
-      id3: 'Stringing',
-      image3: stringingImg,
+      parent2: 'NeedsAnalysis',
+      link2: '/dashboard/needsAnalysis',
+      id2: 'Needs Analysis and Project Justification',
+      image2: needsAnalysis,
+
+      parent3: 'ProjectAuthorization',
+      link3: '/dashboard/projectAuthorization',
+      id3: 'Project Authorization and Certification',
+      image3: projectAuthorization,
     },
-    
+
     {
-      parent: 'Bending',
-      link: '/dashboard/bending',
-      id: 'Bending',
-      image: bendingImg,
+      parent: 'OverviewOfConstruction',
+      link: '/dashboard/overviewOfConstruction',
+      id: 'Overview of Construction',
+      image: overviewOfConstruction,
 
-      parent2: 'Coating',
-      link2: '/dashboard/coating',
-      id2: 'Coating',
-      image2: coatingImg,
+      parent2: 'SpecialConstructionTechnique',
+      link2: '/dashboard/specialConstructionTechnique',
+      id2: 'Special Construction Technique',
+      image2: specialConstructionTechnique,
 
-      parent3: 'WhyPipeline',
+      parent3: 'PostConstructionMaintenance',
       link3: '',
-      id3: 'Why is a Pipeline Needed',
-      image3: whyPipeline,
+      id3: 'Post-Construction Maintenance',
+      image3: postConstructionMaintenance,
     },
 
     {
-      parent: 'NeedsAnalysis',
-      link: '/dashboard/needsAnalysis',
-      id: 'Needs Analysis and Project Justification',
-      image: needsAnalysis,
+      parent: 'Summary',
+      link: '',
+      id: 'Summary',
+      image: summary,
 
-      parent2: 'ProjectAuthorization',
-      link2: '/dashboard/projectAuthorization',
-      id2: 'Project Authorization and Certification',
-      image2: projectAuthorization,
-
-      parent3: 'OverviewOfConstruction',
-      link3: '/dashboard/overviewOfConstruction',
-      id3: 'Overview of Construction',
-      image3: overviewOfConstruction,
-    },
-
-    {
-      parent: 'SpecialConstructionTechnique',
-      link: '/dashboard/specialConstructionTechnique',
-      id: 'Special Construction Technique',
-      image: specialConstructionTechnique,
-
-      parent2: 'PostConstructionMaintenance',
+      parent2: 'TechnicalBasis',
       link2: '',
-      id2: 'Post-Construction Maintenance',
-      image2: postConstructionMaintenance,
+      id2: 'Technical Basis',
+      image2: technicalBasis,
 
-      parent3: 'Summary',
+      parent3: 'StandardConstructionDrawings',
       link3: '',
-      id3: 'Summary',
-      image3: summary,
+      id3: 'Standard Construction Drawings',
+      image3: standardConstructionDrawings,
     },
 
     {
-      parent: 'TechnicalBasis',
-      link: '',
-      id: 'Technical Basis',
-      image: technicalBasis,
+      parent: 'GuidlinesForParallelConstruction',
+      link: '/dashboard/guidelines',
+      id: 'Guidlines for Parallel Construction',
+      image: guidelines,
 
-      parent2: 'StandardConstructionDrawings',
+      parent2: 'ConstructionBidDocuments',
       link2: '',
-      id2: 'Standard Construction Drawings',
-      image2: standardConstructionDrawings,
+      id2: 'Construction Bid Documents',
+      image2: constructionBidDocuments,
 
-      parent3: 'GuidlinesForParallelConstruction',
-      link3: '/dashboard/guidelines',
-      id3: 'Guidlines for Parallel Construction',
-      image3: guidelines,
+      parent3: 'ConstructionStanders',
+      link3: '/dashboard/constructionStanders',
+      id3: 'Construction Standers',
+      image3: constructionStanders,
     },
 
     {
-      parent: 'ConstructionBidDocuments',
+      parent: 'Schedules',
       link: '',
-      id: 'Construction Bid Documents',
-      image: constructionBidDocuments,
+      id: 'Schedules',
+      image: schedules,
 
-      parent2: 'ConstructionStanders',
-      link2: '/dashboard/constructionStanders',
-      id2: 'Construction Standers',
-      image2: constructionStanders,
-
-      parent3: 'Schedules',
-      link3: '',
-      id3: 'Schedules',
-      image3: schedules,
-    },
-
-    {
-      parent: 'MeetingMinutes',
-      link: '',
-      id: 'Meeting Minutes',
-      image: meetingMinutes,
-
-      parent2: 'ContactPhoneNumbers',
+      parent2: 'MeetingMinutes',
       link2: '',
-      id2: 'Contact Phone Numbers',
-      image2: contactPhoneNumbers,
+      id2: 'Meeting Minutes',
+      image2: meetingMinutes,
 
-      parent3: 'ConstructionTeam',
-      link3: '/dashboard/constructionTeam',
-      id3: 'Construction Team',
-      image3: constructionTeam,
-    },
-
-    {
-      parent: 'ConstructorMobilization',
-      link: '',
-      id: 'Constructor Mobilization',
-      image: constructorMobilization,
-
-      parent2: 'Permits',
-      link2: '/dashboard/permits',
-      id2: 'Permits',
-      image2: permits,
-
-      parent3: 'Environmental',
-      link3: '/dashboard/environmental',
-      id3: 'Environmental',
-      image3: environmental,
-    },
-
-    {
-      parent: 'Clearing',
-      link: '/dashboard/clearing',
-      id: 'Clearing',
-      image: clearing,
-
-      parent2: 'Grading',
-      link2: '/dashboard/grading',
-      id2: 'Grading',
-      image2: grading,
-
-      parent3: 'AccessRoads',
+      parent3: 'ContactPhoneNumbers',
       link3: '',
-      id3: 'Access Roads',
-      image3: accessRoads,
+      id3: 'Contact Phone Numbers',
+      image3: contactPhoneNumbers,
     },
 
     {
-        parent: 'gpsSurvey',
-        link: '/dashboard/gpsSurvey',
-        id: 'GPS Survey',
-        image: gpsSurvey,
+      parent: 'ConstructionTeam',
+      link: '/dashboard/constructionTeam',
+      id: 'Construction Team',
+      image: constructionTeam,
+
+      parent2: 'ConstructorMobilization',
+      link2: '',
+      id2: 'Constructor Mobilization',
+      image2: constructorMobilization,
+
+      parent3: 'Permits',
+      link3: '/dashboard/permits',
+      id3: 'Permits',
+      image3: permits,
+    },
+
+    {
+      parent: 'Environmental',
+      link: '/dashboard/environmental',
+      id: 'Environmental',
+      image: environmental,
+
+      parent2: 'Clearing',
+      link2: '/dashboard/clearing',
+      id2: 'Clearing',
+      image2: clearing,
+
+      parent3: 'Grading',
+      link3: '/dashboard/grading',
+      id3: 'Grading',
+      image3: grading,
+    },
+
+    {
+      parent: 'AccessRoads',
+      link: '',
+      id: 'Access Roads',
+      image: accessRoads,
+
+      parent2: 'Material Inventory',
+      link2: '/dashboard/inventory',
+      id2: 'Material Inventory',
+      image2: inventoryImg,
+
+      parent3: 'gpsSurvey',
+      link3: '/dashboard/gpsSurvey',
+      id3: 'GPS Survey',
+      image3: gpsSurvey,
+    },
+
+    {
+        parent: 'Stringing',
+        link: 'dashboard/stringing',
+        id: 'Stringing',
+        image: stringingImg,
 
         parent2: 'Trenching',
         link2: '/dashboard/trenching',
@@ -220,10 +204,27 @@ const links = [
     },
 
     {
-        parent: 'ValueSites',
-        link: '',
-        id: 'Value Sites',
-        image: valveSites,
+        parent: 'Bending',
+        link: '/dashboard/bending',
+        id: 'Bending',
+        image: bendingImg,
+
+        parent2: 'Welding',
+        link2: '/dashboard/welding',
+        id2: 'Welding',
+        image2: weldingImg,
+
+        parent3: 'ValueSites',
+        link3: '',
+        id3: 'Value Sites',
+        image3: valveSites,
+    },
+
+    {
+        parent: 'Coating',
+        link: '/dashboard/coating',
+        id: 'Coating',
+        image: coatingImg,
 
         parent2: 'RockShield',
         link2: '',

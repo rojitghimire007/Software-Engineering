@@ -2,14 +2,11 @@ import AppBar from "components/AppBar";
 import react, { useState, useEffect } from "react";
 import { Carousel, CarouselItem } from "react-round-carousel";
 import "./SubCarousel.css";
-import useStyles from '../../../style/DashboardStyles'; // new styling
-
+import useStyles from "../../../style/DashboardStyles";
 
 const SubCarousel = (slides: any) => {
-
-const classes = useStyles();
-const links = slides;
-  const opacityHandler = () => {};
+  const classes = useStyles();
+  const links = slides;
 
   const [focused, setFocused] = useState(0);
   const [rotating, setRotating] = useState(false);
@@ -21,7 +18,7 @@ const links = slides;
       index: index,
       focusState: index === focused ? true : false,
       next: index + 1 > links.length - 1 ? 0 : index + 1,
-      opacity: 1,
+      // opacity: 1,
     }))
   );
 
@@ -38,22 +35,17 @@ const links = slides;
         index: index,
         focusState: index === focused ? true : false,
         next: index + 1 > links.length - 1 ? 0 : index + 1,
-        opacity: handleOpacity(index),
+        // opacity: 1,
       }))
     );
     console.log(...circleQueue);
   }, [focused]);
 
-  const [clickable, setClickable] = useState([
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  ]);
-
-
   const handleOpacity = (index: any) => {
-    const LR3 = 0.5;
-    const LR2 = 0.7;
-    const LR1 = 0.95;
-    const cen = 1;
+    const LR3 = 0.5; // everything else
+    const LR2 = 0.7; // tertiary focus
+    const LR1 = 0.95; // secondary focus
+    const cen = 1; // focus
     let give = 0;
 
     if (index === focused) {
@@ -96,30 +88,30 @@ const links = slides;
     image: "",
     content: (
       <>
-        <div
-          style={{
-            transition: "opacity .3s ease-in-out",
-            opacity: `${circleQueue[index].opacity}`,
-            //   opacity: {focused === index? return '1' : return'.3'},
-            width: "100%",
-            height:
-              "100%" /* opacity: `${(index: any) => (focusArray[index].focused ? 1: 0)}` */,
-          }}
-        >
+        <div style={{ minWidth: "100%" }}>
           <a href={`${item.link}`} style={{ width: "100%", height: "33%" }}>
-            <img src={item.image} style={{ height: "80%" }}></img>
+            <img
+              src={item.image}
+              style={{
+                height: "80%",
+                opacity: handleOpacity(index),
+                transition: "opacity .4s ease-in-out",
+              }}
+            ></img>
             <div
               style={{
                 height: "20%",
+                // minWidth: "100%",
                 color: "white",
                 fontSize: "small",
                 textDecoration: "none",
                 backgroundColor: "black",
-                borderBottomLeftRadius: '10px',
-                borderBottomRightRadius: '10px',
+                borderBottomLeftRadius: "10px",
+                borderBottomRightRadius: "10px",
               }}
             >
               {item.id}
+              {console.log("")}
             </div>
           </a>
         </div>
@@ -138,79 +130,48 @@ const links = slides;
 
   return (
     <div className={classes.background}>
-        <AppBar />
-        <div className="comp-container">
-        <div
+      <AppBar />
+      <Carousel
+        items={items}
+        itemWidth={200}
+        nextButtonContent={
+          <button
             style={{
-            display: "flex",
-            background: "black",
-            position: "absolute",
-            bottom: 0,
-            right: 0,
+              position: "relative",
+              width: "4rem",
+              height: "4rem",
+              borderRadius: "30%",
+              zIndex: 5,
             }}
-        >
-            {circleQueue.map((item: any, index: any) => {
-            return (
-                <div style={{ background: "green", color: "white", margin: "2px" }}>
-                {item.focusState}
-                </div>
-            );
-            })}
-        </div>
-        {/* {console.log(focusArray)} */}
-        {/* {console.log(circleQueue)} */}
-        {/* notice className root */}
-        {/*  DO NOT CHANGE THIS (atm at least) */}
-        <div className="root">
-            {/* this is the carousel item*/}
-            <Carousel
-            items={items}
-            itemWidth={200}
-            nextButtonContent={
-                <button
-                style={{
-                    position: "relative",
-                    // bottom: "20%",
-                    // right: "19%",
-                    opacity: "1",
-                    width: "4rem",
-                    height: "4rem",
-                    borderRadius: "30%",
-                    zIndex: 5,
-                }}
-                onClick={(e: any) => {
-                    Promise.all([templatePromise(setRotating, true)])
-                    .then(() => handleClick(1, "next"))
-                    .then(() => setRotating(false));
-                }}
-                >
-                &rarr;
-                </button>
-            }
-            prevButtonContent={
-                <button
-                style={{
-                    position: "relative",
-                    // top: 0,
-                    right: "70%",
-                    opacity: "1",
-                    width: "4rem",
-                    height: "4rem",
-                    borderRadius: "30%",
-                    zIndex: 5,
-                }}
-                onClick={(e: any) => {
-                    Promise.all([templatePromise(setRotating, true)])
-                    .then(() => handleClick(-1, "prev"))
-                    .then(() => setRotating(false));
-                }}
-                >
-                &larr;
-                </button>
-            }
-            />
-        </div>
-        </div>
+            onClick={(e: any) => {
+              Promise.all([templatePromise(setRotating, true)])
+                .then(() => handleClick(1, "next"))
+                .then(() => setRotating(false));
+            }}
+          >
+            &rarr;
+          </button>
+        }
+        prevButtonContent={
+          <button
+            style={{
+              position: "relative",
+              right: "70%",
+              width: "4rem",
+              height: "4rem",
+              borderRadius: "30%",
+              zIndex: 5,
+            }}
+            onClick={(e: any) => {
+              Promise.all([templatePromise(setRotating, true)])
+                .then(() => handleClick(-1, "prev"))
+                .then(() => setRotating(false));
+            }}
+          >
+            &larr;
+          </button>
+        }
+      />
     </div>
   );
 };
