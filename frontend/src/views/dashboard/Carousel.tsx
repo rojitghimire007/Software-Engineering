@@ -16,8 +16,6 @@ const RunCarousel = () => {
       index: index,
       focusState: index === focused ? true : false,
       next: index + 1 > links.length - 1 ? 0 : index + 1,
-      // opacity: 1,
-      // opacity: 1,
     }))
   );
 
@@ -34,18 +32,16 @@ const RunCarousel = () => {
         index: index,
         focusState: index === focused ? true : false,
         next: index + 1 > links.length - 1 ? 0 : index + 1,
-        // opacity: 1,
-        // opacity: handleOpacity(index),
       }))
     );
     console.log(...circleQueue);
   }, [focused]);
 
   const handleOpacity = (index: any) => {
-    const LR3 = 0.5;
-    const LR2 = 0.7;
-    const LR1 = 0.95;
-    const cen = 1;
+    const LR3 = 0.5; // everything else
+    const LR2 = 0.7; // tertiary focus
+    const LR1 = 0.95; // secondary focus
+    const cen = 1; // focus
     let give = 0;
 
     if (index === focused) {
