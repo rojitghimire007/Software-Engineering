@@ -67,10 +67,17 @@ const updateSequence = async (req, res, next) => {
 
   try {
     const connection = await connect_project_db(req.dbname);
+    let inspector = req.uname;
 
     await deleteItemFromStringing(item, connection);
 
-    await insertItemIntoStringing(item, prev_item, start_item, connection);
+    await insertItemIntoStringing(
+      item,
+      prev_item,
+      start_item,
+      connection,
+      inspector
+    );
     // nexts = await client.query(
     //   `SELECT * FROM stringing WHERE pipe in ('${target_pipe}', '${left_pipe}')`
     // );
@@ -178,7 +185,13 @@ const insertIntoSequence = async (req, res, next) => {
 
     let { item, prev_item, start_item } = req.body;
 
-    await insertItemIntoStringing(item, prev_item, start_item, connection);
+    await insertItemIntoStringing(
+      item,
+      prev_item,
+      start_item,
+      connection,
+      req.uname
+    );
 
     return res.status(200).send({ success: true });
   } catch (error) {
@@ -486,7 +499,8 @@ const insertItemIntoStringing = async (
   item,
   prev_item,
   start_item,
-  connection
+  connection,
+  inspector
 ) => {
   let _,
     station_number,
@@ -494,7 +508,6 @@ const insertItemIntoStringing = async (
     start_pipe = null;
   let length = 0;
 
-  let inspector = req.uname;
   try {
     if (!start_item) {
       // get the length of prev_item. This is use to calculate the station of the item.
