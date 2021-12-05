@@ -16,7 +16,6 @@ const RunCarousel = () => {
       index: index,
       focusState: index === focused ? true : false,
       next: index + 1 > links.length - 1 ? 0 : index + 1,
-      opacity: 1,
     }))
   );
 
@@ -33,52 +32,51 @@ const RunCarousel = () => {
         index: index,
         focusState: index === focused ? true : false,
         next: index + 1 > links.length - 1 ? 0 : index + 1,
-        opacity: 1,
       }))
     );
     console.log(...circleQueue);
   }, [focused]);
 
-  // const handleOpacity = (index: any) => {
-  //   const LR3 = 0.5;
-  //   const LR2 = 0.7;
-  //   const LR1 = 0.95;
-  //   const cen = 1;
-  //   let give = 0;
+  const handleOpacity = (index: any) => {
+    const LR3 = 0.5; // everything else
+    const LR2 = 0.7; // tertiary focus
+    const LR1 = 0.95; // secondary focus
+    const cen = 1; // focus
+    let give = 0;
 
-  //   if (index === focused) {
-  //     give = cen;
-  //   } else if (
-  //     index === focused - 1 ||
-  //     index === focused + 1 ||
-  //     (index === circleQueue.length - 1 && focused === 0) ||
-  //     (index === 0 && focused === circleQueue.length - 1)
-  //   ) {
-  //     give = LR1;
-  //   } else if (
-  //     index === focused - 2 ||
-  //     index === focused + 2 ||
-  //     (index === circleQueue.length - 2 && focused === 0) ||
-  //     (index === circleQueue.length - 1 && focused === 1) ||
-  //     (index === 1 && focused === circleQueue.length - 1) ||
-  //     (index === 0 && focused === circleQueue.length - 2)
-  //   ) {
-  //     give = LR2;
-  //   } else if (
-  //     index === focused - 3 ||
-  //     index === focused + 3 ||
-  //     (index === circleQueue.length - 3 && focused === 0) ||
-  //     (index === circleQueue.length - 2 && focused === 1) ||
-  //     (index === circleQueue.length - 1 && focused === 2) ||
-  //     (index === 2 && focused === circleQueue.length - 1) ||
-  //     (index === 1 && focused === circleQueue.length - 2) ||
-  //     (index === 0 && focused === circleQueue.length - 3)
-  //   ) {
-  //     give = LR3;
-  //   } else give = 0.15;
+    if (index === focused) {
+      give = cen;
+    } else if (
+      index === focused - 1 ||
+      index === focused + 1 ||
+      (index === circleQueue.length - 1 && focused === 0) ||
+      (index === 0 && focused === circleQueue.length - 1)
+    ) {
+      give = LR1;
+    } else if (
+      index === focused - 2 ||
+      index === focused + 2 ||
+      (index === circleQueue.length - 2 && focused === 0) ||
+      (index === circleQueue.length - 1 && focused === 1) ||
+      (index === 1 && focused === circleQueue.length - 1) ||
+      (index === 0 && focused === circleQueue.length - 2)
+    ) {
+      give = LR2;
+    } else if (
+      index === focused - 3 ||
+      index === focused + 3 ||
+      (index === circleQueue.length - 3 && focused === 0) ||
+      (index === circleQueue.length - 2 && focused === 1) ||
+      (index === circleQueue.length - 1 && focused === 2) ||
+      (index === 2 && focused === circleQueue.length - 1) ||
+      (index === 1 && focused === circleQueue.length - 2) ||
+      (index === 0 && focused === circleQueue.length - 3)
+    ) {
+      give = LR3;
+    } else give = 0.15;
 
-  //   return give;
-  // };
+    return give;
+  };
 
   // Create an array of Carousel Items
   const items: CarouselItem[] = links.map((item, index) => ({
@@ -87,8 +85,21 @@ const RunCarousel = () => {
     content: (
       <>
         <div>
-          <a href={`${item.link}`} style={{ width: "100%", height: "33%" }}>
-            <img src={item.image} style={{ height: "80%" }}></img>
+          <a
+            href={`${item.link}`}
+            style={{
+              width: "100%",
+              height: "33%",
+            }}
+          >
+            <img
+              src={item.image}
+              style={{
+                height: "80%",
+                opacity: handleOpacity(index),
+                transition: "opacity .4s ease-in-out",
+              }}
+            ></img>
             <div
               style={{
                 height: "20%",
@@ -104,7 +115,14 @@ const RunCarousel = () => {
             </div>
           </a>
           <a href={`${item.link2}`} style={{ width: "100%", height: "34%" }}>
-            <img src={item.image2} style={{ height: "80%" }}></img>
+            <img
+              src={item.image2}
+              style={{
+                height: "80%",
+                opacity: handleOpacity(index),
+                transition: "opacity .4s ease-in-out",
+              }}
+            ></img>
             <div
               style={{
                 height: "20%",
@@ -120,7 +138,14 @@ const RunCarousel = () => {
             </div>
           </a>
           <a href={`${item.link3}`} style={{ width: "100%", height: "33%" }}>
-            <img src={item.image3} style={{ height: "80%" }}></img>
+            <img
+              src={item.image3}
+              style={{
+                height: "80%",
+                opacity: handleOpacity(index),
+                transition: "opacity .4s ease-in-out",
+              }}
+            ></img>
             <div
               style={{
                 height: "20%",
@@ -133,6 +158,7 @@ const RunCarousel = () => {
               }}
             >
               {item.id3}
+              {console.log(`${circleQueue.length} focused: ${focused}`)}
             </div>
           </a>
         </div>
